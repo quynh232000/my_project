@@ -1,0 +1,132 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.input-no-scale {
+  /*transform: none !important;*/
+  --target-size: 16;
+  --actual-size: 14;
+  --scale-ratio: calc(var(--actual-size) / var(--target-size));
+  --enlarge-ratio: calc(var(--target-size) / var(--actual-size));
+
+  font-size: calc(var(--target-size) * 1px);
+  line-height: calc(20px * var(--enlarge-ratio));
+
+  transform: scale(var(--scale-ratio));
+  transform-origin: left top;
+
+  margin-bottom: calc((20px * var(--enlarge-ratio) - 20px) * -1);
+  margin-right: calc((100% * var(--enlarge-ratio) - 100%) * -0.8);
+}
+
+* {
+  border-color: #EEF0F1;
+}
+
+.input-no-scale-12 {
+  --actual-size: 12;
+}
+
+.input-no-scale-18 {
+  --actual-size: 18;
+}
+
+.reset-input {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-color: transparent;
+  border: none;
+  /*margin: 0;*/
+  box-sizing: border-box;
+  /*font: inherit;*/
+  outline: none;
+  box-shadow: none;
+  -moz-appearance: textfield;
+}
+
+.reset-input::-webkit-outer-spin-button,
+.reset-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+@layer base {
+  :root {
+    --radius: 0.5rem;
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+    --richtext-enter-opacity: 0;
+    --richtext-exit-opacity: 0;
+  }
+}
+
+@layer utilities {
+  .scrollbar::-webkit-scrollbar {
+    width: 8px;
+    height: 6px;
+  }
+
+  .scrollbar::-webkit-scrollbar-track {
+    border-radius: 100vh;
+    background: #f7f4ed;
+    margin: 4px 0;
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb {
+    background: #E6E8EC;
+    border-radius: 100vh;
+    border: 3px solid #E6E8EC;
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #777E90;
+    border-color: #777E90;
+    cursor: auto;
+  }
+
+  .reactjs-tiptap-editor>.richtext-outline-1 {
+    outline-color: #E9ECF3 !important;
+    outline-width: 2px;
+  }
+
+  .richtext-outline-hidden {
+    outline: none !important;
+  }
+
+  div > button > svg {
+    flex-shrink: 0;
+  }
+
+  .reactjs-tiptap-editor button.richtext-inline-flex>svg:has(+svg) {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+  }
+
+  div[data-radix-popper-content-wrapper] {
+    background: transparent !important;
+  }
+}
