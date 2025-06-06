@@ -11,8 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create(config('constants.table.general.TABLE_DOCCUMENT'), function (Blueprint $table) {
+        Schema::create(config('constants.table.general.TABLE_DOCUMENT'), function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('organization_id')->nullable();
+            $table->string('title');
+            $table->text('content')->nullable();
+            $table->enum('status',['active','inactive'])->default('active');
+            $table->unsignedBigInteger('owner_id')->nullable();
             $table->timestamps();
         });
     }
@@ -22,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists(config('constants.table.general.TABLE_DOCCUMENT'));
+        Schema::dropIfExists(config('constants.table.general.TABLE_DOCUMENT'));
     }
 };

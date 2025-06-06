@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create(config('constants.table.general.TABLE_ROLE_PERMISSION'), function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('role_id')->nullable();
+            $table->unsignedBigInteger('permission_id')->nullable();
+            $table->unique(['role_id', 'permission_id']);
             $table->timestamps();
         });
     }

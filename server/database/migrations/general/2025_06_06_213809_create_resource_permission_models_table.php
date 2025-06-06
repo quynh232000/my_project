@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create(config('constants.table.general.TABLE_RESOURCE_PERMISSION'), function (Blueprint $table) {
             $table->id();
+            $table->string('resource_type'); // e.g., document
+            $table->unsignedBigInteger('resource_id')->nullable();
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->unsignedBigInteger('permission_id')->nullable();
+
             $table->timestamps();
         });
     }

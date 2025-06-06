@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create(config('constants.table.general.TABLE_USER_PERMISSION'), function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->unsignedBigInteger('permission_id')->nullable();
+            $table->unique(['user_id', 'permission_id']);
+
             $table->timestamps();
         });
     }

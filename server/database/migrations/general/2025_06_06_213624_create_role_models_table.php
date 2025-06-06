@@ -12,8 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create(config('constants.table.general.TABLE_ROLE'), function (Blueprint $table) {
+
             $table->id();
+            $table->unsignedBigInteger('organization_id')->nullable();
+            $table->string('name');
+            $table->string('description')->nullable();
+            $table->enum('status',['active','inactive'])->default('active');
             $table->timestamps();
+
+            $table->unique(['organization_id', 'name']);
         });
     }
 

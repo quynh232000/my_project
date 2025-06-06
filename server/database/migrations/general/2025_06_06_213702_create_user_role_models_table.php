@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create(config('constants.table.general.TABLE_USER_ROLE'), function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->unsignedBigInteger('role_id')->nullable();
+            $table->unique(['user_id', 'role_id']);
             $table->timestamps();
         });
     }

@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create(config('constants.table.general.TABLE_PERMISSION'), function (Blueprint $table) {
             $table->id();
+            $table->string('action')->nullable(); // e.g. read, update
+            $table->string('resource_type')->nullable(); // e.g. document
+            $table->string('description')->nullable();
+            $table->enum('status',['active','inactive'])->default('active');
+
+            $table->unique(['action', 'resource_type']);
             $table->timestamps();
         });
     }
