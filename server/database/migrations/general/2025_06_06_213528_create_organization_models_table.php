@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create(config('constants.table.general.TABLE_ORANIZATION'), function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
+            $table->string('slug')->nullable();
             $table->text('description')->nullable();
             $table->enum('status',['active','inactive'])->default('active');
             $table->timestamps();

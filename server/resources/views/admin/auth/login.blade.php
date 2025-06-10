@@ -8,8 +8,18 @@
             <!--begin::Wrapper-->
             <div class="d-flex flex-center flex-column flex-column-fluid px-lg-10 pb-15 pb-lg-20">
                 <!--begin::Form-->
-                <form class="form w-100" novalidate="novalidate" id="kt_sign_in_form" data-kt-redirect-url="index.html"
-                    action="#">
+                <div class="col-12">
+                    @if (session('error'))
+                        <div class="alert alert-danger">{{ session('error') }}</div>
+                    @endif
+                    @if (session('success'))
+                        <div class="alert alert-success">{{ session('success') }}</div>
+                    @endif
+                </div>
+                <form class="form w-100"  method="post"
+                    action="{{ route($params['prefix'] . '.' . $params['controller'] . '.' . $params['action']) }}">
+                    <!--begin::Heading-->
+                    @csrf
                     <!--begin::Heading-->
                     <div class="text-center mb-11">
                         <!--begin::Title-->
@@ -31,16 +41,23 @@
                     <!--begin::Input group=-->
                     <div class="fv-row mb-8">
                         <!--begin::Email-->
-                        <input type="text" placeholder="Email" name="email" autocomplete="off"
+                        <input type="text" placeholder="Email" name="email" value="{{old('email')}}" autocomplete="on" id="email"
                             class="form-control bg-transparent" />
+                        <!--end::Email-->
+                        @error('email')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
                         <!--end::Email-->
                     </div>
                     <!--end::Input group=-->
                     <div class="fv-row mb-3">
                         <!--begin::Password-->
-                        <input type="password" placeholder="Password" name="password" autocomplete="off"
+                        <input id="" type="password" placeholder="Password" name="password" value="{{old('password')}}" autocomplete="on"
                             class="form-control bg-transparent" />
                         <!--end::Password-->
+                         @error('password')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
                     </div>
                     <!--end::Input group=-->
                     <!--begin::Wrapper-->
@@ -54,7 +71,7 @@
                     <!--end::Wrapper-->
                     <!--begin::Submit button-->
                     <div class="d-grid mb-10">
-                        <button type="submit" id="kt_sign_in_submit" class="btn btn-primary">
+                        <button type="submit" id="" class="btn btn-primary">
                             <!--begin::Indicator label-->
                             <span class="indicator-label">Sign In</span>
                             <!--end::Indicator label-->

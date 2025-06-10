@@ -2,19 +2,16 @@
 
 namespace App\Http\Controllers\Admin\Admin;
 use App\Http\Controllers\AdminController;
-use App\Models\Admin\UserModel;
 use Illuminate\Http\Request;
 
 
-class UserController extends AdminController
+class RoleController extends AdminController
 {
     public function __construct(Request $request)
     {
         parent::__construct($request);
-
     }
     public function index() {
-        $this->_params = UserModel::orderBy('id','desc')->paginate(20);
         return view($this->_viewAction, ['params' => $this->_params]);
     }
     public function update() {
@@ -26,8 +23,7 @@ class UserController extends AdminController
     public function create() {
         return view($this->_viewAction, ['params' => $this->_params]);
     }
-    public function show($id) {
-        $this->_params = UserModel::find($id);
+    public function show() {
         return view($this->_viewAction, ['params' => $this->_params]);
     }
 

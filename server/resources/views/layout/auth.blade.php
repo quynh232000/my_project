@@ -1,16 +1,15 @@
 @extends('layout.root')
 
 @section('root')
-
     <div class="d-flex flex-column flex-root" id="kt_app_root">
         <!--begin::Page bg image-->
         <style>
             body {
-                background-image: url("{{asset('assets/media/auth/bg4.jpg')}}");
+                background-image: url("{{ asset('assets/media/auth/bg4.jpg') }}");
             }
 
             [data-bs-theme="dark"] body {
-                background-image: url("{{asset('assets/media/auth/bg4-dark.jpg')}}");
+                background-image: url("{{ asset('assets/media/auth/bg4-dark.jpg') }}");
             }
         </style>
         <!--end::Page bg image-->
@@ -32,11 +31,12 @@
             </div>
             <!--begin::Aside-->
             <!--begin::Body-->
-             @yield('main')
+            @yield('main')
             <!--end::Body-->
         </div>
         <!--end::Authentication - Sign-in-->
     </div>
+    @push('js2')
+        <script src="{{ asset('assets/js/custom/authentication/sign-in/general.js') }}"></script>
+    @endpush
 @endsection
-
-

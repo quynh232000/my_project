@@ -6,10 +6,19 @@
         <div class="bg-body d-flex flex-column align-items-stretch flex-center rounded-4 w-md-600px p-20">
             <!--begin::Wrapper-->
             <div class="d-flex flex-center flex-column flex-column-fluid px-lg-10 pb-15 pb-lg-20">
+                <div class="col-12">
+                    @if (session('error'))
+                        <div class="alert alert-danger">{{ session('error') }}</div>
+                    @endif
+                    @if (session('success'))
+                        <div class="alert alert-success">{{ session('success') }}</div>
+                    @endif
+                </div>
                 <!--begin::Form-->
-                <form class="form w-100" novalidate="novalidate" id="kt_sign_up_form"
-                    data-kt-redirect-url="authentication/layouts/creative/sign-in.html" action="#">
+                <form class="form w-100" method="post"
+                    action="{{ route($params['prefix'] . '.' . $params['controller'] . '.' . $params['action']) }}">
                     <!--begin::Heading-->
+                    @csrf
                     <div class="text-center mb-11">
                         <!--begin::Title-->
                         <h1 class="text-gray-900 fw-bolder mb-3">Sign Up</h1>
@@ -20,7 +29,7 @@
                     </div>
                     <!--begin::Heading-->
                     <!--begin::Login options-->
-                     <x-admin.login-with-google></x-admin.login-with-google>
+                    <x-admin.login-with-google></x-admin.login-with-google>
                     <!--end::Login options-->
                     <!--begin::Separator-->
                     <div class="separator separator-content my-14">
@@ -30,9 +39,21 @@
                     <!--begin::Input group=-->
                     <div class="fv-row mb-8">
                         <!--begin::Email-->
-                        <input type="text" placeholder="Email" name="email" autocomplete="off"
+                        <input type="text" placeholder="Full name" name="full_name" value="{{old('full_name')}}" autocomplete="off"
                             class="form-control bg-transparent" />
                         <!--end::Email-->
+                        @error('full_name')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
+                    <div class="fv-row mb-8">
+                        <!--begin::Email-->
+                        <input type="text" placeholder="Email" name="email" value="{{old('email')}}" autocomplete="off"
+                            class="form-control bg-transparent" />
+                        <!--end::Email-->
+                        @error('email')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
                     </div>
                     <!--begin::Input group-->
                     <div class="fv-row mb-8" data-kt-password-meter="true">
@@ -40,7 +61,7 @@
                         <div class="mb-1">
                             <!--begin::Input wrapper-->
                             <div class="position-relative mb-3">
-                                <input class="form-control bg-transparent" type="password" placeholder="Password"
+                                <input class="form-control bg-transparent" type="password" value="{{old('password')}}" placeholder="Password"
                                     name="password" autocomplete="off" />
                                 <span class="btn btn-sm btn-icon position-absolute translate-middle top-50 end-0 me-n2"
                                     data-kt-password-meter-control="visibility">
@@ -58,18 +79,13 @@
                             </div>
                             <!--end::Meter-->
                         </div>
+                        @error('password')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
                         <!--end::Wrapper-->
                         <!--begin::Hint-->
                         <div class="text-muted">Use 8 or more characters with a mix of letters, numbers & symbols.</div>
                         <!--end::Hint-->
-                    </div>
-                    <!--end::Input group=-->
-                    <!--end::Input group=-->
-                    <div class="fv-row mb-8">
-                        <!--begin::Repeat Password-->
-                        <input placeholder="Repeat Password" name="confirm-password" type="password" autocomplete="off"
-                            class="form-control bg-transparent" />
-                        <!--end::Repeat Password-->
                     </div>
                     <!--end::Input group=-->
                     <!--begin::Accept-->
@@ -96,7 +112,7 @@
                     <!--end::Submit button-->
                     <!--begin::Sign up-->
                     <div class="text-gray-500 text-center fw-semibold fs-6">Already have an Account?
-                        <a href="{{route('admin.auth.login')}}" class="link-primary fw-semibold">Sign in</a>
+                        <a href="{{ route('admin.auth.login') }}" class="link-primary fw-semibold">Sign in</a>
                     </div>
                     <!--end::Sign up-->
                 </form>
@@ -106,7 +122,7 @@
             <!--begin::Footer-->
             <div class="d-flex flex-stack px-lg-10">
                 <!--begin::Languages-->
-                <x-admin.language ></x-admin.language>
+                <x-admin.language></x-admin.language>
                 <!--end::Languages-->
                 <!--begin::Links-->
                 <div class="d-flex fw-semibold text-primary fs-base gap-5">
@@ -121,3 +137,7 @@
         <!--end::Card-->
     </div>
 @endsection
+
+@push('js2')
+    <script src="{{ asset('assets/js/custom/authentication/sign-up/general.js') }}"></script>
+@endpush

@@ -21,16 +21,32 @@ return  [
             'controller'    =>  \App\Http\Controllers\Admin\Auth\UserController::class,
             'uri'           => 'login',
             'name'          => 'admin.auth.login',
-            'methods'       => ['get','post'],
+            'methods'       => ['get'],
             'action'        => 'login',
+            'labels'        => 'Login'
+        ],
+        [
+            'controller'    =>  \App\Http\Controllers\Admin\Auth\UserController::class,
+            'uri'           => 'login',
+            'name'          => 'admin.auth.login',
+            'methods'       => ['post'],
+            'action'        => '_login',
             'labels'        => 'Login'
         ],
         [
             'controller'    =>  \App\Http\Controllers\Admin\Auth\UserController::class,
             'uri'           => 'register',
             'name'          => 'admin.auth.register',
-            'methods'       => ['get','post'],
+            'methods'       => ['get'],
             'action'        => 'register',
+            'labels'        => 'Register'
+        ],
+         [
+            'controller'    =>  \App\Http\Controllers\Admin\Auth\UserController::class,
+            'uri'           => 'register',
+            'name'          => 'admin.auth.register',
+            'methods'       => ['post'],
+            'action'        => '_register',
             'labels'        => 'Register'
         ],
         [
