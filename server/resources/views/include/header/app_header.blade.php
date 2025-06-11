@@ -18,7 +18,7 @@
                 <!--begin::Page title-->
                 <div class="d-flex flex-column justify-content-center w-lg-300px">
                     <!--begin::Title-->
-                    <h1 class="text-gray-900 fw-bold fs-3 mb-1">Products</h1>
+                    <h1 class="text-gray-900 fw-bold fs-3 mb-1">@yield('title')</h1>
                     <!--end::Title-->
                     <!--begin::Breadcrumb-->
                     <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7">

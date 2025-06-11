@@ -3,11 +3,13 @@
 return  [
 
     'prefix' => basename(__FILE__, '.php'),
+    'label' => 'Quin Admin',
     // 'middleware' => ['auth'],
     'routes' => [
          [
             'type'          => 'resource',
             'uri'           => 'organization',
+            'label'         => 'Organazation Managent',
             'controller'    =>  \App\Http\Controllers\Admin\Admin\OrganizationController::class,
             'name_prefix'   => 'admin.organization',
             'only'          => ['index', 'edit','store','create','show', 'update','destroy'], // 👈 Chỉ dùng các action này
@@ -41,12 +43,12 @@ return  [
             'uri'           => 'role',
             'controller'    =>  \App\Http\Controllers\Admin\Admin\RoleController::class,
             'name_prefix'   => 'admin.role',
-            'only'          => ['index', 'edit','create','show', 'update','delete'], // 👈 Chỉ dùng các action này
+            'only'          => ['index', 'edit','store','show', 'update','delete'], // 👈 Chỉ dùng các action này
             'labels'        => [
                 'index'         => 'Listing quyền',
                 'edit'          => 'Chỉnh sửa',
                 'update'        => 'Update Info',
-                'show'          => 'Edit Info',
+                'store'          => 'Create Info',
                 'destroy'        => 'Delete',
 
             ]

@@ -34,6 +34,7 @@
                 <table class="table align-middle table-row-dashed fs-6 gy-5 mb-0" id="kt_permissions_table">
                     <thead>
                         <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
+                            <th class="min-w-125px">ID</th>
                             <th class="min-w-125px">Name</th>
                             <th class="min-w-250px">Slug</th>
                             <th class="min-w-250px">Status</th>
@@ -44,6 +45,7 @@
                     <tbody class="fw-semibold text-gray-600">
                         @forelse ($params['data'] as $item)
                             <tr>
+                                <td>#{{ $item->id }}</td>
                                 <td>{{ $item->name }}</td>
                                 <td>
                                     {{ $item->slug }}
@@ -58,7 +60,7 @@
                                     @endif
 
                                 </td>
-                                <td>{{ \Carbon\Carbon::parse($item->created_at)->diffForHumans() }}</td>
+                                <td>{{ $item->created_at }}</td>
                                 <td class="text-end">
                                     <button class="btn btn-icon btn-active-light-primary w-30px h-30px me-3"
                                         data-bs-toggle="modal" data-bs-target="#kt_modal_update_permission">
@@ -206,25 +208,45 @@
                         <!--end::Notice-->
                         <!--end::Notice-->
                         <!--begin::Form-->
-                        <form id="kt_modal_update_permission_form" class="form" action="#">
-                            <!--begin::Input group-->
+
+                        <form id="kt_modal_update_permission_form" class="form" method="POST"
+                            action="{{ route($params['prefix'] . '.' . $params['controller'] . '.store') }}">
+                            <!--begin::Heading-->
+                            @csrf
                             <div class="fv-row mb-7">
                                 <!--begin::Label-->
                                 <label class="fs-6 fw-semibold form-label mb-2">
-                                    <span class="required">Permission Name</span>
+                                    <span class="required">Organization Name</span>
                                     <span class="ms-2" data-bs-toggle="popover" data-bs-trigger="hover"
-                                        data-bs-html="true" data-bs-content="Permission names is required to be unique.">
+                                        data-bs-html="true"
+                                        data-bs-content="Organization names is required to be unique.">
                                         <i class="ki-outline ki-information fs-7"></i>
                                     </span>
                                 </label>
                                 <!--end::Label-->
                                 <!--begin::Input-->
-                                <input class="form-control form-control-solid" placeholder="Enter a permission name"
-                                    name="permission_name" />
+                                <input class="form-control form-control-solid" value="{{ old('name') }}"
+                                    placeholder="Enter a Organization name" name="name" />
+                                @error('name')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
                                 <!--end::Input-->
                             </div>
+                            <div>
+                                <!--begin::Label-->
+                                <label class="form-label">Description</label>
+                                <!--end::Label-->
+                                <!--begin::Editor-->
+                                <textarea class="form-control form-control-solid" name="description" id="" cols="12" rows="5">{{ old('description') }}</textarea>
+
+                                <!--begin::Description-->
+                                <div class="text-muted fs-7 mt-2">Set a description to the Organization for better
+                                    visibility.</div>
+                                <!--end::Description-->
+                            </div>
                             <!--end::Input group-->
-                            <!--begin::Actions-->
+                            <!--begin::Input group-->
+
                             <div class="text-center pt-15">
                                 <button type="reset" class="btn btn-light me-3"
                                     data-kt-permissions-modal-action="cancel">Discard</button>

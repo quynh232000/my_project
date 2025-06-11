@@ -12,6 +12,7 @@ class PermissionController extends AdminController
         parent::__construct($request);
     }
     public function index() {
+         $this->_params['roles'] = config('custom_routes');
         return view($this->_viewAction, ['params' => $this->_params]);
     }
     public function update() {

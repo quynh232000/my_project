@@ -12,6 +12,8 @@ class RoleController extends AdminController
         parent::__construct($request);
     }
     public function index() {
+        $this->_params['roles'] = config('custom_routes');
+        // dd($this->_params['roles']);
         return view($this->_viewAction, ['params' => $this->_params]);
     }
     public function update() {
@@ -20,7 +22,8 @@ class RoleController extends AdminController
     public function edit() {
         return view($this->_viewAction, ['params' => $this->_params]);
     }
-    public function create() {
+    public function store() {
+
         return view($this->_viewAction, ['params' => $this->_params]);
     }
     public function show() {

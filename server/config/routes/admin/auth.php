@@ -23,7 +23,7 @@ return  [
             'name'          => 'admin.auth.login',
             'methods'       => ['get'],
             'action'        => 'login',
-            'labels'        => 'Login'
+            'labels'        => 'Login View'
         ],
         [
             'controller'    =>  \App\Http\Controllers\Admin\Auth\UserController::class,
@@ -31,7 +31,7 @@ return  [
             'name'          => 'admin.auth.login',
             'methods'       => ['post'],
             'action'        => '_login',
-            'labels'        => 'Login'
+            'labels'        => 'Login Store'
         ],
         [
             'controller'    =>  \App\Http\Controllers\Admin\Auth\UserController::class,
@@ -39,7 +39,7 @@ return  [
             'name'          => 'admin.auth.register',
             'methods'       => ['get'],
             'action'        => 'register',
-            'labels'        => 'Register'
+            'labels'        => 'Register Vew'
         ],
          [
             'controller'    =>  \App\Http\Controllers\Admin\Auth\UserController::class,
@@ -47,7 +47,7 @@ return  [
             'name'          => 'admin.auth.register',
             'methods'       => ['post'],
             'action'        => '_register',
-            'labels'        => 'Register'
+            'labels'        => 'Register store'
         ],
         [
             'controller'    =>  \App\Http\Controllers\Admin\Auth\UserController::class,
@@ -55,7 +55,7 @@ return  [
             'name'          => 'admin.auth.reset-password',
             'methods'       => ['get','post'],
             'action'        => 'reset_password',
-            'labels'        => 'Reset Password'
+            'labels'        => 'Reset Password View'
         ],
         [
             'controller'    =>  \App\Http\Controllers\Admin\Auth\UserController::class,
@@ -63,7 +63,7 @@ return  [
             'name'          => 'admin.auth.new-password',
             'methods'       => ['get','post'],
             'action'        => 'new_password',
-            'labels'        => 'New Password'
+            'labels'        => 'New Password Store'
         ],
         [
             'controller'    =>  \App\Http\Controllers\Admin\Auth\UserController::class,
@@ -71,7 +71,7 @@ return  [
             'name'          => 'admin.auth.two-factor',
             'methods'       => ['get','post'],
             'action'        => 'two_factor',
-            'labels'        => 'Two Factor'
+            'labels'        => 'Two Factor View'
         ],
 
 
