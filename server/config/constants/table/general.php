@@ -9,4 +9,5 @@ return [
     'TABLE_USER_PERMISSION'     => 'user_permissions',
     'TABLE_DOCUMENT'            => 'documents',
     'TABLE_RESOURCE_PERMISSION' => 'resource_permissions',
+    'TABLE_FILE_UPLOAD'         => 'file_uploads',
 ];

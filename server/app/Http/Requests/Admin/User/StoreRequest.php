@@ -1,15 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Admin\Auth;
+namespace App\Http\Requests\Admin\User;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class RegisterRequest extends FormRequest
+class StoreRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
-
     protected $table;
 
     public function __construct()

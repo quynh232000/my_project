@@ -4,17 +4,17 @@
     $hasSub = isset($item['sub']);
 @endphp
 
-<div data-kt-menu-trigger="click" class="menu-item {{ $hasSub ? 'menu-accordion' : '' }}">
+<div data-kt-menu-trigger="click" class="menu-item {{ $hasSub ? 'menu-accordion show' : '' }}  ">
     @if(isset($item['route']) && !$hasSub)
      {{-- route($item['route']) --}}
-        <a href="{{'' }}" class="menu-link {{ request()->routeIs($item['route']) ? 'active' : '' }}">
+        <a href="{{route($item['route']) }}" class="menu-link {{ request()->routeIs($item['route']) ? 'active' : '' }}">
             <span class="menu-bullet">
                 <span class="bullet bullet-dot"></span>
             </span>
             <span class="menu-title">{{ $item['title'] }}</span>
         </a>
     @else
-        <span class="menu-link">
+        <span class="menu-link ">
             @if(isset($item['icon']))
                 <span class="menu-icon">
                     <i class="{{ $item['icon'] }} fs-2"></i>

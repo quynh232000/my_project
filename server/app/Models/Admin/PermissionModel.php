@@ -12,5 +12,5 @@ class PermissionModel  extends AdminModel
     {
         $this->table        = config('constants.table.general.TABLE_PERMISSION');
     }
-    protected $guards       = [];
+    protected $guarded        = [];
 }

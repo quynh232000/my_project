@@ -38,12 +38,14 @@
                 <!--end::sidebar-panel-->
                 <!--begin::Main-->
                 <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
-                     @if (session('error'))
+                    <div style="padding:10px 30px 0 !important">
+                        @if (session('error'))
                         <div class="alert alert-danger">{{ session('error') }}</div>
-                    @endif
-                    @if (session('success'))
-                        <div class="alert alert-success">{{ session('success') }}</div>
-                    @endif
+                        @endif
+                        @if (session('success'))
+                            <div class="alert alert-success">{{ session('success') }}</div>
+                        @endif
+                    </div>
                     <!--begin::Content wrapper-->
                     <div class="d-flex flex-column flex-column-fluid">
                         <!--begin::Content-->
@@ -2853,4 +2855,9 @@
 
 @push('js2')
     <script src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
+    <script>
+        if ($('table.table-striped tbody tr')?.length === 0) {
+            $('table.table-striped tbody').html('<tr><td colspan="100%" class="text-center">No data</td></tr>');
+        }
+    </script>
 @endpush

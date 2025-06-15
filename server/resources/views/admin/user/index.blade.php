@@ -83,9 +83,9 @@
                             <i class="ki-outline ki-exit-up fs-2"></i>Export</button>
                         <!--end::Export-->
                         <!--begin::Add user-->
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                            data-bs-target="#kt_modal_add_user">
-                            <i class="ki-outline ki-plus fs-2"></i>Add User</button>
+                        <a href="{{ route($params['prefix'] . '.' . $params['controller'] . '.create') }}" type="button"
+                            class="btn btn-primary">
+                            <i class="ki-outline ki-plus fs-2"></i>Add User</a>
                         <!--end::Add user-->
                     </div>
                     <!--end::Toolbar-->
@@ -464,7 +464,7 @@
                         </tr>
                     </thead>
                     <tbody class="text-gray-600 fw-semibold">
-                        @forelse ($params as $item)
+                        @forelse ($params['items'] as $item)
                             <tr>
                                 <td>
                                     <div class="form-check form-check-sm form-check-custom form-check-solid">
@@ -497,7 +497,15 @@
                                     </div>
                                     <!--begin::User details-->
                                 </td>
-                                <td>Analyst</td>
+                                <td>
+                                    <div>
+                                        @foreach ($item->roles as $key=>$role)
+                                            <div>
+                                                {{ $role->name }} {{$key == ($item->roles->count() -1) ? ' ':', '}}
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </td>
                                 <td>
                                     <div class="badge badge-light fw-bold">
                                         {{ \Carbon\Carbon::parse($item->last_login_at)->diffForHumans() }}</div>
@@ -520,18 +528,20 @@
                                         data-kt-menu="true">
                                         <!--begin::Menu item-->
                                         <div class="menu-item px-3">
-                                            <a style="    display: flex;justify-content: center;" href="{{ route('admin.user.show', ['user' => $item->id]) }}"
+                                            <a style="    display: flex;justify-content: center;"
+                                                href="{{ route('admin.user.show', ['user' => $item->id]) }}"
                                                 class="menu-link px-3">Edit</a>
                                         </div>
                                         <!--end::Menu item-->
                                         <!--begin::Menu item-->
                                         <div class="menu-item px-3">
-                                            <a href="#"
-                                                class="menu-link px-3">
-                                                <form action="{{ route('admin.user.destroy', $item->id) }}" style="width: 100%;" method="POST">
+                                            <a href="#" class="menu-link px-3">
+                                                <form action="{{ route('admin.user.destroy', $item->id) }}"
+                                                    style="width: 100%;" method="POST">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="menu-item text-left" style="width: 100%; border:none;color: var(--bs-gray-600);background-color:transparent">Xoá</button>
+                                                    <button type="submit" class="menu-item text-left"
+                                                        style="width: 100%; border:none;color: var(--bs-gray-600);background-color:transparent">Xoá</button>
                                                 </form>
                                             </a>
                                         </div>

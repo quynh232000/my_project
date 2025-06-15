@@ -23,5 +23,8 @@ class UserModel  extends Authenticatable
     {
         $this->table        = config('constants.table.general.TABLE_USER');
     }
-    protected $guards       = [];
+    protected $guarded       = [];
+    public function roles(){
+        return $this->belongsToMany(RoleModel::class,UserRoleModel::class,'user_id','role_id');
+    }
 }
