@@ -23,9 +23,18 @@ class UserController extends AdminController
         parent::__construct($request);
         $this->table = new UserModel();
     }
-    public function index()
+    public function index(Request $req)
     {
-        $this->_params['items'] = UserModel::with('roles')->orderBy('id', 'desc')->paginate(20);
+        $query = UserModel::with('roles');
+
+        if($req->search ?? false){
+            $query->where(function($q)use($req){
+                $q->where('email','LIKE', '%'.$req->search.'%')
+                ->orWhere('full_name','LIKE', '%'.$req->search.'%');
+            });
+        }
+
+        $this->_params['items'] = $query->orderBy('id', 'desc')->paginate(20);
         return view($this->_viewAction, ['params' => $this->_params]);
     }
     public function update(UpdateRequest $request, $id)

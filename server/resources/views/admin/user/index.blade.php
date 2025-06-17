@@ -9,11 +9,11 @@
                 <!--begin::Card title-->
                 <div class="card-title">
                     <!--begin::Search-->
-                    <div class="d-flex align-items-center position-relative my-1">
+                    <form class="d-flex align-items-center position-relative my-1">
                         <i class="ki-outline ki-magnifier fs-3 position-absolute ms-5"></i>
-                        <input type="text" data-kt-user-table-filter="search"
+                        <input type="text" name="search" type="text" value="{{ request()->search ?? '' }}"
                             class="form-control form-control-solid w-250px ps-13" placeholder="Search user" />
-                    </div>
+                    </form>
                     <!--end::Search-->
                 </div>
                 <!--begin::Card title-->
@@ -455,7 +455,7 @@
                                         data-kt-check-target="#kt_table_users .form-check-input" value="1" />
                                 </div>
                             </th>
-                            <th class="min-w-125px">User ({{$params['items']->total()}})</th>
+                            <th class="min-w-125px">User ({{ $params['items']->total() }})</th>
                             <th class="min-w-125px">Role</th>
                             <th class="min-w-125px">Last login</th>
                             <th class="min-w-125px">Status</th>
@@ -464,7 +464,8 @@
                         </tr>
                     </thead>
                     <tbody class="text-gray-600 fw-semibold">
-                        @forelse ($params['items'] as $item)
+
+                        @foreach ($params['items'] as $item)
                             <tr>
                                 <td>
                                     <div class="form-check form-check-sm form-check-custom form-check-solid">
@@ -499,9 +500,9 @@
                                 </td>
                                 <td>
                                     <div>
-                                        @foreach ($item->roles as $key=>$role)
+                                        @foreach ($item->roles as $key => $role)
                                             <div>
-                                                {{ $role->name }} {{$key == ($item->roles->count() -1) ? ' ':', '}}
+                                                {{ $role->name }} {{ $key == $item->roles->count() - 1 ? ' ' : ', ' }}
                                             </div>
                                         @endforeach
                                     </div>
@@ -550,20 +551,12 @@
                                     <!--end::Menu-->
                                 </td>
                             </tr>
-                        @empty
-                            <tr>
-                                <td>
-                                    No data
-                                </td>
-
-                            </tr>
-                        @endforelse
-
+                        @endforeach
 
                     </tbody>
                 </table>
                 <div>
-                    {{$params['items']->links()}}
+                    {{ $params['items']->links() }}
                 </div>
                 <!--end::Table-->
             </div>
