@@ -5,7 +5,6 @@ namespace App\Http\Middleware;
 use Carbon\Carbon;
 use Closure;
 use Illuminate\Http\Request;
-use Route;
 use Session;
 use Str;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,34 +23,15 @@ class IsLoginMiddleware
 
         // Check if user is logged in
         if (!auth()->check()) {
-            return redirect()->route('auth.login')->with('error', 'Vui lòng đăng nhập!');
-        }
-        // Check if user is blocked
-        if (auth()->user()->blocked_until && Carbon::now()->lessThan(auth()->user()->blocked_until)) {
-            $remainingTime  = Carbon::parse(auth()->user()->blocked_until)->diffForHumans();
-            return redirect()->route('auth.login')->with('error', "Email của bạn đã bị khóa trong $remainingTime");
+            return redirect()->route('admin.auth.login')->with('error', 'Please login to access this page');
         }
 
-        $roles              = auth()->user()->roles()->toArray() ?? [];
+        $route_name     = $request->route()->getName();
+        $method         = $request->getMethod();
 
-        if (in_array('Supper Admin', $roles)) {
-            return $next($request);
+        if(!auth()->user()->hasPermission($route_name,$method)){
+            return redirect()->back()->with('error', 'You dont have permission to access this page');
         }
-
-        if (!in_array('Admin', $roles)) {
-            return redirect()->route('auth.login')->with('error', 'Tài khoản của bạn không có quyền truy cập vô quản trị!');
-        }
-
-        // check permissions action get post path delete
-        $path = $request->path();
-        if($request->isMethod('post') && !in_array('Admin Edit', $roles)){
-            return redirect()->back()->with('error', 'Tài khoản của bạn không có quyền thao tác chức năng này!');
-        }
-        if(($request->isMethod('delete') && !in_array('Admin Delete', $roles)) || (Str::contains($path,'delete'))){
-            return redirect()->back()->with('error', 'Tài khoản của bạn không có quyền thao tác chức năng này!');
-        }
-
         return $next($request);
-
     }
 }

@@ -4,7 +4,7 @@ namespace App\Http\Requests\Admin\User;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreRequest extends FormRequest
+class UpdateRequest extends FormRequest
 {
     protected $table;
 
@@ -26,8 +26,7 @@ class StoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email'         => 'required|email|unique:' . $this->table . ',email',
-            'password'      => 'required|min:8',
+            'email'         => 'required|email|unique:' . $this->table . ',email,'.$this->id,
             'full_name'     => 'required',
             'phone'         => 'required',
         ];

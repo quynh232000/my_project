@@ -22,4 +22,5 @@ abstract class AdminController extends Controller
 
         $this->_viewAction              = $this->_params['prefix'] . '.' . $this->_params['controller'] . '.' . $this->_params['action'];
     }
+
 }

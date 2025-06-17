@@ -1,18 +1,19 @@
 <?php
+use App\Http\Middleware\IsLoginMiddleware;
 
 return  [
 
     'prefix' => basename(__FILE__, '.php'),
     'label' => 'Quin Admin',
-    // 'middleware' => ['auth'],
+    'middleware' => [IsLoginMiddleware::class],
     'routes' => [
-         [
+        [
             'type'          => 'resource',
             'uri'           => 'organization',
             'label'         => 'Organazation Managent',
             'controller'    =>  \App\Http\Controllers\Admin\Admin\OrganizationController::class,
             'name_prefix'   => 'admin.organization',
-            'only'          => ['index', 'edit','store','create','show', 'update','destroy'], // 👈 Chỉ dùng các action này
+            'only'          => ['index', 'edit', 'store', 'create', 'show', 'update', 'destroy'], // 👈 Chỉ dùng các action này
             'labels'        => [
                 'index'         => 'Listing',
                 'edit'          => 'Edit Info',
@@ -28,7 +29,7 @@ return  [
             'uri'           => 'user',
             'controller'    =>  \App\Http\Controllers\Admin\Admin\UserController::class,
             'name_prefix'   => 'admin.user',
-            'only'          => ['index', 'edit','create','show', 'update','destroy','store'], // 👈 Chỉ dùng các action này
+            'only'          => ['index', 'edit', 'create', 'show', 'update', 'destroy', 'store'], // 👈 Chỉ dùng các action này
             'labels'        => [
                 'index'         => 'Listing',
                 'edit'          => 'Edit Info',
@@ -43,7 +44,7 @@ return  [
             'uri'           => 'role',
             'controller'    =>  \App\Http\Controllers\Admin\Admin\RoleController::class,
             'name_prefix'   => 'admin.role',
-            'only'          => ['index', 'edit','create','store','show', 'update','delete','destroy'], // 👈 Chỉ dùng các action này
+            'only'          => ['index', 'edit', 'create', 'store', 'show', 'update', 'delete', 'destroy'], // 👈 Chỉ dùng các action này
             'labels'        => [
                 'index'         => 'Listing quyền',
                 'edit'          => 'Chỉnh sửa',
@@ -58,7 +59,7 @@ return  [
             'uri'           => 'permission',
             'controller'    =>  \App\Http\Controllers\Admin\Admin\PermissionController::class,
             'name_prefix'   => 'admin.permission',
-            'only'          => ['index', 'edit','store','destroy', 'update'], // 👈 Chỉ dùng các action này
+            'only'          => ['index', 'edit', 'store', 'destroy', 'update'], // 👈 Chỉ dùng các action này
             'labels'        => [
                 'index'         => 'Listing',
                 'edit'          => 'Chỉnh sửa',
@@ -66,13 +67,14 @@ return  [
                 'destroy'       => 'Delete',
             ]
         ],
-         [
+        [
             'type'          => 'resource',
             'uri'           => 'file-upload',
             'controller'    =>  \App\Http\Controllers\Admin\Admin\FileUploadController::class,
             'name_prefix'   => 'admin.file-upload',
-            'only'          => ['index','destroy'], // 👈 Chỉ dùng các action này
+            'only'          => ['index', 'destroy'], // 👈 Chỉ dùng các action này
         ],
+
         // [
         //     'controller'    =>  \App\Http\Controllers\Admin\Admin\GeneralController::class,
         //     'uri'           => 'user',

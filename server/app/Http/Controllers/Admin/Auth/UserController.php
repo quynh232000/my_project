@@ -32,8 +32,7 @@ class UserController extends AdminController
 
         $redirect_url   = session('redirect_url') ?? '/';
         session()->forget('redirect_url');
-
-        return redirect($redirect_url)->with('success','Register sucessfully!');
+        return redirect($redirect_url)->with('success','Login sucessfully!');
     }
     public function register()
     {
@@ -70,5 +69,10 @@ class UserController extends AdminController
     public function two_factor()
     {
         return view($this->_viewAction, ['params' => $this->_params]);
+    }
+    public function logout()
+    {
+        auth()->logout();
+        return redirect()->route('admin.auth.login');
     }
 }

@@ -33,7 +33,6 @@ class RoleController extends AdminController
         // check role permission
         RolePermissionModel::whereNotIn('permission_id', $request->permissions ?? [])->where('role_id', $id)->delete();
 
-
         $dataInsert         = [];
         foreach ($request->permission ?? [] as $key => $value) {
             $dataInsert[]   = [

@@ -3,7 +3,7 @@
 return  [
 
     'prefix' => basename(__FILE__, '.php'),
-    // 'middleware' => ['auth'],
+    // 'middleware' => ['is_login'],
     'routes' => [
         // [
         //     'type'          => 'resource',
@@ -41,7 +41,7 @@ return  [
             'action'        => 'register',
             'labels'        => 'Register Vew'
         ],
-         [
+        [
             'controller'    =>  \App\Http\Controllers\Admin\Auth\UserController::class,
             'uri'           => 'register',
             'name'          => 'admin.auth.register',
@@ -53,7 +53,7 @@ return  [
             'controller'    =>  \App\Http\Controllers\Admin\Auth\UserController::class,
             'uri'           => 'reset-password',
             'name'          => 'admin.auth.reset-password',
-            'methods'       => ['get','post'],
+            'methods'       => ['get', 'post'],
             'action'        => 'reset_password',
             'labels'        => 'Reset Password View'
         ],
@@ -61,7 +61,7 @@ return  [
             'controller'    =>  \App\Http\Controllers\Admin\Auth\UserController::class,
             'uri'           => 'new-password',
             'name'          => 'admin.auth.new-password',
-            'methods'       => ['get','post'],
+            'methods'       => ['get', 'post'],
             'action'        => 'new_password',
             'labels'        => 'New Password Store'
         ],
@@ -69,9 +69,16 @@ return  [
             'controller'    =>  \App\Http\Controllers\Admin\Auth\UserController::class,
             'uri'           => 'two-factor',
             'name'          => 'admin.auth.two-factor',
-            'methods'       => ['get','post'],
+            'methods'       => ['get', 'post'],
             'action'        => 'two_factor',
             'labels'        => 'Two Factor View'
+        ],
+        [
+            'controller'    =>  \App\Http\Controllers\Admin\Auth\UserController::class,
+            'uri'           => 'logout',
+            'name'          => 'admin.auth.logout',
+            'methods'       => ['get'],
+            'action'        => 'logout'
         ],
 
 

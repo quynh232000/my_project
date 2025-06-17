@@ -446,7 +446,7 @@
             <!--begin::Card body-->
             <div class="card-body py-4">
                 <!--begin::Table-->
-                <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_table_users">
+                <table class="table align-middle table-row-dashed fs-6 gy-5" id="">
                     <thead>
                         <tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
                             <th class="w-10px pe-2">
@@ -455,7 +455,7 @@
                                         data-kt-check-target="#kt_table_users .form-check-input" value="1" />
                                 </div>
                             </th>
-                            <th class="min-w-125px">User</th>
+                            <th class="min-w-125px">User ({{$params['items']->total()}})</th>
                             <th class="min-w-125px">Role</th>
                             <th class="min-w-125px">Last login</th>
                             <th class="min-w-125px">Status</th>
@@ -529,7 +529,7 @@
                                         <!--begin::Menu item-->
                                         <div class="menu-item px-3">
                                             <a style="    display: flex;justify-content: center;"
-                                                href="{{ route('admin.user.show', ['user' => $item->id]) }}"
+                                                href="{{ route('admin.user.edit', ['user' => $item->id]) }}"
                                                 class="menu-link px-3">Edit</a>
                                         </div>
                                         <!--end::Menu item-->
@@ -562,6 +562,9 @@
 
                     </tbody>
                 </table>
+                <div>
+                    {{$params['items']->links()}}
+                </div>
                 <!--end::Table-->
             </div>
             <!--end::Card body-->

@@ -31,8 +31,8 @@ class PermissionController extends AdminController
         $routes                         = $allRoutes->filter(fn($r) => !in_array($r['name'], $existing));
         $routes                         = $routes->reverse();
         $query                          =    PermissionModel::query();
-        if($this->_params['search'] ?? false){
-            $query->where('name','LIKE','%'.$this->_params['search'].'%');
+        if ($this->_params['search'] ?? false) {
+            $query->where('name', 'LIKE', '%' . $this->_params['search'] . '%');
         }
         $this->_params['permissions']   =  $query->orderBy('created_at', 'desc')->paginate(20);
 
@@ -57,6 +57,7 @@ class PermissionController extends AdminController
 
         $permission = PermissionModel::firstOrCreate([
             'name'          => $request->permission_name,
+            'route_name'    => $request->route_name,
             'resource_type' => ucfirst(Str::before($request->route_name, '.')),
             'uri'           => $request->uri,
             'method'        => $request->input('method'),

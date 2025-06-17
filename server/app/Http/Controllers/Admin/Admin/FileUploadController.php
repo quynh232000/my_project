@@ -6,9 +6,6 @@ use App\Http\Controllers\AdminController;
 use App\Models\Admin\PermissionModel;
 use App\Models\General\FileUploadModel;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Str;
 
 class FileUploadController extends AdminController
 {
