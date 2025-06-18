@@ -45,7 +45,7 @@ return [
             'title' => 'Infomation',
             'sub' => [
                 ['title' => 'Infomation Listing', 'route' => 'portfolio.data-info.index'],
-                ['title' => 'Add i', 'route' => 'portfolio.data-info.create'],
+                ['title' => 'Add Infomation', 'route' => 'portfolio.data-info.create'],
             ],
         ],
          [

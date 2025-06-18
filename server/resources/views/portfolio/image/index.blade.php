@@ -1,24 +1,35 @@
 @extends('layout.app')
-@section('title', 'Manage Portfolio Category')
+@section('title', 'Manage Portfolio Images')
 @section('main')
     <div id="kt_app_content_container" class="app-container container-xxl">
         <!--begin::Card-->
         <div class="card card-flush">
             <!--begin::Card header-->
-            <div class="card-header mt-6">
+            <div class="card-header border-0 pt-6">
                 <!--begin::Card title-->
                 <div class="card-title">
                     <!--begin::Search-->
-                    <form class="d-flex align-items-center position-relative my-1 me-5">
+                    <form class="d-flex align-items-center position-relative my-1">
                         <i class="ki-outline ki-magnifier fs-3 position-absolute ms-5"></i>
-                        <input type="text" name="search" value="{{request()->search ?? ''}}" data-kt-permissions-table-filter="search"
-                            class="form-control form-control-solid w-250px ps-13" placeholder="Search Permissions" />
+                        <input type="text" name="search" type="text" value="{{ request()->search ?? '' }}"
+                            class="form-control form-control-solid w-250px ps-13" placeholder="Search.." />
                     </form>
                     <!--end::Search-->
                 </div>
-                <!--end::Card title-->
+                <!--begin::Card title-->
                 <!--begin::Card toolbar-->
+                <div class="card-toolbar">
+                    <!--begin::Toolbar-->
+                    <div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
 
+                        <a href="{{ route($params['prefix'] . '.' . $params['controller'] . '.create') }}" type="button"
+                            class="btn btn-primary">
+                            <i class="ki-outline ki-plus fs-2"></i>Add Category</a>
+                        <!--end::Add user-->
+                    </div>
+
+
+                </div>
                 <!--end::Card toolbar-->
             </div>
             <!--end::Card header-->
@@ -37,31 +48,47 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
+                                <th>Image</th>
                                 <th>Name</th>
-                                <th>Uri</th>
-                                <th>Method</th>
-                                <th>Resource type</th>
+                                <th>Email</th>
+                                <th>Type</th>
                                 <th>Created At</th>
+                                <th>Created by</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($params['permissions'] as $permission)
+                            @foreach ($params['items'] as $item)
                                 <tr>
-                                    <td>{{ $permission->id }}</td>
-                                    <td>{{ $permission->name }}</td>
-                                    <td>{{ $permission->uri }}</td>
-                                    <td class="text-warning">{{ $permission->method }}</td>
-                                    <td>{{ $permission->resource_type ?? '—' }}</td>
-                                    <td>{{ $permission->created_at->format('d/m/Y H:i') }}</td>
+                                    <td>{{ $item->id }}</td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <span class="icon-wrapper cursor-pointer symbol symbol-40px">
+                                                @if ($item->type == 'image')
+                                                    <img src="{{ $item->image ?? asset('assets/media/auth/505-error.png') }}"
+                                                        alt="">
+                                                @else
+                                                    <video src="{{ $item->image }}"></video>
+                                                @endif
+                                            </span>
+
+                                        </div>
+                                    </td>
+                                    <td>{{ $item->name }}</td>
+                                    <td class="text-warning">{{ $item->email }}</td>
+                                    <td class="text">{{ $item->type }}</td>
+                                    <td>{{ $item->created_at->format('d/m/Y H:i') }}</td>
+                                    <td>{{ $item->creator->full_name }}</td>
                                     <td>
                                         <a href="
-                                        {{ route($params['prefix'] . '.' . $params['controller'] . '.edit', $permission->id) }}
+                                        {{ route($params['prefix'] . '.' . $params['controller'] . '.edit', $item->id) }}
                                          "
                                             class="btn btn-sm btn-warning">Edit</a>
-                                        <form  action="{{ route($params['prefix'] . '.' . $params['controller'] . '.destroy', $permission->id) }}" method="POST" style="display:inline;">
+                                        <form
+                                            action="{{ route($params['prefix'] . '.' . $params['controller'] . '.destroy', $item->id) }}"
+                                            method="POST" style="display:inline;">
                                             @csrf
-                                            @method("DELETE")
+                                            @method('DELETE')
                                             <button class="btn btn-sm btn-danger"
                                                 onclick="return confirm('Do you want to delete?')">Delete</button>
                                         </form>
@@ -71,7 +98,7 @@
                         </tbody>
                     </table>
                     <div>
-                        {{ $params['permissions']->links() }}
+                        {{ $params['items']->links() }}
                     </div>
                 </div>
 

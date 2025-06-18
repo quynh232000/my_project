@@ -1,5 +1,5 @@
 @extends('layout.app')
-@section('title', 'Update Category')
+@section('title', 'Add Icon')
 @section('main')
     <div id="kt_app_content_container" class="app-container container-xxl">
 
@@ -9,25 +9,27 @@
                 <!--begin::Modal header-->
                 <div class="modal-header px-5 pt-5">
                     <!--begin::Modal title-->
-                    <h2 class="fw-bold">Update a Category</h2>
+                    <h2 class="fw-bold">Add a Icon</h2>
                     <!--end::Modal title-->
                     <!--begin::Close-->
-
+                    <a href="{{ route($params['prefix'] . '.' . $params['controller'] . '.index') }}"
+                        class="btn btn-icon btn-sm btn-active-icon-primary" data-kt-roles-modal-action="close">
+                        <i class="ki-outline ki-cross fs-1"></i>
+                    </a>
                     <!--end::Close-->
                 </div>
+
                 <!--end::Modal header-->
                 <!--begin::Modal body-->
                 <div class=" mx-lg-5 my-7">
                     <!--begin::Form-->
                     <form id="" class="form"
-                        action="{{ route($params['prefix'] . '.' . $params['controller'] . '.update',$params['item']->id) }}" method="POST" enctype="multipart/form-data" >
+                        action="{{ route($params['prefix'] . '.' . $params['controller'] . '.store') }}" method="POST" enctype="multipart/form-data" >
                         @csrf
-                        @method('PUT')
                         <!--begin::Scroll-->
 
                         <div class="d-flex flex-column scroll-y me-n7 pe-7">
 
-                            <!--begin::Input group-->
                             <div class="fv-row mb-10">
                                 <!--begin::Label-->
                                 <label class="fs-5 fw-bold form-label mb-2">
@@ -35,7 +37,7 @@
                                 </label>
                                 <!--end::Label-->
                                 <!--begin::Input-->
-                                <input class="form-control form-control-solid" placeholder="Enter Aa.." value="{{old('name') ?? $params['item']->name}}" name="name" />
+                                <input class="form-control form-control-solid" placeholder="Enter Aa.." name="name" />
                                 @error('name')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
@@ -54,7 +56,7 @@
                                     <!--begin::Image input placeholder-->
                                     <style>
                                         .image-input-placeholder {
-                                            background-image: url('{{$params['item']->icon ?? asset("assets/media/svg/files/blank-image.svg")}}');
+                                            background-image: url('{{asset("assets/media/svg/files/blank-image.svg")}}');
                                         }
 
                                         [data-bs-theme="dark"] .image-input-placeholder {
@@ -112,7 +114,7 @@
                                 <!--end::Label-->
                                 <!--begin::Input-->
                                 <input type="text" class="form-control form-control-solid" placeholder="Enter https.."
-                                    name="icon_link" value="{{$params['item']->icon}}" />
+                                    name="icon_link" />
                                 <!--end::Input-->
                             </div>
 

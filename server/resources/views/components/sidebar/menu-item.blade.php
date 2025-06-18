@@ -5,41 +5,47 @@
     $routeName  = $item['route'] ?? null;
     $method     = 'GET';
     $show       = false;
+    $isActive   = false;
 
     if (!$routeName || !$hasSub) {
         // ⚠️ Trường hợp KHÔNG có route và KHÔNG có sub → vẫn hiển thị
         $show = true;
+        $isActive = request()->routeIs($routeName);
     }
 
     // Trường hợp có route và KHÔNG có sub: kiểm tra quyền
     if ($routeName && !$hasSub) {
-        $show = auth()->check() && auth()->user()->hasPermission($routeName, $method);
+        $show       = auth()->check() && auth()->user()->hasPermission($routeName, $method);
+        $isActive   = $isActive || request()->routeIs($routeName);
     }
 
     // Trường hợp có sub: hiển thị nếu ít nhất 1 sub có quyền
     if ($hasSub && isset($item['sub'])) {
         foreach ($item['sub'] as $subItem) {
-            $subRoute = $subItem['route'] ?? null;
+            $subRoute       = $subItem['route'] ?? null;
             if ($subRoute && auth()->check() && auth()->user()->hasPermission($subRoute, $method)) {
-                $show = true;
-                break;
+                $show       = true;
+            }
+
+            // Kiểm tra sub route active
+            if ($subRoute && request()->routeIs($subRoute)) {
+                $isActive   = true;
             }
         }
     }
 @endphp
 @if ($show)
-    <div data-kt-menu-trigger="click" class="menu-item {{ $hasSub ? 'menu-accordion show' : '' }}  ">
+    <div data-kt-menu-trigger="click" class="menu-item {{ $hasSub ? 'menu-accordion ' . ($isActive ? 'show' : '') : '' }}">
         @if (isset($item['route']) && !$hasSub)
-            {{-- route($item['route']) --}}
             <a href="{{ route($item['route']) }}"
-                class="menu-link {{ request()->routeIs($item['route']) ? 'active' : '' }}">
+               class="menu-link {{ $isActive ? 'active' : '' }}">
                 <span class="menu-bullet">
                     <span class="bullet bullet-dot"></span>
                 </span>
                 <span class="menu-title">{{ $item['title'] }}</span>
             </a>
         @else
-            <span class="menu-link ">
+            <span class="menu-link">
                 @if (isset($item['icon']))
                     <span class="menu-icon">
                         <i class="{{ $item['icon'] }} fs-2"></i>
@@ -64,5 +70,4 @@
             </div>
         @endif
     </div>
-
 @endif

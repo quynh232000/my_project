@@ -2,7 +2,8 @@
     <!--begin::Col-->
     <div class="col-md-6">
         <!--begin::Google link=-->
-        <a href="#"
+
+        <a href="{{ route('admin.auth.redirect', ['provider' => 'google']) }}"
             class="btn btn-flex btn-outline btn-text-gray-700 btn-active-color-primary bg-state-light flex-center text-nowrap w-100">
             <img alt="Logo" src="{{ asset('assets/media/svg/brand-logos/google-icon.svg') }}"
                 class="h-15px me-3" />Sign in with Google</a>
@@ -12,12 +13,18 @@
     <!--begin::Col-->
     <div class="col-md-6">
         <!--begin::Google link=-->
-        <a href="#"
-            class="btn btn-flex btn-outline btn-text-gray-700 btn-active-color-primary bg-state-light flex-center text-nowrap w-100">
-            <img alt="Logo" src="{{ asset('assets/media/svg/brand-logos/apple-black.svg') }}"
+        <a href="{{ route('admin.auth.redirect', ['provider' => 'github']) }}"
+            class="btn btn-flex btn-outline btn-text-gray-700  flex-center text-nowrap w-100"
+            style="background-color: #161616;color:white">
+            <img alt="Logo" src="{{ asset('assets\media\auth\github.jpg') }}"
                 class="theme-light-show h-15px me-3" />
-            <img alt="Logo" src="{{ asset('assets/media/svg/brand-logos/apple-black-dark.svg') }}"
-                class="theme-dark-show h-15px me-3" />Sign in with Apple</a>
+            <img alt="Logo" src="{{ asset('assets\media\auth\github.jpg') }}"
+                class="theme-dark-show h-15px me-3" />
+            Sign in with Github
+        </a>
+
+
+
         <!--end::Google link=-->
     </div>
     <!--end::Col-->

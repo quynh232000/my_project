@@ -80,6 +80,20 @@ return  [
             'methods'       => ['get'],
             'action'        => 'logout'
         ],
+        [
+            'controller'    =>  \App\Http\Controllers\Admin\Auth\UserController::class,
+            'uri'           => '{provider}/redirect',
+            'name'          => 'admin.auth.redirect',
+            'methods'       => ['get'],
+            'action'        => 'redirect'
+        ],
+         [
+            'controller'    =>  \App\Http\Controllers\Admin\Auth\UserController::class,
+            'uri'           => '{provider}/callback',
+            'name'          => 'admin.auth.callback',
+            'methods'       => ['get'],
+            'action'        => 'callback'
+        ],
 
 
     ]

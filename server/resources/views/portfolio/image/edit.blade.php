@@ -1,54 +1,190 @@
 @extends('layout.app')
-@section('title', 'Update Permissions')
+@section('title', 'Update Image')
 @section('main')
     <div id="kt_app_content_container" class="app-container container-xxl">
-        <!--begin::Card-->
+
         <div class="card card-flush">
-            <!--begin::Card header-->
+            <!--begin::Modal content-->
+            <div class="modal-content">
+                <!--begin::Modal header-->
+                <div class="modal-header px-5 pt-5">
+                    <!--begin::Modal title-->
+                    <h2 class="fw-bold">Update a Image</h2>
+                    <!--end::Modal title-->
+                    <!--begin::Close-->
 
-            <!--end::Card header-->
-            <!--begin::Card body-->
-            <div class="card-body  pt-5">
-                <!--begin::Row-->
-                <h1 class="mb-4">Update Permission</h1>
+                    <!--end::Close-->
+                </div>
 
+                <!--end::Modal header-->
+                <!--begin::Modal body-->
+                <div class=" mx-lg-5 my-7">
+                    <!--begin::Form-->
+                    <form id="" class="form"
+                        action="{{ route($params['prefix'] . '.' . $params['controller'] . '.update',$params['item']->id) }}" method="POST" enctype="multipart/form-data" >
+                        @csrf
+                        @method('PUT')
+                        <!--begin::Scroll-->
 
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Route Name</th>
-                            <th>URI</th>
-                            <th>Method</th>
-                            <th>Set Permission</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>{{ $params['item']->name }}</td>
-                            <td>{{  $params['item']->uri }}</td>
-                            <td>
-                                <a href="#" class="badge badge-light-success fs-7 m-1"> {{  $params['item']->method }}</a>
-                            </td>
-                            <td>
-                                <form
-                                action="{{ route($params['prefix'] . '.' . $params['controller'] . '.update',$params['item']->id) }}"
-                                    method="POST" class="form-inline d-flex">
-                                    @csrf
-                                    @method("PUT")
-                                    <input type="text" name="permission_name" class="form-control me-2"
-                                        value="{{ Str::replace('.', '_',  $params['item']->name) }}">
-                                    <button type="submit" class="btn btn-primary btn-sm">Save</button>
-                                </form>
-                            </td>
-                        </tr>
+                        <div class="d-flex flex-column scroll-y me-n7 pe-7">
+                            <div class="fv-row mb-10">
+                                <!--begin::Label-->
+                                <label class="fs-5 fw-bold form-label mb-2">
+                                    <span class="required">Belong to User</span>
+                                </label>
 
-                    </tbody>
-                </table>
+                                <!--end::Label-->
+                                <!--begin::Input-->
 
+                                <select class="form-select mb-2" data-control="select2" name="email"
+                                    data-placeholder="Select an option" data-allow-clear="true"
+                                    data-placeholder="Select an option" id="kt_ecommerce_add_product_status_select">
+                                    <option value="">--Select--</option>
+                                    @foreach ($params['users'] as $item)
+                                        <option {{$item->email == $params['item']->email ? 'selected' : '' }} value="{{ $item->email }}">{{ $item->email }}</option>
+                                    @endforeach
+                                </select>
+                                @error('email')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                            <!--begin::Input group-->
+                            <div class="fv-row mb-10">
+                                <!--begin::Label-->
+                                <label class="fs-5 fw-bold form-label mb-2">
+                                    <span class="required">Content</span>
+                                </label>
+                                <!--end::Label-->
+                                <!--begin::Input-->
+                                <input class="form-control form-control-solid" placeholder="Enter Aa.." value="{{old('name') ?? $params['item']->name}}" name="name" />
+                                @error('name')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                            <div class="fv-row mb-10">
+                                <!--begin::Label-->
+                                <label class="fs-5 fw-bold form-label mb-2">
+                                    <span class="">Image/Video</span>
+                                </label>
+                                <!--end::Label-->
+                                <!--begin::Input-->
+                                {{-- <input type="file" class="form-control form-control-solid" placeholder="Enter Aa.."
+                                    name="icon" /> --}}
+                                <div class="card-body text-center pt-0">
+                                    <!--begin::Image input-->
+                                    <!--begin::Image input placeholder-->
+                                    <style>
+                                        .image-input-placeholder {
+                                            background-image: url('{{$params['item']->image ?? asset("assets/media/svg/files/blank-image.svg")}}');
+                                        }
 
+                                        [data-bs-theme="dark"] .image-input-placeholder {
+                                            background-image: url('{{asset("assets/media/svg/files/blank-image-dark.svg")}}');
+                                        }
+                                    </style>
+                                    <!--end::Image input placeholder-->
+                                    <div class="image-input image-input-empty image-input-outline image-input-placeholder mb-3"
+                                        data-kt-image-input="true">
+                                        <!--begin::Preview existing avatar-->
+                                        <div class="image-input-wrapper w-150px h-150px"></div>
+                                        <!--end::Preview existing avatar-->
+                                        <!--begin::Label-->
+                                        <label
+                                            class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                                            data-kt-image-input-action="change" data-bs-toggle="tooltip"
+                                            title="Change avatar">
+                                            <i class="ki-outline ki-pencil fs-7"></i>
+                                            <!--begin::Inputs-->
+                                            <input type="file" name="icon" accept=".png, .jpg, .jpeg" />
+                                            <input type="hidden" name="avatar_remove" />
+                                            <!--end::Inputs-->
+                                        </label>
+                                        <!--end::Label-->
+                                        <!--begin::Cancel-->
+                                        <span
+                                            class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                                            data-kt-image-input-action="cancel" data-bs-toggle="tooltip"
+                                            title="Cancel avatar">
+                                            <i class="ki-outline ki-cross fs-2"></i>
+                                        </span>
+                                        <!--end::Cancel-->
+                                        <!--begin::Remove-->
+                                        <span
+                                            class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                                            data-kt-image-input-action="remove" data-bs-toggle="tooltip"
+                                            title="Remove avatar">
+                                            <i class="ki-outline ki-cross fs-2"></i>
+                                        </span>
+                                        <!--end::Remove-->
+                                    </div>
+                                    <!--end::Image input-->
+                                    <!--begin::Description-->
+                                    <div class="text-muted fs-7">Set the product thumbnail image. Only *.png, *.jpg and
+                                        *.jpeg image files are accepted</div>
+                                    <!--end::Description-->
+                                </div>
+                                <!--end::Input-->
+                            </div>
+                            <div class="fv-row mb-10">
+                                <!--begin::Label-->
+                                <label class="fs-5 fw-bold form-label mb-2">
+                                    <span class="">Or Link Icon</span>
+                                </label>
+                                <!--end::Label-->
+                                <!--begin::Input-->
+                                <input type="text" class="form-control form-control-solid" placeholder="Enter https.."
+                                    name="icon_link" value="{{$params['item']->image}}" />
+                                <!--end::Input-->
+                            </div>
+
+                            <div class="fv-row mb-10">
+                                <!--begin::Label-->
+                                <label class="fs-5 fw-bold form-label mb-2">
+                                    <span class="">Type</span>
+                                </label>
+                                <!--end::Label-->
+                                <!--begin::Input-->
+                                <select class="form-select mb-2" data-control="select2" name="type"
+                                    data-placeholder="Select an option" data-allow-clear="true" id="">
+
+                                    <option value="image" {{$params['item']->type == 'image' ? 'selected' : ''}}>Image</option>
+                                    <option value="video" {{$params['item']->type == 'video' ? 'selected' : ''}}>Video</option>
+
+                                </select>
+                                <!--end::Input-->
+                            </div>
+                            <div class="fv-row mb-10">
+                                <!--begin::Label-->
+                                <label class="fs-5 fw-bold form-label mb-2">
+                                    <span class="">Priority</span>
+                                </label>
+                                <!--end::Label-->
+                                <!--begin::Input-->
+                                <input type="number" min="1" class="form-control form-control-solid" value="{{$params['item']->priority}}" placeholder=""
+                                    name="priority" />
+                                <!--end::Input-->
+                            </div>
+
+                        </div>
+                        <!--end::Scroll-->
+                        <!--begin::Actions-->
+                        <div class="text-center pt-15">
+                            <button type="submit" class="btn btn-primary" data-kt-roles-modal-action="submit">
+                                <span class="indicator-label">Submit</span>
+                                <span class="indicator-progress">Please wait...
+                                    <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+                            </button>
+                        </div>
+                        <!--end::Actions-->
+                    </form>
+                    <!--end::Form-->
+                </div>
+                <!--end::Modal body-->
             </div>
-            <!--end::Card body-->
+            <!--end::Modal content-->
         </div>
+
+
 
     </div>
 @endsection
