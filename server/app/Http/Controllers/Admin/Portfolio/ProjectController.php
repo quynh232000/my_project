@@ -3,79 +3,104 @@
 namespace App\Http\Controllers\Admin\Portfolio;
 
 use App\Http\Controllers\AdminController;
-use App\Models\Admin\PermissionModel;
+use App\Models\Admin\UserModel;
+use App\Models\Portfolio\CategoryModel;
+use App\Models\Portfolio\ProjectModel;
+use App\Services\FileService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 
 class ProjectController extends AdminController
 {
+    private $table = null;
     public function __construct(Request $request)
     {
         parent::__construct($request);
+        $this->table = new ProjectModel();
     }
     public function index()
     {
-        $allRoutes = collect(Route::getRoutes())->map(function ($route) {
-            return [
-                'uri'       => $route->uri(),
-                'name'      => $route->getName(),
-                'method'    => implode('|', $route->methods()),
-                'action'    => $route->getActionName(),
-            ];
-        })->filter(fn($r) => $r['name'] && !str_starts_with($r['uri'], '_') && !str_contains($r['uri'], 'telescope'));
-
-        $existing                       = DB::table('route_permission_mappings')->pluck('route_name')->toArray();
-
-        $routes                         = $allRoutes->filter(fn($r) => !in_array($r['name'], $existing));
-        $routes                         = $routes->reverse();
-        $query                          =    PermissionModel::query();
-        if ($this->_params['search'] ?? false) {
-            $query->where('name', 'LIKE', '%' . $this->_params['search'] . '%');
+        $query = $this->table->with('creator');
+        if (request()->search ?? false) {
+            $query->where('name', 'LIKE', '%' . request()->search . '%');
         }
-        $this->_params['permissions']   =  $query->orderBy('created_at', 'desc')->paginate(20);
-
-        return view($this->_viewAction, ['params' => $this->_params, 'routes' => $routes]);
+        $this->_params['items'] = $query->orderByDesc('id')->paginate(20);
+        return view($this->_viewAction, ['params' => $this->_params]);
     }
     public function update(Request $request, $id)
     {
-        PermissionModel::where(['id' => $id])->update(['name' => $request->permission_name]);
+        $item = $this->table->find($id);
+        $data = $request->all();
+        $image_url              = $request->image_link ?? '';
+        if ($request->hasFile('image')) {
+            $fileService        = new FileService();
+            $image_url          = $fileService->uploadFile($request->image, 'portfolio.project', auth()->id())['url'] ?? '';
+        }
+        unset($data['image_link'], $data['avatar_remove'], $data['image']);
+
+        $this->table->create([
+            ...$data,
+            'thumbnail'         => $image_url,
+            'slug'          => Str::slug($request->title),
+            'created_at'    => now(),
+            'created_by'    => auth()->id(),
+            'status'        => 'active'
+        ]);
+
+        $item->update([
+            ...$data,
+            'slug'          => Str::slug($request->title),
+            'thumbnail'     => $image_url,
+            'updated_at'    => now()
+
+        ]);
         return redirect()->back()->with('success', ' Update successfully!');
     }
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
-        $this->_params['item'] = PermissionModel::findOrFail($id);
+        $this->_params['users'] = UserModel::orderByDesc('id')->get();
+        $this->_params['item']  = $this->table->find($id);
+        if ($request->email ?? false) {
+            $this->_params['categories'] = CategoryModel::where('email', $request->email)->orderByDesc('id')->get();
+        } else {
+            $this->_params['categories'] = CategoryModel::where('email', $this->_params['item']->email)->orderByDesc('id')->get();
+        }
+        return view($this->_viewAction, ['params' => $this->_params]);
+    }
+    public function create(Request $request)
+    {
+
+        if ($request->email ?? false) {
+            $this->_params['categories'] = CategoryModel::where('email', $request->email)->orderByDesc('id')->get();
+        }
+        $this->_params['users'] = UserModel::orderByDesc('id')->get();
         return view($this->_viewAction, ['params' => $this->_params]);
     }
     public function store(Request $request)
     {
-        $request->validate([
-            'route_name'        => 'required|string',
-            'permission_name'   => 'required|string',
+        $data = $request->all();
+        $image_url              = $request->image_link ?? '';
+        if ($request->hasFile('image')) {
+            $fileService        = new FileService();
+            $image_url          = $fileService->uploadFile($request->image, 'portfolio.project', auth()->id())['url'] ?? '';
+        }
+        unset($data['image_link'], $data['avatar_remove'], $data['image']);
+
+        $this->table->create([
+            ...$data,
+            'thumbnail'         => $image_url,
+            'slug'          => Str::slug($request->title),
+            'created_at'    => now(),
+            'created_by'    => auth()->id(),
+            'status'        => 'active'
         ]);
 
-        $permission = PermissionModel::firstOrCreate([
-            'name'          => $request->permission_name,
-            'route_name'    => $request->route_name,
-            'resource_type' => ucfirst(Str::before($request->route_name, '.')),
-            'uri'           => $request->uri,
-            'method'        => $request->input('method'),
 
-        ]);
-
-        DB::table('route_permission_mappings')->insert([
-            'route_name'        => $request->route_name,
-            'permission_name'   => $permission->name,
-            'created_at'        => now(),
-            'updated_at'        => now(),
-        ]);
-
-        return redirect()->back()->with('success', 'Permission mapped to route successfully.');
+        return redirect()->back()->with('success', 'Create successfully.');
     }
     public function destroy($id)
     {
-        PermissionModel::where('id', $id)->delete();
+        $this->table->where('id', $id)->delete();
         return redirect()->back()->with('success', 'Delete route successfully.');
     }
 }

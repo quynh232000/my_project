@@ -1,5 +1,5 @@
 @extends('layout.app')
-@section('title', 'Edit Project')
+@section('title', 'Add Project')
 @section('main')
     <div id="kt_app_content_container" class="app-container container-xxl">
 
@@ -9,7 +9,7 @@
                 <!--begin::Modal header-->
                 <div class="modal-header px-5 pt-5">
                     <!--begin::Modal title-->
-                    <h2 class="fw-bold">Edit a Project</h2>
+                    <h2 class="fw-bold">Add a Project</h2>
                     <!--end::Modal title-->
                     <!--begin::Close-->
                     <a href="{{ route($params['prefix'] . '.' . $params['controller'] . '.index') }}" class="btn  btn-danger">
@@ -23,10 +23,9 @@
                 <div class=" mx-lg-5 my-7">
                     <!--begin::Form-->
                     <form id="form_main" class="form"
-                        action="{{ route($params['prefix'] . '.' . $params['controller'] . '.update', $params['item']->id) }}"
-                        method="POST" enctype="multipart/form-data">
+                        action="{{ route($params['prefix'] . '.' . $params['controller'] . '.store') }}" method="POST"
+                        enctype="multipart/form-data">
                         @csrf
-                        @method('PUT')
                         <!--begin::Scroll-->
 
                         <div class="d-flex flex-column scroll-y me-n7 pe-7">
@@ -45,7 +44,7 @@
                                     <option value="">--Select--</option>
                                     @foreach ($params['users'] as $item)
                                         <option value="{{ $item->email }}"
-                                            {{ isset(request()->email) ? (request()->email == $item->email ? 'selected' : '') : ($params['item']->email == $item->email ? 'selected' : '') }}>
+                                            {{ isset(request()->email) ? (request()->email == $item->email ? 'selected' : '') : '' }}>
                                             {{ $item->email }}</option>
                                     @endforeach
                                 </select>
@@ -70,8 +69,7 @@
                                 </label>
                                 <!--end::Label-->
                                 <!--begin::Input-->
-                                <input class="form-control form-control-solid" placeholder="Enter Aa.."
-                                    value="{{ old('title') ?? $params['item']->title }}" name="title" />
+                                <input class="form-control form-control-solid" placeholder="Enter Aa.." name="title" />
                                 @error('title')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
@@ -97,8 +95,7 @@
                                 <label class="fs-5 fw-bold form-label mb-2 w-100">
                                     <span class=" mb-5">Thumbnail</span>
                                     <input type="text" class="form-control form-control-solid my-5"
-                                        placeholder="Or Enter https.." value="{{ $params['item']->thumbnail }}"
-                                        name="image_link" />
+                                        placeholder="Or Enter https.." name="image_link" />
                                 </label>
                                 <!--end::Label-->
                                 <!--begin::Input-->
@@ -109,7 +106,7 @@
                                     <!--begin::Image input placeholder-->
                                     <style>
                                         .image-input-placeholder {
-                                            background-image: url(' {{ $params['item']->thumbnail ?? asset('assets/media/svg/files/blank-image.svg') }}');
+                                            background-image: url('{{ asset('assets/media/svg/files/blank-image.svg') }}');
                                         }
 
                                         [data-bs-theme="dark"] .image-input-placeholder {
@@ -170,7 +167,7 @@
                                 </div>
                                 <!--end::Label-->
                                 <!--begin::Input-->
-                                <textarea name="images" id="" class="form-control form-control-solid" cols="30" rows="4">{{ $params['item']->images }}</textarea>
+                                <textarea name="images" id="" class="form-control form-control-solid" cols="30" rows="4"></textarea>
 
                                 <!--end::Input-->
                             </div>
@@ -180,10 +177,9 @@
                                 <!--end::Label-->
                                 <!--begin::Editor-->
                                 <div id="kt_ecommerce_add_product_meta_description" name="description"
-                                    class="min-h-200px mb-2">{!!$params['item']->description!!}</div>
+                                    class="min-h-200px mb-2"></div>
                                 <!--end::Editor-->
-                                <input type="text" name="description" id="hidden_description"
-                                    value="{{ $params['item']->description }}" class="hidden" hidden>
+                                <input type="text" name="description" id="hidden_description" class="hidden" hidden>
                                 <script>
                                     // const quill = new Quill('#kt_ecommerce_add_product_meta_description', {
                                     //     theme: 'snow'
@@ -209,9 +205,7 @@
                                     data-placeholder="Select an option" data-allow-clear="true" multiple="multiple">
                                     <option></option>
                                     @foreach ($params['categories'] ?? [] as $item)
-                                        <option value="{{ $item->name }}"
-                                            {{ in_array($item->name, $params['item']->category ?? []) ? 'selected' : '' }}>
-                                            {{ $item->name }}</option>
+                                        <option value="{{ $item->name }}">{{ $item->name }}</option>
                                     @endforeach
 
                                 </select>
@@ -225,18 +219,17 @@
                                 <div id="kt_ecommerce_add_product_options">
                                     <!--begin::Form group-->
                                     <div class="list_item_feature">
-                                        @foreach ($params['item']->feature ?? [] as $item)
-                                            <div class="form-group d-flex item_feature mb-5"
-                                                style="align-items: center; gap:10px">
-                                                <button onclick="remove(this)" type="button" data-repeater-delete=""
-                                                    class="btn btn-sm btn-icon btn-light-danger btn_delete">
-                                                    <i class="ki-outline ki-cross fs-1"></i>
-                                                </button>
-                                                <input type="text" class="form-control " name="feature[]"
-                                                    placeholder="Feature project" value="{{$item}}" />
+                                        <div class="form-group d-flex item_feature mb-5"
+                                            style="align-items: center; gap:10px">
+                                            <button onclick="remove(this)" type="button" data-repeater-delete=""
+                                                class="btn btn-sm btn-icon btn-light-danger btn_delete">
+                                                <i class="ki-outline ki-cross fs-1"></i>
+                                            </button>
+                                            <input type="text" class="form-control " name="feature[]"
+                                                placeholder="Feature project" />
 
-                                            </div>
-                                        @endforeach
+
+                                        </div>
                                     </div>
 
                                     <div class="form-group mt-5">
@@ -275,7 +268,7 @@
                                     <span class="">Link demo</span>
                                 </label>
                                 <input type="text" class="form-control form-control-solid" placeholder=""
-                                    placeholder="Aa.." name="demo" value="{{old('demo') ?? $params['item']->demo}}"/>
+                                    placeholder="Aa.." name="demo" />
                             </div>
                             <div class="fv-row mb-10">
                                 <!--begin::Label-->
@@ -283,14 +276,14 @@
                                     <span class="">Link Source</span>
                                 </label>
                                 <input type="text" class="form-control form-control-solid" placeholder=""
-                                    placeholder="Aa.." name="source" value="{{old('source') ?? $params['item']->source}}" />
+                                    placeholder="Aa.." name="source" />
                             </div>
                             <div class="fv-row mb-10">
                                 <!--begin::Label-->
                                 <label class="fs-5 fw-bold form-label mb-2">
                                     <span class="">Priority</span>
                                 </label>
-                                <input type="number" min="1" value="{{old('priority') ?? $params['item']->priority}}"
+                                <input type="number" min="1" value="9999"
                                     class="form-control form-control-solid" placeholder="" placeholder="Aa.."
                                     name="priority" />
                             </div>
@@ -303,8 +296,8 @@
                                 <!--begin::Input-->
                                 <select class="form-select mb-2" data-control="select2" name="status"
                                     data-placeholder="Select an option" data-allow-clear="true" id="">
-                                    <option value="active" {{$params['item']->status == 'active' ? 'selected':''}}>Active</option>
-                                    <option value="inactive" {{$params['item']->status == 'inactive' ? 'selected':''}}>Inactive</option>
+                                    <option value="active" selected>Active</option>
+                                    <option value="inactive">Inactive</option>
 
                                 </select>
                                 <!--end::Input-->
