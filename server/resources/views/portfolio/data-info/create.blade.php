@@ -1,15 +1,19 @@
 @extends('layout.app')
-@section('title', 'Edit Project')
+@section('title', 'Add Data Infomation')
 @section('main')
     <div id="kt_app_content_container" class="app-container container-xxl">
-
+        <style>
+            .btn_delete {
+                min-width: 40px !important;
+            }
+        </style>
         <div class="card card-flush">
             <!--begin::Modal content-->
             <div class="modal-content">
                 <!--begin::Modal header-->
                 <div class="modal-header px-5 pt-5">
                     <!--begin::Modal title-->
-                    <h2 class="fw-bold">Edit a Project</h2>
+                    <h2 class="fw-bold">Add Infomation</h2>
                     <!--end::Modal title-->
                     <!--begin::Close-->
                     <a href="{{ route($params['prefix'] . '.' . $params['controller'] . '.index') }}" class="btn  btn-danger">
@@ -23,10 +27,9 @@
                 <div class=" mx-lg-5 my-7">
                     <!--begin::Form-->
                     <form id="form_main" class="form"
-                        action="{{ route($params['prefix'] . '.' . $params['controller'] . '.update', $params['item']->id) }}"
-                        method="POST" enctype="multipart/form-data">
+                        action="{{ route($params['prefix'] . '.' . $params['controller'] . '.store') }}" method="POST"
+                        enctype="multipart/form-data">
                         @csrf
-                        @method('PUT')
                         <!--begin::Scroll-->
 
                         <div class="d-flex flex-column scroll-y me-n7 pe-7">
@@ -45,7 +48,7 @@
                                     <option value="">--Select--</option>
                                     @foreach ($params['users'] as $item)
                                         <option value="{{ $item->email }}"
-                                            {{ isset(request()->email) ? (request()->email == $item->email ? 'selected' : '') : ($params['item']->email == $item->email ? 'selected' : '') }}>
+                                            {{ isset(request()->email) ? (request()->email == $item->email ? 'selected' : '') : '' }}>
                                             {{ $item->email }}</option>
                                     @endforeach
                                 </select>
@@ -62,13 +65,13 @@
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
+                            <!--begin::Input group-->
                             <div class="fv-row mb-10">
                                 <label class="fs-5 fw-bold form-label mb-2">
                                     <span class="required">Full Name</span>
                                 </label>
 
-                                <input class="form-control form-control-solid" placeholder="Enter Aa.." name="name"
-                                    value="{{ $params['item']->name }}" />
+                                <input class="form-control form-control-solid" placeholder="Enter Aa.." name="name" />
                                 @error('name')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
@@ -80,8 +83,8 @@
                                             <span class="required">Email</span>
                                         </label>
 
-                                        <input class="form-control form-control-solid" value="{{ $params['item']->email }}"
-                                            placeholder="Enter Aa.." name="email_contact" />
+                                        <input class="form-control form-control-solid" placeholder="Enter Aa.."
+                                            name="email_contact" />
                                         @error('email_contact')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
@@ -93,8 +96,8 @@
                                             <span class="required">Phone</span>
                                         </label>
 
-                                        <input class="form-control form-control-solid" value="{{ $params['item']->phone }}"
-                                            placeholder="Enter Aa.." name="phone" />
+                                        <input class="form-control form-control-solid" placeholder="Enter Aa.."
+                                            name="phone" />
                                         @error('phone')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
@@ -109,7 +112,7 @@
                                         </label>
 
                                         <input class="form-control form-control-solid" placeholder="Enter Aa.."
-                                            name="age" value="{{ $params['item']->age }}" />
+                                            name="age" />
                                         @error('age')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
@@ -122,7 +125,7 @@
                                         </label>
 
                                         <input class="form-control form-control-solid" placeholder="Enter Aa.."
-                                            name="birthday" value="{{ $params['item']->birthday }}" />
+                                            name="birthday" />
                                         @error('birthday')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
@@ -134,8 +137,8 @@
                                     <span class="required">Address</span>
                                 </label>
 
-                                <input class="form-control form-control-solid" value="{{ $params['item']->location }}"
-                                    placeholder="Quan 12 , tP. HCM.." name="location" />
+                                <input class="form-control form-control-solid" placeholder="Quan 12 , tP. HCM.."
+                                    name="location" />
                                 @error('location')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
@@ -147,8 +150,7 @@
                                             <span class="required">Major</span>
                                         </label>
 
-                                        <input class="form-control form-control-solid" value="{{ $params['item']->major }}"
-                                            placeholder="Web.." name="major" />
+                                        <input class="form-control form-control-solid" placeholder="Web.." name="major" />
                                         @error('major')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
@@ -160,8 +162,7 @@
                                             <span class="required">Position</span>
                                         </label>
 
-                                        <input class="form-control form-control-solid"
-                                            value="{{ $params['item']->position }}" placeholder="Developer.."
+                                        <input class="form-control form-control-solid" placeholder="Developer.."
                                             name="position" />
                                         @error('position')
                                             <small class="text-danger">{{ $message }}</small>
@@ -176,23 +177,22 @@
                                     <label class="fs-5 fw-bold form-label mb-2 w-100">
                                         <span class=" mb-5">Avatar</span>
                                         <input type="text" class="form-control form-control-solid my-5"
-                                            placeholder="Or Enter https.." value="{{ $params['item']->avatar }}"
-                                            name="avatar_link" />
+                                            placeholder="Or Enter https.." name="avatar_link" />
                                     </label>
 
                                     <div class="card-body text-center pt-0">
 
                                         <style>
-                                            .image-input-placeholder.avatar {
-                                                background-image: url('{{ $params['item']->avatar ?? asset('assets/media/svg/files/blank-image.svg') }}');
+                                            .image-input-placeholder {
+                                                background-image: url('{{ asset('assets/media/svg/files/blank-image.svg') }}');
                                             }
 
-                                            [data-bs-theme="dark"] .image-input-placeholder.avatar {
-                                                background-image: url('{{ $params['item']->avatar ?? asset('assets/media/svg/files/blank-image-dark.svg') }}');
+                                            [data-bs-theme="dark"] .image-input-placeholder {
+                                                background-image: url('{{ asset('assets/media/svg/files/blank-image-dark.svg') }}');
                                             }
                                         </style>
                                         <!--end::Image input placeholder-->
-                                        <div class="image-input image-input-empty image-input-outline avatar image-input-placeholder mb-3"
+                                        <div class="image-input image-input-empty image-input-outline image-input-placeholder mb-3"
                                             data-kt-image-input="true">
                                             <!--begin::Preview existing avatar-->
                                             <div class="image-input-wrapper w-150px h-150px"></div>
@@ -237,23 +237,22 @@
                                     <label class="fs-5 fw-bold form-label mb-2 w-100">
                                         <span class=" mb-5">Image Background</span>
                                         <input type="text" class="form-control form-control-solid my-5"
-                                            placeholder="Or Enter https.." value="{{ $params['item']->img_background }}"
-                                            name="img_background_link" />
+                                            placeholder="Or Enter https.." name="img_background_link" />
                                     </label>
 
                                     <div class="card-body text-center pt-0">
 
                                         <style>
-                                            .image-input-placeholder.img_background {
-                                                background-image: url('{{ $params['item']->img_background ?? asset('assets/media/svg/files/blank-image.svg') }}');
+                                            .image-input-placeholder {
+                                                background-image: url('{{ asset('assets/media/svg/files/blank-image.svg') }}');
                                             }
 
-                                            [data-bs-theme="dark"] .image-input-placeholder.img_background {
+                                            [data-bs-theme="dark"] .image-input-placeholder {
                                                 background-image: url('{{ asset('assets/media/svg/files/blank-image-dark.svg') }}');
                                             }
                                         </style>
                                         <!--end::Image input placeholder-->
-                                        <div class="image-input image-input-empty image-input-outline image-input-placeholder img_background mb-3"
+                                        <div class="image-input image-input-empty image-input-outline image-input-placeholder mb-3"
                                             data-kt-image-input="true">
                                             <!--begin::Preview existing avatar-->
                                             <div class="image-input-wrapper w-150px h-150px"></div>
@@ -308,11 +307,11 @@
                                 </div>
                                 <div class="fv-row mb-10 col-md-6">
                                     <label class="fs-5 fw-bold form-label mb-2">
-                                        <span class="">Or Link CV</span>
+                                        <span class="required">Or Link CV</span>
                                     </label>
 
-                                    <input class="form-control form-control-solid" value="{{ $params['item']->cv }}"
-                                        placeholder="https://.." name="cv_link" />
+                                    <input class="form-control form-control-solid" placeholder="https://.."
+                                        name="cv_link" />
                                     @error('cv_link')
                                         <small class="text-danger">{{ $message }}</small>
                                     @enderror
@@ -324,7 +323,7 @@
                                     <span class="">Bio</span>
                                 </label>
 
-                                <textarea name="bio" id="" class="form-control form-control-solid" cols="30" rows="3">{{ $params['item']->bio }}</textarea>
+                                <textarea name="bio" id="" class="form-control form-control-solid" cols="30" rows="3"></textarea>
 
                             </div>
                             <div class="fv-row mb-10">
@@ -334,7 +333,7 @@
                                 <div>
                                     <label class="form-check-label">Your description..</label>
                                 </div>
-                                <textarea name="description" id="" class="form-control form-control-solid" cols="30" rows="5">{{ $params['item']->description }}</textarea>
+                                <textarea name="description" id="" class="form-control form-control-solid" cols="30" rows="5"></textarea>
 
                             </div>
                             <div class="fv-row mb-10">
@@ -344,22 +343,18 @@
                                 <div class="list_item_feature_group">
                                     <!--begin::Form group-->
                                     <div class="list_item_feature">
-                                        @foreach ($params['item']->languages ?? [] as $key => $item)
-                                            <div class="form-group d-flex item_feature mb-5"
-                                                style="align-items: center; gap:10px">
-                                                <button onclick="remove(this)" type="button" data-repeater-delete=""
-                                                    class="btn btn-sm btn-icon btn-light-danger btn_delete">
-                                                    <i class="ki-outline ki-cross fs-1"></i>
-                                                </button>
-                                                <input type="text" value="{{ $item['name'] }}" class="form-control "
-                                                    name="languages[{{ $key }}][name]" placeholder="Name.." />
-                                                <input type="text" class="form-control "
-                                                    value="{{ $item['content'] }}"
-                                                    name="languages[{{ $key }}][content]"
-                                                    placeholder="Content." />
+                                        <div class="form-group d-flex item_feature mb-5"
+                                            style="align-items: center; gap:10px">
+                                            <button onclick="remove(this)" type="button" data-repeater-delete=""
+                                                class="btn btn-sm btn-icon btn-light-danger btn_delete">
+                                                <i class="ki-outline ki-cross fs-1"></i>
+                                            </button>
+                                            <input type="text" class="form-control " name="languages[0][name]"
+                                                placeholder="Name.." />
+                                            <input type="text" class="form-control " name="languages[0][content]"
+                                                placeholder="Content." />
 
-                                            </div>
-                                        @endforeach
+                                        </div>
                                     </div>
 
                                     <div class="form-group mt-5">
@@ -377,21 +372,18 @@
                                 <div class="list_item_feature_group">
                                     <!--begin::Form group-->
                                     <div class="list_item_feature">
-                                        @foreach ($params['item']->skills ?? [] as $key => $item)
-                                            <div class="form-group d-flex item_feature mb-5"
-                                                style="align-items: center; gap:10px">
-                                                <button onclick="remove(this)" type="button" data-repeater-delete=""
-                                                    class="btn btn-sm btn-icon btn-light-danger btn_delete">
-                                                    <i class="ki-outline ki-cross fs-1"></i>
-                                                </button>
-                                                <input type="text" class="form-control " value="{{ $item['name'] }}"
-                                                    name="skills[{{ $key }}][name]" placeholder="Name.." />
-                                                <input type="text" class="form-control "
-                                                    value="{{ $item['content'] }}"
-                                                    name="skills[{{ $key }}][content]" placeholder="Content." />
+                                        <div class="form-group d-flex item_feature mb-5"
+                                            style="align-items: center; gap:10px">
+                                            <button onclick="remove(this)" type="button" data-repeater-delete=""
+                                                class="btn btn-sm btn-icon btn-light-danger btn_delete">
+                                                <i class="ki-outline ki-cross fs-1"></i>
+                                            </button>
+                                            <input type="text" class="form-control " name="skills[0][name]"
+                                                placeholder="Name.." />
+                                            <input type="text" class="form-control " name="skills[0][content]"
+                                                placeholder="Content." />
 
-                                            </div>
-                                        @endforeach
+                                        </div>
                                     </div>
 
                                     <div class="form-group mt-5">
@@ -409,19 +401,16 @@
                                 <div class="list_item_feature_group">
                                     <!--begin::Form group-->
                                     <div class="list_item_feature">
-                                        @foreach ($params['item']->extra_skills ?? [] as $key => $item)
-                                            <div class="form-group d-flex item_feature mb-5"
-                                                style="align-items: center; gap:10px">
-                                                <button onclick="remove(this)" type="button" data-repeater-delete=""
-                                                    class="btn btn-sm btn-icon btn-light-danger btn_delete">
-                                                    <i class="ki-outline ki-cross fs-1"></i>
-                                                </button>
-                                                <input type="text" class="form-control " value="{{ $item }}"
-                                                    name="extra_skills[{{ $key }}]"
-                                                    placeholder="Extra_skills." />
+                                        <div class="form-group d-flex item_feature mb-5"
+                                            style="align-items: center; gap:10px">
+                                            <button onclick="remove(this)" type="button" data-repeater-delete=""
+                                                class="btn btn-sm btn-icon btn-light-danger btn_delete">
+                                                <i class="ki-outline ki-cross fs-1"></i>
+                                            </button>
+                                            <input type="text" class="form-control " name="extra_skills[0]"
+                                                placeholder="Extra_skills." />
 
-                                            </div>
-                                        @endforeach
+                                        </div>
                                     </div>
 
                                     <div class="form-group mt-5">
@@ -439,40 +428,27 @@
                                 <div class="list_item_feature_group">
                                     <!--begin::Form group-->
                                     <div class="list_item_feature">
-                                        @foreach ($params['item']->socials ?? [] as $key => $item)
-                                            <div class="form-group d-flex item_feature mb-5"
-                                                style="align-items: center; gap:10px">
-                                                <button onclick="remove(this)" type="button" data-repeater-delete=""
-                                                    class="btn btn-sm btn-icon btn-light-danger btn_delete">
-                                                    <i class="ki-outline ki-cross fs-1"></i>
-                                                </button>
+                                        <div class="form-group d-flex item_feature mb-5"
+                                            style="align-items: center; gap:10px">
+                                            <button onclick="remove(this)" type="button" data-repeater-delete=""
+                                                class="btn btn-sm btn-icon btn-light-danger btn_delete">
+                                                <i class="ki-outline ki-cross fs-1"></i>
+                                            </button>
 
-                                                <select name="socials[{{ $key }}][type]"
-                                                    class="form-select mb-2" data-control="select2"
-                                                    data-placeholder="Select an type" data-allow-clear="true">
-                                                    <option value="">--Select Type--</option>
-                                                    <option value="facebook"
-                                                        {{ $item['type'] == 'facebook' ? 'selected' : '' }}>Facebook
-                                                    </option>
-                                                    <option value="github"
-                                                        {{ $item['type'] == 'github' ? 'selected' : '' }}>Github</option>
-                                                    <option value="youtube"
-                                                        {{ $item['type'] == 'youtube' ? 'selected' : '' }}>Youtube</option>
-                                                    <option value="instagram"
-                                                        {{ $item['type'] == 'instagram' ? 'selected' : '' }}>Instagram
-                                                    </option>
-                                                    <option value="behance"
-                                                        {{ $item['type'] == 'behance' ? 'selected' : '' }}>Behance</option>
-                                                    <option value="behance"
-                                                        {{ $item['type'] == 'linkin' ? 'selected' : '' }}>Linkin</option>
-                                                </select>
+                                            <select name="socials[0][type]" class="form-select mb-2"
+                                                data-control="select2" data-placeholder="Select an type"
+                                                data-allow-clear="true">
+                                                <option value="">--Select Type--</option>
+                                                <option value="facebook">Facebook</option>
+                                                <option value="github">Github</option>
+                                                <option value="youtube">Youtube</option>
+                                                <option value="instagram">Instagram</option>
+                                                <option value="behance">Behance</option>
+                                            </select>
+                                            <input type="text" class="form-control " name="socials[0][link]"
+                                                placeholder="Link." />
 
-                                                <input type="text" value="{{ $item['link'] ?? '' }}"
-                                                    class="form-control " name="socials[{{ $key }}][link]"
-                                                    placeholder="Link." />
-
-                                            </div>
-                                        @endforeach
+                                        </div>
                                     </div>
 
                                     <div class="form-group mt-5">
@@ -490,46 +466,35 @@
                                 <div class="list_item_feature_group">
                                     <!--begin::Form group-->
                                     <div class="list_item_feature">
-                                        @foreach ($params['item']->educations ?? [] as $key => $item)
-                                            <div class="form-group d-flex item_feature mb-5"
-                                                style="align-items: center; gap:10px">
-                                                <button onclick="remove(this)" type="button" data-repeater-delete=""
-                                                    class="btn btn-sm btn-icon btn-light-danger btn_delete">
-                                                    <i class="ki-outline ki-cross fs-1"></i>
-                                                </button>
+                                        <div class="form-group d-flex item_feature mb-5"
+                                            style="align-items: center; gap:10px">
+                                            <button onclick="remove(this)" type="button" data-repeater-delete=""
+                                                class="btn btn-sm btn-icon btn-light-danger btn_delete">
+                                                <i class="ki-outline ki-cross fs-1"></i>
+                                            </button>
 
-                                                <div style="flex:1">
-                                                    <div class="" style="flex:1">
-                                                        <div class=" d-flex" style="gap: 10px;margin-bottom:10px">
-                                                            <input type="text" class="form-control col-md-6 w-50"
-                                                                name="educations[{{ $key }}][time]"
-                                                                value="{{ $item['time'] ?? '' }}"
-                                                                placeholder="2023 - 12/2024." />
-                                                            <input type="text" class="form-control col-md-6 w-50"
-                                                                name="educations[{{ $key }}][logo]"
-                                                                value="{{ $item['logo'] ?? '' }}"
-                                                                placeholder="Link Logo." />
-                                                        </div>
-                                                        <div class=" d-flex" style="gap: 10px;margin-bottom:10px">
-                                                            <input type="text" class="form-control col-md-6 w-50"
-                                                                name="educations[{{ $key }}][name]"
-                                                                value="{{ $item['name'] ?? '' }}" placeholder="Name.." />
-                                                            <input type="text" class="form-control col-md-6 w-50"
-                                                                name="educations[{{ $key }}][address]"
-                                                                value="{{ $item['address'] ?? '' }}"
-                                                                placeholder="Address." />
-                                                        </div>
+                                            <div style="flex:1">
+                                                <div class="" style="flex:1">
+                                                    <div class=" d-flex" style="gap: 10px;margin-bottom:10px">
+                                                        <input type="text" class="form-control col-md-6 w-50"
+                                                            name="educations[0][time]" placeholder="2023 - 12/2024." />
+                                                        <input type="text" class="form-control col-md-6 w-50"
+                                                            name="educations[0][logo]" placeholder="Link Logo." />
                                                     </div>
-                                                    <div>
-                                                        <input type="text" class="form-control "
-                                                            name="educations[{{ $key }}][content]"
-                                                            value="{{ $item['content'] ?? '' }}"
-                                                            placeholder="Content." />
+                                                    <div class=" d-flex" style="gap: 10px;margin-bottom:10px">
+                                                        <input type="text" class="form-control col-md-6 w-50"
+                                                            name="educations[0][name]" placeholder="Name.." />
+                                                        <input type="text" class="form-control col-md-6 w-50"
+                                                            name="educations[0][address]" placeholder="Address." />
                                                     </div>
                                                 </div>
-
+                                                <div>
+                                                    <input type="text" class="form-control "
+                                                        name="educations[0][content]" placeholder="Content." />
+                                                </div>
                                             </div>
-                                        @endforeach
+
+                                        </div>
                                     </div>
 
                                     <div class="form-group mt-5">
@@ -548,37 +513,29 @@
                                 <div class="list_item_feature_group">
                                     <!--begin::Form group-->
                                     <div class="list_item_feature">
-                                        @foreach ($params['item']->reviews ?? [] as $key => $item)
-                                            <div class="form-group d-flex item_feature mb-5"
-                                                style="align-items: center; gap:10px">
-                                                <button onclick="remove(this)" type="button" data-repeater-delete=""
-                                                    class="btn btn-sm btn-icon btn-light-danger btn_delete">
-                                                    <i class="ki-outline ki-cross fs-1"></i>
-                                                </button>
+                                        <div class="form-group d-flex item_feature mb-5"
+                                            style="align-items: center; gap:10px">
+                                            <button onclick="remove(this)" type="button" data-repeater-delete=""
+                                                class="btn btn-sm btn-icon btn-light-danger btn_delete">
+                                                <i class="ki-outline ki-cross fs-1"></i>
+                                            </button>
 
-                                                <div class="" style="flex:1">
-                                                    <div class=" d-flex" style="gap: 10px;margin-bottom:10px">
-                                                        <input type="text" class="form-control col-md-6 w-50"
-                                                            name="reviews[{{ $key }}][avatar]"
-                                                            value="{{ $item['avatar'] ?? '' }}" placeholder="avatar.." />
-                                                        <input type="text" class="form-control col-md-6 w-50"
-                                                            name="reviews[{{ $key }}][name]"
-                                                            value="{{ $item['name'] ?? '' }}" placeholder="Name." />
-                                                    </div>
-                                                    <div class=" d-flex" style="gap: 10px;margin-bottom:10px">
-                                                        <input type="text" class="form-control col-md-6 w-50"
-                                                            name="reviews[{{ $key }}][username]"
-                                                            value="{{ $item['username'] ?? '' }}"
-                                                            placeholder="Username.." />
-                                                        <input type="text" class="form-control col-md-6 w-50"
-                                                            name="reviews[{{ $key }}][content]"
-                                                            value="{{ $item['content'] ?? '' }}"
-                                                            placeholder="Content." />
-                                                    </div>
+                                            <div class="" style="flex:1">
+                                                <div class=" d-flex" style="gap: 10px;margin-bottom:10px">
+                                                    <input type="text" class="form-control col-md-6 w-50"
+                                                        name="reviews[0][avatar]" placeholder="avatar.." />
+                                                    <input type="text" class="form-control col-md-6 w-50"
+                                                        name="reviews[0][name]" placeholder="Name." />
                                                 </div>
-
+                                                <div class=" d-flex" style="gap: 10px;margin-bottom:10px">
+                                                    <input type="text" class="form-control col-md-6 w-50"
+                                                        name="reviews[0][username]" placeholder="Username.." />
+                                                    <input type="text" class="form-control col-md-6 w-50"
+                                                        name="reviews[0][content]" placeholder="Content." />
+                                                </div>
                                             </div>
-                                        @endforeach
+
+                                        </div>
                                     </div>
 
                                     <div class="form-group mt-5">
@@ -593,7 +550,7 @@
 
                             <script>
                                 $('.btn_add').click(function(e) {
-                                     let index = ($(this).closest('.list_item_feature_group').find('.item_feature')?.length ?? 0) + 1
+                                    let index = ($(this).closest('.list_item_feature_group').find('.item_feature')?.length ?? 0) + 1
                                     e.preventDefault()
                                     const type = $(this).data('type') ?? ''
                                     let input = ''
@@ -685,6 +642,7 @@
                                     $(element).closest('.item_feature').remove()
                                 }
                             </script>
+
                             <div class="fv-row mb-10">
                                 <!--begin::Label-->
                                 <label class="fs-5 fw-bold form-label mb-2">
@@ -694,11 +652,8 @@
                                 <!--begin::Input-->
                                 <select class="form-select mb-2" data-control="select2" name="status"
                                     data-placeholder="Select an option" data-allow-clear="true" id="">
-                                    <option value="active" {{ $params['item']->status == 'active' ? 'selected' : '' }}>
-                                        Active</option>
-                                    <option value="inactive"
-                                        {{ $params['item']->status == 'inactive' ? 'selected' : '' }}>
-                                        Inactive</option>
+                                    <option value="active" selected>Active</option>
+                                    <option value="inactive">Inactive</option>
 
                                 </select>
                                 <!--end::Input-->
