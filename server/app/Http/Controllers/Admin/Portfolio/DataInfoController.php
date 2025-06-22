@@ -31,6 +31,7 @@ class DataInfoController extends AdminController
     {
         $item = $this->table->find($id);
         $data = $request->all();
+        dd($data);
         $avatar_url                 = $request->avatar_link ?? '';
         $fileService                = new FileService();
         if ($request->hasFile('avatar')) {
@@ -64,7 +65,6 @@ class DataInfoController extends AdminController
     {
         $this->_params['users'] = UserModel::orderByDesc('id')->get();
         $this->_params['item']  = $this->table->find($id);
-
         if ($request->email ?? false) {
             $this->_params['categories'] = CategoryModel::where('email', $request->email)->orderByDesc('id')->get();
         } else {

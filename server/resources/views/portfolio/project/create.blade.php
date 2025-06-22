@@ -171,6 +171,20 @@
 
                                 <!--end::Input-->
                             </div>
+                             <div class="fv-row mb-10">
+                                <!--begin::Label-->
+                                <label class="fs-5 fw-bold form-label mb-2">
+                                    <span class="">Feature Main</span>
+                                </label>
+                                <div>
+                                    <label class="form-check-label">Item | item |....</label>
+                                </div>
+                                <!--end::Label-->
+                                <!--begin::Input-->
+                                <textarea name="featuremain" id="" class="form-control form-control-solid" cols="30" rows="4"></textarea>
+
+                                <!--end::Input-->
+                            </div>
                             <div class="mb-10">
                                 <!--begin::Label-->
                                 <label class="form-label">Description</label>

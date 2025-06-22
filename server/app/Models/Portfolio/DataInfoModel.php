@@ -21,6 +21,8 @@ class DataInfoModel  extends AdminModel
         'extra_skills'  => 'array',
         'reviews'       => 'array',
         'educations'    => 'array',
+        'awards'                => 'array',
+        'work_experience'       => 'array',
     ];
     protected $guarded      = [];
     public function creator()

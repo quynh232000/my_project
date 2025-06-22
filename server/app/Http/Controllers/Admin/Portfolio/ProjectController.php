@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\Portfolio;
 use App\Http\Controllers\AdminController;
 use App\Models\Admin\UserModel;
 use App\Models\Portfolio\CategoryModel;
+use App\Models\Portfolio\IconModel;
 use App\Models\Portfolio\ProjectModel;
 use App\Services\FileService;
 use Illuminate\Http\Request;
@@ -38,15 +39,6 @@ class ProjectController extends AdminController
         }
         unset($data['image_link'], $data['avatar_remove'], $data['image']);
 
-        $this->table->create([
-            ...$data,
-            'thumbnail'         => $image_url,
-            'slug'          => Str::slug($request->title),
-            'created_at'    => now(),
-            'created_by'    => auth()->id(),
-            'status'        => 'active'
-        ]);
-
         $item->update([
             ...$data,
             'slug'          => Str::slug($request->title),
@@ -60,19 +52,14 @@ class ProjectController extends AdminController
     {
         $this->_params['users'] = UserModel::orderByDesc('id')->get();
         $this->_params['item']  = $this->table->find($id);
-        if ($request->email ?? false) {
-            $this->_params['categories'] = CategoryModel::where('email', $request->email)->orderByDesc('id')->get();
-        } else {
-            $this->_params['categories'] = CategoryModel::where('email', $this->_params['item']->email)->orderByDesc('id')->get();
-        }
+        $this->_params['categories'] = IconModel::orderByDesc('id')->get();
+
         return view($this->_viewAction, ['params' => $this->_params]);
     }
     public function create(Request $request)
     {
 
-        if ($request->email ?? false) {
-            $this->_params['categories'] = CategoryModel::where('email', $request->email)->orderByDesc('id')->get();
-        }
+        $this->_params['categories'] = IconModel::orderByDesc('id')->get();
         $this->_params['users'] = UserModel::orderByDesc('id')->get();
         return view($this->_viewAction, ['params' => $this->_params]);
     }

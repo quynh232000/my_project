@@ -5,4 +5,5 @@ return [
     'TABLE_DATA_INFO'    => 'portfo_data_infos',
     'TABLE_PROJECT'      => 'portfo_projects',
     'TABLE_IMAGE'        => 'portfo_images',
+    'TABLE_CONTACT'      => 'portfo_contacts',
 ];

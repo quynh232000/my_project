@@ -75,7 +75,9 @@ class PermissionController extends AdminController
     }
     public function destroy($id)
     {
-        PermissionModel::where('id', $id)->delete();
+        $item = PermissionModel::find($id);
+        DB::table('route_permission_mappings')->where('route_name', $item->route_name)->delete();
+        $item->delete();
         return redirect()->back()->with('success', 'Delete route successfully.');
     }
 }

@@ -132,16 +132,29 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="fv-row mb-10 col-md-6">
-                                <label class="fs-5 fw-bold form-label mb-2">
-                                    <span class="required">Address</span>
-                                </label>
+                            <div class="row">
+                                <div class="fv-row mb-10 col-md-6">
+                                    <label class="fs-5 fw-bold form-label mb-2">
+                                        <span class="required">Address</span>
+                                    </label>
 
-                                <input class="form-control form-control-solid" placeholder="Quan 12 , tP. HCM.."
-                                    name="location" />
-                                @error('location')
-                                    <small class="text-danger">{{ $message }}</small>
-                                @enderror
+                                    <input class="form-control form-control-solid" placeholder="Quan 12 , tP. HCM.."
+                                        name="location" />
+                                    @error('location')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+                                </div>
+                                <div class="fv-row mb-10 col-md-6">
+                                    <label class="fs-5 fw-bold form-label mb-2">
+                                        <span class="">Map Address full script</span>
+                                    </label>
+
+                                    <input class="form-control form-control-solid" value=""
+                                        placeholder="Quan 12 , tP. HCM.." name="map_address" />
+                                    @error('map_address')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+                                </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-6">
@@ -547,6 +560,95 @@
                                 </div>
                             </div>
 
+                            {{-- awards  --}}
+                            <div class="fv-row mb-10">
+                                <label class="fs-5 fw-bold form-label mb-2">
+                                    <span class="">Awards</span>
+                                </label>
+                                <div class="list_item_feature_group">
+                                    <!--begin::Form group-->
+                                    <div class="list_item_feature">
+                                        <div class="form-group d-flex item_feature mb-5"
+                                            style="align-items: center; gap:10px">
+                                            <button onclick="remove(this)" type="button" data-repeater-delete=""
+                                                class="btn btn-sm btn-icon btn-light-danger btn_delete">
+                                                <i class="ki-outline ki-cross fs-1"></i>
+                                            </button>
+
+                                            <div class="" style="flex:1">
+                                                <div class=" d-flex" style="gap: 10px;margin-bottom:10px">
+                                                    <input type="text" class="form-control col-md-6 w-50"
+                                                        name="awards[0][name]" placeholder="name.." />
+                                                    <input type="text" class="form-control col-md-6 w-50"
+                                                        name="awards[0][location]" placeholder="location." />
+                                                </div>
+                                                <div class=" d-flex" style="gap: 10px;margin-bottom:10px">
+                                                    <input type="text" class="form-control col-md-6 w-50"
+                                                        name="awards[0][date]" placeholder="date.." />
+                                                    <input type="text" class="form-control col-md-6 w-50"
+                                                        name="awards[0][content]" placeholder="content." />
+                                                </div>
+                                                <div>
+                                                    <textarea name="awards[0][images]"class="form-control " cols="30" rows="3"
+                                                        placeholder="image|image|image"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group mt-5">
+                                        <button type="button" data-repeater-create="" data-type='awards_type'
+                                            class="btn btn-sm btn_add btn-light-primary">
+                                            <i class="ki-outline ki-plus fs-2"></i>Add more</button>
+                                    </div>
+                                    <!--end::Form group-->
+                                </div>
+                            </div>
+                            {{-- work_experience  --}}
+                            <div class="fv-row mb-10">
+                                <label class="fs-5 fw-bold form-label mb-2">
+                                    <span class="">Work Experiences</span>
+                                </label>
+                                <div class="list_item_feature_group">
+                                    <!--begin::Form group-->
+                                    <div class="list_item_feature">
+                                        <div class="form-group d-flex item_feature mb-5"
+                                            style="align-items: center; gap:10px">
+                                            <button onclick="remove(this)" type="button" data-repeater-delete=""
+                                                class="btn btn-sm btn-icon btn-light-danger btn_delete">
+                                                <i class="ki-outline ki-cross fs-1"></i>
+                                            </button>
+
+                                            <div class="" style="flex:1">
+                                                <div class=" d-flex" style="gap: 10px;margin-bottom:10px">
+                                                    <input type="text" class="form-control col-md-6 w-50"
+                                                        name="work_experience[0][company]" placeholder="company.." />
+                                                    <input type="text" class="form-control col-md-6 w-50"
+                                                        name="work_experience[0][location]" placeholder="location." />
+                                                </div>
+                                                <div class=" d-flex" style="gap: 10px;margin-bottom:10px">
+                                                    <input type="text" class="form-control col-md-6 w-50"
+                                                        name="work_experience[0][position]" placeholder="position.." />
+                                                    <input type="text" class="form-control col-md-6 w-50"
+                                                        name="work_experience[0][period]" placeholder="Mar 2024 - Present." />
+                                                </div>
+                                                <div>
+                                                    <textarea name="work_experience[0][achievements]"class="form-control " cols="30" rows="3"
+                                                        placeholder="achievements... item|item|item"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group mt-5">
+                                        <button type="button" data-repeater-create="" data-type='work_experience_type'
+                                            class="btn btn-sm btn_add btn-light-primary">
+                                            <i class="ki-outline ki-plus fs-2"></i>Add more</button>
+                                    </div>
+                                    <!--end::Form group-->
+                                </div>
+                            </div>
+
 
                             <script>
                                 $('.btn_add').click(function(e) {
@@ -616,6 +718,48 @@
                                                                 name="reviews[${index}][content]" placeholder="Content." />
                                                         </div>
                                                     </div>`
+                                            break
+                                        case 'awards_type':
+                                            input = `
+                                                        <div class="" style="flex:1">
+                                                            <div class=" d-flex" style="gap: 10px;margin-bottom:10px">
+                                                                <input type="text" class="form-control col-md-6 w-50"
+                                                                    name="awards[${index}][name]" placeholder="name.." />
+                                                                <input type="text" class="form-control col-md-6 w-50"
+                                                                    name="awards[${index}][location]" placeholder="location." />
+                                                            </div>
+                                                            <div class=" d-flex" style="gap: 10px;margin-bottom:10px">
+                                                                <input type="text" class="form-control col-md-6 w-50"
+                                                                    name="awards[${index}][date]" placeholder="date.." />
+                                                                <input type="text" class="form-control col-md-6 w-50"
+                                                                    name="awards[${index}][content]" placeholder="content." />
+                                                            </div>
+                                                            <div>
+                                                                <textarea name="awards[${index}][images]"class="form-control " cols="30" rows="3" placeholder="image|image|image"></textarea>
+                                                            </div>
+                                                        </div>
+                                                `
+                                            break
+                                        case 'work_experience_type':
+                                            input = `  <div class="" style="flex:1">
+                                                            <div class=" d-flex" style="gap: 10px;margin-bottom:10px">
+                                                                <input type="text" class="form-control col-md-6 w-50"
+                                                                    name="work_experience[${index}][company]" placeholder="company.." />
+                                                                <input type="text" class="form-control col-md-6 w-50"
+                                                                    name="work_experience[${index}][location]" placeholder="location." />
+                                                            </div>
+                                                            <div class=" d-flex" style="gap: 10px;margin-bottom:10px">
+                                                                <input type="text" class="form-control col-md-6 w-50"
+                                                                    name="work_experience[${index}][position]" placeholder="position.." />
+                                                                <input type="text" class="form-control col-md-6 w-50"
+                                                                    name="work_experience[${index}][period]" placeholder="Mar 2024 - Present." />
+                                                            </div>
+                                                            <div>
+                                                                <textarea name="work_experience[${index}][achievements]"class="form-control " cols="30" rows="3"
+                                                                    placeholder="achievements... item|item|item"></textarea>
+                                                            </div>
+                                                        </div>
+                                                `
                                             break
                                         default:
                                             input = ` <input type="text" class="form-control " name="languages[${index}][name]"
