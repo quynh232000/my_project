@@ -31,10 +31,10 @@ class BlogController extends AdminController
         $item = $this->table->find($id);
         $data = $request->all();
         // dd($data);
-        $avatar_link                 = $request->avatar_link ?? '';
+        $image_link                 = $request->image_link ?? '';
         $fileService                 = new FileService();
         if ($request->hasFile('image')) {
-            $avatar_link             = $fileService->uploadFile($request->image, 'portfolio.blog', auth()->id())['url'] ?? '';
+            $image_link             = $fileService->uploadFile($request->image, 'portfolio.blog', auth()->id())['url'] ?? '';
         }
 
 
@@ -43,7 +43,7 @@ class BlogController extends AdminController
         $item->update([
             ...$data,
             'slug' => Str::slug($data['title']),
-            'image'            => $avatar_link,
+            'image'            => $image_link,
             'updated_at'        => now()
 
         ]);
