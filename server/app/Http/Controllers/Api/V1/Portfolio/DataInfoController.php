@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1\Portfolio;
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\Api\V1\Portfolio\DataInfo\ContactRequest;
 use App\Http\Requests\Api\V1\Portfolio\DataInfo\DataRequest;
+use App\Models\Portfolio\BlogModel;
 use App\Models\Portfolio\CategoryModel;
 use App\Models\Portfolio\ContactModel;
 use App\Models\Portfolio\DataInfoModel;
@@ -92,5 +93,29 @@ class DataInfoController extends ApiController
             'created_at'    => now()
         ]);
         return $this->success('Your information has been sent. I will respond as soon as possible.');
+    }
+    public function blogs(DataRequest $request)
+    {
+        $data               = null;
+        $email              = $request->email;
+
+        $data  = BlogModel::with('creator:id,full_name')->where('email', $email)->orderByDesc('created_at')->get()
+        ->map(function($item){
+            $item->tags         = array_values($item->tags);
+            return $item;
+        });
+
+
+
+
+        return $this->success('ok', $data);
+    }
+    public function blogDetail(DataRequest $request,$slug)
+    {
+        $data               = null;
+        $email              = $request->email;
+
+        $data  = BlogModel::with('creator:id,full_name')->where(['email'=> $email,'slug'=>$slug])->first();
+        return $this->success('ok', $data);
     }
 }

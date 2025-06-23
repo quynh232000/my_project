@@ -6,4 +6,5 @@ return [
     'TABLE_PROJECT'      => 'portfo_projects',
     'TABLE_IMAGE'        => 'portfo_images',
     'TABLE_CONTACT'      => 'portfo_contacts',
+    'TABLE_BLOG'         => 'portfo_blogs',
 ];

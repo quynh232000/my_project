@@ -4,19 +4,18 @@ namespace App\Http\Controllers\Admin\Portfolio;
 
 use App\Http\Controllers\AdminController;
 use App\Models\Admin\UserModel;
+use App\Models\Portfolio\BlogModel;
 use App\Models\Portfolio\CategoryModel;
-use App\Models\Portfolio\DataInfoModel;
 use App\Services\FileService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-
-class DataInfoController extends AdminController
+class BlogController extends AdminController
 {
     private $table = null;
     public function __construct(Request $request)
     {
         parent::__construct($request);
-        $this->table = new DataInfoModel();
+        $this->table = new BlogModel();
     }
     public function index()
     {
@@ -32,29 +31,19 @@ class DataInfoController extends AdminController
         $item = $this->table->find($id);
         $data = $request->all();
         // dd($data);
-        $avatar_url                 = $request->avatar_link ?? '';
-        $fileService                = new FileService();
-        if ($request->hasFile('avatar')) {
-            $avatar_url             = $fileService->uploadFile($request->avatar, 'portfolio.data-info.avatar', auth()->id())['url'] ?? '';
-        }
-
-        $img_background_url         = $request->img_background_link ?? '';
-        if ($request->hasFile('img_background')) {
-            $img_background_url     = $fileService->uploadFile($request->img_background, 'portfolio.data-info.background', auth()->id())['url'] ?? '';
-        }
-        $cv_url                     = $request->cv_link ?? '';
-        if ($request->hasFile('cv')) {
-            $cv_url                 = $fileService->uploadFile($request->cv, 'portfolio.data-info.cv', auth()->id())['url'] ?? '';
+        $avatar_link                 = $request->avatar_link ?? '';
+        $fileService                 = new FileService();
+        if ($request->hasFile('image')) {
+            $avatar_link             = $fileService->uploadFile($request->image, 'portfolio.blog', auth()->id())['url'] ?? '';
         }
 
 
-
-        unset($data['avatar_link'], $data['avatar_remove'], $data['avatar'], $data['img_background_link'], $data['cv_link']);
+         unset($data['image_link'],$data['avatar_remove']);
 
         $item->update([
             ...$data,
-            'avatar'            => $avatar_url,
-            'img_background'    => $img_background_url,
+            'slug' => Str::slug($data['title']),
+            'image'            => $avatar_link,
             'cv'                => $cv_url,
             'updated_at'        => now()
 
@@ -74,41 +63,23 @@ class DataInfoController extends AdminController
     }
     public function create(Request $request)
     {
-
-        if ($request->email ?? false) {
-            $this->_params['categories'] = CategoryModel::where('email', $request->email)->orderByDesc('id')->get();
-        }
         $this->_params['users'] = UserModel::orderByDesc('id')->get();
         return view($this->_viewAction, ['params' => $this->_params]);
     }
     public function store(Request $request)
     {
         $data                       = $request->all();
-        $avatar_url                 = $request->avatar_link ?? '';
+        $image_link                 = $request->image_link ?? '';
         $fileService                = new FileService();
-        if ($request->hasFile('avatar')) {
-            $avatar_url             = $fileService->uploadFile($request->avatar, 'portfolio.data-info.avatar', auth()->id())['url'] ?? '';
+        if ($request->hasFile('image')) {
+            $image_link             = $fileService->uploadFile($request->image, 'portfolio.blog', auth()->id())['url'] ?? '';
         }
-
-        $img_background_url         = $request->img_background_link ?? '';
-        if ($request->hasFile('img_background')) {
-            $img_background_url     = $fileService->uploadFile($request->img_background, 'portfolio.data-info.background', auth()->id())['url'] ?? '';
-        }
-        $cv_url         = $request->cv_link ?? '';
-        if ($request->hasFile('cv')) {
-            $cv_url     = $fileService->uploadFile($request->cv, 'portfolio.data-info.cv', auth()->id())['url'] ?? '';
-        }
-
-
-
-
-        unset($data['avatar_link'], $data['avatar_remove'], $data['avatar'], $data['img_background_link'], $data['cv_link']);
+        unset($data['image_link'],$data['avatar_remove']);
 
         $this->table->create([
             ...$data,
-            'avatar'         => $avatar_url,
-            'img_background' => $img_background_url,
-            'cv'            => $cv_url,
+            'slug' => Str::slug($data['title']),
+            'image'         => $image_link,
             'created_at'    => now(),
             'created_by'    => auth()->id(),
             'status'        => 'active'

@@ -1,5 +1,5 @@
 @extends('layout.app')
-@section('title', 'Manage Portfolio Images')
+@section('title', 'Manage Portfolio Data Info')
 @section('main')
     <div id="kt_app_content_container" class="app-container container-xxl">
         <!--begin::Card-->
@@ -24,7 +24,7 @@
 
                         <a href="{{ route($params['prefix'] . '.' . $params['controller'] . '.create') }}" type="button"
                             class="btn btn-primary">
-                            <i class="ki-outline ki-plus fs-2"></i>Add Category</a>
+                            <i class="ki-outline ki-plus fs-2"></i>Add new</a>
                         <!--end::Add user-->
                     </div>
 
@@ -38,7 +38,7 @@
                 <!--begin::Row-->
 
                 <div class="container">
-                    <h1 class="mb-4">List Category</h1>
+                    <h1 class="mb-4">List Data ({{$params['items']->total()}})</h1>
 
                     @if (session('success'))
                         <div class="alert alert-success">{{ session('success') }}</div>
@@ -49,9 +49,9 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Image</th>
-                                <th>Name</th>
+                                <th>Title</th>
                                 <th>Email</th>
-                                <th>Type</th>
+                                <th>Status</th>
                                 <th>Created At</th>
                                 <th>Created by</th>
                                 <th>Actions</th>
@@ -63,20 +63,18 @@
                                     <td>{{ $item->id }}</td>
                                     <td>
                                         <div class="d-flex align-items-center">
-                                            <div class="icon-wrapper cursor-pointer symbol symbol-40px" style="width: 120px; height:60px">
-                                                @if ($item->type == 'image')
-                                                    <img src="{{ $item->image ?? asset('assets/media/auth/505-error.png') }}"
+                                            <span class="icon-wrapper cursor-pointer symbol symbol-40px">
+                                                  <img src="{{ $item->image ?? asset('assets/media/auth/505-error.png') }}"
                                                         alt="">
-                                                @else
-                                                    <video class="w-100 h-100" src="{{ $item->image }}"></video>
-                                                @endif
-                                            </div>
+                                            </span>
 
                                         </div>
                                     </td>
-                                    <td><div style="max-width: 220px;overflow:hidden">{{ $item->name }}</div></td>
+                                    <td><div style="max-width: 220px;overflow:hidden">
+                                        {{ $item->title }}</div></td>
+
                                     <td class="text-warning">{{ $item->email }}</td>
-                                    <td class="text">{{ $item->type }}</td>
+                                    <td class="text">{{ $item->status }}</td>
                                     <td>{{ $item->created_at->format('d/m/Y H:i') }}</td>
                                     <td>{{ $item->creator->full_name }}</td>
                                     <td>

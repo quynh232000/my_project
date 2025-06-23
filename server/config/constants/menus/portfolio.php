@@ -55,6 +55,13 @@ return [
                 ['title' => 'Add Projects', 'route' => 'portfolio.project.create'],
             ],
         ],
+         [
+            'title' => 'Blogs',
+            'sub' => [
+                ['title' => 'Blogs Listing', 'route' => 'portfolio.blog.index'],
+                ['title' => 'Add Blogs', 'route' => 'portfolio.blog.create'],
+            ],
+        ],
 
     ],
 ];

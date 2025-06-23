@@ -87,6 +87,22 @@ return  [
 
             ]
         ],
+         [
+            'type'          => 'resource',
+            'uri'           => 'blog',
+            'controller'    =>  \App\Http\Controllers\Admin\Portfolio\BlogController::class,
+            'name_prefix'   => 'portfolio.blog',
+            'only'          => ['index', 'edit', 'store', 'create', 'update', 'destroy'], // 👈 Chỉ dùng các action này
+            'labels'        => [
+                'index'         => 'Listing',
+                'edit'          => 'Edit Info',
+                'update'        => 'Update Info',
+                'show'          => 'View Detail',
+                'destroy'       => 'Delete',
+                'store'         => 'Create',
+
+            ]
+        ],
     ]
 
 ];
