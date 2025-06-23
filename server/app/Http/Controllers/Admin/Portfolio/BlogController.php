@@ -44,7 +44,6 @@ class BlogController extends AdminController
             ...$data,
             'slug' => Str::slug($data['title']),
             'image'            => $avatar_link,
-            'cv'                => $cv_url,
             'updated_at'        => now()
 
         ]);
