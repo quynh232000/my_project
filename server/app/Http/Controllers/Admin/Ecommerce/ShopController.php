@@ -3,18 +3,17 @@
 namespace App\Http\Controllers\Admin\Ecommerce;
 
 use App\Http\Controllers\AdminController;
-use App\Models\Admin\UserModel;
-use App\Models\Ecommerce\CategoryModel;
+use App\Models\Ecommerce\ShopModel;
 use App\Services\FileService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-class CategoryController extends AdminController
+class ShopController extends AdminController
 {
     private $table = null;
     public function __construct(Request $request)
     {
         parent::__construct($request);
-        $this->table = new CategoryModel();
+        $this->table = new ShopModel();
     }
     public function index()
     {

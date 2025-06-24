@@ -3,32 +3,34 @@ return [
     'title'     => 'E-Commerce',
     'icon'      => 'ki-outline ki-handcart',
     'sub'       => [
-        // [
-        //     'title' => 'Dashboard',
-        //     'route' => 'ecommerce.dassboard.index'
-        // ],
-        //  [
-        //     'title' => 'Category',
-        //     'route' => 'ecommerce.category.index'
-        // ], [
-        //     'title' => 'Product',
-        //     'route' => 'ecommerce.product.index'
-        // ], [
-        //     'title' => 'Orders',
-        //     'route' => 'ecommerce.order.index'
-        // ], [
-        //     'title' => 'Shipping',
-        //     'route' => 'ecommerce.shipping.index'
-        // ],
-        // [
-        //     'title' => 'Sales',
-        //     'sub' => [
-        //         ['title' => 'Orders Listing', 'route' => 'sales.orders'],
-        //         ['title' => 'Order Details', 'route' => 'sales.details'],
-        //         ['title' => 'Add Order', 'route' => 'sales.add'],
-        //         ['title' => 'Edit Order', 'route' => 'sales.edit'],
-        //     ],
-        // ],
+        [
+            'title' => 'Category',
+            'sub' => [
+                ['title' => 'Category Listing', 'route' => 'ecommerce.category.index'],
+                ['title' => 'Add Category', 'route' => 'ecommerce.category.create'],
+            ],
+        ],
+         [
+            'title' => 'Payment Method',
+            'sub' => [
+                ['title' => 'Payment Method Listing', 'route' => 'ecommerce.payment-method.index'],
+                ['title' => 'Add Payment Method', 'route' => 'ecommerce.payment-method.create'],
+            ],
+        ],
+         [
+            'title' => 'Settings',
+            'sub' => [
+                ['title' => 'Settings Listing', 'route' => 'ecommerce.setting.index'],
+                ['title' => 'Add Settings', 'route' => 'ecommerce.setting.create'],
+            ],
+        ],
+          [
+            'title' => 'Shops',
+            'sub' => [
+                ['title' => 'Shops Listing', 'route' => 'ecommerce.shop.index'],
+                ['title' => 'Add Shops', 'route' => 'ecommerce.shop.create'],
+            ],
+        ],
 
     ],
 ];
