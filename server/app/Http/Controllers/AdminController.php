@@ -22,5 +22,10 @@ abstract class AdminController extends Controller
 
         $this->_viewAction              = $this->_params['prefix'] . '.' . $this->_params['controller'] . '.' . $this->_params['action'];
     }
+    protected function getCookie($key, $defaultValue)
+    {
+        $name = $this->_params['prefix']  . '-' .  $this->_params['controller']   . '-' .  $this->_params['action'] . $key;
+        return isset($_COOKIE[$name]) ? $_COOKIE[$name] : $defaultValue;
+    }
 
 }

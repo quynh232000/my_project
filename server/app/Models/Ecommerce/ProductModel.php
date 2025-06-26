@@ -4,22 +4,24 @@ namespace App\Models\Ecommerce;
 
 use App\Models\Admin\UserModel;
 use App\Models\AdminModel;
+use Illuminate\Support\Facades\Auth;
 
-class ShopModel  extends AdminModel
+class ProductModel  extends AdminModel
 {
 
 
     protected $table        = null;
-    public function __construct()
+    public function __construct($attributes = [])
     {
         $this->table        = config('constants.table.ecommerce.' . self::getTable());
+        $this->attributes   = $attributes;
         $this->_data        = [
             'listField' => [
                 $this->table . '.id'                => 'id',
-                $this->table . '.logo'              => 'Logo',
+                $this->table . '.image'             => 'Image',
                 $this->table . '.name'              => 'Name',
-                $this->table . '.email'              => 'Email',
-                $this->table . '.phone_number'      => 'Phone',
+                $this->table . '.price'             => 'Price',
+                $this->table . '.stock'             => 'Stock',
                 $this->table . '.status'            => 'Status',
                 'u.full_name AS created_by'         => 'Creator',
                 $this->table . '.created_at'        => 'Created At',
@@ -34,6 +36,10 @@ class ShopModel  extends AdminModel
         parent::__construct();
     }
     protected $guarded       = [];
+    public function creator()
+    {
+        return   $this->belongsTo(UserModel::class, 'created_by', 'id');
+    }
      public function adminQuery(&$query, $params)
     {
         if (isset($params['created_by']) && $params['created_by'] !== "") {
@@ -46,12 +52,6 @@ class ShopModel  extends AdminModel
         }
         if (isset($params['name']) && $params['name'] !== "all") {
             $query->where($this->table . '.name', 'LIKE', '%' . $params['name'] . '%');
-        }
-        if (isset($params['email']) && $params['email'] !== "all") {
-            $query->where($this->table . '.email', 'LIKE', '%' . $params['email'] . '%');
-        }
-        if (isset($params['phone']) && $params['phone'] !== "all") {
-            $query->where($this->table . '.phone_number', 'LIKE', '%' . $params['phone'] . '%');
         }
 
         if (isset($params['created_at']) && !empty($params['created_at'])) {
@@ -165,7 +165,7 @@ class ShopModel  extends AdminModel
                     <option value="inactive" ' . ($default == "inactive" ? "selected" : "") . '>Ẩn</option>
                 </select>';
     }
-    public function columnLogo($params, $field, $val)
+    public function columnImage($params, $field, $val)
     {
 
         return '<div class="d-flex justify-content-center px-5">

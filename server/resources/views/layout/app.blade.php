@@ -1,4 +1,11 @@
 @extends('layout.root')
+@push('css')
+    <style>
+        .p-1.text-left.align-middle{
+            padding:auto 10px !important;
+        }
+    </style>
+@endpush
 
 @section('root')
     <!--begin::Theme mode setup on page load-->

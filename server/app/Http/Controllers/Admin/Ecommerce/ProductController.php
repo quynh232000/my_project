@@ -3,22 +3,23 @@
 namespace App\Http\Controllers\Admin\Ecommerce;
 
 use App\Http\Controllers\AdminController;
-use App\Models\Ecommerce\ShopModel;
+use App\Models\Ecommerce\ProductModel;
 use App\Services\FileService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-class ShopController extends AdminController
+class ProductController extends AdminController
 {
-    private $table = null;
-    private $model = null;
-    public function __construct(Request $request)
+    private $table  = null;
+    protected $data = [];
+    public $model;
+     public function __construct(Request $request)
     {
         parent::__construct($request);
-        $this->model = new ShopModel();
+        $this->model = new ProductModel();
     }
     public function index()
     {
-       $this->_params["item-per-page"]     = $this->getCookie('-item-per-page', 25);
+        $this->_params["item-per-page"]     = $this->getCookie('-item-per-page', 25);
         $this->_params['model']             = $this->model->listItem($this->_params, ['task' => "admin-index"]);
         return view($this->_viewAction, ['params' => $this->_params]);
     }
@@ -62,7 +63,7 @@ class ShopController extends AdminController
         $icon_link                 = $request->icon_link ?? '';
         $fileService                = new FileService();
         if ($request->hasFile('icon')) {
-            $icon_link             = $fileService->uploadFile($request->icon, 'ecommerce.category', auth()->id())['url'] ?? '';
+            $icon_link             = $fileService->uploadFile($request->icon, 'ecommerce.Product', auth()->id())['url'] ?? '';
         }
         unset($data['icon_link'],$data['avatar_remove']);
 
@@ -83,5 +84,12 @@ class ShopController extends AdminController
     {
         $this->table->where('id', $id)->delete();
         return redirect()->back()->with('success', 'Delete route successfully.');
+    }
+     public function status($status, $id)
+    {
+        $this->_params['status']    = $status;
+        $this->_params['id']        = $id;
+        $this->model->saveItem($this->_params, ['task' => 'change-status']);
+        return redirect()->route($this->_params['prefix'] . '.' . $this->_params['controller'] . '.index')->with('success', 'Update status successfully!');
     }
 }

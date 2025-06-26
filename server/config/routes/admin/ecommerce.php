@@ -34,7 +34,27 @@ return  [
             'name_prefix'   => 'ecommerce.shop',
             'only'          => ['index', 'edit', 'store', 'create', 'update', 'destroy'],
         ],
-
+          [
+            'controller'    =>   \App\Http\Controllers\Admin\Ecommerce\ShopController::class,
+            'uri'           => 'ecommerce/shop/status/{status}/{id}',
+            'name'          => 'ecommerce.shop.status',
+            'methods'       => ['get'],
+            'action'        => 'status',
+          ],
+         [
+            'type'          => 'resource',
+            'uri'           => 'product',
+            'controller'    =>  \App\Http\Controllers\Admin\Ecommerce\ProductController::class,
+            'name_prefix'   => 'ecommerce.product',
+            'only'          => ['index', 'edit', 'store', 'create', 'update', 'destroy'],
+        ],
+         [
+            'controller'    =>   \App\Http\Controllers\Admin\Ecommerce\ProductController::class,
+            'uri'           => 'ecommerce/product/status/{status}/{id}',
+            'name'          => 'ecommerce.product.status',
+            'methods'       => ['get'],
+            'action'        => 'status',
+        ]
     ]
 
 ];

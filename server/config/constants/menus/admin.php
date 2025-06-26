@@ -2,16 +2,11 @@
 return [
     'title'     => 'General',
     'icon'      => 'ki-outline ki-credit-cart',
+    'name_route' => basename(__FILE__, '.php'),
     'sub'       => [
-        // [
-        //     'title' => 'File',
-        //     'sub' => [
-        //         ['title' => 'File Listing', 'route' => 'admin.file.index'],
-        //         ['title' => 'Add File', 'route' => 'admin.file.create'],
-        //     ],
-        // ],
         [
             'title' => 'Account',
+             'name_route' => basename(__FILE__, '.php').'.user',
             'sub' => [
                 ['title' => 'Account Listing', 'route' => 'admin.user.index'],
                 ['title' => 'Add user', 'route' => 'admin.user.create'],
@@ -19,14 +14,15 @@ return [
         ],
         [
             'title' => 'Permission',
+             'name_route' => basename(__FILE__, '.php').'.permission',
             'sub' => [
-                // ['title' => 'Resource Listing', 'route' => 'admin.resrouce.index'],
                 ['title' => 'Role Listing', 'route' => 'admin.role.index'],
                 ['title' => 'Permission Listing', 'route' => 'admin.permission.index'],
             ],
         ],
         [
             'title' => 'File Manager',
+             'name_route' => basename(__FILE__, '.php').'.file-upload',
             'sub' => [
                 ['title' => 'Files Listing', 'route' => 'admin.file-upload.index'],
             ],

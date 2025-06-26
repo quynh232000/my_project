@@ -1,4 +1,4 @@
-@props(['item'])
+@props(['item','currentRouteName'])
 
 @php
     $hasSub     = isset($item['sub']);
@@ -6,11 +6,14 @@
     $method     = 'GET';
     $show       = false;
     $isActive   = false;
-
     if (!$routeName || !$hasSub) {
         // ⚠️ Trường hợp KHÔNG có route và KHÔNG có sub → vẫn hiển thị
-        $show = true;
-        $isActive = request()->routeIs($routeName);
+        $show  = true;
+        if(Str::startsWith($currentRouteName, $item['name_route'] ?? false)){
+            $isActive   = true;
+        }
+        $isActive       = $isActive || request()->routeIs($routeName);
+
     }
 
     // Trường hợp có route và KHÔNG có sub: kiểm tra quyền
@@ -18,7 +21,6 @@
         $show       = auth()->check() && auth()->user()->hasPermission($routeName, $method);
         $isActive   = $isActive || request()->routeIs($routeName);
     }
-
     // Trường hợp có sub: hiển thị nếu ít nhất 1 sub có quyền
     if ($hasSub && isset($item['sub'])) {
         foreach ($item['sub'] as $subItem) {
@@ -26,13 +28,13 @@
             if ($subRoute && auth()->check() && auth()->user()->hasPermission($subRoute, $method)) {
                 $show       = true;
             }
-
             // Kiểm tra sub route active
             if ($subRoute && request()->routeIs($subRoute)) {
                 $isActive   = true;
             }
         }
     }
+    // hover show
 @endphp
 @if ($show)
     <div data-kt-menu-trigger="click" class="menu-item {{ $hasSub ? 'menu-accordion ' . ($isActive ? 'show' : '') : '' }}">
@@ -65,7 +67,7 @@
         @if ($hasSub)
             <div class="menu-sub menu-sub-accordion">
                 @foreach ($item['sub'] as $subItem)
-                    <x-sidebar.menu-item :item="$subItem" />
+                    <x-sidebar.menu-item :item="$subItem" :currentRouteName="$currentRouteName" />
                 @endforeach
             </div>
         @endif

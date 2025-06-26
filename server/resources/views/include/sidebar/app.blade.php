@@ -2,6 +2,7 @@
     $menus = config('constants.menus._register');
     // dd($menus);
     // die();
+    $currentRouteName = \Route::currentRouteName();
 @endphp
 
 
@@ -21,7 +22,7 @@
             id="kt_app_sidebar_secondary_menu" data-kt-menu="true">
 
             @foreach ($menus as $menu)
-                <x-sidebar.menu-item :item="$menu" />
+                <x-sidebar.menu-item :item="$menu"  :currentRouteName="$currentRouteName" />
             @endforeach
 
             <!--begin::Footer-->
