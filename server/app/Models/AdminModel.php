@@ -9,7 +9,7 @@ class AdminModel extends Model
 {
 
     protected $table            = '';
-    protected $crudNotAccepted  = ['_token','prefix','controller','action','as','_method','ID',];
+    protected $crudNotAccepted  = ['_token', 'prefix', 'controller', 'action', 'as', '_method', 'ID',];
     protected $_data                  = [];
     public $timestamps          = false;
     public $checkall            = true;
@@ -17,7 +17,13 @@ class AdminModel extends Model
     {
         $this->primaryKey = $this->columnPrimaryKey();
     }
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
 
+
+    // okaosdkaos
 
     public function getTable()
     {
@@ -26,7 +32,7 @@ class AdminModel extends Model
         $className  = class_basename($this);
         $baseName   = str_replace('Model', '', $className);
         $table      = Str::snake($baseName);
-        return 'TABLE_'.strtoupper($table);
+        return 'TABLE_' . strtoupper($table);
     }
 
     static function slbItemPerPage($params)
@@ -72,18 +78,16 @@ class AdminModel extends Model
                 if ($sort == $field) {
                     $icon = $order == 'asc' ? '<i class="fa-sharp fa-solid fa-sort-down text-primary"></i>' : '<i class="fa-sharp fa-solid fa-sort-up text-primary"></i>';
                 }
-                $xhtml .= sprintf('<th class="text-center align-middle p-1%s"><a href="%s" class="text-dark">%s</a></th>', $className . $display, $link, $label . '&nbsp;'. $icon);
+                $xhtml .= sprintf('<th class="text-center align-middle p-1%s"><a href="%s" class="text-dark">%s</a></th>', $className . $display, $link, $label . '&nbsp;' . $icon);
             } else {
-                if($this->checkall == true){
+                if ($this->checkall == true) {
 
                     $xhtml .= '<th width="5%" class="text-center pl-0 pb-2 ps-5">
                                     <div title="Check all" class="form-check form-check-sm form-check-custom checkbox-toggle form-check-danger  me-3">
                                         <input class="form-check-input" type="checkbox" data-kt-check="true" data-kt-check-target="#kt_ecommerce_products_table .form-check-input" value="1">
                                     </div>
                                 </th>';
-
-                    }
-
+                }
             }
         }
         return $xhtml;
@@ -101,13 +105,13 @@ class AdminModel extends Model
         $allHtml = '<div style="overflow-x: auto; width: 100%">
                         <table id="table-list-' . $params['prefix'] . '-' . $params['controller'] . '" class="table nowrap table-bordered no-footer text-left table-striped fs-lg">
                             <thead>'
-                            . $data['headTable'] .
-                            ($flagButton == true ? '<th width="10%" class="text-center">Actions</th>' : '' ) .
-                            '</thead>
+            . $data['headTable'] .
+            ($flagButton == true ? '<th width="10%" class="text-center">Actions</th>' : '') .
+            '</thead>
                             <tbody id="' . $params['prefix'] . '-' . $params['controller'] . '">';
 
         if (count($data['items']) > 0) {
-            $i=0;
+            $i = 0;
 
             foreach ($data['items'] as $key => $val) {
 
@@ -124,7 +128,7 @@ class AdminModel extends Model
                     $field = end($tmp);
                     $xhtml .= $this->createRow($params, $field, $val, $id);
                 }
-                $btnAction   = ($flagButton == true ? '<td class=" last text-center" width="5%">' . $this->getActionButton($params, $data, $val) . '</td>' : '' ) ;
+                $btnAction   = ($flagButton == true ? '<td class=" last text-center" width="5%">' . $this->getActionButton($params, $data, $val) . '</td>' : '');
 
                 $allHtml .= '<tr class="' . $class . ' pointer">' . $xhtml . $btnAction . '</tr>';
                 $i++;
@@ -136,12 +140,13 @@ class AdminModel extends Model
         $allHtml .=  '</tbody>
                     </table></div>';
         if (count($data['items']) > 0 && !is_array($data['items'])) {
-            $allHtml .= self::paginateBackend($data['items'],$params);
+            $allHtml .= self::paginateBackend($data['items'], $params);
         }
         return $allHtml;
     }
 
-    public static function paginateBackend($items,$params){
+    public static function paginateBackend($items, $params)
+    {
         return '<div class="x_content mt-5">
                     <div class="row">
 
@@ -150,7 +155,6 @@ class AdminModel extends Model
                         </div>
                     </div>
                 </div>';
-
     }
     public function createRow($params, $field, $val, $id, $options = null)
     {
@@ -174,9 +178,9 @@ class AdminModel extends Model
                 $display = array_key_exists($field, $options['fieldShow']) ? '' : ' d-none';
             }
             $className = (isset($options['task']) && $options['task'] == 'show-custom-field') ? ' row-table row-' . $field : '';
-            return sprintf('<td class=" text-' . (!preg_match('#[^\d\.]#',$elemen) ? 'right' : 'left') . ' align-middle%s">%s</td>', $className . $display, $elemen);
+            return sprintf('<td class=" text-' . (!preg_match('#[^\d\.]#', $elemen) ? 'right' : 'left') . ' align-middle%s">%s</td>', $className . $display, $elemen);
         } else {
-            if($this->checkall == true){
+            if ($this->checkall == true) {
                 return $this->columnPrimary($params, $val);
             }
             return '';
