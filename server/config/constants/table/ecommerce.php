@@ -19,6 +19,20 @@ return [
     'TABLE_PRODUCT_REVIEW_METRIC'   => 'ecommerce_product_review_metrics',
     'TABLE_PRODUCT_REVIEW_REPLY'    => 'ecommerce_product_review_replies',
     'TABLE_PRODUCT_SHIPPING'        => 'ecommerce_product_shippings',
+    'TABLE_BANNER'                  => 'ecommerce_banners',
+    'TABLE_VOUCHER'                 => 'ecommerce_vouchers',
+    'TABLE_USER_VOUCHER'            => 'ecommerce_user_vouchers',
+    'TABLE_CATEGORY_POST'           => 'ecommerce_categories_posts',
+    'TABLE_POST_TYPE'               => 'ecommerce_post_types',
+    'TABLE_POST'                    => 'ecommerce_posts',
+    'TABLE_ORDER'                   => 'ecommerce_orders',
+    'TABLE_ORDER_SHOP'              => 'ecommerce_order_shops',
+    'TABLE_ORDER_DETAIL'            => 'ecommerce_order_details',
+    'TABLE_LIVESTREAM'              => 'ecommerce_livestreams',
+    'TABLE_LIVE_CHAT'               => 'ecommerce_live_chats',
+    'TABLE_PRODUCT_LIVE'            => 'ecommerce_product_lives',
+    'TABLE_COIN_RULE'               => 'ecommerce_coin_rules',
+    'TABLE_COIN_TRANSACTION'        => 'ecommerce_coin_transactions',
 
 
 ];

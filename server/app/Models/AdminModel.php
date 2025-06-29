@@ -84,7 +84,7 @@ class AdminModel extends Model
 
                     $xhtml .= '<th width="5%" class="text-center pl-0 pb-2 ps-5">
                                     <div title="Check all" class="form-check form-check-sm form-check-custom checkbox-toggle form-check-danger  me-3">
-                                        <input class="form-check-input" type="checkbox" data-kt-check="true" data-kt-check-target="#kt_ecommerce_products_table .form-check-input" value="1">
+                                        <input class="form-check-input list_check_all" type="checkbox" data-kt-check="true" data-kt-check-target="#kt_ecommerce_products_table .form-check-input" value="1">
                                     </div>
                                 </th>';
                 }
@@ -201,7 +201,7 @@ class AdminModel extends Model
         if (isset($params[$id]) && !empty($params[$id]) && in_array($val[$id], explode(',', $params[$id]))) {
             $checked   = ' checked';
         }
-        return sprintf('<td class=" text-center ps-3 d-flex justify-content-center">
+        return sprintf('<td class=" text-center ps-5 ">
                                     <div title="Chọn tất cả" class="form-check form-check-sm form-check-custom checkbox-toggle form-check-solid me-3 mt-3">
                                         <input class="form-check-input"
                                         type="checkbox" data-kt-check="true" data-kt-check-target="#kt_ecommerce_products_table .form-check-input"

@@ -4,6 +4,7 @@
 <head>
 
     <!-- meta -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="description" content="Created by Mr Quynh (quynh232000@gmail.com)" />
     <meta name="keywords" content="Created by Mr Quynh (quynh232000@gmail.com)" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -14,15 +15,15 @@
     <meta property="og:url" content="https://keenthemes.com/metronic" />
     <meta property="og:site_name" content="Metronic by Keenthemes" />
     <link rel="canonical" href="http://preview.keenthemes.comindex.html" />
-	<link href="{{ asset('assets/plugins/custom/datatables/datatables.bundle.css?t='.time()) }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('assets/plugins/global/plugins.bundle.css?t='.time()) }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('assets/css/style.bundle.css?t='.time()) }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('assets/plugins/custom/datatables/datatables.bundle.css?t=' . time()) }}" rel="stylesheet"
+        type="text/css" />
+
 
 
     <!-- Required Meta Tags Always Come First -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <link rel="icon" type="image/png" href="{{asset('assets/media/logos/logo-icon.png')}}">
+    <link rel="icon" type="image/png" href="{{ asset('assets/media/logos/logo-icon.png') }}">
     <!-- Title -->
     <title> @yield('title') | Quin </title>
 
@@ -44,10 +45,13 @@
     @stack('css')
     @stack('js1')
     <style>
-        img{
+        img {
             object-fit: cover
         }
     </style>
+    <link href="{{ asset('assets/plugins/global/plugins.bundle.css?t=' . time()) }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('assets/css/style.bundle.css?t=' . time()) }}" rel="stylesheet" type="text/css" />
+    <script src="{{ asset('assets/js/admin/admin-function.js?t=' . time()) }}"></script>
 </head>
 
 
@@ -80,11 +84,11 @@
     <!--end::Root-->
     <!--begin::Javascript-->
     <script>
-        var hostUrl = "{{asset('assets/')}}";
+        var hostUrl = "{{ asset('assets/') }}";
     </script>
     <!--begin::Global Javascript Bundle(mandatory for all pages)-->
-    <script src="{{asset('assets/plugins/global/plugins.bundle.js')}}"></script>
-    <script src="{{asset('assets/js/scripts.bundle.js')}}"></script>
+    <script src="{{ asset('assets/plugins/global/plugins.bundle.js') }}"></script>
+    <script src="{{ asset('assets/js/scripts.bundle.js') }}"></script>
     <!--end::Global Javascript Bundle-->
     <!--begin::Custom Javascript(used for this page only)-->
 

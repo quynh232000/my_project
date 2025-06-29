@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 class ShopController extends AdminController
 {
-    private $table = null;
     private $model = null;
     public function __construct(Request $request)
     {
@@ -24,7 +23,7 @@ class ShopController extends AdminController
     }
     public function update(Request $request, $id)
     {
-        $item = $this->table->find($id);
+        $item = $this->model->find($id);
         $data = $request->all();
         $icon_link                 = $request->icon_link ?? '';
         $fileService                = new FileService();
@@ -46,14 +45,14 @@ class ShopController extends AdminController
     }
     public function edit(Request $request, $id)
     {
-        $this->_params['categories'] = $this->table->orderByDesc('id')->get();
-        $this->_params['item']  = $this->table->find($id);
+        $this->_params['categories'] = $this->model->orderByDesc('id')->get();
+        $this->_params['item']  = $this->model->find($id);
 
         return view($this->_viewAction, ['params' => $this->_params]);
     }
     public function create(Request $request)
     {
-        $this->_params['categories'] = $this->table->orderByDesc('id')->get();
+        $this->_params['categories'] = $this->model->orderByDesc('id')->get();
         return view($this->_viewAction, ['params' => $this->_params]);
     }
     public function store(Request $request)
@@ -66,7 +65,7 @@ class ShopController extends AdminController
         }
         unset($data['icon_link'],$data['avatar_remove']);
 
-        $this->table->create([
+        $this->model->create([
             ...$data,
             'slug'              => Str::slug($data['name']),
             'icon_url'          => $icon_link,
@@ -81,7 +80,20 @@ class ShopController extends AdminController
     }
     public function destroy($id)
     {
-        $this->table->where('id', $id)->delete();
+        $this->model->where('id', $id)->delete();
         return redirect()->back()->with('success', 'Delete route successfully.');
+    }
+     public function confirmDelete()
+    {
+        $this->_params['id'] = $this->_params['id'] ?? [];
+        $this->model->deleteItem($this->_params, ['task' => 'delete-item']);
+        return response()->json(array('status' => true, 'message' => 'Delete item successfully.'));
+    }
+     public function status($status, $id)
+    {
+        $this->_params['status']    = $status;
+        $this->_params['id']        = $id;
+        $this->model->saveItem($this->_params, ['task' => 'change-status']);
+        return redirect()->route($this->_params['prefix'] . '.' . $this->_params['controller'] . '.index')->with('success', 'Update status successfully!');
     }
 }

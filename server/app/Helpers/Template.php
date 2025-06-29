@@ -37,12 +37,12 @@ class Template
             $link = route($params['prefix'] . '.' . $params['controller'] .  $currentButton['route-name'], [str_replace('-','_',$params['controller']) => $id]);
 
             $xhtml .= sprintf(
-                '<a href="'.route($params['prefix'] . '.' . $params['controller'] .  '.destroy',1).'" %s %s type="button" class="btn btn-sm   %s px-1 py-0 btn btn-sm btn-icon btn-active-light-primary me-2" data-toggle="tooltip" data-placement="top"
+                '<a  %s %s type="button" class="btn btn-sm   %s px-1 py-0 btn btn-sm btn-icon btn-active-light-primary me-2" data-toggle="tooltip" data-placement="top"
                     data-original-title="%s">
                     <i class="fa-sharp fa-solid %s %s"></i>
                 </a>&nbsp;' ,
                 $btn == "delete" ? '' : "href='$link'",
-                $btn == "delete" ?  "onclick='return confirm('Are you sure tho delete this action?')'":'',
+                $btn == "delete" ?  "onclick='confirmDeletion(\"".$id."\",\"".route($params['prefix'] . '.' . $params['controller'] .  '.confirm-delete')."\")'":'',
                 $currentButton['class'],
                 $currentButton['title'],
                 $currentButton['icon'],

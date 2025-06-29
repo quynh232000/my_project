@@ -2867,4 +2867,7 @@
             $('table.table-striped tbody').html('<tr><td colspan="100%" class="text-center">No data</td></tr>');
         }
     </script>
+    <script src="{{ asset('assets/js/admin/admin.js?t='.time()) }}"></script>
+
+
 @endpush

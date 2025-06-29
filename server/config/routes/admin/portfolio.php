@@ -1,6 +1,6 @@
 <?php
 use App\Http\Middleware\IsLoginMiddleware;
-
+$base = basename(__FILE__, '.php');
 return  [
 
     'prefix' => basename(__FILE__, '.php'),
@@ -102,6 +102,29 @@ return  [
                 'store'         => 'Create',
 
             ]
+        ],
+
+        // contact
+          [
+            'type'          => 'resource',
+            'uri'           => 'contact',
+            'controller'    => \App\Http\Controllers\Admin\Portfolio\ContactController::class,
+            'name_prefix'   => $base . '.contact',
+            'only'          => ['index', 'edit', 'destroy'],
+        ],
+        [
+            'controller'    =>  \App\Http\Controllers\Admin\Portfolio\ContactController::class,
+            'uri'           => $base . '/contact/status/{status}/{id}',
+            'name'          => $base . '.contact.status',
+            'methods'       => ['get'],
+            'action'        => 'status',
+        ],
+        [
+            'controller'    =>  \App\Http\Controllers\Admin\Portfolio\ContactController::class,
+            'uri'           => $base . '/contact/confirm-delete',
+            'name'          => $base . '.contact.confirm-delete',
+            'methods'       => ['post'],
+            'action'        => 'confirmDelete',
         ],
     ]
 

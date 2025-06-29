@@ -53,6 +53,13 @@ return [
                 ['title' => 'Add Blogs', 'route' => 'portfolio.blog.create'],
             ],
         ],
+         [
+            'title' => 'Contacts',
+            'name_route' => basename(__FILE__, '.php').'.contact',
+            'sub' => [
+                ['title' => 'Contacts Listing', 'route' => 'portfolio.contact.index'],
+            ],
+        ],
 
     ],
 ];

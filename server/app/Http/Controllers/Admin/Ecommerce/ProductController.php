@@ -80,10 +80,11 @@ class ProductController extends AdminController
 
         return redirect()->back()->with('success', 'Create successfully.');
     }
-    public function destroy($id)
+    public function confirmDelete()
     {
-        $this->table->where('id', $id)->delete();
-        return redirect()->back()->with('success', 'Delete route successfully.');
+        $this->_params['id'] = $this->_params['id'] ?? [];
+        $this->model->deleteItem($this->_params, ['task' => 'delete-item']);
+        return response()->json(array('status' => true, 'message' => 'Delete item successfully.'));
     }
      public function status($status, $id)
     {

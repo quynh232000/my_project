@@ -36,49 +36,51 @@ class ProductModel  extends AdminModel
         parent::__construct();
     }
     protected $guarded       = [];
-    public function creator()
-    {
-        return   $this->belongsTo(UserModel::class, 'created_by', 'id');
-    }
      public function adminQuery(&$query, $params)
     {
-        if (isset($params['created_by']) && $params['created_by'] !== "") {
-            $created_by = explode(',', preg_replace('/\s+/', ',', $params['created_by']));
-            $created_by = array_filter($created_by, 'strlen');
-            $query->whereIn($this->table . '.created_by', $created_by);
+        if ($params['created_at'] ?? false) {
+            $query->whereDate($this->table . '.created_at', $params['created_at']);
         }
-        if (isset($params['full_name']) && $params['full_name'] !== "all") {
-            $query->where('u.full_name', 'LIKE', '%' . $params['full_name'] . '%');
+        if ($params['updated_at'] ?? false) {
+            $query->whereDate($this->table . '.updated_at', $params['updated_at']);
         }
-        if (isset($params['name']) && $params['name'] !== "all") {
-            $query->where($this->table . '.name', 'LIKE', '%' . $params['name'] . '%');
-        }
-
-        if (isset($params['created_at']) && !empty($params['created_at'])) {
-            $date   = explode('-', $params['created_at']);
-            $start  = str_replace(['/'], ['-'], $date[0]);
-            $end    = str_replace(['/'], ['-'], $date[1]);
-            $start  = date("Y-m-d H:i:s", strtotime($start));
-            $end    = date("Y-m-d 23:59:59", strtotime($end));
-
-            $query->whereBetween($this->table . '.created_at', array($start, $end));
-
-        }
-        if (isset($params['updated_at']) && !empty($params['updated_at'])) {
-            $date   = explode('-', $params['updated_at']);
-            $start  = str_replace(['/'], ['-'], $date[0]);
-            $end    = str_replace(['/'], ['-'], $date[1]);
-            $start  = date("Y-m-d H:i:s", strtotime($start));
-            $end    = date("Y-m-d 23:59:59", strtotime($end));
-
-            $query->whereBetween($this->table . '.updated_at', array($start, $end));
-
+        // filter by equa
+        $dataEqua = [
+                        [
+                            'field' => $this->table . '.status',
+                            'value' => 'status'
+                        ]
+                    ];
+        foreach ($dataEqua ?? [] as $item) {
+            if (isset($params[$item['value']]) && $params[$item['value']] != "") {
+                $query->where($item['field'], '=', $params[$item['value']]);
+            }
         }
 
-        if (isset($params['status']) && $params['status'] != "") {
-            $query->where($this->table . '.status', '=', $params['status']);
+        // filter by like
+        $dataLike = [
+                        [
+                            'field' =>  $this->table . '.name',
+                            'value' => 'name'
+                        ],
+                        [
+                            'field' =>  $this->table . '.slug',
+                            'value' => 'slug'
+                        ],
+                        [
+                            'field' =>  $this->table . '.created_by',
+                            'value' => 'created_by'
+                        ],
+                        [
+                            'field' => 'u.full_name',
+                            'value' => 'full_name'
+                        ],
+                    ];
+        foreach ($dataLike ?? [] as $item) {
+            if (isset($params[$item['value']]) && $params[$item['value']] != "") {
+                $query->where($item['field'], 'LIKE', '%' .$params[$item['value']]. '%');
+            }
         }
-
         return $query;
     }
     public function listItem($params = null, $options = null)
@@ -152,14 +154,14 @@ class ProductModel  extends AdminModel
             if ($params['id'] === '0') {
 
             } else {
-
-                self::whereIn($this->primaryKey, $params['id'])->delete();
+                self::whereIn('id', $params['id'])->delete();
             }
         }
     }
     public static function slbStatus($default = null, $params = [])
     {
-        return '<select id="status" name="status" class="form-control select2 select2-danger" data-dropdown-css-class="select2-danger" style="width: 100%;">
+        return '<select class="form-select mb-2" id="status" data-control="select2" name="status"
+                        data-placeholder="Select an option" data-allow-clear="true">
                    ' . (!$default ? '<option value="" selected>Chọn trạng thái</option>' : '') . '
                     <option value="active" ' . ($default == "active" ? "selected" : "") . '>Hiện</option>
                     <option value="inactive" ' . ($default == "inactive" ? "selected" : "") . '>Ẩn</option>

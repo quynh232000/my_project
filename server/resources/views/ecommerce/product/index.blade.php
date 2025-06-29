@@ -3,6 +3,7 @@
 @php
     $model = $params['model'];
 @endphp
+
 @section('main')
     <div id="kt_app_content_container" class="app-container">
         <!--begin::Card-->
@@ -33,23 +34,29 @@
                             <input type="text" name="slug" class="form-control mb-2" placeholder="Enter..."
                                 value="{{ request()->slug ?? '' }}">
                         </div>
+                        <div class="mb-2 fv-row fv-plugins-icon-container col-md-3">
+                            <label class=" form-label">Status</label>
+                            {!!\App\Models\Ecommerce\ProductModel::slbStatus($params['status'] ?? '')!!}
+                        </div>
+
                         <div class="col-12 row">
                             <div class="mb-2 fv-row fv-plugins-icon-container col-md-3">
                                 <label class=" form-label">Creator</label>
                                 <input type="text" name="created_by" class="form-control mb-2" placeholder="Enter..."
                                     value="{{ request()->created_by ?? '' }}">
                             </div>
-                             <div class="mb-2 fv-row fv-plugins-icon-container col-md-3">
+                            <div class="mb-2 fv-row fv-plugins-icon-container col-md-3">
                                 <label class=" form-label">Created At</label>
                                 <input type="date" name="created_at" class="form-control mb-2" placeholder="Enter..."
                                     value="{{ request()->created_at ?? '' }}">
+
                             </div>
-                             <div class="mb-2 fv-row fv-plugins-icon-container col-md-3">
+                            <div class="mb-2 fv-row fv-plugins-icon-container col-md-3">
                                 <label class=" form-label">Modifior</label>
                                 <input type="text" name="updated_by" class="form-control mb-2" placeholder="Enter..."
                                     value="{{ request()->updated_by ?? '' }}">
                             </div>
-                             <div class="mb-2 fv-row fv-plugins-icon-container col-md-3">
+                            <div class="mb-2 fv-row fv-plugins-icon-container col-md-3">
                                 <label class=" form-label">Updated At</label>
                                 <input type="date" name="updated_at" class="form-control mb-2" placeholder="Enter..."
                                     value="{{ request()->updated_at ?? '' }}">
@@ -92,15 +99,13 @@
     </div>
 @endsection
 @push('js2')
-    <!--begin::Custom Javascript(used for this page only)-->
-    <script src="{{ asset('assets/js/custom/apps/user-management/permissions/list.js') }}"></script>
-    <script src="{{ asset('assets/js/custom/apps/user-management/permissions/add-permission.js') }}"></script>
-    <script src="{{ asset('assets/js/custom/apps/user-management/permissions/update-permission.js') }}"></script>
+    </script>
     <script src="{{ asset('assets/js/widgets.bundle.js') }}"></script>
     <script src="{{ asset('assets/js/custom/widgets.js') }}"></script>
     <script src="{{ asset('assets/js/custom/apps/chat/chat.js') }}"></script>
     <script src="{{ asset('assets/js/custom/utilities/modals/users-search.js') }}"></script>
 
+    {{-- <script src="{{ asset('assets/js/custom/apps/ecommerce/catalog/products.js') }}"></script> --}}
 
     <script>
         if ($('table.table-striped tbody tr').length === 0) {
