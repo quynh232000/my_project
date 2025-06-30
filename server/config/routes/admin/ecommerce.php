@@ -6,6 +6,7 @@ return  [
     'label' => 'Ecommerce',
     'middleware' => [],
     'routes' => [
+        // categoy
         [
             'type'          => 'resource',
             'uri'           => 'category',
@@ -13,6 +14,21 @@ return  [
             'name_prefix'   => $base . '.category',
             'only'          => ['index', 'edit', 'store', 'create', 'update', 'destroy'],
         ],
+         [
+            'controller'    =>   \App\Http\Controllers\Admin\Ecommerce\CategoryController::class,
+            'uri'           => $base . '/category/status/{status}/{id}',
+            'name'          => $base . '.category.status',
+            'methods'       => ['get'],
+            'action'        => 'status',
+        ],
+        [
+            'controller'    =>   \App\Http\Controllers\Admin\Ecommerce\CategoryController::class,
+            'uri'           => $base . '/category/confirm-delete',
+            'name'          => $base . '.category.confirm-delete',
+            'methods'       => ['post'],
+            'action'        => 'confirmDelete',
+        ],
+        // payment-method
         [
             'type'          => 'resource',
             'uri'           => 'payment-method',
@@ -20,6 +36,21 @@ return  [
             'name_prefix'   => $base . '.payment-method',
             'only'          => ['index', 'edit', 'store', 'create', 'update', 'destroy'],
         ],
+          [
+            'controller'    =>   \App\Http\Controllers\Admin\Ecommerce\PaymentMethodController::class,
+            'uri'           => $base . '/payment-method/status/{status}/{id}',
+            'name'          => $base . '.payment-method.status',
+            'methods'       => ['get'],
+            'action'        => 'status',
+        ],
+        [
+            'controller'    =>   \App\Http\Controllers\Admin\Ecommerce\PaymentMethodController::class,
+            'uri'           => $base . '/payment-method/confirm-delete',
+            'name'          => $base . '.payment-method.confirm-delete',
+            'methods'       => ['post'],
+            'action'        => 'confirmDelete',
+        ],
+        // sestting
         [
             'type'          => 'resource',
             'uri'           => 'setting',
@@ -27,12 +58,27 @@ return  [
             'name_prefix'   => $base . '.setting',
             'only'          => ['index', 'edit', 'store', 'create', 'update', 'destroy'],
         ],
+           [
+            'controller'    =>   \App\Http\Controllers\Admin\Ecommerce\SettingController::class,
+            'uri'           => $base . '/setting/status/{status}/{id}',
+            'name'          => $base . '.setting.status',
+            'methods'       => ['get'],
+            'action'        => 'status',
+        ],
+        [
+            'controller'    =>   \App\Http\Controllers\Admin\Ecommerce\SettingController::class,
+            'uri'           => $base . '/setting/confirm-delete',
+            'name'          => $base . '.setting.confirm-delete',
+            'methods'       => ['post'],
+            'action'        => 'confirmDelete',
+        ],
+        // shop
         [
             'type'          => 'resource',
             'uri'           => 'shop',
             'controller'    =>  \App\Http\Controllers\Admin\Ecommerce\ShopController::class,
             'name_prefix'   => $base . '.shop',
-            'only'          => ['index', 'edit', 'store', 'create', 'update', 'destroy'],
+            'only'          => ['index', 'edit', 'store', 'show','create', 'update', 'destroy'],
         ],
         [
             'controller'    =>   \App\Http\Controllers\Admin\Ecommerce\ShopController::class,
@@ -54,7 +100,7 @@ return  [
             'uri'           => 'product',
             'controller'    =>  \App\Http\Controllers\Admin\Ecommerce\ProductController::class,
             'name_prefix'   => $base . '.product',
-            'only'          => ['index', 'edit', 'store', 'create', 'update', 'destroy'],
+            'only'          => ['index', 'edit', 'store','show', 'create', 'update', 'destroy'],
         ],
         [
             'controller'    =>   \App\Http\Controllers\Admin\Ecommerce\ProductController::class,
@@ -266,6 +312,28 @@ return  [
             'controller'    =>   \App\Http\Controllers\Admin\Ecommerce\CoinTransactionController::class,
             'uri'           => $base . '/coin-transaction/confirm-delete',
             'name'          => $base . '.coin-transaction.confirm-delete',
+            'methods'       => ['post'],
+            'action'        => 'confirmDelete',
+        ],
+         // bank
+         [
+            'type'          => 'resource',
+            'uri'           => 'bank',
+            'controller'    =>  \App\Http\Controllers\Admin\Ecommerce\BankController::class,
+            'name_prefix'   => $base . '.bank',
+            'only'          => ['index', 'edit', 'store', 'create', 'update', 'destroy'],
+        ],
+        [
+            'controller'    =>   \App\Http\Controllers\Admin\Ecommerce\BankController::class,
+            'uri'           => $base . '/bank/status/{status}/{id}',
+            'name'          => $base . '.bank.status',
+            'methods'       => ['get'],
+            'action'        => 'status',
+        ],
+        [
+            'controller'    =>   \App\Http\Controllers\Admin\Ecommerce\BankController::class,
+            'uri'           => $base . '/bank/confirm-delete',
+            'name'          => $base . '.bank.confirm-delete',
             'methods'       => ['post'],
             'action'        => 'confirmDelete',
         ],

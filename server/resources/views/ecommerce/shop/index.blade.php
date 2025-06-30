@@ -1,7 +1,7 @@
 @extends('layout.app')
 @section('title', 'Manage Ecommerce Category')
 @section('main')
-    <div id="kt_app_content_container" class="app-container container-xxl">
+    <div id="kt_app_content_container" class="app-container ">
         <div class="card card-flush">
             <!--begin::Card header-->
             <div class="card-header border-0 pt-6">

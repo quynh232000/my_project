@@ -10,61 +10,56 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 class SettingController extends AdminController
 {
-    private $table = null;
+    private $model  = null;
     public function __construct(Request $request)
     {
         parent::__construct($request);
-        $this->table = new SettingModel();
+        $this->model = new SettingModel();
     }
    public function index()
     {
-        $query = $this->table->with('creator');
-        if (request()->search ?? false) {
-            $query->where('name', 'LIKE', '%' . request()->search . '%');
-        }
-        $this->_params['items'] = $query->orderByDesc('id')->paginate(20);
-        return view($this->_viewAction, ['params' => $this->_params]);
-    }
-    public function update(Request $request, $id)
-    {
-        $item = $this->table->find($id);
-        $data = $request->all();
-
-
-        $item->update([
-            ...$data,
-            'updated_at'            => now()
-
-        ]);
-        return redirect()->back()->with('success', ' Update successfully!');
-    }
-    public function edit(Request $request, $id)
-    {
-
-        $this->_params['item']  = $this->table->find($id);
-
+        $this->_params["item-per-page"]     = $this->getCookie('-item-per-page', 25);
+        $this->_params['model']             = $this->model->listItem($this->_params, ['task' => "admin-index"]);
         return view($this->_viewAction, ['params' => $this->_params]);
     }
     public function create(Request $request)
     {
-        $this->_params['categories'] = $this->table->orderByDesc('id')->get();
+        $this->_params['categories']                     = $this->model->all();
         return view($this->_viewAction, ['params' => $this->_params]);
     }
     public function store(Request $request)
     {
-        $data                       = $request->all();
-        $this->table->create([
-            ...$data,
-            'created_at'        => now(),
-            'created_by'        => auth()->id()
-        ]);
-
-
-        return redirect()->back()->with('success', 'Create successfully.');
+        $result = $this->model->saveItem($this->_params, ['task' => 'add-item']);
+        return redirect()->back()->with($result['status'], $result['message']);
     }
-    public function destroy($id)
+    public function edit(Request $request, $id)
     {
-        $this->table->where('id', $id)->delete();
-        return redirect()->back()->with('success', 'Delete route successfully.');
+        $this->_params[$this->model->columnPrimaryKey()] = $id;
+        $this->_params['item']                           = $this->model->getItem($this->_params, ['task' => 'get-item-info']);
+        $this->_params['categories']                     = $this->model->all();
+        return view($this->_viewAction, ['params' => $this->_params]);
+    }
+    public function update(Request $request, $id)
+    {
+        $this->_params[$this->model->columnPrimaryKey()] = $id;
+        if (isset($this->_params['_method']) && $this->_params['_method'] == 'PUT') {
+            $this->model->saveItem($this->_params, ['task' => 'edit-item']);
+        }
+        return redirect()->back()->with('success', ' Update successfully!');
+    }
+
+
+    public function confirmDelete()
+    {
+        $this->_params['id'] = $this->_params['id'] ?? [];
+        $this->model->deleteItem($this->_params, ['task' => 'delete-item']);
+        return response()->json(array('status' => true, 'message' => 'Delete item successfully.'));
+    }
+    public function status($status, $id)
+    {
+        $this->_params['status']    = $status;
+        $this->_params['id']        = $id;
+        $this->model->saveItem($this->_params, ['task' => 'change-status']);
+        return redirect()->route($this->_params['prefix'] . '.' . $this->_params['controller'] . '.index')->with('success', 'Update status successfully!');
     }
 }

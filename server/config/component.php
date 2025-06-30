@@ -135,8 +135,8 @@
          ),
          'show' => array(
             'class' => '',
-            'title' => 'Xem',
-            'icon' => 'fa-sharp fa-solid fa-eye text-secondary fa-lg',
+            'title' => 'Show',
+            'icon' => 'fa-sharp fa-solid fa-eye fs-2 m-0',
             'route-name' => '.show',
          ),
          'approval' => array(

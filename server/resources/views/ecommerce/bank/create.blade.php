@@ -1,5 +1,5 @@
 @extends('layout.app')
-@section('title', 'Add Category')
+@section('title', 'Add Bank')
 @section('main')
     <div id="kt_app_content_container" class="app-container ">
 
@@ -26,31 +26,40 @@
                         <!--begin::Scroll-->
 
                         <div class="d-flex flex-column scroll-y me-n7 pe-7">
-                            <div class="fv-row mb-10">
-                                <!--begin::Label-->
-                                <label class="fs-5 fw-bold form-label mb-2">
-                                    <span class="required">Parent Category</span>
-                                </label>
 
-                                <select class="form-select mb-2" data-control="select2" name="parent_id"
-                                    data-placeholder="Select an option" data-allow-clear="true"
-                                    data-placeholder="Select an option" id="kt_ecommerce_add_product_status_select">
-                                    <option value="">--Select--</option>
-                                    @foreach ($params['categories'] as $item)
-                                        <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                    @endforeach
-                                </select>
-                                @error('parent_id')
-                                    <small class="text-danger">{{ $message }}</small>
-                                @enderror
-                            </div>
-                            <!--begin::Input group-->
                             <div class="fv-row mb-10">
                                 <label class="fs-5 fw-bold form-label mb-2">
                                     <span class="required">Name</span>
                                 </label>
                                 <input class="form-control form-control-solid" placeholder="Enter Aa.." name="name" />
                                 @error('name')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                            <div class="fv-row mb-10">
+                                <label class="fs-5 fw-bold form-label mb-2">
+                                    <span class="required">Short Name</span>
+                                </label>
+                                <input class="form-control form-control-solid" placeholder="Enter Aa.." name="short_name" />
+                                @error('short_name')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                             <div class="fv-row mb-10">
+                                <label class="fs-5 fw-bold form-label mb-2">
+                                    <span class="required">Symbol</span>
+                                </label>
+                                <input class="form-control form-control-solid" placeholder="Enter Aa.." name="symbol" />
+                                @error('symbol')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                             <div class="fv-row mb-10">
+                                <label class="fs-5 fw-bold form-label mb-2">
+                                    <span class="required">Bin</span>
+                                </label>
+                                <input class="form-control form-control-solid" placeholder="Enter Aa.." name="bin" />
+                                @error('bin')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
@@ -69,10 +78,7 @@
                                 <label class="fs-5 fw-bold form-label mb-2">
                                     <span class="">Icon</span>
                                 </label>
-                                <!--end::Label-->
-                                <!--begin::Input-->
-                                {{-- <input type="file" class="form-control form-control-solid" placeholder="Enter Aa.."
-                                    name="icon" /> --}}
+
                                 <div class="card-body text-center pt-0">
                                     <!--begin::Image input-->
                                     <!--begin::Image input placeholder-->
@@ -98,7 +104,7 @@
                                             title="Change avatar">
                                             <i class="ki-outline ki-pencil fs-7"></i>
                                             <!--begin::Inputs-->
-                                            <input type="file" name="icon" accept=".png, .jpg, .jpeg" />
+                                            <input type="file" name="logo" accept=".png, .jpg, .jpeg" />
                                             <input type="hidden" name="avatar_remove" />
                                             <!--end::Inputs-->
                                         </label>
@@ -136,7 +142,7 @@
                                 <!--end::Label-->
                                 <!--begin::Input-->
                                 <input type="text" class="form-control form-control-solid" placeholder="Enter https.."
-                                    name="icon_link" />
+                                    name="logo_url" />
                                 <!--end::Input-->
                             </div>
 

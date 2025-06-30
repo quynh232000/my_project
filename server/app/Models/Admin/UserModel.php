@@ -2,6 +2,8 @@
 
 namespace App\Models\Admin;
 
+use App\Models\Ecommerce\PostModel;
+use App\Models\Ecommerce\UserBankModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -74,5 +76,12 @@ class UserModel  extends Authenticatable
                 ->where('method', 'LIKE', "%$method%");
         })->exists();
         return $direct || $viaRole;
+    }
+
+    public function ecommerce_posts() {
+        return $this->hasMany(PostModel::class,'author_id','id');
+    }
+    public function ecommerce_banks(){
+        return $this->hasMany(UserBankModel::class,'user_id','id');
     }
 }

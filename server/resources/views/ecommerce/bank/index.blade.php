@@ -25,20 +25,21 @@
                     </div>
                     <form class="d-flex align-items-center position-relative my-1 row">
                         <div class="mb-2 fv-row fv-plugins-icon-container col-md-3">
-                            <label class=" form-label">Code</label>
-                            <input type="text" name="code" class="form-control mb-2" placeholder="Enter..."
-                                value="{{ request()->code ?? '' }}">
-                        </div>
-                        <div class="mb-2 fv-row fv-plugins-icon-container col-md-3">
                             <label class=" form-label">Name</label>
                             <input type="text" name="name" class="form-control mb-2" placeholder="Enter..."
                                 value="{{ request()->name ?? '' }}">
                         </div>
                         <div class="mb-2 fv-row fv-plugins-icon-container col-md-3">
-                            <label class=" form-label">Description</label>
-                            <input type="text" name="description" class="form-control mb-2" placeholder="Enter..."
-                                value="{{ request()->description ?? '' }}">
+                            <label class=" form-label">Short Name</label>
+                            <input type="text" name="short_name" class="form-control mb-2" placeholder="Enter..."
+                                value="{{ request()->short_name ?? '' }}">
                         </div>
+                         <div class="mb-2 fv-row fv-plugins-icon-container col-md-3">
+                            <label class=" form-label">Symbol</label>
+                            <input type="text" name="symbol" class="form-control mb-2" placeholder="Enter..."
+                                value="{{ request()->symbol ?? '' }}">
+                        </div>
+
                         <div class="mb-2 fv-row fv-plugins-icon-container col-md-3">
                             <label class=" form-label">Status</label>
                             {!!\App\Models\Ecommerce\CategoryModel::slbStatus($params['status'] ?? '')!!}

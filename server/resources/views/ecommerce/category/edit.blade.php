@@ -1,7 +1,7 @@
 @extends('layout.app')
 @section('title', 'Update Category')
 @section('main')
-    <div id="kt_app_content_container" class="app-container container-xxl">
+    <div id="kt_app_content_container" class="app-container">
 
         <div class="card card-flush">
             <!--begin::Modal content-->
@@ -59,6 +59,15 @@
                                 <!--begin::Input-->
                                 <input class="form-control form-control-solid" placeholder="Enter Aa.." value="{{old('name') ?? $params['item']->name}}" name="name" />
                                 @error('name')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                            <div class="fv-row mb-10">
+                                <label class="fs-5 fw-bold form-label mb-2">
+                                    <span class="required">Status</span>
+                                </label>
+                                 {!!\App\Models\Ecommerce\CategoryModel::slbStatus($params['item']['status'] ?? '')!!}
+                                @error('status')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>

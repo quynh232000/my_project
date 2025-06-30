@@ -43,6 +43,13 @@ class ShopController extends AdminController
         ]);
         return redirect()->back()->with('success', ' Update successfully!');
     }
+    public function show( $id)
+    {
+        $this->_params['categories'] = $this->model->orderByDesc('id')->get();
+        $this->_params['item']  = $this->model->find($id);
+
+        return view($this->_viewAction, ['params' => $this->_params]);
+    }
     public function edit(Request $request, $id)
     {
         $this->_params['categories'] = $this->model->orderByDesc('id')->get();
@@ -96,4 +103,6 @@ class ShopController extends AdminController
         $this->model->saveItem($this->_params, ['task' => 'change-status']);
         return redirect()->route($this->_params['prefix'] . '.' . $this->_params['controller'] . '.index')->with('success', 'Update status successfully!');
     }
+
+
 }

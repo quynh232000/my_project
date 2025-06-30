@@ -4,10 +4,8 @@ namespace App\Models\Ecommerce;
 
 use App\Models\AdminModel;
 use App\Services\FileService;
-use Illuminate\Support\Facades\Auth;
-use Str;
 
-class CategoryModel  extends AdminModel
+class BankModel  extends AdminModel
 {
     protected $table        = null;
     public function __construct($attributes = [])
@@ -17,10 +15,10 @@ class CategoryModel  extends AdminModel
         $this->_data        = [
             'listField' => [
                 $this->table . '.id'                => 'id',
-                $this->table . '.icon_url'          => 'Icon',
-                $this->table . '.name'              => 'Name',
-                $this->table . '.slug'              => 'Slug',
-                $this->table . '.commission_fee'    => 'Commission fee',
+                $this->table . '.logo_url'          => 'logo_url',
+                $this->table . '.name'              => 'name',
+                $this->table . '.short_name'        => 'short_name',
+                $this->table . '.symbol'            => 'symbol',
                 $this->table . '.status'            => 'Status',
                 'u.full_name AS created_by'         => 'Creator',
                 $this->table . '.created_at'        => 'Created At',
@@ -64,8 +62,16 @@ class CategoryModel  extends AdminModel
                 'value' => 'name'
             ],
             [
-                'field' =>  $this->table . '.slug',
-                'value' => 'slug'
+                'field' =>  $this->table . '.short_name',
+                'value' => 'short_name'
+            ],
+            [
+                'field' =>  $this->table . '.symbol',
+                'value' => 'symbol'
+            ],
+            [
+                'field' =>  $this->table . '.description',
+                'value' => 'description'
             ],
             [
                 'field' =>  $this->table . '.created_by',
@@ -113,34 +119,31 @@ class CategoryModel  extends AdminModel
     public function saveItem($params = null, $options = null)
     {
         if ($options['task'] == 'add-item') { //thêm mới
-            $params['created_by']   = Auth::user()->id;
+            $params['created_by']   = auth()->user()->id;
             $params['created_at']   = date('Y-m-d H:i:s');
-            $params['slug']         = Str::slug($params['name']);
-            if ($params['icon']??false) {
+
+            if ($params['logo'] ?? false) {
                 $FileService = new FileService();
-                $params['icon_url'] = $FileService->uploadFile($params['icon'], 'ecommerce.category', auth()->id())['url'] ?? '';
-                unset($params['icon']);
+                $params['logo_url'] = $FileService->uploadFile($params['logo'], 'ecommerce.bank', auth()->id())['url'] ?? '';
+                unset($params['logo']);
             } else {
-                $params['icon_url'] = $params['icon_link'] ?? '';
+                $params['logo_url'] = $params['logo_link'] ?? '';
             }
-            unset($params['icon_link']);
+            unset($params['logo_link']);
 
             self::insert($this->prepareParams($params));
         }
         if ($options['task'] == 'edit-item') { //cập nhật
-            $params['updated_by']   = Auth::user()->id;
+            $params['updated_by']   = auth()->user()->id;
             $params['updated_at']   = date('Y-m-d H:i:s');
-            $params['slug']         = Str::slug($params['name']);
-            if ($params['icon'] ?? false) {
+            if ($params['logo'] ?? false) {
                 $FileService = new FileService();
-                $params['icon_url'] = $FileService->uploadFile($params['icon'], 'ecommerce.category', auth()->id())['url'] ?? '';
-                unset($params['icon']);
+                $params['logo_url'] = $FileService->uploadFile($params['logo'], 'ecommerce.bank', auth()->id())['url'] ?? '';
+                unset($params['logo']);
             } else {
-                $params['icon_url'] = $params['icon_link'] ?? '';
+                $params['logo_url'] = $params['logo_link'] ?? '';
             }
-            unset($params['icon_link']);
-
-
+            unset($params['logo_link']);
             $this->where($this->primaryKey, $params[$this->primaryKey])
                 ->update(
                     $this->prepareParams($params)
@@ -152,7 +155,7 @@ class CategoryModel  extends AdminModel
                 ->update([
                     'status'        => $status,
                     'updated_at'    => date('Y-m-d H:i:s'),
-                    'updated_by'    => Auth::user()->id
+                    'updated_by'    => auth()->user()->id
                 ]);
         }
         return ['status' => 'success', 'message' => 'Require created successfully!'];
@@ -185,7 +188,7 @@ class CategoryModel  extends AdminModel
                     <option value="inactive" ' . ($default == "inactive" ? "selected" : "") . '>Ẩn</option>
                 </select>';
     }
-    public function columnIcon_url($params, $field, $val)
+    public function columnLogo_url($params, $field, $val)
     {
         return '<div class="d-flex justify-content-center px-5">
                     <div class="icon-wrapper cursor-pointer symbol symbol-40px d-flex jusitfy-content-center">

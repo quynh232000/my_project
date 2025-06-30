@@ -3,21 +3,19 @@
 namespace App\Http\Controllers\Admin\Ecommerce;
 
 use App\Http\Controllers\AdminController;
-use App\Models\Admin\UserModel;
-use App\Models\Ecommerce\CategoryModel;
+use App\Models\Ecommerce\BankModel;
 use App\Services\FileService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-
-class CategoryController extends AdminController
+class BankController extends AdminController
 {
-    private $model = null;
+    private $model  = null;
     public function __construct(Request $request)
     {
         parent::__construct($request);
-        $this->model = new CategoryModel();
+        $this->model = new BankModel();
     }
-    public function index()
+   public function index()
     {
         $this->_params["item-per-page"]     = $this->getCookie('-item-per-page', 25);
         $this->_params['model']             = $this->model->listItem($this->_params, ['task' => "admin-index"]);

@@ -33,6 +33,8 @@ return [
     'TABLE_PRODUCT_LIVE'            => 'ecommerce_product_lives',
     'TABLE_COIN_RULE'               => 'ecommerce_coin_rules',
     'TABLE_COIN_TRANSACTION'        => 'ecommerce_coin_transactions',
+    'TABLE_BANK'                    => 'ecommerce_banks',
+    'TABLE_USER_BANK'               => 'ecommerce_user_banks',
 
 
 ];

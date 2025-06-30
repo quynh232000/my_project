@@ -9,7 +9,7 @@ class AdminModel extends Model
 {
 
     protected $table            = '';
-    protected $crudNotAccepted  = ['_token', 'prefix', 'controller', 'action', 'as', '_method', 'ID',];
+    protected $crudNotAccepted  = ['_token', 'prefix', 'controller', 'action', 'as', '_method', 'ID','avatar_remove'];
     protected $_data                  = [];
     public $timestamps          = false;
     public $checkall            = true;
@@ -70,6 +70,7 @@ class AdminModel extends Model
             $tmp        = explode('.', $field);
             $tmp        = explode(' AS ', end($tmp));
             $field      = end($tmp);
+            $name_field = mb_convert_case(str_replace('_', ' ', $field), MB_CASE_TITLE, 'UTF-8');
             if ($field !== $this->primaryKey) {
 
                 $link   = '?sort=' . $field . '&order=' . $order . $linkSort;
@@ -78,7 +79,7 @@ class AdminModel extends Model
                 if ($sort == $field) {
                     $icon = $order == 'asc' ? '<i class="fa-sharp fa-solid fa-sort-down text-primary"></i>' : '<i class="fa-sharp fa-solid fa-sort-up text-primary"></i>';
                 }
-                $xhtml .= sprintf('<th class="text-center align-middle p-1%s"><a href="%s" class="text-dark">%s</a></th>', $className . $display, $link, $label . '&nbsp;' . $icon);
+                $xhtml .= sprintf('<th class="text-center align-middle p-1%s"><a href="%s" class="text-dark">%s</a></th>', $className . $display, $link,$name_field . '&nbsp;' . $icon);
             } else {
                 if ($this->checkall == true) {
 
@@ -106,7 +107,7 @@ class AdminModel extends Model
                         <table id="table-list-' . $params['prefix'] . '-' . $params['controller'] . '" class="table nowrap table-bordered no-footer text-left table-striped fs-lg">
                             <thead>'
             . $data['headTable'] .
-            ($flagButton == true ? '<th width="10%" class="text-center">Actions</th>' : '') .
+            ($flagButton == true ? '<th width="10%" class="text-center">ACTIONS</th>' : '') .
             '</thead>
                             <tbody id="' . $params['prefix'] . '-' . $params['controller'] . '">';
 

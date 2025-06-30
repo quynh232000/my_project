@@ -41,6 +41,7 @@ return [
         ],
         [
             'title' => 'Shops',
+            'icon' => 'ki-outline ki-briefcase fs-2',
             'name_route' => basename(__FILE__, '.php') . '.shop',
             'sub' => [
                 ['title' => 'Shops Listing', 'route' => 'ecommerce.shop.index'],
@@ -115,6 +116,15 @@ return [
             'sub'           => [
                                 ['title' => 'Coins Rule Listing', 'route' => 'ecommerce.coin-rule.index'],
                                 ['title' => 'Coins Listing', 'route' => 'ecommerce.coin-transaction.index'],
+                            ],
+        ],
+           // bank
+        [
+            'title'         => 'Banks',
+            'name_route'    => basename(__FILE__, '.php') . '.bank',
+            'sub'           => [
+                                ['title' => 'Banks Listing', 'route' => 'ecommerce.bank.index',],
+                                ['title' => 'Add Banks', 'route' => 'ecommerce.bank.create'],
                             ],
         ],
 
