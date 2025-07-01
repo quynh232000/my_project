@@ -1,23 +1,23 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Ecommerce;
+namespace App\Http\Controllers\Admin\Travel;
 
 use App\Http\Controllers\AdminController;
 use App\Http\Requests\Admin\Ecommerce\ShopRequest;
-use App\Models\Ecommerce\ShopModel;
+use App\Models\Travel\TourModel;
 use App\Services\FileService;
 use App\Traits\ApiRes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
-class ShopController extends AdminController
+class TourController extends AdminController
 {
     use ApiRes;
     private $model = null;
     public function __construct(Request $request)
     {
         parent::__construct($request);
-        $this->model = new ShopModel();
+        $this->model = new TourModel();
     }
     public function index()
     {

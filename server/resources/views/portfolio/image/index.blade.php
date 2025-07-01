@@ -77,7 +77,7 @@
                                     <td><div style="max-width: 220px;overflow:hidden">{{ $item->name }}</div></td>
                                     <td class="text-warning">{{ $item->email }}</td>
                                     <td class="text">{{ $item->type }}</td>
-                                    <td>{{ $item->created_at->format('d/m/Y H:i') }}</td>
+                                    <td>{{ $item->created_at }}</td>
                                     <td>{{ $item->creator->full_name }}</td>
                                     <td>
                                         <a href="

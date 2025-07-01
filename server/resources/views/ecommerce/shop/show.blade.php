@@ -1,5 +1,5 @@
 @extends('layout.app')
-@section('title', 'Add Category')
+@section('title', 'Shop: '.$params['item']->name)
 @section('main')
     <div id="kt_app_content_container" class="app-container ">
 
@@ -9,7 +9,7 @@
                 <!--begin::Modal header-->
                 <div class="modal-header px-5 pt-5">
                     <!--begin::Modal title-->
-                    <h2 class="fw-bold">Add Infomation</h2>
+                    <h2 class="fw-bold"> Infomation</h2>
                     <!--end::Modal title-->
                     <!--begin::Close-->
                     <a href="{{ route($params['prefix'] . '.' . $params['controller'] . '.index') }}" class="btn  btn-danger">
@@ -127,142 +127,6 @@
                             </div>
                             <!--end::Card body-->
                         </div>
-                        <!--end::Card-->
-                        <!--begin::Connected Accounts-->
-                        <div class="card mb-5 mb-xl-8">
-                            <!--begin::Card header-->
-                            <div class="card-header border-0">
-                                <div class="card-title">
-                                    <h3 class="fw-bold m-0">Connected Accounts</h3>
-                                </div>
-                            </div>
-                            <!--end::Card header-->
-                            <!--begin::Card body-->
-                            <div class="card-body pt-2">
-                                <!--begin::Notice-->
-                                <div
-                                    class="notice d-flex bg-light-primary rounded border-primary border border-dashed mb-9 p-6">
-                                    <!--begin::Icon-->
-                                    <i class="ki-outline ki-design-1 fs-2tx text-primary me-4"></i>
-                                    <!--end::Icon-->
-                                    <!--begin::Wrapper-->
-                                    <div class="d-flex flex-stack flex-grow-1">
-                                        <!--begin::Content-->
-                                        <div class="fw-semibold">
-                                            <div class="fs-6 text-gray-700">By connecting an account, you hereby agree to
-                                                our
-                                                <a href="#" class="me-1">privacy policy</a>and
-                                                <a href="#">terms of use</a>.
-                                            </div>
-                                        </div>
-                                        <!--end::Content-->
-                                    </div>
-                                    <!--end::Wrapper-->
-                                </div>
-                                <!--end::Notice-->
-                                <!--begin::Items-->
-                                <div class="py-2">
-                                    <!--begin::Item-->
-                                    <div class="d-flex flex-stack">
-                                        <div class="d-flex">
-                                            <img src="assets/media/svg/brand-logos/google-icon.svg" class="w-30px me-6"
-                                                alt="" />
-                                            <div class="d-flex flex-column">
-                                                <a href="#"
-                                                    class="fs-5 text-gray-900 text-hover-primary fw-bold">Google</a>
-                                                <div class="fs-6 fw-semibold text-muted">Plan properly your workflow</div>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex justify-content-end">
-                                            <!--begin::Switch-->
-                                            <label
-                                                class="form-check form-switch form-switch-sm form-check-custom form-check-solid">
-                                                <!--begin::Input-->
-                                                <input class="form-check-input" name="google" type="checkbox"
-                                                    value="1" id="kt_modal_connected_accounts_google"
-                                                    checked="checked" />
-                                                <!--end::Input-->
-                                                <!--begin::Label-->
-                                                <span class="form-check-label fw-semibold text-muted"
-                                                    for="kt_modal_connected_accounts_google"></span>
-                                                <!--end::Label-->
-                                            </label>
-                                            <!--end::Switch-->
-                                        </div>
-                                    </div>
-                                    <!--end::Item-->
-                                    <div class="separator separator-dashed my-5"></div>
-                                    <!--begin::Item-->
-                                    <div class="d-flex flex-stack">
-                                        <div class="d-flex">
-                                            <img src="assets/media/svg/brand-logos/github.svg" class="w-30px me-6"
-                                                alt="" />
-                                            <div class="d-flex flex-column">
-                                                <a href="#"
-                                                    class="fs-5 text-gray-900 text-hover-primary fw-bold">Github</a>
-                                                <div class="fs-6 fw-semibold text-muted">Keep eye on on your Repositories
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex justify-content-end">
-                                            <!--begin::Switch-->
-                                            <label
-                                                class="form-check form-switch form-switch-sm form-check-custom form-check-solid">
-                                                <!--begin::Input-->
-                                                <input class="form-check-input" name="github" type="checkbox"
-                                                    value="1" id="kt_modal_connected_accounts_github"
-                                                    checked="checked" />
-                                                <!--end::Input-->
-                                                <!--begin::Label-->
-                                                <span class="form-check-label fw-semibold text-muted"
-                                                    for="kt_modal_connected_accounts_github"></span>
-                                                <!--end::Label-->
-                                            </label>
-                                            <!--end::Switch-->
-                                        </div>
-                                    </div>
-                                    <!--end::Item-->
-                                    <div class="separator separator-dashed my-5"></div>
-                                    <!--begin::Item-->
-                                    <div class="d-flex flex-stack">
-                                        <div class="d-flex">
-                                            <img src="assets/media/svg/brand-logos/slack-icon.svg" class="w-30px me-6"
-                                                alt="" />
-                                            <div class="d-flex flex-column">
-                                                <a href="#"
-                                                    class="fs-5 text-gray-900 text-hover-primary fw-bold">Slack</a>
-                                                <div class="fs-6 fw-semibold text-muted">Integrate Projects Discussions
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex justify-content-end">
-                                            <!--begin::Switch-->
-                                            <label
-                                                class="form-check form-switch form-switch-sm form-check-custom form-check-solid">
-                                                <!--begin::Input-->
-                                                <input class="form-check-input" name="slack" type="checkbox"
-                                                    value="1" id="kt_modal_connected_accounts_slack" />
-                                                <!--end::Input-->
-                                                <!--begin::Label-->
-                                                <span class="form-check-label fw-semibold text-muted"
-                                                    for="kt_modal_connected_accounts_slack"></span>
-                                                <!--end::Label-->
-                                            </label>
-                                            <!--end::Switch-->
-                                        </div>
-                                    </div>
-                                    <!--end::Item-->
-                                </div>
-                                <!--end::Items-->
-                            </div>
-                            <!--end::Card body-->
-                            <!--begin::Card footer-->
-                            <div class="card-footer border-0 d-flex justify-content-center pt-0">
-                                <button class="btn btn-sm btn-light-primary">Save Changes</button>
-                            </div>
-                            <!--end::Card footer-->
-                        </div>
-                        <!--end::Connected Accounts-->
                     </div>
                     <!--end::Sidebar-->
                     <!--begin::Content-->
@@ -276,7 +140,7 @@
                             </li>
                             <!--end:::Tab item-->
                             <!--begin:::Tab item-->
-                            <li class="nav-item">
+                            {{-- <li class="nav-item">
                                 <a class="nav-link text-active-primary pb-4" data-bs-toggle="tab"
                                     href="#kt_customer_view_overview_events_and_logs_tab">Events & Logs</a>
                             </li>
@@ -285,7 +149,7 @@
                             <li class="nav-item">
                                 <a class="nav-link text-active-primary pb-4" data-kt-countup-tabs="true"
                                     data-bs-toggle="tab" href="#kt_customer_view_overview_statements">Statements</a>
-                            </li>
+                            </li> --}}
                             <!--end:::Tab item-->
                             <!--begin:::Tab item-->
 
@@ -310,9 +174,8 @@
                                         <!--begin::Card toolbar-->
                                         <div class="card-toolbar">
                                             <!--begin::Filter-->
-                                            <a href="#" type="button"
-                                                class="btn btn-sm btn-flex btn-light-primary" data-bs-toggle="modal"
-                                                data-bs-target="#kt_modal_add_payment">
+                                            <a href="#" type="button" class="btn btn-sm btn-flex btn-light-primary"
+                                                data-bs-toggle="modal" data-bs-target="#kt_modal_add_payment">
                                                 <i class="ki-outline ki-plus-square fs-3"></i>Add new</a>
                                             <!--end::Filter-->
                                         </div>
@@ -418,9 +281,9 @@
                                                     <!--begin::Toggle-->
                                                     <div class="d-flex align-items-center collapsible rotate"
                                                         data-bs-toggle="collapse"
-                                                        href="#kt_customer_view_payment_method_1{{$item->id}}" role="button"
-                                                        aria-expanded="false"
-                                                        aria-controls="kt_customer_view_payment_method_1{{$item->id}}">
+                                                        href="#kt_customer_view_payment_method_1{{ $item->id }}"
+                                                        role="button" aria-expanded="false"
+                                                        aria-controls="kt_customer_view_payment_method_1{{ $item->id }}">
                                                         <!--begin::Arrow-->
                                                         <div class="me-3 rotate-90">
                                                             <i class="ki-outline ki-right fs-3"></i>
@@ -433,10 +296,14 @@
                                                         <!--begin::Summary-->
                                                         <div class="me-3">
                                                             <div class="d-flex align-items-center">
-                                                                <div class="text-gray-800 fw-bold">{{$item->bank->name}}</div>
-                                                                <div class="badge badge-light-primary ms-5">{{$item->bank->symbol}}</div>
+                                                                <div class="text-gray-800 fw-bold">{{ $item->bank->name }}
+                                                                </div>
+                                                                <div class="badge badge-light-primary ms-5">
+                                                                    {{ $item->bank->symbol }}</div>
                                                             </div>
-                                                            <div class="text-muted">{{$item->bank->short_name.' - '.$item->bank->bin}}</div>
+                                                            <div class="text-muted">
+                                                                {{ $item->bank->short_name . ' - ' . $item->bank->bin }}
+                                                            </div>
                                                         </div>
                                                         <!--end::Summary-->
                                                     </div>
@@ -487,7 +354,7 @@
                                                 </div>
                                                 <!--end::Header-->
                                                 <!--begin::Body-->
-                                                <div id="kt_customer_view_payment_method_1{{$item->id}}"
+                                                <div id="kt_customer_view_payment_method_1{{ $item->id }}"
                                                     class="collapse fs-6 ps-10"
                                                     data-bs-parent="#kt_customer_view_payment_method">
                                                     <!--begin::Details-->
@@ -497,27 +364,32 @@
                                                             <table class="table table-flush fw-semibold gy-1">
                                                                 <tr>
                                                                     <td class="text-muted min-w-125px w-125px">Name</td>
-                                                                    <td class="text-gray-800">{{$item->name}}</td>
+                                                                    <td class="text-gray-800">{{ $item->name }}</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td class="text-muted min-w-125px w-125px">Number</td>
-                                                                    <td class="text-gray-800">**** {{$item->bank->code}}</td>
+                                                                    <td class="text-gray-800">**** {{ $item->bank->code }}
+                                                                    </td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td class="text-muted min-w-125px w-125px">Created At</td>
-                                                                    <td class="text-gray-800">{{$item->created_at}}</td>
+                                                                    <td class="text-muted min-w-125px w-125px">Created At
+                                                                    </td>
+                                                                    <td class="text-gray-800">{{ $item->created_at }}</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td class="text-muted min-w-125px w-125px">Email</td>
-                                                                    <td class="text-gray-800">{{$item->user->email}}</td>
+                                                                    <td class="text-gray-800">{{ $item->user->email }}
+                                                                    </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td class="text-muted min-w-125px w-125px">Phone</td>
-                                                                    <td class="text-gray-800">{{$item->user->phone_number ?? '_'}}</td>
+                                                                    <td class="text-gray-800">
+                                                                        {{ $item->user->phone_number ?? '_' }}</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td class="text-muted min-w-125px w-125px">Address</td>
-                                                                    <td class="text-gray-800">{{$item->bank->address?? '_'}}</td>
+                                                                    <td class="text-gray-800">
+                                                                        {{ $item->bank->address ?? '_' }}</td>
                                                                 </tr>
                                                             </table>
                                                         </div>
@@ -541,7 +413,7 @@
                                     <div class="card-header border-0">
                                         <!--begin::Card title-->
                                         <div class="card-title">
-                                            <h2 class="fw-bold">Credit Balance</h2>
+                                            <h2 class="fw-bold">Balance</h2>
                                         </div>
                                         <!--end::Card title-->
                                         <!--begin::Card toolbar-->
@@ -554,11 +426,16 @@
                                     </div>
                                     <!--end::Card header-->
                                     <!--begin::Card body-->
-                                    <div class="card-body pt-0">
-                                        <div class="fw-bold fs-2">$32,487.57
-                                            <span class="text-muted fs-4 fw-semibold">USD</span>
+                                    <div class="card-body pt-0 row">
+                                        <div class="fw-bold col-md-6 fs-2">
+                                            {{ number_format($params['item']->orders->sum('total'), 0, ',', '.') }}
+                                            <span class="text-muted fs-4 fw-semibold">vnd</span>
                                             <div class="fs-7 fw-normal text-muted">Balance will increase the amount due on
-                                                the customer's next invoice.</div>
+                                                the shop's next invoice.</div>
+                                        </div>
+                                        <div class="fw-bold col-md-6 fs-2">{{ $params['item']->orders->count() }}
+                                            <span class="text-muted fs-4 fw-semibold">orders</span>
+                                            <div class="fs-7 fw-normal text-muted">Total orders from 1 year</div>
                                         </div>
                                     </div>
                                     <!--end::Card body-->
@@ -572,37 +449,7 @@
                                         <div class="card-title">
                                             <h2>Invoices</h2>
                                         </div>
-                                        <!--end::Card title-->
-                                        <!--begin::Toolbar-->
-                                        <div class="card-toolbar m-0">
-                                            <!--begin::Tab nav-->
-                                            <ul class="nav nav-stretch fs-5 fw-semibold nav-line-tabs nav-line-tabs-2x border-transparent"
-                                                role="tablist">
-                                                <li class="nav-item" role="presentation">
-                                                    <a id="kt_referrals_year_tab"
-                                                        class="nav-link text-active-primary active" data-bs-toggle="tab"
-                                                        role="tab" href="#kt_customer_details_invoices_1">This
-                                                        Year</a>
-                                                </li>
-                                                <li class="nav-item" role="presentation">
-                                                    <a id="kt_referrals_2019_tab"
-                                                        class="nav-link text-active-primary ms-3" data-bs-toggle="tab"
-                                                        role="tab" href="#kt_customer_details_invoices_2">2020</a>
-                                                </li>
-                                                <li class="nav-item" role="presentation">
-                                                    <a id="kt_referrals_2018_tab"
-                                                        class="nav-link text-active-primary ms-3" data-bs-toggle="tab"
-                                                        role="tab" href="#kt_customer_details_invoices_3">2019</a>
-                                                </li>
-                                                <li class="nav-item" role="presentation">
-                                                    <a id="kt_referrals_2017_tab"
-                                                        class="nav-link text-active-primary ms-3" data-bs-toggle="tab"
-                                                        role="tab" href="#kt_customer_details_invoices_4">2018</a>
-                                                </li>
-                                            </ul>
-                                            <!--end::Tab nav-->
-                                        </div>
-                                        <!--end::Toolbar-->
+
                                     </div>
                                     <!--end::Card header-->
                                     <!--begin::Card body-->
@@ -619,150 +466,55 @@
                                                         class="border-bottom border-gray-200 fs-7 text-uppercase fw-bold">
                                                         <tr class="text-start text-muted gs-0">
                                                             <th class="min-w-100px">Order ID</th>
-                                                            <th class="min-w-100px">Amount</th>
+                                                            <th class="min-w-100px">Total</th>
+                                                            <th class="min-w-100px">Sub Total</th>
+                                                            <th class="min-w-100px">Shipping fee</th>
                                                             <th class="min-w-100px">Status</th>
+                                                            <th class="min-w-100px">Payment Status</th>
                                                             <th class="min-w-125px">Date</th>
                                                             <th class="min-w-100px text-end pe-7">Invoice</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody class="fs-6 fw-semibold text-gray-600">
-                                                        <tr>
-                                                            <td>
-                                                                <a href="#"
-                                                                    class="text-gray-600 text-hover-primary">102445788</a>
-                                                            </td>
-                                                            <td class="text-success">$38.00</td>
-                                                            <td>
-                                                                <span class="badge badge-light-info">In progress</span>
-                                                            </td>
-                                                            <td>Nov 01, 2020</td>
-                                                            <td class="text-end">
-                                                                <button
-                                                                    class="btn btn-sm btn-light btn-active-light-primary">Download</button>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <a href="#"
-                                                                    class="text-gray-600 text-hover-primary">423445721</a>
-                                                            </td>
-                                                            <td class="text-danger">$-2.60</td>
-                                                            <td>
-                                                                <span class="badge badge-light-success">Approved</span>
-                                                            </td>
-                                                            <td>Oct 24, 2020</td>
-                                                            <td class="text-end">
-                                                                <button
-                                                                    class="btn btn-sm btn-light btn-active-light-primary">Download</button>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <a href="#"
-                                                                    class="text-gray-600 text-hover-primary">312445984</a>
-                                                            </td>
-                                                            <td class="text-success">$76.00</td>
-                                                            <td>
-                                                                <span class="badge badge-light-danger">Rejected</span>
-                                                            </td>
-                                                            <td>Oct 08, 2020</td>
-                                                            <td class="text-end">
-                                                                <button
-                                                                    class="btn btn-sm btn-light btn-active-light-primary">Download</button>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <a href="#"
-                                                                    class="text-gray-600 text-hover-primary">312445984</a>
-                                                            </td>
-                                                            <td class="text-success">$5.00</td>
-                                                            <td>
-                                                                <span class="badge badge-light-danger">Rejected</span>
-                                                            </td>
-                                                            <td>Sep 15, 2020</td>
-                                                            <td class="text-end">
-                                                                <button
-                                                                    class="btn btn-sm btn-light btn-active-light-primary">Download</button>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <a href="#"
-                                                                    class="text-gray-600 text-hover-primary">523445943</a>
-                                                            </td>
-                                                            <td class="text-danger">$-1.30</td>
-                                                            <td>
-                                                                <span class="badge badge-light-danger">Rejected</span>
-                                                            </td>
-                                                            <td>May 30, 2020</td>
-                                                            <td class="text-end">
-                                                                <button
-                                                                    class="btn btn-sm btn-light btn-active-light-primary">Download</button>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <a href="#"
-                                                                    class="text-gray-600 text-hover-primary">231445943</a>
-                                                            </td>
-                                                            <td class="text-success">$204.00</td>
-                                                            <td>
-                                                                <span class="badge badge-light-success">Approved</span>
-                                                            </td>
-                                                            <td>Apr 22, 2020</td>
-                                                            <td class="text-end">
-                                                                <button
-                                                                    class="btn btn-sm btn-light btn-active-light-primary">Download</button>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <a href="#"
-                                                                    class="text-gray-600 text-hover-primary">426445943</a>
-                                                            </td>
-                                                            <td class="text-success">$31.00</td>
-                                                            <td>
-                                                                <span class="badge badge-light-success">Approved</span>
-                                                            </td>
-                                                            <td>Feb 09, 2020</td>
-                                                            <td class="text-end">
-                                                                <button
-                                                                    class="btn btn-sm btn-light btn-active-light-primary">Download</button>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <a href="#"
-                                                                    class="text-gray-600 text-hover-primary">984445943</a>
-                                                            </td>
-                                                            <td class="text-success">$52.00</td>
-                                                            <td>
-                                                                <span class="badge badge-light-warning">Pending</span>
-                                                            </td>
-                                                            <td>Nov 01, 2020</td>
-                                                            <td class="text-end">
-                                                                <button
-                                                                    class="btn btn-sm btn-light btn-active-light-primary">Download</button>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <a href="#"
-                                                                    class="text-gray-600 text-hover-primary">324442313</a>
-                                                            </td>
-                                                            <td class="text-danger">$-0.80</td>
-                                                            <td>
-                                                                <span class="badge badge-light-danger">Rejected</span>
-                                                            </td>
-                                                            <td>Jan 04, 2020</td>
-                                                            <td class="text-end">
-                                                                <button
-                                                                    class="btn btn-sm btn-light btn-active-light-primary">Download</button>
-                                                            </td>
-                                                        </tr>
+                                                        @php
+                                                            $orders = $params['item']->orders()->paginate(20);
+                                                        @endphp
+                                                        @foreach ($orders as $item)
+                                                            <tr>
+                                                                <td>
+                                                                    <a href="#"
+                                                                        class="text-gray-600 text-hover-primary">OR-{{ $item->id }}</a>
+                                                                </td>
+                                                                <td class="text-success fw-bold">
+                                                                    {{ number_format($item->total, 0, ',', '.') }} vnd</td>
+                                                                <td class="text-warning">
+                                                                    {{ number_format($item->subtotal, 0, ',', '.') }} vnd
+                                                                </td>
+                                                                <td class="text-danger">
+                                                                    {{ number_format($item->shipping_fee, 0, ',', '.') }}
+                                                                    vnd
+                                                                </td>
+                                                                <td>
+                                                                    <span
+                                                                        class="badge badge-light-info">{{ $item->status }}</span>
+                                                                </td>
+                                                                <td>
+                                                                    <span
+                                                                        class="badge badge-light-warning">{{ $item->payment_status }}</span>
+                                                                </td>
+                                                                <td>{{ $item->created_at }}</td>
+                                                                <td class="text-end">
+                                                                    <a href="{{ route($params['prefix'] . '.order-shop.show', $item->id) }}"
+                                                                        class="btn btn-sm btn-light btn-active-light-primary">Detail</a>
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+
                                                     </tbody>
                                                 </table>
+                                                <div>
+                                                    {{ $orders->links() }}
+                                                </div>
                                                 <!--end::Table-->
                                             </div>
                                             <!--end::Tab panel-->
@@ -2371,8 +2123,7 @@
                                                 <table id="kt_customer_view_statement_table_4"
                                                     class="table align-middle table-row-dashed fs-6 text-gray-600 fw-semibold gy-4">
                                                     <thead class="border-bottom border-gray-200">
-                                                        <tr
-                                                            class="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
+                                                        <tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
                                                             <th class="w-125px">Date</th>
                                                             <th class="w-100px">Order ID</th>
                                                             <th class="w-300px">Details</th>
@@ -2854,19 +2605,23 @@
                 <!--begin::Modal - New Address-->
                 <div class="modal fade" id="kt_modal_update_customer" tabindex="-1" aria-hidden="true">
                     <!--begin::Modal dialog-->
-                    <div class="modal-dialog modal-dialog-centered mw-650px">
+                    <div class="modal-dialog modal-dialog-centered mw-950px">
                         <!--begin::Modal content-->
                         <div class="modal-content">
                             <!--begin::Form-->
-                            <form class="form" action="#" id="kt_modal_update_customer_form">
+                            <form class="form" enctype="multipart/form-data" method="POST"
+                                id="admin-{{ $params['prefix'] }}-form"
+                                action="{{ route($params['prefix'] . '.' . $params['controller'] . '.update', $params['item']->id) }}">
+                                @csrf
+                                @method('PUT')
                                 <!--begin::Modal header-->
                                 <div class="modal-header" id="kt_modal_update_customer_header">
                                     <!--begin::Modal title-->
-                                    <h2 class="fw-bold">Update Customer</h2>
+                                    <h2 class="fw-bold">Update Shop</h2>
                                     <!--end::Modal title-->
                                     <!--begin::Close-->
                                     <div id="kt_modal_update_customer_close"
-                                        class="btn btn-icon btn-sm btn-active-icon-primary">
+                                        class="btn btn-icon btn-sm btn-active-icon-primary btn_close_model">
                                         <i class="ki-outline ki-cross fs-1"></i>
                                     </div>
                                     <!--end::Close-->
@@ -2893,7 +2648,7 @@
                                             <div class="d-flex flex-stack flex-grow-1">
                                                 <!--begin::Content-->
                                                 <div class="fw-semibold">
-                                                    <div class="fs-6 text-gray-700">Updating customer details will receive
+                                                    <div class="fs-6 text-gray-700">Updating shop details will receive
                                                         a privacy audit. For more info, please read our
                                                         <a href="#">Privacy Policy</a>
                                                     </div>
@@ -2908,7 +2663,7 @@
                                         <div class="fw-bold fs-3 rotate collapsible mb-7" data-bs-toggle="collapse"
                                             href="#kt_modal_update_customer_user_info" role="button"
                                             aria-expanded="false" aria-controls="kt_modal_update_customer_user_info">
-                                            User Information
+                                            Shop Information
                                             <span class="ms-2 rotate-180">
                                                 <i class="ki-outline ki-down fs-3"></i>
                                             </span>
@@ -2920,7 +2675,7 @@
                                             <div class="mb-7">
                                                 <!--begin::Label-->
                                                 <label class="fs-6 fw-semibold mb-2">
-                                                    <span>Update Avatar</span>
+                                                    <span>Update Logo</span>
                                                     <span class="ms-1" data-bs-toggle="tooltip"
                                                         title="Allowed file types: png, jpg, jpeg.">
                                                         <i class="ki-outline ki-information fs-7"></i>
@@ -2932,10 +2687,10 @@
                                                     <!--begin::Image input-->
                                                     <div class="image-input image-input-outline"
                                                         data-kt-image-input="true"
-                                                        style="background-image: url('assets/media/svg/avatars/blank.svg')">
+                                                        style="background-image: url('{{ $params['item']->logo ?? asset('assets/media/svg/avatars/blank.svg') }}')">
                                                         <!--begin::Preview existing avatar-->
                                                         <div class="image-input-wrapper w-125px h-125px"
-                                                            style="background-image: url(assets/media/avatars/300-1.jpg)">
+                                                            style="background-image: url({{ $params['item']->logo ?? asset('assets/media/avatars/300-1.jpg') }})">
                                                         </div>
                                                         <!--end::Preview existing avatar-->
                                                         <!--begin::Edit-->
@@ -2945,9 +2700,8 @@
                                                             title="Change avatar">
                                                             <i class="ki-outline ki-pencil fs-7"></i>
                                                             <!--begin::Inputs-->
-                                                            <input type="file" name="avatar"
+                                                            <input type="file" name="logo"
                                                                 accept=".png, .jpg, .jpeg" />
-                                                            <input type="hidden" name="avatar_remove" />
                                                             <!--end::Inputs-->
                                                         </label>
                                                         <!--end::Edit-->
@@ -2980,7 +2734,9 @@
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
                                                 <input type="text" class="form-control form-control-solid"
-                                                    placeholder="" name="name" value="Sean Bean" />
+                                                    placeholder="" name="name"
+                                                    value="{{ $params['item']->name }}" />
+                                                <div class="input-error"></div>
                                                 <!--end::Input-->
                                             </div>
                                             <!--end::Input group-->
@@ -2997,18 +2753,20 @@
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
                                                 <input type="email" class="form-control form-control-solid"
-                                                    placeholder="" name="email" value="sean@dellito.com" />
+                                                    placeholder="" name="email"
+                                                    value="{{ $params['item']->email }}" />
                                                 <!--end::Input-->
                                             </div>
                                             <!--end::Input group-->
                                             <!--begin::Input group-->
                                             <div class="fv-row mb-15">
                                                 <!--begin::Label-->
-                                                <label class="fs-6 fw-semibold mb-2">Description</label>
+                                                <label class="fs-6 fw-semibold mb-2">Bio</label>
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
                                                 <input type="text" class="form-control form-control-solid"
-                                                    placeholder="" name="description" />
+                                                    placeholder="" name="bio"
+                                                    value="{{ $params['item']->bio }}" />
                                                 <!--end::Input-->
                                             </div>
                                             <!--end::Input group-->
@@ -3018,330 +2776,59 @@
                                         <div class="fw-bold fs-3 rotate collapsible collapsed mb-7"
                                             data-bs-toggle="collapse" href="#kt_modal_update_customer_billing_info"
                                             role="button" aria-expanded="false"
-                                            aria-controls="kt_modal_update_customer_billing_info">Shipping Information
+                                            aria-controls="kt_modal_update_customer_billing_info">More Information
                                             <span class="ms-2 rotate-180">
                                                 <i class="ki-outline ki-down fs-3"></i>
                                             </span>
                                         </div>
                                         <!--end::Billing toggle-->
                                         <!--begin::Billing form-->
-                                        <div id="kt_modal_update_customer_billing_info" class="collapse">
+                                        <div id="kt_modal_update_customer_billing_info" class="collapse show">
                                             <!--begin::Input group-->
                                             <div class="d-flex flex-column mb-7 fv-row">
                                                 <!--begin::Label-->
-                                                <label class="fs-6 fw-semibold mb-2">Address Line 1</label>
+                                                <label class="fs-6 fw-semibold mb-2">Addres</label>
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
                                                 <input class="form-control form-control-solid" placeholder=""
-                                                    name="address1" value="101, Collins Street" />
+                                                    name="address_detail"
+                                                    value="{{ $params['item']->address_detail }}" />
                                                 <!--end::Input-->
                                             </div>
                                             <!--end::Input group-->
                                             <!--begin::Input group-->
                                             <div class="d-flex flex-column mb-7 fv-row">
                                                 <!--begin::Label-->
-                                                <label class="fs-6 fw-semibold mb-2">Address Line 2</label>
+                                                <label class="fs-6 fw-semibold mb-2">Phone number</label>
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
                                                 <input class="form-control form-control-solid" placeholder=""
-                                                    name="address2" />
+                                                    name="phone_number" value="{{ $params['item']->phone_number }}" />
                                                 <!--end::Input-->
                                             </div>
                                             <!--end::Input group-->
                                             <!--begin::Input group-->
                                             <div class="d-flex flex-column mb-7 fv-row">
                                                 <!--begin::Label-->
-                                                <label class="fs-6 fw-semibold mb-2">Town</label>
+                                                <label class="fs-6 fw-semibold mb-2">Shop code</label>
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
                                                 <input class="form-control form-control-solid" placeholder=""
-                                                    name="city" value="Melbourne" />
+                                                    name="" readonly value="{{ $params['item']->shop_code }}" />
                                                 <!--end::Input-->
                                             </div>
-                                            <!--end::Input group-->
-                                            <!--begin::Input group-->
-                                            <div class="row g-9 mb-7">
-                                                <!--begin::Col-->
-                                                <div class="col-md-6 fv-row">
-                                                    <!--begin::Label-->
-                                                    <label class="fs-6 fw-semibold mb-2">State / Province</label>
-                                                    <!--end::Label-->
-                                                    <!--begin::Input-->
-                                                    <input class="form-control form-control-solid" placeholder=""
-                                                        name="state" value="Victoria" />
-                                                    <!--end::Input-->
-                                                </div>
-                                                <!--end::Col-->
-                                                <!--begin::Col-->
-                                                <div class="col-md-6 fv-row">
-                                                    <!--begin::Label-->
-                                                    <label class="fs-6 fw-semibold mb-2">Post Code</label>
-                                                    <!--end::Label-->
-                                                    <!--begin::Input-->
-                                                    <input class="form-control form-control-solid" placeholder=""
-                                                        name="postcode" value="3000" />
-                                                    <!--end::Input-->
-                                                </div>
-                                                <!--end::Col-->
-                                            </div>
-                                            <!--end::Input group-->
-                                            <!--begin::Input group-->
-                                            <div class="d-flex flex-column mb-7 fv-row">
-                                                <!--begin::Label-->
-                                                <label class="fs-6 fw-semibold mb-2">
-                                                    <span>Country</span>
-                                                    <span class="ms-1" data-bs-toggle="tooltip"
-                                                        title="Country of origination">
-                                                        <i class="ki-outline ki-information fs-7"></i>
-                                                    </span>
-                                                </label>
-                                                <!--end::Label-->
-                                                <!--begin::Input-->
-                                                <select name="country" aria-label="Select a Country"
-                                                    data-control="select2" data-placeholder="Select a Country..."
-                                                    data-dropdown-parent="#kt_modal_update_customer"
-                                                    class="form-select form-select-solid fw-bold">
-                                                    <option value="">Select a Country...</option>
-                                                    <option value="AF">Afghanistan</option>
-                                                    <option value="AX">Aland Islands</option>
-                                                    <option value="AL">Albania</option>
-                                                    <option value="DZ">Algeria</option>
-                                                    <option value="AS">American Samoa</option>
-                                                    <option value="AD">Andorra</option>
-                                                    <option value="AO">Angola</option>
-                                                    <option value="AI">Anguilla</option>
-                                                    <option value="AG">Antigua and Barbuda</option>
-                                                    <option value="AR">Argentina</option>
-                                                    <option value="AM">Armenia</option>
-                                                    <option value="AW">Aruba</option>
-                                                    <option value="AU">Australia</option>
-                                                    <option value="AT">Austria</option>
-                                                    <option value="AZ">Azerbaijan</option>
-                                                    <option value="BS">Bahamas</option>
-                                                    <option value="BH">Bahrain</option>
-                                                    <option value="BD">Bangladesh</option>
-                                                    <option value="BB">Barbados</option>
-                                                    <option value="BY">Belarus</option>
-                                                    <option value="BE">Belgium</option>
-                                                    <option value="BZ">Belize</option>
-                                                    <option value="BJ">Benin</option>
-                                                    <option value="BM">Bermuda</option>
-                                                    <option value="BT">Bhutan</option>
-                                                    <option value="BO">Bolivia, Plurinational State of</option>
-                                                    <option value="BQ">Bonaire, Sint Eustatius and Saba</option>
-                                                    <option value="BA">Bosnia and Herzegovina</option>
-                                                    <option value="BW">Botswana</option>
-                                                    <option value="BR">Brazil</option>
-                                                    <option value="IO">British Indian Ocean Territory</option>
-                                                    <option value="BN">Brunei Darussalam</option>
-                                                    <option value="BG">Bulgaria</option>
-                                                    <option value="BF">Burkina Faso</option>
-                                                    <option value="BI">Burundi</option>
-                                                    <option value="KH">Cambodia</option>
-                                                    <option value="CM">Cameroon</option>
-                                                    <option value="CA">Canada</option>
-                                                    <option value="CV">Cape Verde</option>
-                                                    <option value="KY">Cayman Islands</option>
-                                                    <option value="CF">Central African Republic</option>
-                                                    <option value="TD">Chad</option>
-                                                    <option value="CL">Chile</option>
-                                                    <option value="CN">China</option>
-                                                    <option value="CX">Christmas Island</option>
-                                                    <option value="CC">Cocos (Keeling) Islands</option>
-                                                    <option value="CO">Colombia</option>
-                                                    <option value="KM">Comoros</option>
-                                                    <option value="CK">Cook Islands</option>
-                                                    <option value="CR">Costa Rica</option>
-                                                    <option value="CI">Côte d'Ivoire</option>
-                                                    <option value="HR">Croatia</option>
-                                                    <option value="CU">Cuba</option>
-                                                    <option value="CW">Curaçao</option>
-                                                    <option value="CZ">Czech Republic</option>
-                                                    <option value="DK">Denmark</option>
-                                                    <option value="DJ">Djibouti</option>
-                                                    <option value="DM">Dominica</option>
-                                                    <option value="DO">Dominican Republic</option>
-                                                    <option value="EC">Ecuador</option>
-                                                    <option value="EG">Egypt</option>
-                                                    <option value="SV">El Salvador</option>
-                                                    <option value="GQ">Equatorial Guinea</option>
-                                                    <option value="ER">Eritrea</option>
-                                                    <option value="EE">Estonia</option>
-                                                    <option value="ET">Ethiopia</option>
-                                                    <option value="FK">Falkland Islands (Malvinas)</option>
-                                                    <option value="FJ">Fiji</option>
-                                                    <option value="FI">Finland</option>
-                                                    <option value="FR">France</option>
-                                                    <option value="PF">French Polynesia</option>
-                                                    <option value="GA">Gabon</option>
-                                                    <option value="GM">Gambia</option>
-                                                    <option value="GE">Georgia</option>
-                                                    <option value="DE">Germany</option>
-                                                    <option value="GH">Ghana</option>
-                                                    <option value="GI">Gibraltar</option>
-                                                    <option value="GR">Greece</option>
-                                                    <option value="GL">Greenland</option>
-                                                    <option value="GD">Grenada</option>
-                                                    <option value="GU">Guam</option>
-                                                    <option value="GT">Guatemala</option>
-                                                    <option value="GG">Guernsey</option>
-                                                    <option value="GN">Guinea</option>
-                                                    <option value="GW">Guinea-Bissau</option>
-                                                    <option value="HT">Haiti</option>
-                                                    <option value="VA">Holy See (Vatican City State)</option>
-                                                    <option value="HN">Honduras</option>
-                                                    <option value="HK">Hong Kong</option>
-                                                    <option value="HU">Hungary</option>
-                                                    <option value="IS">Iceland</option>
-                                                    <option value="IN">India</option>
-                                                    <option value="ID">Indonesia</option>
-                                                    <option value="IR">Iran, Islamic Republic of</option>
-                                                    <option value="IQ">Iraq</option>
-                                                    <option value="IE">Ireland</option>
-                                                    <option value="IM">Isle of Man</option>
-                                                    <option value="IL">Israel</option>
-                                                    <option value="IT">Italy</option>
-                                                    <option value="JM">Jamaica</option>
-                                                    <option value="JP">Japan</option>
-                                                    <option value="JE">Jersey</option>
-                                                    <option value="JO">Jordan</option>
-                                                    <option value="KZ">Kazakhstan</option>
-                                                    <option value="KE">Kenya</option>
-                                                    <option value="KI">Kiribati</option>
-                                                    <option value="KP">Korea, Democratic People's Republic of</option>
-                                                    <option value="KW">Kuwait</option>
-                                                    <option value="KG">Kyrgyzstan</option>
-                                                    <option value="LA">Lao People's Democratic Republic</option>
-                                                    <option value="LV">Latvia</option>
-                                                    <option value="LB">Lebanon</option>
-                                                    <option value="LS">Lesotho</option>
-                                                    <option value="LR">Liberia</option>
-                                                    <option value="LY">Libya</option>
-                                                    <option value="LI">Liechtenstein</option>
-                                                    <option value="LT">Lithuania</option>
-                                                    <option value="LU">Luxembourg</option>
-                                                    <option value="MO">Macao</option>
-                                                    <option value="MG">Madagascar</option>
-                                                    <option value="MW">Malawi</option>
-                                                    <option value="MY">Malaysia</option>
-                                                    <option value="MV">Maldives</option>
-                                                    <option value="ML">Mali</option>
-                                                    <option value="MT">Malta</option>
-                                                    <option value="MH">Marshall Islands</option>
-                                                    <option value="MQ">Martinique</option>
-                                                    <option value="MR">Mauritania</option>
-                                                    <option value="MU">Mauritius</option>
-                                                    <option value="MX">Mexico</option>
-                                                    <option value="FM">Micronesia, Federated States of</option>
-                                                    <option value="MD">Moldova, Republic of</option>
-                                                    <option value="MC">Monaco</option>
-                                                    <option value="MN">Mongolia</option>
-                                                    <option value="ME">Montenegro</option>
-                                                    <option value="MS">Montserrat</option>
-                                                    <option value="MA">Morocco</option>
-                                                    <option value="MZ">Mozambique</option>
-                                                    <option value="MM">Myanmar</option>
-                                                    <option value="NA">Namibia</option>
-                                                    <option value="NR">Nauru</option>
-                                                    <option value="NP">Nepal</option>
-                                                    <option value="NL">Netherlands</option>
-                                                    <option value="NZ">New Zealand</option>
-                                                    <option value="NI">Nicaragua</option>
-                                                    <option value="NE">Niger</option>
-                                                    <option value="NG">Nigeria</option>
-                                                    <option value="NU">Niue</option>
-                                                    <option value="NF">Norfolk Island</option>
-                                                    <option value="MP">Northern Mariana Islands</option>
-                                                    <option value="NO">Norway</option>
-                                                    <option value="OM">Oman</option>
-                                                    <option value="PK">Pakistan</option>
-                                                    <option value="PW">Palau</option>
-                                                    <option value="PS">Palestinian Territory, Occupied</option>
-                                                    <option value="PA">Panama</option>
-                                                    <option value="PG">Papua New Guinea</option>
-                                                    <option value="PY">Paraguay</option>
-                                                    <option value="PE">Peru</option>
-                                                    <option value="PH">Philippines</option>
-                                                    <option value="PL">Poland</option>
-                                                    <option value="PT">Portugal</option>
-                                                    <option value="PR">Puerto Rico</option>
-                                                    <option value="QA">Qatar</option>
-                                                    <option value="RO">Romania</option>
-                                                    <option value="RU">Russian Federation</option>
-                                                    <option value="RW">Rwanda</option>
-                                                    <option value="BL">Saint Barthélemy</option>
-                                                    <option value="KN">Saint Kitts and Nevis</option>
-                                                    <option value="LC">Saint Lucia</option>
-                                                    <option value="MF">Saint Martin (French part)</option>
-                                                    <option value="VC">Saint Vincent and the Grenadines</option>
-                                                    <option value="WS">Samoa</option>
-                                                    <option value="SM">San Marino</option>
-                                                    <option value="ST">Sao Tome and Principe</option>
-                                                    <option value="SA">Saudi Arabia</option>
-                                                    <option value="SN">Senegal</option>
-                                                    <option value="RS">Serbia</option>
-                                                    <option value="SC">Seychelles</option>
-                                                    <option value="SL">Sierra Leone</option>
-                                                    <option value="SG">Singapore</option>
-                                                    <option value="SX">Sint Maarten (Dutch part)</option>
-                                                    <option value="SK">Slovakia</option>
-                                                    <option value="SI">Slovenia</option>
-                                                    <option value="SB">Solomon Islands</option>
-                                                    <option value="SO">Somalia</option>
-                                                    <option value="ZA">South Africa</option>
-                                                    <option value="KR">South Korea</option>
-                                                    <option value="SS">South Sudan</option>
-                                                    <option value="ES">Spain</option>
-                                                    <option value="LK">Sri Lanka</option>
-                                                    <option value="SD">Sudan</option>
-                                                    <option value="SR">Suriname</option>
-                                                    <option value="SZ">Swaziland</option>
-                                                    <option value="SE">Sweden</option>
-                                                    <option value="CH">Switzerland</option>
-                                                    <option value="SY">Syrian Arab Republic</option>
-                                                    <option value="TW">Taiwan, Province of China</option>
-                                                    <option value="TJ">Tajikistan</option>
-                                                    <option value="TZ">Tanzania, United Republic of</option>
-                                                    <option value="TH">Thailand</option>
-                                                    <option value="TG">Togo</option>
-                                                    <option value="TK">Tokelau</option>
-                                                    <option value="TO">Tonga</option>
-                                                    <option value="TT">Trinidad and Tobago</option>
-                                                    <option value="TN">Tunisia</option>
-                                                    <option value="TR">Turkey</option>
-                                                    <option value="TM">Turkmenistan</option>
-                                                    <option value="TC">Turks and Caicos Islands</option>
-                                                    <option value="TV">Tuvalu</option>
-                                                    <option value="UG">Uganda</option>
-                                                    <option value="UA">Ukraine</option>
-                                                    <option value="AE">United Arab Emirates</option>
-                                                    <option value="GB">United Kingdom</option>
-                                                    <option value="US">United States</option>
-                                                    <option value="UY">Uruguay</option>
-                                                    <option value="UZ">Uzbekistan</option>
-                                                    <option value="VU">Vanuatu</option>
-                                                    <option value="VE">Venezuela, Bolivarian Republic of</option>
-                                                    <option value="VN">Vietnam</option>
-                                                    <option value="VI">Virgin Islands</option>
-                                                    <option value="YE">Yemen</option>
-                                                    <option value="ZM">Zambia</option>
-                                                    <option value="ZW">Zimbabwe</option>
-                                                </select>
-                                                <!--end::Input-->
-                                            </div>
-                                            <!--end::Input group-->
-                                            <!--begin::Input group-->
+
                                             <div class="fv-row mb-7">
                                                 <!--begin::Wrapper-->
                                                 <div class="d-flex flex-stack">
                                                     <!--begin::Label-->
                                                     <div class="me-5">
                                                         <!--begin::Label-->
-                                                        <label class="fs-6 fw-semibold">Use as a billing adderess?</label>
+                                                        <label class="fs-6 fw-semibold">Status</label>
                                                         <!--end::Label-->
                                                         <!--begin::Input-->
                                                         <div class="fs-7 fw-semibold text-muted">If you need more info,
-                                                            please check budget planning</div>
+                                                            please check privacy</div>
                                                         <!--end::Input-->
                                                     </div>
                                                     <!--end::Label-->
@@ -3349,9 +2836,9 @@
                                                     <label
                                                         class="form-check form-switch form-check-custom form-check-solid">
                                                         <!--begin::Input-->
-                                                        <input class="form-check-input" name="billing" type="checkbox"
-                                                            value="1" id="kt_modal_update_customer_billing"
-                                                            checked="checked" />
+                                                        <input class="form-check-input" name="status" type="checkbox"
+                                                            value="active" id="kt_modal_update_customer_billing"
+                                                            {{ $params['item']->status == 'active' ? 'checked' : '' }} />
                                                         <!--end::Input-->
                                                         <!--begin::Label-->
                                                         <span class="form-check-label fw-semibold text-muted"
@@ -3373,7 +2860,7 @@
                                 <div class="modal-footer flex-center">
                                     <!--begin::Button-->
                                     <button type="reset" id="kt_modal_update_customer_cancel"
-                                        class="btn btn-light me-3">Discard</button>
+                                        class="btn btn-light me-3 btn_close_model">Discard</button>
                                     <!--end::Button-->
                                     <!--begin::Button-->
                                     <button type="submit" id="kt_modal_update_customer_submit"
@@ -3601,8 +3088,99 @@
     <script src="{{ asset('assets/js/custom/utilities/modals/users-search.js') }}"></script>
 
 
+    <script>
+        $(document).ready(function() {
+            $('.btn_close_model').on('click',function(){
+                const myModalEl = $(this).closest('.modal')
+                if(myModalEl){
+                    const modal = bootstrap.Modal.getInstance(myModalEl) || new bootstrap.Modal(myModalEl);
+                    modal.hide();
+                }
+            })
+            $('#admin-{{ $params['prefix'] }}-form').submit(function(e) {
+                e.preventDefault();
+                const formEl = $(this)
+                $(this).find('.indicator-label').hide()
+                $(this).find('.indicator-progress').show()
+                $(this).find(`button[type='submit']`).prop('disabled', true);
+                $('.input-error').html('');
+                $('.form-group row p-0 m-0 mb-2 input').removeClass('is-invalid');
+                e.preventDefault();
+                var formData = new FormData(this);
+                $.ajax({
+                    type: 'POST',
+                    url: "{{ route($params['prefix'] . '.' . $params['controller'] . '.update', $params['item']->id) }}",
+                    data: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: (res) => {
+                        $(formEl).find('.indicator-label').show()
+                        $(formEl).find('.indicator-progress').hide()
+                        $(formEl).find(`button[type='submit']`).prop('disabled', false);
+                        console.log('====================================');
+                        console.log(123);
+                        console.log('====================================');
+                        if (res.status) {
+                            Swal.fire({
+                                    text: res.message ??
+                                        "Form has been successfully submitted!",
+                                    icon: "success",
+                                    buttonsStyling: !1,
+                                    confirmButtonText: "Ok, got it!",
+                                    customClass: {
+                                        confirmButton: "btn btn-primary"
+                                    }
+                                })
+                                .then((function(e) {
+                                    window.location.reload()
+                                }))
+                        } else {
+                            Swal.fire({
+                                html: res.message ??
+                                    "Sorry, looks like there are some errors detected, please try again: ",
+                                icon: "error",
+                                buttonsStyling: !1,
+                                confirmButtonText: "Ok, got it!",
+                                customClass: {
+                                    confirmButton: "btn btn-primary"
+                                }
+                            })
+                        }
+                    },
+                    error: function(data) {
+                        console.log('====================================');
+                        console.log(data.responseJSON);
+                        console.log('====================================');
 
+                        $(formEl).find('.indicator-label').show()
+                        $(formEl).find('.indicator-progress').hide()
+                        $(formEl).find(`button[type='submit']`).prop('disabled', false);
+                        let errorMs = '<ul class="text-right text-start text-danger mt-3">';
+                        for (x in data.responseJSON.errors) {
+                            errorMs += `<li><i class="">${data.responseJSON.errors[x]}</i></li>`
+                        }
+                        errorMs += '</ul>'
+                        if(data.status == 400){
+                            errorMs = `<div class="text-danger mt-2"> ${ data.responseJSON.message ?? 'Error from server' }</div>`
+                        }
+                        Swal.fire({
+                            html: "Sorry, something errors please try again: " +
+                                errorMs,
+                            icon: "error",
+                            buttonsStyling: !1,
+                            confirmButtonText: "Ok, got it!",
+                            customClass: {
+                                confirmButton: "btn btn-primary"
+                            }
+                        })
+                    }
+                });
+            });
 
-    <!--end::Custom Javascript-->
-    <!--end::Javascript-->
+        });
+    </script>
 @endpush

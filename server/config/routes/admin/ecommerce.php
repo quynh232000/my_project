@@ -247,7 +247,7 @@ return  [
             'uri'           => 'order-shop',
             'controller'    =>  \App\Http\Controllers\Admin\Ecommerce\OrderShopController::class,
             'name_prefix'   => $base . '.order-shop',
-            'only'          => ['index', 'show','edit'],
+            'only'          => ['index', 'show','edit','show'],
         ],
         [
             'controller'    =>   \App\Http\Controllers\Admin\Ecommerce\OrderShopController::class,

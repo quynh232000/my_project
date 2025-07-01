@@ -1,27 +1,28 @@
 <?php
 
-namespace App\Models\Ecommerce;
+namespace App\Models\Travel;
 
 use App\Models\Admin\UserModel;
 use App\Models\AdminModel;
 use App\Services\FileService;
 use Illuminate\Support\Facades\Auth;
 
-class ShopModel  extends AdminModel
+class NewsModel  extends AdminModel
 {
 
 
     protected $table        = null;
     public function __construct()
     {
-        $this->table        = config('constants.table.ecommerce.' . self::getTable());
+        $this->table        = config('constants.table.travel.' . self::getTable());
         $this->_data        = [
             'listField' => [
                 $this->table . '.id'                => 'id',
-                $this->table . '.logo'              => 'Logo',
-                $this->table . '.name'              => 'Name',
-                $this->table . '.email'              => 'Email',
-                $this->table . '.phone_number'      => 'Phone',
+                $this->table . '.thumbnail'          => 'thumbnail',
+                $this->table . '.title'             => 'title',
+                $this->table . '.slug'             => 'slug',
+                $this->table . '.category'          => 'category',
+
                 $this->table . '.status'            => 'Status',
                 'u.full_name AS created_by'         => 'Creator',
                 $this->table . '.created_at'        => 'Created At',
@@ -31,7 +32,7 @@ class ShopModel  extends AdminModel
             'fieldSearch' => [
                 $this->table . '.name' => 'Tên',
             ],
-            'button' => ['show'],
+             'button' => ['edit','delete'],
         ];
         parent::__construct();
     }
@@ -60,20 +61,24 @@ class ShopModel  extends AdminModel
         // filter by like
         $dataLike = [
             [
-                'field' =>  $this->table . '.name',
-                'value' => 'name'
+                'field' =>  $this->table . '.title',
+                'value' => 'title'
             ],
             [
-                'field' =>  $this->table . '.email',
-                'value' => 'email'
+                'field' =>  $this->table . '.slug',
+                'value' => 'slug'
             ],
             [
-                'field' =>  $this->table . '.phone_number',
-                'value' => 'phone_number'
+                'field' =>  $this->table . '.category',
+                'value' => 'category'
             ],
             [
-                'field' =>  $this->table . '.description',
-                'value' => 'description'
+                'field' =>  $this->table . '.price',
+                'value' => 'price'
+            ],
+             [
+                'field' =>  $this->table . '.number_of_day',
+                'value' => 'number_of_day'
             ],
             [
                 'field' =>  $this->table . '.created_by',
@@ -181,7 +186,7 @@ class ShopModel  extends AdminModel
                     <option value="inactive" ' . ($default == "inactive" ? "selected" : "") . '>Ẩn</option>
                 </select>';
     }
-    public function columnLogo($params, $field, $val)
+    public function columnThumbnail($params, $field, $val)
     {
         return '<div class="d-flex justify-content-center px-5">
                     <div class="icon-wrapper cursor-pointer symbol symbol-40px d-flex jusitfy-content-center">
@@ -194,12 +199,7 @@ class ShopModel  extends AdminModel
         return \App\Helpers\Template::formatPrice($val[$field]);
     }
     // start relation
-    public function products() {
-        return $this->hasMany(ProductModel::class,'shop_id','id');
-    }
-    public function orders() {
-        return $this->hasMany(OrderShopModel::class,'shop_id','id');
-    }
+
     public function user(){
         return $this->belongsTo(UserModel::class,'user_id','id');
     }

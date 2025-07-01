@@ -75,7 +75,7 @@
 
                                     <td class="text-warning">{{ $item->email }}</td>
                                     <td class="text">{{ $item->status }}</td>
-                                    <td>{{ $item->created_at->format('d/m/Y H:i') }}</td>
+                                    <td>{{ $item->created_at }}</td>
                                     <td>{{ $item->creator->full_name }}</td>
                                     <td>
                                         <a href="
