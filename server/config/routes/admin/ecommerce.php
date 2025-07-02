@@ -1,10 +1,11 @@
 <?php
+use App\Http\Middleware\IsLoginMiddleware;
 $base = basename(__FILE__, '.php');
 return  [
 
     'prefix' => basename(__FILE__, '.php'),
     'label' => 'Ecommerce',
-    'middleware' => [],
+    'middleware' => [IsLoginMiddleware::class],
     'routes' => [
         // categoy
         [

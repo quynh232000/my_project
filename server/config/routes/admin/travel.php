@@ -4,7 +4,7 @@ return  [
 
     'prefix' => $base,
     'label' => 'Travel',
-    'middleware' => [],
+    'middleware' => [IsLoginMiddleware::class],
     'routes' => [
         // tour
         [

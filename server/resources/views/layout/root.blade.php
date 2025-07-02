@@ -11,10 +11,10 @@
     <meta property="og:locale" content="en_US" />
     <meta property="og:type" content="article" />
     <meta property="og:title"
-        content="Metronic - The World's #1 Selling Tailwind CSS & Bootstrap Admin Template by KeenThemes" />
-    <meta property="og:url" content="https://keenthemes.com/metronic" />
-    <meta property="og:site_name" content="Metronic by Keenthemes" />
-    <link rel="canonical" href="http://preview.keenthemes.comindex.html" />
+        content="Admin - Manage admin created by Mr. Quynh" />
+    <meta property="og:url" content="https://mr-quynh.site" />
+    <meta property="og:site_name" content="Manage Admin created by Mr. Quynh" />
+    <link rel="canonical" href="https://mr-quynh.site" />
     <link href="{{ asset('assets/plugins/custom/datatables/datatables.bundle.css?t=' . time()) }}" rel="stylesheet"
         type="text/css" />
 
