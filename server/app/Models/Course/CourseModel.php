@@ -1,27 +1,31 @@
 <?php
 
-namespace App\Models\Ecommerce;
+namespace App\Models\Course;
 
 use App\Models\Admin\UserModel;
 use App\Models\AdminModel;
+use App\Services\FileService;
 use Illuminate\Support\Facades\Auth;
 
-class ProductModel  extends AdminModel
+class CourseModel  extends AdminModel
 {
 
 
     protected $table        = null;
-    public function __construct($attributes = [])
+    public function __construct()
     {
-        $this->table        = config('constants.table.ecommerce.' . self::getTable());
-        $this->attributes   = $attributes;
+        $this->table        = config('constants.table.course.' . self::getTable());
         $this->_data        = [
             'listField' => [
                 $this->table . '.id'                => 'id',
-                $this->table . '.image'             => 'Image',
-                $this->table . '.name'              => 'Name',
-                $this->table . '.price'             => 'Price',
-                $this->table . '.stock'             => 'Stock',
+                $this->table . '.image_url'              => 'image_url',
+                $this->table . '.title'              => 'title',
+                $this->table . '.slug'              => 'slug',
+                $this->table . '.duration'       => 'duration',
+                $this->table . '.price'       => 'price',
+                $this->table . '.type'       => 'type',
+                 'c.name AS category_id'         => 'Category',
+
                 $this->table . '.status'            => 'Status',
                 'u.full_name AS created_by'         => 'Creator',
                 $this->table . '.created_at'        => 'Created At',
@@ -31,12 +35,11 @@ class ProductModel  extends AdminModel
             'fieldSearch' => [
                 $this->table . '.name' => 'Tên',
             ],
-            'button' => ['edit', 'delete'],
+             'button' => ['edit','delete'],
         ];
         parent::__construct();
     }
-    protected $guarded       = [];
-     public function adminQuery(&$query, $params)
+    public function adminQuery(&$query, $params)
     {
         if ($params['created_at'] ?? false) {
             $query->whereDate($this->table . '.created_at', $params['created_at']);
@@ -46,11 +49,12 @@ class ProductModel  extends AdminModel
         }
         // filter by equa
         $dataEqua = [
-                        [
-                            'field' => $this->table . '.status',
-                            'value' => 'status'
-                        ]
-                    ];
+            [
+                'field' => $this->table . '.status',
+                'value' => 'status'
+            ],
+
+        ];
         foreach ($dataEqua ?? [] as $item) {
             if (isset($params[$item['value']]) && $params[$item['value']] != "") {
                 $query->where($item['field'], '=', $params[$item['value']]);
@@ -59,26 +63,38 @@ class ProductModel  extends AdminModel
 
         // filter by like
         $dataLike = [
-                        [
-                            'field' =>  $this->table . '.name',
-                            'value' => 'name'
-                        ],
-                        [
-                            'field' =>  $this->table . '.slug',
-                            'value' => 'slug'
-                        ],
-                        [
-                            'field' =>  $this->table . '.created_by',
-                            'value' => 'created_by'
-                        ],
-                        [
-                            'field' => 'u.full_name',
-                            'value' => 'full_name'
-                        ],
-                    ];
+            [
+                'field' =>  $this->table . '.title',
+                'value' => 'title'
+            ],
+            [
+                'field' =>  $this->table . '.slug',
+                'value' => 'slug'
+            ],
+            [
+                'field' =>  $this->table . '.category_id',
+                'value' => 'category_id'
+            ],
+            [
+                'field' =>  $this->table . '.price',
+                'value' => 'price'
+            ],
+             [
+                'field' =>  $this->table . '.number_of_day',
+                'value' => 'number_of_day'
+            ],
+            [
+                'field' =>  $this->table . '.created_by',
+                'value' => 'created_by'
+            ],
+            [
+                'field' => 'u.full_name',
+                'value' => 'full_name'
+            ],
+        ];
         foreach ($dataLike ?? [] as $item) {
             if (isset($params[$item['value']]) && $params[$item['value']] != "") {
-                $query->where($item['field'], 'LIKE', '%' .$params[$item['value']]. '%');
+                $query->where($item['field'], 'LIKE', '%' . $params[$item['value']] . '%');
             }
         }
         return $query;
@@ -91,10 +107,11 @@ class ProductModel  extends AdminModel
         if ($options['task'] == "admin-index") {
             $this->checkall   = true;
             $TABLE_USER = config('constants.table.general.TABLE_USER');
+            $TABLE_CATEGORY = config('constants.table.course.TABLE_CATEGORY');
             $query                          = self::select(array_keys($this->_data['listField']))
                 ->leftJoin($TABLE_USER . ' AS u', 'u.id', '=', $this->table . '.created_by')
-                ->leftJoin($TABLE_USER . ' AS u2', 'u2.id', '=', $this->table . '.updated_by')
-                ;
+                ->leftJoin($TABLE_CATEGORY . ' AS c', 'c.id', '=', $this->table . '.category_id')
+                ->leftJoin($TABLE_USER . ' AS u2', 'u2.id', '=', $this->table . '.updated_by');
 
             $query                          = self::adminQuery($query, $params);
 
@@ -106,7 +123,7 @@ class ProductModel  extends AdminModel
             $this->_data['headTable']       = $this->headTable($this->_data['listField']);
             $this->_data['contentHtml']     = $this->contentHtml($params, $this->_data);
             $this->_data['status']          = true;
-            // unset($this->_data['items']);
+
             unset($this->_data['headTable']);
         }
         return $this->_data;
@@ -114,29 +131,37 @@ class ProductModel  extends AdminModel
     public function saveItem($params = null, $options = null)
     {
         if ($options['task'] == 'add-item') { //thêm mới
-            $params['created_by']   = Auth::user()->id;
+            $params['created_by']   = auth()->user()->id;
             $params['created_at']   = date('Y-m-d H:i:s');
+
             self::insert($this->prepareParams($params));
-            return response()->json(array('success' => true, 'message' => 'Tạo yêu cầu thành công!'));
         }
         if ($options['task'] == 'edit-item') { //cập nhật
-            $params['updated_by']   = Auth::user()->id;
+            $params['updated_by']   = auth()->user()->id;
             $params['updated_at']   = date('Y-m-d H:i:s');
+
+            $params['status'] = $params['status'] ?? 'inactive';
+
+            if($params['logo']??false){
+                $FileService = new FileService();
+                $params['logo'] = $FileService->uploadFile($params['logo'],$params['prefix'].'.'.$params['controller'].'.'.$params['action'],auth()->id())['url'] ?? '';
+            }
+
             $this->where($this->primaryKey, $params[$this->primaryKey])
                 ->update(
                     $this->prepareParams($params)
                 );
-            return response()->json(array('success' => true, 'message' => 'Cập nhật yêu cầu thành công!'));
         }
         if ($options['task'] == 'change-status') {
             $status = ($params['status'] == "active") ? "inactive" : "active";
             self::where('id', $params['id'])
                 ->update([
-                    'status'    => $status,
-                    'updated_at' => date('Y-m-d H:i:s'),
-                    'updated_by' => Auth::user()->id
+                    'status'        => $status,
+                    'updated_at'    => date('Y-m-d H:i:s'),
+                    'updated_by'    => auth()->user()->id
                 ]);
         }
+        return ['status' => 'success', 'message' => 'Require created successfully!'];
     }
     public function getItem($params = null, $options = null)
     {
@@ -152,7 +177,6 @@ class ProductModel  extends AdminModel
     {
         if ($options['task'] == 'delete-item') {
             if ($params['id'] === '0') {
-
             } else {
                 self::whereIn('id', $params['id'])->delete();
             }
@@ -167,50 +191,22 @@ class ProductModel  extends AdminModel
                     <option value="inactive" ' . ($default == "inactive" ? "selected" : "") . '>Ẩn</option>
                 </select>';
     }
-    public static function selectStatus($selected = null)
+    public function columnImage_url($params, $field, $val)
     {
-        $data = [
-            'pending'       => 'Pending',
-            'active'        => 'Active',
-            'inactive'      => 'Inactive',
-            'deny'          => 'Deny',
-        ];
-
-        $html           = '';
-        foreach ($data as $key => $item) {
-            $select     = $selected == $key ? 'selected':'';
-            $html       .= '<option value="'.$key.'" ' . $select . '>'.$item.'</option>';
-        }
-        return '<select class="form-select mb-2" id="status" data-control="select2" name="status"
-                        data-placeholder="Select an option" data-allow-clear="true">
-                    <option value="" selected>--Select--</option>
-                        '.$html.'
-                </select>';
-    }
-    public static function selectCategory($selected = null)
-    {
-        $data           = CategoryModel::select('id','name')->get();
-        $html           = '';
-        foreach ($data as $key => $item) {
-            $select     = $selected == $item->id ? 'selected':'';
-            $html       .= '<option value="'.$item->id.'" ' . $select . '>'.$item->name.'</option>';
-        }
-        return '<select class="form-select mb-2" id="status" data-control="select2" name="category_id"
-                        data-placeholder="Select an option" data-allow-clear="true">
-                    <option value="" selected>--Select--</option>
-                        '.$html.'
-                </select>';
-    }
-    public function columnImage($params, $field, $val)
-    {
-
         return '<div class="d-flex justify-content-center px-5">
                     <div class="icon-wrapper cursor-pointer symbol symbol-40px d-flex jusitfy-content-center">
-                        <img  src="'.($val[$field] ?? asset('assets/media/auth/505-error.png')).'" alt="">
+                        <img  src="' . ($val[$field] ? $val[$field] : asset('assets/media/auth/505-error.png')) . '" alt="">
                     </div>
                 </div>';
     }
-    public function columnPrice($params, $field, $val){
+    public function columnPrice($params, $field, $val)
+    {
         return \App\Helpers\Template::formatPrice($val[$field]);
     }
+    // start relation
+
+    public function user(){
+        return $this->belongsTo(UserModel::class,'user_id','id');
+    }
+
 }

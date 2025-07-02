@@ -1,7 +1,13 @@
 @extends('layout.app')
-@section('title', 'Manage Ecommerce Category')
+@section('title', 'Manage Ecommerce '.$params['controller'])
+@php
+    $model = $params['model'];
+@endphp
+
 @section('main')
-    <div id="kt_app_content_container" class="app-container ">
+    <div id="kt_app_content_container" class="app-container">
+        <!--begin::Card-->
+
         <div class="card card-flush">
             <!--begin::Card header-->
             <div class="card-header border-0 pt-6">
@@ -12,27 +18,32 @@
                         <div class="card-toolbar col-12 d-flex justify-content-end">
                             <!--begin::Toolbar-->
                             <div class="d-flex justify-content-end" style="gap: 10px" data-kt-user-table-toolbar="base">
-                                {{-- @include('include.btn.delete') --}}
-                                {{-- @include('include.btn.create') --}}
+                                @include('include.btn.delete')
+                                @include('include.btn.create')
                             </div>
                         </div>
                     </div>
                     <form class="d-flex align-items-center position-relative my-1 row">
                         <div class="mb-2 fv-row fv-plugins-icon-container col-md-3">
-                            <label class=" form-label">Name</label>
-                            <input type="text" name="name" class="form-control mb-2" placeholder="Enter..."
-                                value="{{ request()->name ?? '' }}">
+                            <label class=" form-label">Title</label>
+                            <input type="text" name="title" class="form-control mb-2" placeholder="Enter..."
+                                value="{{ request()->title ?? '' }}">
                         </div>
                         <div class="mb-2 fv-row fv-plugins-icon-container col-md-3">
-                            <label class=" form-label">Email</label>
-                            <input type="text" name="email" class="form-control mb-2" placeholder="Enter..."
-                                value="{{ request()->email ?? '' }}">
+                            <label class=" form-label">Type</label>
+                            <input type="text" name="type" class="form-control mb-2" placeholder="Enter..."
+                                value="{{ request()->type ?? '' }}">
                         </div>
                         <div class="mb-2 fv-row fv-plugins-icon-container col-md-3">
-                            <label class=" form-label">Phone</label>
-                            <input type="text" name="phone" class="form-control mb-2" placeholder="Enter..."
-                                value="{{ request()->phone ?? '' }}">
+                            <label class=" form-label">Price</label>
+                            <input type="text" name="price" class="form-control mb-2" placeholder="Enter..."
+                                value="{{ request()->price ?? '' }}">
                         </div>
+                        <div class="mb-2 fv-row fv-plugins-icon-container col-md-3">
+                            <label class=" form-label">Status</label>
+                            {!!\App\Models\Ecommerce\CategoryModel::slbStatus($params['status'] ?? '')!!}
+                        </div>
+
                         <div class="col-12 row">
                             <div class="mb-2 fv-row fv-plugins-icon-container col-md-3">
                                 <label class=" form-label">Creator</label>
@@ -43,6 +54,7 @@
                                 <label class=" form-label">Created At</label>
                                 <input type="date" name="created_at" class="form-control mb-2" placeholder="Enter..."
                                     value="{{ request()->created_at ?? '' }}">
+
                             </div>
                             <div class="mb-2 fv-row fv-plugins-icon-container col-md-3">
                                 <label class=" form-label">Modifior</label>
@@ -75,12 +87,12 @@
                         <div class="col-12">
                             <a href="{{ route($params['prefix'] . '.' . $params['controller'] . '.index') }}"
                                 class="text-dark">Totals:&nbsp;
-                                <span class="text-primary">{{ number_format($params['model']['items']->total()) }} rows</span>
+                                <span class="text-primary">{{ number_format($model['items']->total()) }} rows</span>
                             </a>
                         </div>
                     </div>
                     <div class="basic-data-table">
-                        {!! $params['model']['contentHtml'] !!}
+                        {!! $model['contentHtml'] !!}
                     </div>
 
                 </div>
@@ -92,15 +104,13 @@
     </div>
 @endsection
 @push('js2')
-    <!--begin::Custom Javascript(used for this page only)-->
-    <script src="{{ asset('assets/js/custom/apps/user-management/permissions/list.js') }}"></script>
-    <script src="{{ asset('assets/js/custom/apps/user-management/permissions/add-permission.js') }}"></script>
-    <script src="{{ asset('assets/js/custom/apps/user-management/permissions/update-permission.js') }}"></script>
+    </script>
     <script src="{{ asset('assets/js/widgets.bundle.js') }}"></script>
     <script src="{{ asset('assets/js/custom/widgets.js') }}"></script>
     <script src="{{ asset('assets/js/custom/apps/chat/chat.js') }}"></script>
     <script src="{{ asset('assets/js/custom/utilities/modals/users-search.js') }}"></script>
 
+    {{-- <script src="{{ asset('assets/js/custom/apps/ecommerce/catalog/products.js') }}"></script> --}}
 
     <script>
         if ($('table.table-striped tbody tr').length === 0) {

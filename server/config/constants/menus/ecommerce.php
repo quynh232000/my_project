@@ -45,7 +45,7 @@ return [
             'name_route' => basename(__FILE__, '.php') . '.shop',
             'sub' => [
                 ['title' => 'Shops Listing', 'route' => 'ecommerce.shop.index'],
-                ['title' => 'Add Shops', 'route' => 'ecommerce.shop.create'],
+                // ['title' => 'Add Shops', 'route' => 'ecommerce.shop.create'],
             ],
         ],
         [
