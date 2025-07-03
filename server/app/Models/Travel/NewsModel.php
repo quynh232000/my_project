@@ -9,8 +9,6 @@ use Illuminate\Support\Facades\Auth;
 
 class NewsModel  extends AdminModel
 {
-
-
     protected $table        = null;
     public function __construct()
     {

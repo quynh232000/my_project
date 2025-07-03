@@ -1,40 +1,30 @@
 @extends('layout.app')
-@section('title', 'Add User')
+@section('title', 'Add '.$params['controller'])
 @section('main')
-    <div id="kt_app_content_container" class="app-container container-xxl">
+    <div id="kt_app_content_container" class="app-container">
         <!--begin::Card-->
         <div class="card">
-            <!--begin::Card header-->
-            <div class="card-header border-0 pt-6">
-                <!--begin::Card title-->
-                <div class="card-title">
-                    <!--begin::Search-->
-                    <div class="d-flex align-items-center position-relative my-1">
-                        Add user
-                    </div>
-                    <!--end::Search-->
-                </div>
 
-            </div>
-            <!--end::Card header-->
-            <!--begin::Card body-->
             <div class="card-body py-4">
                 <div>
                     <div class="modal-content">
-                        <!--begin::Modal header-->
-
-                        <!--end::Modal header-->
+                        <div class="modal-header px-5 pt-5">
+                            <!--begin::Modal title-->
+                            <h2 class="fw-bold">Add {{ $params['controller'] }}</h2>
+                            <!--end::Modal title-->
+                            @include('include.btn.back')
+                        </div>
                         <!--begin::Modal body-->
                         <div class="modal-body px-5 my-7">
                             <!--begin::Form-->
-                            <form id="kt_modal_add_user_form" class="form"
+                            <form id="kt_modal_add_user_form" class="form" enctype="multipart/form-data"
                                 action="{{ route($params['prefix'] . '.' . $params['controller'] . '.store') }}"
                                 method="POST">
                                 @csrf
                                 <!--begin::Scroll-->
                                 <div class="d-flex flex-column scroll-y px-5 px-lg-10">
                                     <!--begin::Input group-->
-                                    <div class="fv-row mb-7 d-none">
+                                    <div class="fv-row mb-7">
                                         <!--begin::Label-->
                                         <label class="d-block fw-semibold fs-6 mb-5">Avatar</label>
                                         <!--end::Label-->
@@ -50,7 +40,7 @@
                                         </style>
                                         <!--end::Image placeholder-->
                                         <!--begin::Image input-->
-                                        {{-- <div class="image-input image-input-outline image-input-placeholder"
+                                        <div class="image-input image-input-outline image-input-placeholder"
                                             data-kt-image-input="true">
                                             <!--begin::Preview existing avatar-->
                                             <div class="image-input-wrapper w-125px h-125px"
@@ -85,7 +75,7 @@
                                                 <i class="ki-outline ki-cross fs-2"></i>
                                             </span>
                                             <!--end::Remove-->
-                                        </div> --}}
+                                        </div>
                                         <!--end::Image input-->
                                         <!--begin::Hint-->
                                         <div class="form-text">Allowed file types: png, jpg, jpeg.</div>
@@ -181,51 +171,86 @@
 
                                         <!--end::Roles-->
                                     </div>
-                                    <div class="mb-5">
-                                        <label class=" fw-semibold fs-6 mb-5">Add Permission</label>
-                                        <table class="table align-middle table-row-dashed list_permission fs-6 gy-5">
-                                            <tbody class="text-gray-600 fw-semibold">
-                                                 @foreach ($params['permissions'] as $type => $group)
-                                                <tr>
-                                                    <td>
-                                                        <strong class="text-primary">{{ strtoupper($type) }}</strong>
-                                                    </td>
-                                                </tr>
-                                                @foreach ($group as $permission)
-                                                    <tr>
-                                                        <!--begin::Label-->
-                                                        <td class="text-gray-800">{{ ucfirst($permission['uri']) }}
-                                                            Action</td>
-                                                        <!--end::Label-->
-                                                        <!--begin::Options-->
-                                                        <td>
-                                                            <!--begin::Wrapper-->
-                                                            <div class="d-flex">
-                                                                <label
-                                                                    class="form-check form-check-sm form-check-custom form-check-solid me-5 me-lg-20">
-                                                                    <input class="form-check-input input_check_item" type="checkbox"
-                                                                        value="{{ $permission['id'] }}"
-                                                                        name="permission[]" />
-                                                                    <span
-                                                                        class="form-check-label">{{ ucfirst($permission['name']) }}</span>
-                                                                </label>
+
+                                    <div class="fv-row mb-5">
+                                        <label class="fs-5 fw-bold form-label mb-4">Add Permissions</label>
+
+                                        <!-- Nút chọn tất cả -->
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <label class="form-check form-check-warning form-check-solid mb-0">
+                                                <input type="checkbox" class="form-check-input" id="selectAllPermissions">
+                                                <span class="form-check-label">Select All Permissions</span>
+                                            </label>
+
+                                            <div class="d-flex align-items-center gap-3">
+                                                <span id="permissionCounter" class="text-muted small">
+                                                    Selected: 0 /
+                                                    {{ collect($params['permissions'])->flatten(1)->count() }}
+                                                    permissions
+                                                </span>
+                                                <button type="button" id="toggleAllGroups"
+                                                    class="btn btn-warning btn-sm">
+                                                    <i class="fa-solid fa-gear me-2"></i>
+                                                    Toggle All Groups
+                                                </button>
+                                            </div>
+                                        </div>
 
 
+                                        <div class="accordion" id="permissionsAccordion">
+                                            @foreach ($params['permissions'] as $type => $group)
+                                                @php $groupId = 'perm_' . md5($type); @endphp
+                                                <div class="card mb-2">
+                                                    <div
+                                                        class="card-header d-flex justify-content-between align-items-center">
+                                                        <div class="d-flex align-items-center">
+                                                            <label
+                                                                class="form-check form-check-success form-check-solid me-3">
+                                                                <input type="checkbox" class="form-check-input checkGroup"
+                                                                    data-group="{{ $groupId }}">
+                                                            </label>
+                                                            <button class="btn btn-sm btn-link toggle-perm" type="button"
+                                                                data-bs-toggle="collapse"
+                                                                data-bs-target="#collapse-{{ $groupId }}">
+                                                                <i class="bi bi-chevron-down me-1 toggle-icon"></i>
+                                                                <strong>{{ strtoupper($type) }}</strong>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <div id="collapse-{{ $groupId }}" class="collapse show"
+                                                        data-bs-parent="#permissionsAccordion">
+                                                        <div class="card-body">
+                                                            <div class="row">
+                                                                @foreach ($group as $permission)
+                                                                    <div class="col-md-6 mb-2">
+                                                                        <label
+                                                                            class="form-check form-check-custom form-check-solid">
+                                                                            <input
+                                                                                class="form-check-input input_check_item"
+                                                                                type="checkbox"
+                                                                                value="{{ $permission['id'] }}"
+                                                                                name="permission[]"
+                                                                                data-group="{{ $groupId }}">
+                                                                            <span class="form-check-label">
+                                                                                {{ ucfirst($permission['name']) }} <small
+                                                                                    class="text-muted">({{ $permission['uri'] }})</small>
+                                                                            </span>
+                                                                        </label>
+                                                                    </div>
+                                                                @endforeach
                                                             </div>
-                                                            <!--end::Wrapper-->
-                                                        </td>
-                                                        <!--end::Options-->
-                                                    </tr>
-                                                @endforeach
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             @endforeach
-                                            </tbody>
-                                        </table>
+                                        </div>
                                     </div>
+
                                     <!--end::Input group-->
                                 </div>
                                 <!--end::Scroll-->
                                 <!--begin::Actions-->
-                                <div class="text-center pt-10">
+                                <div class="text-center pt-10 fixed-bottom-bar">
 
                                     <button type="submit" class="btn btn-primary" data-kt-users-modal-action="submit">
                                         <span class="indicator-label">Save</span>
@@ -255,4 +280,102 @@
     <script src="{{ asset('assets/js/custom/widgets.js') }}"></script>
     <script src="{{ asset('assets/js/custom/apps/chat/chat.js') }}"></script>
     <script src="{{ asset('assets/js/custom/utilities/modals/users-search.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            // Toggle icon trong từng nhóm
+            $('.toggle-perm').each(function() {
+                const $btn = $(this);
+                const $icon = $btn.find('.toggle-icon');
+                const targetId = $btn.data('bs-target');
+                const $collapse = $(targetId);
+
+                $icon.toggleClass('bi-chevron-down', $collapse.hasClass('show'));
+                $icon.toggleClass('bi-chevron-right', !$collapse.hasClass('show'));
+
+                $collapse.on('show.bs.collapse', function() {
+                    $icon.removeClass('bi-chevron-right').addClass('bi-chevron-down');
+                });
+
+                $collapse.on('hide.bs.collapse', function() {
+                    $icon.removeClass('bi-chevron-down').addClass('bi-chevron-right');
+                });
+            });
+
+            // Check all trong nhóm
+            $('.checkGroup').on('change', function() {
+                const group = $(this).data('group');
+                const isChecked = $(this).is(':checked');
+                $(`input.input_check_item[data-group="${group}"]`).prop('checked', isChecked);
+            });
+
+            // Chọn tất cả
+            $('#selectAllPermissions').on('change', function() {
+                const checked = $(this).is(':checked');
+                $('input.input_check_item, .checkGroup').prop('checked', checked);
+            });
+        });
+
+        // toggle all
+        $(document).ready(function() {
+            let allExpanded = true;
+
+            // Toggle icon trong từng nhóm (như trước)
+            $('.toggle-perm').each(function() {
+                const $btn = $(this);
+                const $icon = $btn.find('.toggle-icon');
+                const targetId = $btn.data('bs-target');
+                const $collapse = $(targetId);
+
+                $icon.toggleClass('bi-chevron-down', $collapse.hasClass('show'));
+                $icon.toggleClass('bi-chevron-right', !$collapse.hasClass('show'));
+
+                $collapse.on('show.bs.collapse', function() {
+                    $icon.removeClass('bi-chevron-right').addClass('bi-chevron-down');
+                });
+
+                $collapse.on('hide.bs.collapse', function() {
+                    $icon.removeClass('bi-chevron-down').addClass('bi-chevron-right');
+                });
+            });
+
+            // Toggle All Groups
+            $('#toggleAllGroups').on('click', function() {
+                if (allExpanded) {
+                    $('.collapse.show').collapse('hide');
+                } else {
+                    $('.collapse:not(.show)').collapse('show');
+                }
+                allExpanded = !allExpanded;
+            });
+
+            // Check group
+            $('.checkGroup').on('change', function() {
+                const group = $(this).data('group');
+                const isChecked = $(this).is(':checked');
+                $(`input.input_check_item[data-group="${group}"]`).prop('checked', isChecked);
+            });
+
+            // Check all
+            $('#selectAllPermissions').on('change', function() {
+                const checked = $(this).is(':checked');
+                $('input.input_check_item, .checkGroup').prop('checked', checked);
+            });
+        });
+
+        // count selected
+        // Hàm cập nhật bộ đếm
+        function updatePermissionCounter() {
+            const selected = $('input.input_check_item:checked').length;
+            const total = $('input.input_check_item').length;
+            $('#permissionCounter').text(`Selected: ${selected} / ${total} permissions`);
+        }
+
+        // Gọi khi thay đổi
+        $(document).on('change', 'input.input_check_item, #selectAllPermissions, .checkGroup', function() {
+            updatePermissionCounter();
+        });
+
+        // Khởi tạo ban đầu
+        updatePermissionCounter();
+    </script>
 @endpush

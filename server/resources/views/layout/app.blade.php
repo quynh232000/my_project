@@ -4,6 +4,18 @@
         .p-1.text-left.align-middle{
             padding:auto 10px !important;
         }
+
+         .fixed-bottom-bar {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1050;
+        }
+
+        .fixed-bottom-bar .btn {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            padding: 10px 18px;
+        }
     </style>
 @endpush
 

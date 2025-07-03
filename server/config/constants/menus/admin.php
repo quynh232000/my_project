@@ -16,8 +16,9 @@ return [
             'title' => 'Permission',
              'name_route' => basename(__FILE__, '.php').'.permission',
             'sub' => [
-                ['title' => 'Role Listing', 'route' => 'admin.role.index'],
+                ['title' => 'New Routes Listing', 'route' => 'admin.permission.new','icon' => 'fa-regular fa-square-plus text-warning'],
                 ['title' => 'Permission Listing', 'route' => 'admin.permission.index'],
+                ['title' => 'Role Listing', 'route' => 'admin.role.index'],
             ],
         ],
         [

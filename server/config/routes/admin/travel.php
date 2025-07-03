@@ -1,4 +1,5 @@
 <?php
+use App\Http\Middleware\IsLoginMiddleware;
 $base = basename(__FILE__, '.php');
 return  [
 

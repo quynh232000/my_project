@@ -40,6 +40,11 @@ class UserController extends AdminController
     public function update(UpdateRequest $request, $id)
     {
         $user = $this->table->find($id);
+        $avatar             = $user->avatar;
+        if ($request->hasFile('avatar')) {
+            $FileService    = new FileService();
+            $avatar         = $FileService->uploadFile($request->avatar, 'admin.user.avatar', auth()->id())['url'] ?? '';
+        }
         // Cập nhật thông tin người dùng
         $user->update([
             'full_name' => $request->full_name,
@@ -115,7 +120,7 @@ class UserController extends AdminController
         $avatar             = $list_avatars[rand(0, count($list_avatars) - 1)];
         if ($request->hasFile('avatar')) {
             $FileService    = new FileService();
-            $avatar         = $FileService->uploadFile($request->avatar, 'user.avatar', auth()->id())['url'] ?? '';
+            $avatar         = $FileService->uploadFile($request->avatar, 'admin.user.avatar', auth()->id())['url'] ?? '';
         }
         $user = UserModel::create([
             'uuid'          => Str::uuid(),

@@ -1,7 +1,7 @@
 @extends('layout.app')
-@section('title', 'Manage Users')
+@section('title', 'Create a new '.$params['controller'] )
 @section('main')
-    <div id="kt_app_content_container" class="app-container container-xxl">
+    <div id="kt_app_content_container" class="app-container">
 
         <div class="card card-flush">
             <!--begin::Modal content-->
@@ -9,14 +9,9 @@
                 <!--begin::Modal header-->
                 <div class="modal-header px-5 pt-5">
                     <!--begin::Modal title-->
-                    <h2 class="fw-bold">Add a Role</h2>
+                    <h2 class="fw-bold">Add a new {{$params['controller'] }}</h2>
                     <!--end::Modal title-->
-                    <!--begin::Close-->
-                    <a href="{{ route($params['prefix'] . '.' . $params['controller'] . '.index') }}"
-                        class="btn btn-icon btn-sm btn-active-icon-primary" data-kt-roles-modal-action="close">
-                        <i class="ki-outline ki-cross fs-1"></i>
-                    </a>
-                    <!--end::Close-->
+                   @include('include.btn.back')
                 </div>
 
                 <!--end::Modal header-->
@@ -27,7 +22,7 @@
                         action="{{ route($params['prefix'] . '.' . $params['controller'] . '.store') }}" method="POST">
                         @csrf
                         <!--begin::Scroll-->
-                        <div class="d-flex flex-column scroll-y me-n7 pe-7" >
+                        <div class="d-flex flex-column scroll-y me-n7 pe-7">
                             <!--begin::Input group-->
                             <div class="fv-row mb-10">
                                 <!--begin::Label-->
@@ -40,99 +35,91 @@
                                     name="name" />
                                 <!--end::Input-->
                             </div>
-                             <div class="fv-row mb-10">
+                            <div class="fv-row mb-10">
                                 <!--begin::Label-->
                                 <label class="fs-5 fw-bold form-label mb-2">
                                     <span class="">Description</span>
                                 </label>
                                 <!--end::Label-->
                                 <!--begin::Input-->
-                                <textarea name="description" id="" cols="30" rows="3"  class="form-control form-control-solid" placeholder="Enter description.."></textarea>
+                                <textarea name="description" id="" cols="30" rows="3" class="form-control form-control-solid"
+                                    placeholder="Enter description.."></textarea>
 
                                 <!--end::Input-->
                             </div>
-                            <!--end::Input group-->
-                            <!--begin::Permissions-->
+
                             <div class="fv-row">
-                                <!--begin::Label-->
-                                <label class="fs-5 fw-bold form-label mb-2">Role Permissions</label>
-                                <!--end::Label-->
-                                <!--begin::Table wrapper-->
-                                <div class="table-responsive">
-                                    <!--begin::Table-->
-                                    <table class="table align-middle table-row-dashed list_permission fs-6 gy-5"
-                                        id="list_permission">
-                                        <!--begin::Table body-->
-                                        <tbody class="text-gray-600 fw-semibold">
-                                            <!--begin::Table row-->
-                                            <tr>
-                                                <td class="text-gray-800">Administrator Access
-                                                    <span class="ms-2" data-bs-toggle="popover" data-bs-trigger="hover"
-                                                        data-bs-html="true"
-                                                        data-bs-content="Allows a full access to the system">
-                                                        <i class="ki-outline ki-information fs-7"></i>
-                                                    </span>
-                                                </td>
-                                                <td>
-                                                    <!--begin::Checkbox-->
-                                                    <label class="form-check form-check-custom form-check-solid me-9">
-                                                        <input class="form-check-input " type="checkbox" value=""
-                                                            id="kt_roles_select_all" />
-                                                        <span class="form-check-label" for="kt_roles_select_all">Select
-                                                            all</span>
-                                                    </label>
-                                                    <!--end::Checkbox-->
-                                                </td>
-                                            </tr>
-                                            <!--end::Table row-->
-                                            <!--begin::Table row-->
-                                            @foreach ($params['items'] as $type => $group)
-                                                <tr>
-                                                    <td>
-                                                        <strong class="text-primary">{{ strtoupper($type) }}</strong>
-                                                    </td>
-                                                </tr>
-                                                @foreach ($group as $permission)
-                                                    <tr>
-                                                        <!--begin::Label-->
-                                                        <td class="text-gray-800">{{ ucfirst($permission['uri']) }}
-                                                            Action</td>
-                                                        <!--end::Label-->
-                                                        <!--begin::Options-->
-                                                        <td>
-                                                            <!--begin::Wrapper-->
-                                                            <div class="d-flex">
-                                                                <label
-                                                                    class="form-check form-check-sm form-check-custom form-check-solid me-5 me-lg-20">
-                                                                    <input class="form-check-input input_check_item" type="checkbox"
-                                                                        value="{{ $permission['id'] }}"
-                                                                        name="permission[]" />
-                                                                    <span
-                                                                        class="form-check-label">{{ ucfirst($permission['name']) }}</span>
-                                                                </label>
+                                <label class="fs-5 fw-bold form-label mb-4">Role Permissions</label>
 
+                                <!-- Nút chọn tất cả -->
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <label class="form-check form-check-warning form-check-solid mb-0">
+                                        <input type="checkbox" class="form-check-input" id="selectAllPermissions">
+                                        <span class="form-check-label">Select All Permissions</span>
+                                    </label>
 
-                                                            </div>
-                                                            <!--end::Wrapper-->
-                                                        </td>
-                                                        <!--end::Options-->
-                                                    </tr>
-                                                @endforeach
-                                            @endforeach
-
-                                            <!--end::Table row-->
-                                        </tbody>
-                                        <!--end::Table body-->
-                                    </table>
-                                    <!--end::Table-->
+                                    <div class="d-flex align-items-center gap-3">
+                                        <span id="permissionCounter" class="text-muted small">
+                                            Selected: 0 / {{ collect($params['items'])->flatten(1)->count() }} permissions
+                                        </span>
+                                        <button type="button" id="toggleAllGroups" class="btn btn-warning btn-sm">
+                                            <i class="fa-solid fa-gear me-2"></i>
+                                            Toggle All Groups
+                                        </button>
+                                    </div>
                                 </div>
-                                <!--end::Table wrapper-->
+
+
+                                <div class="accordion" id="permissionsAccordion">
+                                    @foreach ($params['items'] as $type => $group)
+                                        @php $groupId = 'perm_' . md5($type); @endphp
+                                        <div class="card mb-2">
+                                            <div class="card-header d-flex justify-content-between align-items-center">
+                                                <div class="d-flex align-items-center">
+                                                    <label class="form-check form-check-success form-check-solid me-3">
+                                                        <input type="checkbox" class="form-check-input checkGroup"
+                                                            data-group="{{ $groupId }}">
+                                                    </label>
+                                                    <button class="btn btn-sm btn-link toggle-perm" type="button"
+                                                        data-bs-toggle="collapse"
+                                                        data-bs-target="#collapse-{{ $groupId }}">
+                                                        <i class="bi bi-chevron-down me-1 toggle-icon"></i>
+                                                        <strong>{{ strtoupper($type) }}</strong>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div id="collapse-{{ $groupId }}" class="collapse show"
+                                                data-bs-parent="#permissionsAccordion">
+                                                <div class="card-body">
+                                                    <div class="row">
+                                                        @foreach ($group as $permission)
+                                                            <div class="col-md-6 mb-2">
+                                                                <label
+                                                                    class="form-check form-check-custom form-check-solid">
+                                                                    <input class="form-check-input input_check_item"
+                                                                        type="checkbox" value="{{ $permission['id'] }}"
+                                                                        name="permission[]"
+                                                                        data-group="{{ $groupId }}">
+                                                                    <span class="form-check-label">
+                                                                        {{ ucfirst($permission['name']) }} <small
+                                                                            class="text-muted">({{ $permission['uri'] }})</small>
+                                                                    </span>
+                                                                </label>
+                                                            </div>
+                                                        @endforeach
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
                             </div>
+
                             <!--end::Permissions-->
                         </div>
                         <!--end::Scroll-->
                         <!--begin::Actions-->
-                        <div class="text-center pt-15">
+                        <div class="text-center pt-15 fixed-bottom-bar">
                             <button type="submit" class="btn btn-primary" data-kt-roles-modal-action="submit">
                                 <span class="indicator-label">Submit</span>
                                 <span class="indicator-progress">Please wait...
@@ -165,5 +152,103 @@
 
 
         })
+    </script>
+    <script>
+        $(document).ready(function() {
+            // Toggle icon trong từng nhóm
+            $('.toggle-perm').each(function() {
+                const $btn = $(this);
+                const $icon = $btn.find('.toggle-icon');
+                const targetId = $btn.data('bs-target');
+                const $collapse = $(targetId);
+
+                $icon.toggleClass('bi-chevron-down', $collapse.hasClass('show'));
+                $icon.toggleClass('bi-chevron-right', !$collapse.hasClass('show'));
+
+                $collapse.on('show.bs.collapse', function() {
+                    $icon.removeClass('bi-chevron-right').addClass('bi-chevron-down');
+                });
+
+                $collapse.on('hide.bs.collapse', function() {
+                    $icon.removeClass('bi-chevron-down').addClass('bi-chevron-right');
+                });
+            });
+
+            // Check all trong nhóm
+            $('.checkGroup').on('change', function() {
+                const group = $(this).data('group');
+                const isChecked = $(this).is(':checked');
+                $(`input.input_check_item[data-group="${group}"]`).prop('checked', isChecked);
+            });
+
+            // Chọn tất cả
+            $('#selectAllPermissions').on('change', function() {
+                const checked = $(this).is(':checked');
+                $('input.input_check_item, .checkGroup').prop('checked', checked);
+            });
+        });
+
+        // toggle all
+        $(document).ready(function() {
+            let allExpanded = true;
+
+            // Toggle icon trong từng nhóm (như trước)
+            $('.toggle-perm').each(function() {
+                const $btn = $(this);
+                const $icon = $btn.find('.toggle-icon');
+                const targetId = $btn.data('bs-target');
+                const $collapse = $(targetId);
+
+                $icon.toggleClass('bi-chevron-down', $collapse.hasClass('show'));
+                $icon.toggleClass('bi-chevron-right', !$collapse.hasClass('show'));
+
+                $collapse.on('show.bs.collapse', function() {
+                    $icon.removeClass('bi-chevron-right').addClass('bi-chevron-down');
+                });
+
+                $collapse.on('hide.bs.collapse', function() {
+                    $icon.removeClass('bi-chevron-down').addClass('bi-chevron-right');
+                });
+            });
+
+            // Toggle All Groups
+            $('#toggleAllGroups').on('click', function() {
+                if (allExpanded) {
+                    $('.collapse.show').collapse('hide');
+                } else {
+                    $('.collapse:not(.show)').collapse('show');
+                }
+                allExpanded = !allExpanded;
+            });
+
+            // Check group
+            $('.checkGroup').on('change', function() {
+                const group = $(this).data('group');
+                const isChecked = $(this).is(':checked');
+                $(`input.input_check_item[data-group="${group}"]`).prop('checked', isChecked);
+            });
+
+            // Check all
+            $('#selectAllPermissions').on('change', function() {
+                const checked = $(this).is(':checked');
+                $('input.input_check_item, .checkGroup').prop('checked', checked);
+            });
+        });
+
+        // count selected
+        // Hàm cập nhật bộ đếm
+        function updatePermissionCounter() {
+            const selected = $('input.input_check_item:checked').length;
+            const total = $('input.input_check_item').length;
+            $('#permissionCounter').text(`Selected: ${selected} / ${total} permissions`);
+        }
+
+        // Gọi khi thay đổi
+        $(document).on('change', 'input.input_check_item, #selectAllPermissions, .checkGroup', function() {
+            updatePermissionCounter();
+        });
+
+        // Khởi tạo ban đầu
+        updatePermissionCounter();
     </script>
 @endpush

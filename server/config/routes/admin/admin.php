@@ -1,6 +1,7 @@
 <?php
-use App\Http\Middleware\IsLoginMiddleware;
 
+use App\Http\Middleware\IsLoginMiddleware;
+$base = basename(__FILE__, '.php');
 return  [
 
     'prefix' => basename(__FILE__, '.php'),
@@ -54,12 +55,13 @@ return  [
 
             ]
         ],
+        // permission
         [
             'type'          => 'resource',
             'uri'           => 'permission',
             'controller'    =>  \App\Http\Controllers\Admin\Admin\PermissionController::class,
             'name_prefix'   => 'admin.permission',
-            'only'          => ['index', 'edit', 'store', 'destroy', 'update'], // 👈 Chỉ dùng các action này
+            'only'          => ['index', 'edit','create', 'store', 'destroy', 'update'], // 👈 Chỉ dùng các action này
             'labels'        => [
                 'index'         => 'Listing',
                 'edit'          => 'Chỉnh sửa',
@@ -68,6 +70,35 @@ return  [
             ]
         ],
         [
+            'controller'    =>   \App\Http\Controllers\Admin\Admin\PermissionController::class,
+            'uri'           => $base . '/permission/status/{status}/{id}',
+            'name'          => $base . '.permission.status',
+            'methods'       => ['get'],
+            'action'        => 'status',
+        ],
+        [
+            'controller'    =>   \App\Http\Controllers\Admin\Admin\PermissionController::class,
+            'uri'           => $base . '/permission/confirm-delete',
+            'name'          => $base . '.permission.confirm-delete',
+            'methods'       => ['post'],
+            'action'        => 'confirmDelete',
+        ],
+        [
+            'controller'    =>   \App\Http\Controllers\Admin\Admin\PermissionController::class,
+            'uri'           => $base . '/permission/new',
+            'name'          => $base . '.permission.new',
+            'methods'       => ['get'],
+            'action'        => 'new',
+        ],
+         [
+            'controller'    =>   \App\Http\Controllers\Admin\Admin\PermissionController::class,
+            'uri'           => $base . '/permission/bulkStore',
+            'name'          => $base . '.permission.bulkStore',
+            'methods'       => ['post'],
+            'action'        => 'bulkStore',
+        ],
+        // upload file
+        [
             'type'          => 'resource',
             'uri'           => 'file-upload',
             'controller'    =>  \App\Http\Controllers\Admin\Admin\FileUploadController::class,
@@ -75,14 +106,8 @@ return  [
             'only'          => ['index', 'destroy'], // 👈 Chỉ dùng các action này
         ],
 
-        // [
-        //     'controller'    =>  \App\Http\Controllers\Admin\Admin\GeneralController::class,
-        //     'uri'           => 'user',
-        //     'name'          => 'admin.admin.user',
-        //     'methods'       => ['get','post'],
-        //     'action'        => 'login',
-        //     'labels'        => 'Login'
-        // ],
+
+
 
 
 

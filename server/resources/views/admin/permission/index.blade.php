@@ -1,118 +1,101 @@
 @extends('layout.app')
-@section('title', 'Manage Permissions')
+@section('title', 'Manage ' . $params['controller'])
+@php
+    $model = $params['model'];
+@endphp
 @section('main')
-    <div id="kt_app_content_container" class="app-container container-xxl">
+    <div id="kt_app_content_container" class="app-container">
         <!--begin::Card-->
         <div class="card card-flush">
-            <!--begin::Card header-->
-            <div class="card-header mt-6">
+
+            <div class="card-header border-0 pt-6">
+
                 <!--begin::Card title-->
-                <div class="card-title">
-                    <!--begin::Search-->
-                    <form class="d-flex align-items-center position-relative my-1 me-5">
-                        <i class="ki-outline ki-magnifier fs-3 position-absolute ms-5"></i>
-                        <input type="text" name="search" value="{{request()->search ?? ''}}" data-kt-permissions-table-filter="search"
-                            class="form-control form-control-solid w-250px ps-13" placeholder="Search Permissions" />
+                <div class="w-100">
+                    <div class="row">
+                        <div class="card-toolbar col-12 d-flex justify-content-end">
+                            <!--begin::Toolbar-->
+                            <div class="d-flex justify-content-end" style="gap: 10px" data-kt-user-table-toolbar="base">
+                                @include('include.btn.delete')
+                                @include('include.btn.create')
+                            </div>
+                        </div>
+                    </div>
+                    <form class="d-flex align-items-center position-relative my-1 row">
+                        <div class="mb-2 fv-row fv-plugins-icon-container col-md-3">
+                            <label class=" form-label">Resouce Type</label>
+                            <input type="text" name="resource_type" class="form-control mb-2" placeholder="Enter..."
+                                value="{{ request()->resource_type ?? '' }}">
+                        </div>
+                        <div class="mb-2 fv-row fv-plugins-icon-container col-md-3">
+                            <label class=" form-label">Name</label>
+                            <input type="text" name="name" class="form-control mb-2" placeholder="Enter..."
+                                value="{{ request()->name ?? '' }}">
+                        </div>
+                        <div class="mb-2 fv-row fv-plugins-icon-container col-md-3">
+                            <label class=" form-label">Uri</label>
+                            <input type="text" name="uri" class="form-control mb-2" placeholder="Enter..."
+                                value="{{ request()->uri ?? '' }}">
+                        </div>
+                        <div class="mb-2 fv-row fv-plugins-icon-container col-md-3">
+                            <label class=" form-label">Route name</label>
+                            <input type="text" name="route_name" class="form-control mb-2" placeholder="Enter..."
+                                value="{{ request()->route_name ?? '' }}">
+                        </div>
+                        <div class="mb-2 fv-row fv-plugins-icon-container col-md-3">
+                            <label class=" form-label">Method</label>
+                            <input type="text" name="method" class="form-control mb-2" placeholder="Enter..."
+                                value="{{ request()->method ?? '' }}">
+                        </div>
+
+
+                        <div class="mb-2 fv-row fv-plugins-icon-container col-md-3">
+                            <label class=" form-label">Status</label>
+                            {!! \App\Models\Ecommerce\CategoryModel::slbStatus($params['status'] ?? '') !!}
+                        </div>
+                        <div class="mb-2 fv-row fv-plugins-icon-container col-md-3">
+                            <label class=" form-label">Created At</label>
+                            <input type="date" name="created_at" class="form-control mb-2" placeholder="Enter..."
+                                value="{{ request()->created_at ?? '' }}">
+
+                        </div>
+                        <div class="mb-2 fv-row fv-plugins-icon-container col-md-3">
+                            <label class=" form-label">Updated At</label>
+                            <input type="date" name="updated_at" class="form-control mb-2" placeholder="Enter..."
+                                value="{{ request()->updated_at ?? '' }}">
+                        </div>
+                        <div class="col-12 text-right d-flex justify-content-end " style="gap: 10px">
+                            @include('include.btn.search')
+                        </div>
                     </form>
+                    <div class="row">
+                    </div>
                     <!--end::Search-->
                 </div>
-                <!--end::Card title-->
+                <!--begin::Card title-->
                 <!--begin::Card toolbar-->
 
                 <!--end::Card toolbar-->
             </div>
-            <!--end::Card header-->
-            <!--begin::Card body-->
+            <!--end::Card body-->
             <div class="card-body pt-0">
-                <!--begin::Row-->
-                <h1 class="mb-4">Routes not set Permission</h1>
+                <div>
+                    <div class="row p-2">
 
-
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Route Name</th>
-                            <th>URI</th>
-                            <th>Method</th>
-                            <th>Set Permission</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($routes as $route)
-                            <tr>
-                                <td>{{ $route['name'] }}</td>
-                                <td>{{ $route['uri'] }}</td>
-                                <td>
-                                    <a href="#" class="badge badge-light-success fs-7 m-1"> {{ $route['method'] }}</a>
-                                </td>
-                                <td>
-                                    <form action="{{ route($params['prefix'] . '.' . $params['controller'] . '.store') }}"
-                                        method="POST" class="form-inline d-flex">
-                                        @csrf
-                                        <input type="hidden" name="route_name" value="{{ $route['name'] }}">
-                                        <input type="hidden" name="uri" value="{{ $route['uri'] }}">
-                                        <input type="hidden" name="method" value="{{ $route['method'] }}">
-                                        <input type="text" name="permission_name" class="form-control me-2"
-                                            value="{{ Str::replace('.', '_', $route['name']) }}">
-                                        <button type="submit" class="btn btn-primary btn-sm">Add</button>
-                                    </form>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-
-                <div class="container">
-                    <h1 class="mb-4">Permission management (Permissions)</h1>
-
-                    @if (session('success'))
-                        <div class="alert alert-success">{{ session('success') }}</div>
-                    @endif
-
-                    <table class="table table-bordered table-striped">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th>Uri</th>
-                                <th>Method</th>
-                                <th>Resource type</th>
-                                <th>Created At</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($params['permissions'] as $permission)
-                                <tr>
-                                    <td>{{ $permission->id }}</td>
-                                    <td>{{ $permission->name }}</td>
-                                    <td>{{ $permission->uri }}</td>
-                                    <td class="text-warning">{{ $permission->method }}</td>
-                                    <td>{{ $permission->resource_type ?? '—' }}</td>
-                                    <td>{{ $permission->created_at->format('d/m/Y H:i') }}</td>
-                                    <td>
-                                        <a href="
-                                        {{ route($params['prefix'] . '.' . $params['controller'] . '.edit', $permission->id) }}
-                                         "
-                                            class="btn btn-sm btn-warning">Edit</a>
-                                        <form  action="{{ route($params['prefix'] . '.' . $params['controller'] . '.destroy', ['permission'=>$permission->id]) }}" method="POST" style="display:inline;">
-                                            @csrf
-                                            @method("DELETE")
-                                            <button class="btn btn-sm btn-danger"
-                                                onclick="return confirm('Do you want to delete?')">Delete</button>
-                                        </form>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                    <div>
-                        {{ $params['permissions']->links() }}
+                        <div class="col-12">
+                            <a href="{{ route($params['prefix'] . '.' . $params['controller'] . '.index') }}"
+                                class="text-dark">Totals:&nbsp;
+                                <span class="text-primary">{{ number_format($model['items']->total()) }} rows</span>
+                            </a>
+                        </div>
                     </div>
+                    <div class="basic-data-table">
+                        {!! $model['contentHtml'] !!}
+                    </div>
+
                 </div>
 
             </div>
-            <!--end::Card body-->
         </div>
 
     </div>

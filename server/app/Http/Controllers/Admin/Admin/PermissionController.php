@@ -11,11 +11,20 @@ use Illuminate\Support\Str;
 
 class PermissionController extends AdminController
 {
+    private $model = null;
     public function __construct(Request $request)
     {
         parent::__construct($request);
+        $this->model = new PermissionModel();
     }
     public function index()
+    {
+        // return $this->model->all();
+        $this->_params["item-per-page"]     = $this->getCookie('-item-per-page', 25);
+        $this->_params['model']             = $this->model->listItem($this->_params, ['task' => "admin-index"]);
+        return view($this->_viewAction, ['params' => $this->_params]);
+    }
+    public function new()
     {
         $allRoutes = collect(Route::getRoutes())->map(function ($route) {
             return [
@@ -30,11 +39,8 @@ class PermissionController extends AdminController
 
         $routes                         = $allRoutes->filter(fn($r) => !in_array($r['name'], $existing));
         $routes                         = $routes->reverse();
-        $query                          =    PermissionModel::query();
-        if ($this->_params['search'] ?? false) {
-            $query->where('name', 'LIKE', '%' . $this->_params['search'] . '%');
-        }
-        $this->_params['permissions']   =  $query->orderBy('created_at', 'desc')->paginate(20);
+        //         return $routes;
+        // dd($routes);
 
         return view($this->_viewAction, ['params' => $this->_params, 'routes' => $routes]);
     }
@@ -79,5 +85,40 @@ class PermissionController extends AdminController
         DB::table('route_permission_mappings')->where('route_name', $item->route_name)->delete();
         $item->delete();
         return redirect()->back()->with('success', 'Delete route successfully.');
+    }
+    public function bulkStore(Request $request)
+    {
+        $routes = $request->input('routes', []);
+
+        foreach ($routes as $routeName => $data) {
+            // Bỏ qua nếu không được chọn hoặc thiếu dữ liệu bắt buộc
+            if (empty($data['selected']) || empty($data['route_name']) || empty($data['permission_name'])) {
+                continue;
+            }
+
+            // Validate nhẹ trong vòng lặp
+            $data['route_name'] = trim($data['route_name']);
+            $data['permission_name'] = trim($data['permission_name']);
+
+            // Tạo hoặc lấy lại permission
+            $permission = PermissionModel::firstOrCreate([
+                'name'          => $data['permission_name'],
+            ], [
+                'route_name'    => $data['route_name'],
+                'resource_type' => ucfirst(Str::before($data['route_name'], '.')),
+                'uri'           => $data['uri'] ?? '',
+                'method'        => $data['method'] ?? '',
+            ]);
+
+            // Chèn mapping nếu chưa có
+            DB::table('route_permission_mappings')->insertOrIgnore([
+                'route_name'        => $data['route_name'],
+                'permission_name'   => $permission->name,
+                'created_at'        => now(),
+                'updated_at'        => now(),
+            ]);
+        }
+
+        return redirect()->back()->with('success', 'Đã thêm các route được chọn!');
     }
 }
