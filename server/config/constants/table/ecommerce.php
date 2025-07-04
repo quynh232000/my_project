@@ -25,6 +25,8 @@ return [
     'TABLE_CATEGORY_POST'           => 'ecommerce_categories_posts',
     'TABLE_POST_TYPE'               => 'ecommerce_post_types',
     'TABLE_POST'                    => 'ecommerce_posts',
+    'TABLE_TAG'                     => 'ecommerce_tags',
+    'TABLE_POST_TAG_RELATION'       => 'ecommerce_post_tag_relations',
     'TABLE_ORDER'                   => 'ecommerce_orders',
     'TABLE_ORDER_SHOP'              => 'ecommerce_order_shops',
     'TABLE_ORDER_DETAIL'            => 'ecommerce_order_details',
@@ -35,6 +37,7 @@ return [
     'TABLE_COIN_TRANSACTION'        => 'ecommerce_coin_transactions',
     'TABLE_BANK'                    => 'ecommerce_banks',
     'TABLE_USER_BANK'               => 'ecommerce_user_banks',
+    'TABLE_SHOP_FOLLOW'             => 'ecommerce_shop_follows',
 
 
 ];

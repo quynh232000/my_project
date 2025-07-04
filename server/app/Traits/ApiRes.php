@@ -3,6 +3,7 @@
 namespace App\Traits;
 
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 
 trait ApiRes
 {
@@ -66,5 +67,22 @@ trait ApiRes
         ];
 
         return response()->json($response, $statusCode);
+    }
+    public function successResponsePagination($message = 'Thành công!', $data = null, $paginate = null, $statusCode = Response::HTTP_OK)
+    {
+        $resPagination = [];
+        if ($paginate) {
+            $resPagination = [
+                'pagination' => [
+                    'current_page'  => $paginate->currentPage(),
+                    'last_page'     => $paginate->lastPage(),
+                    'per_page'      => $paginate->perPage(),
+                    'total'         => $paginate->total(),
+                    'next_page_url' => $paginate->nextPageUrl(),
+                    'prev_page_url' => $paginate->previousPageUrl(),
+                ]
+            ];
+        }
+        return response()->json(['status' => true, 'message' => $message, 'data' => $data, 'meta' => $resPagination], $statusCode);
     }
 }
