@@ -12,5 +12,5 @@ class ProductShippingModel  extends ApiModel
         $this->table        = config('constants.table.ecommerce.' . self::getTable());
         parent::__construct();
     }
-
+ protected $guarded       = [];
 }

@@ -20,7 +20,7 @@ class BannerModel  extends ApiModel
                         ->where('status','active');
 
             if($params['shop_slug'] ?? false){
-                $user_id    = ShopModel::where('slug',$params['slug'])->first()->user_id ?? null;
+                $user_id    = ShopModel::where('slug',$params['shop_slug'])->first()->user_id ?? null;
                 if(!$user_id) return false;
                 $query->where('user_id', $user_id);
             }

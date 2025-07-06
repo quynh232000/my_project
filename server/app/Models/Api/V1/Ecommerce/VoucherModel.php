@@ -3,10 +3,13 @@
 namespace App\Models\Api\V1\Ecommerce;
 
 use App\Models\ApiModel;
+use App\Traits\HasFilters;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 
 class VoucherModel  extends ApiModel
 {
+    use SoftDeletes, HasFilters;
     protected $table        = null;
     public function __construct()
     {
@@ -31,8 +34,8 @@ class VoucherModel  extends ApiModel
                             ->where('quantity', '>', 'used_quantity')
                             ->with('shop:id,name,logo');
 
-            if (auth('ecommerce')->check() && !$params['shop_id'] && !$params['from']) {
-                $my_vouchers = UserVoucherModel::where('user_id', auth('api')->id())->pluck('voucher_id')->all();
+            if (auth('ecommerce')->check() && !isset($params['shop_id']) && !isset($params['from'])) {
+                $my_vouchers = UserVoucherModel::where('user_id', auth('ecommerce')->id())->pluck('voucher_id')->all();
                 if (count($my_vouchers) > 0) {
                     $vouchers->whereNotIn('id', $my_vouchers);
                 }
@@ -76,10 +79,10 @@ class VoucherModel  extends ApiModel
     // }
     public function is_save()
     {
-        if (!auth('api')->check()) {
+        if (!auth('ecommerce')->check()) {
             return false;
         }
-        return UserVoucherModel::where(['voucher_id' => $this->id, 'user_id' => auth('api')->id()])->exists();
+        return UserVoucherModel::where(['voucher_id' => $this->id, 'user_id' => auth('ecommerce')->id()])->exists();
     }
     public function getStatusAttribute(){
         $status = 'active';

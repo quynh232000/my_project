@@ -10,4 +10,8 @@ return [
     'TABLE_DOCUMENT'            => 'documents',
     'TABLE_RESOURCE_PERMISSION' => 'resource_permissions',
     'TABLE_FILE_UPLOAD'         => 'file_uploads',
+    'TABLE_PASSWORD_RESET_TOKEN' => 'password_reset_tokens',
+    'TABLE_PROVINCE'            => 'provinces',
+    'TABLE_DISTRICT'            => 'districts',
+    'TABLE_WARD'                => 'wards',
 ];

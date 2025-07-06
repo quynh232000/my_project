@@ -12,5 +12,8 @@ class LiveChatModel  extends ApiModel
         $this->table        = config('constants.table.ecommerce.' . self::getTable());
         parent::__construct();
     }
-
+    protected $guarded       = [];
+    public function user() {
+        return $this->belongsTo(UserModel::class,'user_id','id');
+    }
 }

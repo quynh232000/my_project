@@ -12,5 +12,9 @@ class PostTypeModel  extends ApiModel
         $this->table        = config('constants.table.ecommerce.' . self::getTable());
         parent::__construct();
     }
-
+    protected $guarded       = [];
+    public function post_categories()
+    {
+        return $this->hasMany(CategoryPostModel::class, 'post_type_id', 'id');
+    }
 }

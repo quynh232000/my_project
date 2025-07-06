@@ -12,5 +12,8 @@ class TagModel  extends ApiModel
         $this->table        = config('constants.table.ecommerce.' . self::getTable());
         parent::__construct();
     }
-
+    protected $guarded       = [];
+    public function post_tags(){
+        return $this->hasMany(PostTagRelationModel::class,'post_tag_id','id');
+    }
 }

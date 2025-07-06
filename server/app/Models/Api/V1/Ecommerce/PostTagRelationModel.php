@@ -12,5 +12,12 @@ class PostTagRelationModel  extends ApiModel
         $this->table        = config('constants.table.ecommerce.' . self::getTable());
         parent::__construct();
     }
-
+    public function post()
+    {
+        return $this->belongsTo(PostModel::class, 'post_id', 'id');
+    }
+    public function tag()
+    {
+        return $this->belongsTo(TagModel::class, 'tag_id', 'id');
+    }
 }

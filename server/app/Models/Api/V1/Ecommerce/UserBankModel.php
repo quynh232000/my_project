@@ -12,5 +12,9 @@ class UserBankModel  extends ApiModel
         $this->table        = config('constants.table.ecommerce.' . self::getTable());
         parent::__construct();
     }
-
+    protected $guarded       = [];
+    public function bank()
+    {
+        return $this->belongsTo(DistrictModel::class, 'bank_id', 'id');
+    }
 }

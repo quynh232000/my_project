@@ -23,4 +23,13 @@ class ShopController extends ApiController
             return $this->errorInvalidate('Đã có lỗi xảy ra: ', $e->getMessage());
         }
     }
+    public function show(Request $request,$slug){
+        try {
+            $result = $this->table->getItem([...$this->_params,'slug' => $slug],['task' => 'info']);
+            if(!$result) return $this->error('Thông tin không hợp lệ');
+            return $this->success('Ok!', $result);
+        } catch (\Exception $e) {
+            return $this->errorInvalidate('Đã có lỗi xảy ra: ', $e->getMessage());
+        }
+    }
 }

@@ -12,5 +12,8 @@ class UserVoucherModel  extends ApiModel
         $this->table        = config('constants.table.ecommerce.' . self::getTable());
         parent::__construct();
     }
-
+    public function voucher()
+    {
+        return $this->belongsTo(VoucherModel::class,'voucher_id','id');
+    }
 }

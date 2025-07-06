@@ -12,5 +12,8 @@ class CategoryPostModel  extends ApiModel
         $this->table        = config('constants.table.ecommerce.' . self::getTable());
         parent::__construct();
     }
-
+    public function post_type()
+    {
+        return $this->belongsTo(PostTypeModel::class,'post_type_id','id');
+    }
 }

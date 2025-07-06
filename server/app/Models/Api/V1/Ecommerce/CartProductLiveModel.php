@@ -12,5 +12,11 @@ class CartProductLiveModel  extends ApiModel
         $this->table        = config('constants.table.ecommerce.' . self::getTable());
         parent::__construct();
     }
-
+   protected $guarded       = [];
+   public function product_live() {
+        return $this->belongsTo(ProductLiveModel::class,'product_live_id','id');
+    }
+    public function user() {
+        return $this->belongsTo(UserModel::class,'user_id','id');
+    }
 }

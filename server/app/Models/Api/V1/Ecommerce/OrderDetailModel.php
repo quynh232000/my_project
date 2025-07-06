@@ -12,6 +12,7 @@ class OrderDetailModel  extends ApiModel
         $this->table        = config('constants.table.ecommerce.' . self::getTable());
         parent::__construct();
     }
+    protected $guarded       = [];
     public function orderShop()
     {
         return $this->belongsTo(OrderShopModel::class, 'order_shop_id');
@@ -27,11 +28,11 @@ class OrderDetailModel  extends ApiModel
 
     public function order_shop()
     {
-        return $this->belongsTo(OrderShopModel::class);
+        return $this->belongsTo(OrderShopModel::class,'order_shop_id','id');
     }
     public function product()
     {
-        return $this->belongsTo(ProductModel::class);
+        return $this->belongsTo(ProductModel::class,'product_id','id');
     }
     public function getER()
     {

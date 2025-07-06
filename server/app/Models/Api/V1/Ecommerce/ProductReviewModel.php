@@ -41,9 +41,9 @@ class ProductReviewModel  extends ApiModel
     }
     public function is_like()
     {
-        $userId = auth('api')->check();
+        $userId = auth('ecommerce')->check();
         if (!$userId) return false;
-        return ProductLikeReviewModel::where(['user_id' => auth('api')->id(), 'product_review_id' => $this->id])->exists();
+        return ProductLikeReviewModel::where(['user_id' => auth('ecommerce')->id(), 'product_review_id' => $this->id])->exists();
     }
 
     public function getLikesCountAttribute()

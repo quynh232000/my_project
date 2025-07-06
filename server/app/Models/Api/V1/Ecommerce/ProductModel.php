@@ -10,17 +10,20 @@ use Illuminate\Support\Facades\DB;
 class ProductModel  extends ApiModel
 {
     use  SoftDeletes, HasFilters;
+     private $filter_products = [];
+    protected $appends = ['product_loves_count', 'product_reviews_count', 'shop_replies_count'];
     protected $table        = null;
     public function __construct()
     {
         $this->table        = config('constants.table.ecommerce.' . self::getTable());
         parent::__construct();
     }
+     protected $guarded       = [];
     public function listItem($params = null, $options = null)
     {
         if ($options['task'] == "list") {
 
-            $filters = [
+            $filter_products = [
                 [
                     'relation' => 'brand',
                     'column' => 'id',
@@ -58,7 +61,7 @@ class ProductModel  extends ApiModel
             }
 
             $products = $query->whereColumn('stock', '>', 'sold')
-                ->filterAndSort($filters, $sort_by, $sort_direction)
+                ->filterAndSort($filter_products, $sort_by, $sort_direction)
                 ->with('category:id,name')
                 ->paginate($limit, ['*'], 'page', $page);
 
@@ -146,7 +149,7 @@ class ProductModel  extends ApiModel
                 $productQuery->whereBetween('price', [$minPrice, $maxPrice]);
             }
             if (isset($params['type']) && $params['type'] == 'favourite') {
-                $product_ids                = ProductLoveModel::where(['user_id' => auth('api')->id()])->pluck('product_id');
+                $product_ids                = ProductLoveModel::where(['user_id' => auth('ecommerce')->id()])->pluck('product_id');
                 $productQuery->whereIn('id', $product_ids);
             }
 
@@ -222,8 +225,8 @@ class ProductModel  extends ApiModel
                 return false;
             }
             $product    = self::where(['slug' => $slug, 'status' => 'active', 'is_published' => 1, 'deleted_at' => null])
-                        ->with('category:id,name,slug', 'brand:id,name',  'images', 'shipping', 'attributes.attribute_name','shop.user')
-                        ->first();
+                ->with('category:id,name,slug', 'brand:id,name',  'images', 'shipping', 'attributes.attribute_name', 'shop.user')
+                ->first();
 
             if (!$product) {
                 return false;
@@ -250,44 +253,44 @@ class ProductModel  extends ApiModel
             // get product relative
             $type_product           = 'same_category';
             $data_products          = self::with('category', 'brand')->where(['category_id' => $product->category_id])
-                                    ->where(
-                                        [
-                                            ['deleted_at', '=', null],
-                                            ['status', '=', 'ACTIVE'],
-                                            ['is_published', '=', 1]
-                                        ]
-                                    )->whereNot('id', $product->id)
-                                    ->addSelect([
-                                        $this->table.'.*',
-                                        DB::raw('(SELECT AVG('.$TABLE_PRODUCT_REVIEW.'.star)
-                                                FROM '.$TABLE_PRODUCT_REVIEW.' WHERE
-                                                '.$TABLE_PRODUCT_REVIEW.'.product_id = '.$this->table.'.id AND '.$TABLE_PRODUCT_REVIEW.'.is_hidden = 0) as stars')
-                                    ])
-                                    ->limit(10)->get();
+                ->where(
+                    [
+                        ['deleted_at', '=', null],
+                        ['status', '=', 'ACTIVE'],
+                        ['is_published', '=', 1]
+                    ]
+                )->whereNot('id', $product->id)
+                ->addSelect([
+                    $this->table . '.*',
+                    DB::raw('(SELECT AVG(' . $TABLE_PRODUCT_REVIEW . '.star)
+                                                FROM ' . $TABLE_PRODUCT_REVIEW . ' WHERE
+                                                ' . $TABLE_PRODUCT_REVIEW . '.product_id = ' . $this->table . '.id AND ' . $TABLE_PRODUCT_REVIEW . '.is_hidden = 0) as stars')
+                ])
+                ->limit(10)->get();
             if ($data_products->count() == 0) {
                 $data_products      = self::where(
-                                        [
-                                            ['deleted_at', '=', null],
-                                            ['status', '=', 'ACTIVE'],
-                                            ['is_published', '=', 1]
-                                        ]
-                                    )->with('category', 'brand')->orderBy('sold', 'desc')->limit(10)
-                                    ->addSelect([
-                                        'products.*',
-                                        DB::raw('(SELECT AVG('.$TABLE_PRODUCT_REVIEW.'.star)
-                                                FROM '.$TABLE_PRODUCT_REVIEW.' WHERE
-                                                '.$TABLE_PRODUCT_REVIEW.'.product_id = '.$this->table.'.id AND '.$TABLE_PRODUCT_REVIEW.'.is_hidden = 0) as stars')
-                                    ])->get();
+                    [
+                        ['deleted_at', '=', null],
+                        ['status', '=', 'ACTIVE'],
+                        ['is_published', '=', 1]
+                    ]
+                )->with('category', 'brand')->orderBy('sold', 'desc')->limit(10)
+                    ->addSelect([
+                        'products.*',
+                        DB::raw('(SELECT AVG(' . $TABLE_PRODUCT_REVIEW . '.star)
+                                                FROM ' . $TABLE_PRODUCT_REVIEW . ' WHERE
+                                                ' . $TABLE_PRODUCT_REVIEW . '.product_id = ' . $this->table . '.id AND ' . $TABLE_PRODUCT_REVIEW . '.is_hidden = 0) as stars')
+                    ])->get();
                 $type_product       = 'suggestion';
             }
 
             return [
-                    'product'       => $product,
-                    'shop'          => $shop,
-                    'categories'    => $categories,
-                    'my_review'     => $my_review ?? null,
-                    'shop_vouchers' => $shop_vouchers,
-                    'data_products' => ['products' => $data_products, 'type' => $type_product]
+                'product'       => $product,
+                'shop'          => $shop,
+                'categories'    => $categories,
+                'my_review'     => $my_review ?? null,
+                'shop_vouchers' => $shop_vouchers,
+                'data_products' => ['products' => $data_products, 'type' => $type_product]
             ];
         }
         return $result;
@@ -338,48 +341,48 @@ class ProductModel  extends ApiModel
     // }
     public function images()
     {
-        return $this->hasMany(ProductImageModel::class,'product_id','id');
+        return $this->hasMany(ProductImageModel::class, 'product_id', 'id');
     }
     public function shipping()
     {
-        return $this->hasOne(ProductShippingModel::class,'product_id','id');
+        return $this->hasOne(ProductShippingModel::class, 'product_id', 'id');
     }
     public function attributes()
     {
-        return $this->hasMany(ProductAttributeModel::class,'product_id','id');
+        return $this->hasMany(ProductAttributeModel::class, 'product_id', 'id');
     }
     public function shop()
     {
-        return $this->belongsTo(ShopModel::class,'shop_id','id');
+        return $this->belongsTo(ShopModel::class, 'shop_id', 'id');
     }
     public function reviews()
     {
-        return $this->hasMany(ProductReviewModel::class,'product_id','id');
+        return $this->hasMany(ProductReviewModel::class, 'product_id', 'id');
     }
-    // public function latest_review()
-    // {
-    //     return $this->reviews()->one()->latestOfMany();
-    // }
-    // public function review_metric()
-    // {
-    //     return $this->hasOne(ProductReviewMetric::class);
-    // }
+    public function latest_review()
+    {
+        return $this->reviews()->one()->latestOfMany();
+    }
+    public function review_metric()
+    {
+        return $this->hasOne(ProductReviewMetricModel::class,'product_id','id');
+    }
 
-    // public function inventoryLogs()
-    // {
-    //     return $this->hasMany(InventoryLog::class);
-    // }
-    // public function priceLogs()
-    // {
-    //     return $this->hasMany(PriceLog::class);
-    // }
-    // public function order_detail()
-    // {
-    //     return $this->has(OrderDetail::class);
-    // }
+    public function inventoryLogs()
+    {
+        return $this->hasMany(InventoryLogModel::class,'product_id','id');
+    }
+    public function priceLogs()
+    {
+        return $this->hasMany(PriceLogModel::class,'product_id','id');
+    }
+    public function order_detail()
+    {
+        return $this->has(OrderDetailModel::class,'product_id','id');
+    }
     public function loves()
     {
-        return $this->hasMany(ProductLoveModel::class,'product_id','id');
+        return $this->hasMany(ProductLoveModel::class, 'product_id', 'id');
     }
     public function stars()
     {
@@ -387,10 +390,10 @@ class ProductModel  extends ApiModel
         return $avg ? round($avg, 1) : 0;
     }
 
-     public function is_loved()
+    public function is_loved()
     {
-        if (auth('api')->check()) {
-            $user_id    = auth('api')->id();
+        if (auth('ecommerce')->check()) {
+            $user_id    = auth('ecommerce')->id();
             $love       = ProductLoveModel::where('user_id', $user_id)->where('product_id', $this->id)->first();
             return $love ? true : false;
         } else {
@@ -403,25 +406,180 @@ class ProductModel  extends ApiModel
     }
     public function my_review()
     {
-        if (!auth('api')->check()) {
+        if (!auth('ecommerce')->check()) {
             return ['can_review' => false, 'review' => null];
         }
-        $check_review = ProductReviewModel::where(['product_id' => $this->id, 'user_id' => auth('api')->id()])
+        $check_review = ProductReviewModel::where(['product_id' => $this->id, 'user_id' => auth('ecommerce')->id()])
             ->with('user', 'reply.shop', 'likes')->first();
         if ($check_review) {
             $check_review->is_like = ['like_status' => $check_review->is_like(), 'counting' => $check_review->likes_count];
             return ['can_review' => true, 'review' => $check_review];
         }
         $check_can_review = OrderDetailModel::where('product_id', $this->id)
-                            ->whereHas('OrderShop.Order', function ($query) {
-                                $query->where('status', 'COMPLETED')
-                                    ->where('user_id', auth('api')->id());
-                            })->exists();
+            ->whereHas('OrderShop.Order', function ($query) {
+                $query->where('status', 'COMPLETED')
+                    ->where('user_id', auth('ecommerce')->id());
+            })->exists();
         return ['can_review' => $check_can_review, 'review' => null];
     }
     public function review_count()
     {
         return ProductReviewModel::where('product_id', $this->id)->count() ?? 0;
+    }
+    public static function getStateProducts($state = null)
+    {
+        if (!$state) {
+            return [];
+        }
+        switch ($state) {
+            // 'PENDING','ACTIVE','DENY'
+            case 'PENDING':
+                return array(
+                    [
+                        'column' => 'status',
+                        'value' => 'PENDING',
+                    ]
+                );
+            case 'ACTIVE':
+                return array(
+                    [
+                        'column' => 'status',
+                        'value' => 'ACTIVE',
+                    ]
+                );
+            case 'DENY':
+                return array(
+                    [
+                        'column' => 'status',
+                        'value' => 'DENY',
+                    ]
+                );
+            case 'A-FEW-LEFT':
+                return array(
+                    [
+                        'column' => 'stock',
+                        'value' => 'to-10',
+                    ]
+                );
+            /**
+                 * case 'A-FEW-LEFT':
+                 *     $products = self::with('inventoryLogs')->get();
+                 *     $productIds = $products->filter(function ($product) {
+                 *         $availableStock = $product->inventoryLogs->sum('inventory_adjustment') - $product->sold;
+                 *         return $availableStock > 0 && $availableStock <= 0.1 * $availableStock;
+                 *     })->pluck('id');
+
+                 *     return [['column' => 'id', 'value' => $productIds->toArray()]];
+                 */
+            case 'HIDDEN':
+                return array(
+                    [
+                        'column' => 'is_published',
+                        'value' => 1,
+                    ]
+                );
+
+            default:
+                return [];
+        }
+    }
+    public static function getInventory()
+    {
+        return self::with('inventoryLogs')->get();
+    }
+    /**
+     * "star","comment","is_hidden","images","product_id","user_id","order_id","status",
+     */
+
+    protected $product_review_params = ["star", "comment", "is_hidden", "images", "product_id", "user_id", "order_id", "status",];
+    /**
+     * "uuid","full_name","username","email","phone_number","avatar_url","thumbnail_url","birthday","address","is_blocked","bio","failed_attempts","blocked_until","email_verified_at","created_at","updated_at"l
+     */
+
+    protected $product_review_user_params = ["uuid", "full_name", "username", "email", "phone_number"];
+    /**
+     * 'total_reviews','average_rating','rating_1_count','rating_2_count','rating_3_count','rating_4_count','rating_5_count','product_id',
+     */
+    protected $product_review_metric_params = ['total_reviews', 'average_rating', 'rating_1_count', 'rating_2_count', 'rating_3_count', 'rating_4_count', 'rating_5_count',];
+
+    public function getFilters()
+    {
+
+        foreach (request()->all() as $column => $value) {
+
+            if (in_array($column, ['limit', 'page', 'sort_by', 'sort_direction'])) {
+                continue;
+            }
+
+            if (in_array($column, $this->product_review_params)) {
+                $this->filter_products = $this->addFilter($column, $value, 'reviews');
+            } else if (in_array($column, $this->product_review_user_params)) {
+                $this->filter_products = $this->addFilter($column, $value, 'reviews.user');
+            } else if (in_array($column, $this->product_review_metric_params)) {
+                $this->filter_products = $this->addFilter($column, $value, 'review_metric');
+            } else {
+                $this->filter_products = $this->addFilter($column, $value);
+            }
+        }
+        return $this->filter_products;
+    }
+    protected function addFilter($column, $value, $relation = null)
+    {
+        $this->filter_products[] = compact(['column', 'value', 'relation']);
+        return $this->filter_products;
+    }
+    public function returnSold($quantity)
+    {
+        $this->sold -= $quantity;
+        return $this->save();
+    }
+    /**
+     * Product Model --> ERs' Helpers
+     */
+
+    public function getProductLovesCountAttribute()
+    {
+        return $this->loves()->count();
+    }
+    public function getProductReviewsCountAttribute()
+    {
+        return $this->reviews()->count();
+    }
+    public function getShopRepliesCountAttribute()
+    {
+        return ProductReviewReplyModel::whereIn('product_review_id', $this->reviews->pluck('id'))->count();
+    }
+
+
+
+    public function avgRating()
+    {
+        return $this->stars->avg('star');
+    }
+    public function getStock()
+    {
+        return $this->inventoryLogs()->sum('inventory_adjustment') - $this->sold;
+    }
+
+    public static function getERNames()
+    {
+        return ['category', 'brand', 'images', 'shipping', 'attributes.attribute_name', 'shop', 'inventoryLogs', 'priceLogs'];
+    }
+    public function getER()
+    {
+        return $this->with($this->getERNames());
+    }
+    public function getERData()
+    {
+        return $this->load($this->getERNames());
+    }
+    public function getReplicate()
+    {
+        $replicate = $this->load(['category', 'brand', 'images', 'shipping', 'attributes', 'shop',])->replicate();
+
+        $replicate->save();
+
+        return $replicate;
     }
 
 }
