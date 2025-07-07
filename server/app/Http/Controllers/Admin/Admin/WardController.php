@@ -23,12 +23,12 @@ class WardController extends AdminController
     }
     public function index()
     {
-        WardModel::chunk(500, function ($wards) {
-            foreach ($wards as $ward) {
-                $ward->slug = Str::slug($ward->name);
-                $ward->save();
-            }
-        });
+        // WardModel::chunk(500, function ($wards) {
+        //     foreach ($wards as $ward) {
+        //         $ward->slug = Str::slug($ward->name);
+        //         $ward->save();
+        //     }
+        // });
         $this->_params["item-per-page"]     = $this->getCookie('-item-per-page', 25);
         $this->_params['model']             = $this->model->listItem($this->_params, ['task' => "admin-index"]);
         return view($this->_viewAction, ['params' => $this->_params]);
