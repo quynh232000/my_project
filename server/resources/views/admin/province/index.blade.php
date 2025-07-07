@@ -25,33 +25,28 @@
                     </div>
                     <form class="d-flex align-items-center position-relative my-1 row">
                         <div class="mb-2 fv-row fv-plugins-icon-container col-md-3">
-                            <label class=" form-label">Title</label>
-                            <input type="text" name="title" class="form-control mb-2" placeholder="Enter..."
-                                value="{{ request()->title ?? '' }}">
+                            <label class=" form-label">Name</label>
+                            <input type="text" name="name" class="form-control mb-2" placeholder="Enter..."
+                                value="{{ request()->name ?? '' }}">
                         </div>
                         <div class="mb-2 fv-row fv-plugins-icon-container col-md-3">
-                            <label class=" form-label">Slug</label>
-                            <input type="text" name="slug" class="form-control mb-2" placeholder="Enter..."
-                                value="{{ request()->slug ?? '' }}">
+                            <label class=" form-label">Code</label>
+                            <input type="text" name="code" class="form-control mb-2" placeholder="Enter..."
+                                value="{{ request()->code ?? '' }}">
+                        </div>
+                         <div class="mb-2 fv-row fv-plugins-icon-container col-md-3">
+                            <label class=" form-label">Place Type</label>
+                            <input type="text" name="place_type" class="form-control mb-2" placeholder="Enter..."
+                                value="{{ request()->place_type ?? '' }}">
+                        </div>
+                        <div class="mb-2 fv-row fv-plugins-icon-container col-md-3">
+                            <label class=" form-label">Country</label>
+                            <input type="text" name="country" class="form-control mb-2" placeholder="Enter..."
+                                value="{{ request()->country ?? '' }}">
                         </div>
                         <div class="mb-2 fv-row fv-plugins-icon-container col-md-3">
                             <label class=" form-label">Status</label>
-                            {!!\App\Models\Ecommerce\ProductModel::slbStatus($params['status'] ?? '')!!}
-                        </div>
-                        <div class="mb-2 fv-row fv-plugins-icon-container col-md-3">
-                            <label class=" form-label">From</label>
-                            <input type="text" name="from" class="form-control mb-2" placeholder="Enter..."
-                                value="{{ request()->from ?? '' }}">
-                        </div>
-                        <div class="mb-2 fv-row fv-plugins-icon-container col-md-3">
-                            <label class=" form-label">Placement</label>
-                            <input type="text" name="placement" class="form-control mb-2" placeholder="Enter..."
-                                value="{{ request()->placement ?? '' }}">
-                        </div>
-                        <div class="mb-2 fv-row fv-plugins-icon-container col-md-3">
-                            <label class=" form-label">Type</label>
-                            <input type="text" name="type" class="form-control mb-2" placeholder="Enter..."
-                                value="{{ request()->type ?? '' }}">
+                            {!!\App\Models\Ecommerce\CategoryModel::slbStatus($params['status'] ?? '')!!}
                         </div>
 
                         <div class="col-12 row">

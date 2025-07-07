@@ -11,7 +11,9 @@ return [
     'TABLE_RESOURCE_PERMISSION' => 'resource_permissions',
     'TABLE_FILE_UPLOAD'         => 'file_uploads',
     'TABLE_PASSWORD_RESET_TOKEN' => 'password_reset_tokens',
-    'TABLE_PROVINCE'            => 'provinces',
+    'TABLE_PROVINCE'            => 'general_provinces',
     'TABLE_DISTRICT'            => 'districts',
-    'TABLE_WARD'                => 'wards',
+    // 'TABLE_WARD'                => 'wards',
+    // 'TABLE_WARD'                => 'wards',
+    'TABLE_WARD'                => 'general_wards',
 ];
