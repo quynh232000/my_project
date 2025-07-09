@@ -50,7 +50,7 @@ const AllRoomImageGalleries = () => {
 					<ImageGallerySection
 						key={index}
 						roomId={item.room.id}
-						title={item.room.name_custom || item.room.name}
+						title={item.room.name}
 						imageList={formatRoomImagesForImageUpload(item.images)}
 					/>
 				))}
@@ -59,7 +59,7 @@ const AllRoomImageGalleries = () => {
 					<ImageGallerySection
 						key={index}
 						roomId={item.id}
-						title={item.name_custom || item.name}
+						title={item.name}
 						imageList={[]}
 					/>
 				))}

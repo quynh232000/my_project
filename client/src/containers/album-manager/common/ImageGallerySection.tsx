@@ -1,3 +1,4 @@
+'use client';
 import React, { useEffect, useState } from 'react';
 import Typography from '@/components/shared/Typography';
 import DialogUploadImageGallery from '@/containers/album-manager/common/DialogUploadImageGallery';
@@ -32,18 +33,19 @@ const ImageGallerySection = ({
 		  }
 		| undefined
 	>(undefined);
-	const [dialogDeleteImageAlbum, setDialogDeleteImageAlbum] = useState<string | undefined>(undefined);
-	const { setDeletedAlbumIds, deletedAlbumIds } =
-		useAlbumHotelStore(
-			useShallow((state) => ({
-				setDeletedAlbumIds: state.setDeletedAlbumIds,
-				deletedAlbumIds: state.deletedAlbumIds,
-			}))
-		);
+	const [dialogDeleteImageAlbum, setDialogDeleteImageAlbum] = useState<
+		string | undefined
+	>(undefined);
+	const { setDeletedAlbumIds, deletedAlbumIds } = useAlbumHotelStore(
+		useShallow((state) => ({
+			setDeletedAlbumIds: state.setDeletedAlbumIds,
+			deletedAlbumIds: state.deletedAlbumIds,
+		}))
+	);
 
 	const method = useForm({
 		mode: 'onChange',
-		resolver: zodResolver(imageGallerySectionSchema()),
+		resolver: zodResolver(imageGallerySectionSchema(true)),
 	});
 	const imageEdit = method.watch('imageEdit');
 
@@ -110,24 +112,28 @@ const ImageGallerySection = ({
 							const images = method.getValues('images') ?? [];
 							const idx = images.findIndex((item) => item.id === id);
 							if (idx >= 0) {
-								setDialogDeleteImageAlbum(String(images?.[idx]?.image_id))
-								const arr  = ({
+								setDialogDeleteImageAlbum(String(images?.[idx]?.image_id));
+								const arr = {
 									id: String(images?.[idx]?.image_id),
 									room_id: roomId ? String(roomId) : undefined,
-								});
-								setDeletedAlbumIds([...deletedAlbumIds, arr])
+								};
+								setDeletedAlbumIds([...deletedAlbumIds, arr]);
 							}
 						}}
 					/>
 				</div>
 				<DialogDeleteAllImage
 					onClose={() => {
-						setDeletedAlbumIds(deletedAlbumIds.filter(item => item.id !== dialogDeleteImageAlbum))
+						setDeletedAlbumIds(
+							deletedAlbumIds.filter(
+								(item) => item.id !== dialogDeleteImageAlbum
+							)
+						);
 						setDialogDeleteImageAlbum(undefined);
 					}}
 					open={!!dialogDeleteImageAlbum}
 				/>
-				
+
 				<DialogEditImageGallery
 					labelParentId={labelParentId}
 					roomId={roomId}

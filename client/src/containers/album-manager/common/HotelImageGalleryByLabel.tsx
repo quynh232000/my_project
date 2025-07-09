@@ -1,3 +1,4 @@
+'use client'
 import React, { useEffect, useState } from 'react';
 import { formatRoomImagesForImageUpload } from '@/containers/album-manager/data';
 import ImageGallerySection from '@/containers/album-manager/common/ImageGallerySection';

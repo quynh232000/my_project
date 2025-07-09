@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { ImageGallerySectionType } from '@/lib/schemas/album/image-gallery-section';

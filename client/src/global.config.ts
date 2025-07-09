@@ -8,6 +8,7 @@ import {
 	IconStarV2,
 	IconTicket,
 	IconUser,
+	IconWallet,
 } from '@/assets/Icons/outline';
 import IconImage from '@/assets/Icons/outline/IconImage';
 
@@ -67,7 +68,26 @@ export const SidebarConfig = {
 						},
 					],
 				},
-				
+				{
+					title: 'Quản lý giá',
+					url: 'price',
+					icon: IconWallet,
+					shouldMatchPrefix: false,
+					menu: [
+						{
+							title: 'Loại giá',
+							url: 'price/type',
+						},
+						{
+							title: 'Giá và phòng trống',
+							url: 'price/availability',
+						},
+						/* {
+							title: 'Lịch sử giá',
+							url: 'price/history',
+						}, */
+					],
+				},
 				{
 					title: 'Khuyến mãi',
 					url: 'promotion',

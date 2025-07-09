@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import Image from 'next/image';
 import IconTrash from '@/assets/Icons/outline/IconTrash';
@@ -29,7 +30,7 @@ const ImageGalleryPreviewCard = ({
 }) => {
 	const {
 		control,
-		formState: { errors , validatingFields},
+		formState: { errors, validatingFields },
 	} = useFormContext<ImageGallerySectionType>();
 
 	const { imageTypeList, imageRoomList } = useAttributeStore(
@@ -100,7 +101,9 @@ const ImageGalleryPreviewCard = ({
 									disabled={errors.filesUpload?.[idx] !== undefined}
 									className={'h-10 rounded-lg'}
 									placeholder={'Thêm thẻ'}
-									data={imageTypeList?.filter((imageType) => imageType.slug !== "image_room")}
+									data={imageTypeList?.filter(
+										(imageType) => imageType.slug !== 'image_room'
+									)}
 									selectedValue={value}
 									onChange={(value) => onChange(`${value}`)}
 									controllerRenderProps={props}

@@ -7,9 +7,11 @@ import RoomImageSetting from '@/containers/setting-room/RoomImageSetting/RoomIma
 import { cn } from '@/lib/utils';
 import { IRoomDetail } from '@/services/room/getRoomDetail';
 import { initialState, useRoomDetailStore } from '@/store/room-detail/store';
-import { useRouter, useSearchParams, usePathname } from 'next/navigation';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useCallback, useEffect, useMemo } from 'react';
 import { useShallow } from 'zustand/react/shallow';
+import useTabStateWithQueryParam from '@/hooks/use-tab-state-with-query-param';
+import { tabDefs } from '@/containers/setting-room/data';
 
 interface SettingRoomProps {
 	isEdit: boolean;
@@ -18,10 +20,6 @@ interface SettingRoomProps {
 
 export default function SettingRoom({ isEdit, roomDetail }: SettingRoomProps) {
 	const router = useRouter();
-	const pathname = usePathname();
-	const searchParams = useSearchParams();
-	const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
-	const [isParsedParams, setIsParsedParams] = useState<boolean>(false);
 	const { setRoomDetailState, setAlbum, setServices } = useRoomDetailStore(
 		useShallow((state) => ({
 			setRoomDetailState: state.setRoomDetailState,
@@ -29,54 +27,23 @@ export default function SettingRoom({ isEdit, roomDetail }: SettingRoomProps) {
 			setServices: state.setServices,
 		}))
 	);
-
-	const updateUrlWithTab = useCallback(
-		(newTabKey: string) => {
-			const params = new URLSearchParams(searchParams.toString());
-			params.set('tab', newTabKey);
-			window.history.replaceState(
-				{},
-				'',
-				`${pathname}?${params.toString()}`
-			);
-		},
-		[searchParams, pathname]
-	);
-
-	const updateTab = (index: number) => {
-		setSelectedIndex(index);
-	};
+	const {updateTab, selectedIndex} = useTabStateWithQueryParam(tabDefs);
 
 	const handleNext = useCallback(() => {
-		if (!roomDetail || !roomDetail?.id || selectedIndex === tabs.length - 1) {
+		if (!roomDetail || !roomDetail?.id || selectedIndex === tabDefs.length - 1) {
 			return router.back();
 		}
 		updateTab(selectedIndex !== null ? selectedIndex + 1 : 0);
 	}, [roomDetail, selectedIndex, router, updateTab]);
 
-	const tabs = useMemo(
-		() => [
-			{
-				title: 'Thiết lập chung',
-				key: 'general',
-				component: <RoomGeneralSetting onNext={handleNext} />,
-			},
-			{
-				title: 'Hình ảnh phòng',
-				key: 'image',
-				component: <RoomImageSetting onNext={handleNext} />,
-			},
-			{
-				title: 'Tiện ích phòng',
-				key: 'amenities',
-				component: <RoomAmenities onNext={handleNext} />,
-			},
-		],
-		[handleNext]
-	);
+	const components = useMemo(() => [
+		<RoomGeneralSetting key={1} onNext={handleNext} />,
+		<RoomImageSetting key={2} onNext={handleNext} />,
+		<RoomAmenities key={3} onNext={handleNext} />,
+	], [handleNext])
 
 	const renderTabs = useCallback(() => {
-		return tabs.map((tab, index) =>
+		return tabDefs.map((tab, index) =>
 			!isEdit && index > 0 ? (
 				<button
 					key={index}
@@ -102,7 +69,7 @@ export default function SettingRoom({ isEdit, roomDetail }: SettingRoomProps) {
 				</button>
 			)
 		);
-	}, [tabs, isEdit, selectedIndex, updateTab]);
+	}, [tabDefs, isEdit, selectedIndex, updateTab]);
 
 	useEffect(() => {
 		if (!isEdit) {
@@ -119,28 +86,6 @@ export default function SettingRoom({ isEdit, roomDetail }: SettingRoomProps) {
 		};
 	}, [setAlbum, setServices]);
 
-	useEffect(() => {
-		if (!isParsedParams) {
-			const tabKey = searchParams.get('tab');
-			const foundIndex = tabs.findIndex((tab) => tab.key === tabKey);
-			if (
-				(!isEdit && (tabKey === 'image' || tabKey === 'amenities')) ||
-				foundIndex === -1
-			) {
-				updateTab(0);
-			} else {
-				updateTab(foundIndex);
-			}
-			setIsParsedParams(true);
-		}
-	}, [searchParams, isEdit, tabs, isParsedParams]);
-
-	useEffect(() => {
-		if (selectedIndex !== null) {
-			const newTabKey = tabs[selectedIndex].key;
-			updateUrlWithTab(newTabKey);
-		}
-	}, [selectedIndex]);
 
 	return (
 		<>
@@ -148,7 +93,7 @@ export default function SettingRoom({ isEdit, roomDetail }: SettingRoomProps) {
 				{renderTabs()}
 			</div>
 			<Separator />
-			{selectedIndex !== null ? tabs[selectedIndex].component : null}
+			{selectedIndex !== null ? components[selectedIndex] : null}
 		</>
 	);
 }

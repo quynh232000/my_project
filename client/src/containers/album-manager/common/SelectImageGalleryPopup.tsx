@@ -16,7 +16,7 @@ import { TextVariants } from '@/components/shared/Typography/TextVariants';
 import { ControllerRenderProps } from 'react-hook-form';
 import { IconCheck } from '@/assets/Icons/outline';
 import { TImageTagList } from '@/services/attributes/getAttributeImageType';
-import { debounce } from 'lodash';
+import debounce from 'lodash/debounce';
 
 interface SelectPopupProps {
 	selectedValue?: string | number;

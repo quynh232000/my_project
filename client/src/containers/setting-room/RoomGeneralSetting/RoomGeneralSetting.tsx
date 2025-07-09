@@ -24,7 +24,7 @@ import { useLoadingStore } from '@/store/loading/store';
 import { useRoomDetailStore } from '@/store/room-detail/store';
 import { useRoomStore } from '@/store/room/store';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { omit } from 'lodash';
+import omit from 'lodash/omit';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
@@ -41,7 +41,7 @@ export default function RoomGeneralSetting({
 	const router = useRouter();
 	const setLoading = useLoadingStore((state) => state.setLoading);
 	const roomDetail = useRoomDetailStore((state) => state.roomDetail);
-	const fetchRoomList = useRoomStore((state) => state.fetchRoomList);
+	const setNeedFetch = useRoomStore((state) => state.setNeedFetch);
 
 	const {
 		fetchBedTypeList,
@@ -90,7 +90,7 @@ export default function RoomGeneralSetting({
 			['hasExtraBed', 'extra_beds']
 		);
 		const formValue = {
-			...value.setup,
+			...omit(value.setup, ['name']),
 			...omit(value.bedInfo, ['hasAlternativeBed']),
 			...value.capacity,
 			...extraBedInfo,
@@ -98,6 +98,7 @@ export default function RoomGeneralSetting({
 		};
 		let data = {
 			...formValue,
+			name_custom: value.setup.name,
 			status: formValue.status ? 'active' : 'inactive',
 			allow_extra_guests: formValue.allow_extra_guests === 'both' ? 1 : 0,
 			max_capacity:
@@ -151,10 +152,11 @@ export default function RoomGeneralSetting({
 					? `Cập nhật phòng ${data.name_custom ? data.name_custom : roomName} thành công`
 					: 'Thêm phòng mới thành công'
 			);
-			await fetchRoomList(true);
+			setNeedFetch(true);
 			roomDetail?.id === 0 &&
 				res.id &&
 				router.replace(`${DashboardRouter.room}/${res.id}?tab=general`);
+			window.scrollTo({ top: 0, behavior: 'smooth' });
 		} else {
 			toast.error(res?.message ?? 'Có lỗi xảy ra, vui lòng thử lại!');
 		}

@@ -43,50 +43,52 @@ const ImageGalleryAction = () => {
 		[albumHotel]
 	);
 	return (
-		<div className={'flex items-center gap-2'}>
-			<Button
-				variant={'secondary'}
-				className={'h-10 rounded-lg'}
-				onClick={() => {
-					if (albumHotel) {
-						let deletedIds = []
-						if (selectedTab === 'general') {
-							deletedIds = hotelIds.concat(roomIds)
-						} else if (selectedTab === 'image_room') {
-							deletedIds = roomIds;
-						} else {
-							deletedIds = albumHotel.hotel
-								.filter((image) => image.label?.parents?.slug === selectedTab)
-								.map((image) => ({
-									id: String(image.id),
-									room_id: undefined,
-								}));
+		(hotelIds.length > 0 || hotelIds.length > 0) && (
+			<div className={'flex items-center gap-2'}>
+				<Button
+					variant={'secondary'}
+					className={'h-10 rounded-lg'}
+					onClick={() => {
+						if (albumHotel) {
+							let deletedIds = [];
+							if (selectedTab === 'general') {
+								deletedIds = hotelIds.concat(roomIds);
+							} else if (selectedTab === 'image_room') {
+								deletedIds = roomIds;
+							} else {
+								deletedIds = albumHotel.hotel
+									.filter((image) => image.label?.parents?.slug === selectedTab)
+									.map((image) => ({
+										id: String(image.id),
+										room_id: undefined,
+									}));
+							}
+							deletedAlbumIds.length === deletedIds.length
+								? setDeletedAlbumIds([])
+								: setDeletedAlbumIds(deletedIds);
 						}
-						deletedAlbumIds.length === deletedIds.length
-							? setDeletedAlbumIds([])
-							: setDeletedAlbumIds(deletedIds);
+					}}>
+					{albumHotel
+						? deletedAlbumIds.length < hotelIds.length + roomIds.length
+							? 'Chọn tất cả ảnh'
+							: 'Bỏ chọn tất cả ảnh'
+						: 'Chọn tất cả ảnh'}
+				</Button>
+				<Button
+					disabled={deletedAlbumIds.length === 0}
+					variant={'destructive'}
+					className={
+						'h-10 rounded-lg bg-accent-03 text-white disabled:text-neutral-600'
 					}
-				}}>
-				{albumHotel
-					? deletedAlbumIds.length < hotelIds.length + roomIds.length
-						? 'Chọn tất cả ảnh'
-						: 'Bỏ chọn tất cả ảnh'
-					: 'Chọn tất cả ảnh'}
-			</Button>
-			<Button
-				disabled={deletedAlbumIds.length === 0}
-				variant={'destructive'}
-				className={
-					'h-10 rounded-lg bg-accent-03 text-white disabled:text-neutral-600'
-				}
-				onClick={() => setOpenDialog(true)}>
-				Xóa ảnh đã chọn
-			</Button>
-			<DialogDeleteAllImage
-				onClose={() => setOpenDialog(false)}
-				open={openDialog}
-			/>
-		</div>
+					onClick={() => setOpenDialog(true)}>
+					Xóa ảnh đã chọn
+				</Button>
+				<DialogDeleteAllImage
+					onClose={() => setOpenDialog(false)}
+					open={openDialog}
+				/>
+			</div>
+		)
 	);
 };
 

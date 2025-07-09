@@ -18,8 +18,6 @@ const UserGroupForm = () => {
 		}
 	});
 	
-	console.log(form.formState.errors);
- 
 	const onSubmit = (values: UserGroupType) => {
 		console.log(values);
 	}

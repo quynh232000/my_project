@@ -16,6 +16,6 @@ export interface AvailabilityState {
 export interface AvailabilityActions {
 	setParams: (params: Partial<IAvailabilityParams>) => void;
 	setIsParsedParams: (val: boolean) => void;
-	fetchListConfig: () => Promise<void>,
+	fetchListConfig: () => Promise<void>;
 	reset: () => void;
 }

@@ -1,3 +1,4 @@
+"use client"
 import React from 'react';
 import {
 	Dialog,
@@ -12,10 +13,10 @@ import { cn } from '@/lib/utils';
 import { TextVariants } from '@/components/shared/Typography/TextVariants';
 import { useAlbumHotelStore } from '@/store/album/store';
 import { useShallow } from 'zustand/react/shallow';
-import { updateAlbum } from '@/services/album/updateAlbum';
 import { useLoadingStore } from '@/store/loading/store';
 import { toast } from 'sonner';
 import { HotelRoomsResponse, RoomImage } from '@/services/album/getAlbumHotel';
+import { IAlbumUpdate, UpdateAlbumRequestBody, updateAlbum } from '@/services/album/updateAlbum';
 
 interface Props {
 	onClose: () => void;
@@ -69,31 +70,34 @@ const DialogDeleteAllImage = ({ onClose, open }: Props) => {
 						.filter((item) => !images_id.includes(String(item.id)))
 						.sort((a, b) => a.priority - b.priority);
 				}
-				const formData = new FormData();
 
-				formData.append('id', String(room_id));
-				formData.append('type', room_id ? 'room_type' : 'hotel');
-				formData.append('list-all', 'true');
-				images.length > 0 && images.forEach((image, index) => {
-					formData.append(`update[${image.id}][priority]`, String(index));
-				})
-				images_id.forEach((id) => {
-					formData.append('delete_images[]', String(id));
-				});
+				const albumUpdate: IAlbumUpdate[] = images.length > 0 ?
+					images.map((image, index) => ({
+						priority: String(index),
+						image_id: String(image.id)
+					}) as IAlbumUpdate) : [];
 
-				return updateAlbum<HotelRoomsResponse>(formData);
+
+				const bodyUpdateAlbum: UpdateAlbumRequestBody = {
+					...(room_id && {id: String(room_id)}),
+					list_all: true,
+					idsDeleteArr: images_id.map(item => Number(item)),
+					images: albumUpdate
+				};
+
+				return updateAlbum<HotelRoomsResponse>(bodyUpdateAlbum);
 			});
 
 			const result = await Promise.all(promises).finally(() =>
 				setLoading(false)
 			);
-			const lastResult = (result.sort(
+			const lastResult = result.sort(
 				(a, b) =>
-					(b?.finishAt?.getTime?.() ?? 0) - (a?.finishAt?.getTime?.() ?? 0))[0]
-			);
-			if(lastResult) {
-				setAlbumHotel(lastResult.data)
-				toast.success("Xóa ảnh thành công")
+					(b?.finishAt?.getTime?.() ?? 0) - (a?.finishAt?.getTime?.() ?? 0)
+			)[0];
+			if (lastResult) {
+				setAlbumHotel(lastResult.data);
+				toast.success('Xóa ảnh thành công');
 			}
 		}
 		setDeletedAlbumIds([]);
@@ -102,7 +106,7 @@ const DialogDeleteAllImage = ({ onClose, open }: Props) => {
 
 	return (
 		<Dialog open={open} onOpenChange={(open) => !open && onClose()}>
-			<DialogContent hideButtonClose={true} className="sm:max-w-[500px]">
+			<DialogContent hideButtonClose={true} className="sm:max-w-[500px] sm:max-h-[266px] p-0">
 				<DialogHeader className={'hidden'}>
 					<DialogTitle></DialogTitle>
 					<DialogDescription></DialogDescription>
@@ -112,14 +116,16 @@ const DialogDeleteAllImage = ({ onClose, open }: Props) => {
 						tag={'h4'}
 						variant={'headline_24px_600'}
 						className={'text-center text-gray-900'}>
-						Xóa {deletedAlbumIds.length > 1 ? "tất cả các ảnh" : "ảnh mà bạn"} đã chọn?
+						Xóa {deletedAlbumIds.length > 1 ? 'tất cả các ảnh' : 'ảnh mà bạn'}{' '}
+						đã chọn?
 					</Typography>
 					<Typography
 						tag={'p'}
 						variant={'content_16px_400'}
 						className={'mt-4 text-center text-neutral-600'}>
-						Thao tác này sẽ xóa {deletedAlbumIds.length > 1 ? "toàn bộ ảnh" : "ảnh"} mà bạn đã chọn.Bạn có chắc chắn muốn
-						tiếp tục?
+						Thao tác này sẽ xóa{' '}
+						{deletedAlbumIds.length > 1 ? 'toàn bộ ảnh' : 'ảnh'} mà bạn đã
+						chọn.Bạn có chắc chắn muốn tiếp tục?
 					</Typography>
 					<div className={'mt-10 flex items-center justify-center gap-4'}>
 						<Button
@@ -138,7 +144,7 @@ const DialogDeleteAllImage = ({ onClose, open }: Props) => {
 								'h-12 rounded-xl bg-accent-03 px-6 py-3 text-white',
 								TextVariants.caption_14px_600
 							)}>
-							Xóa ảnh
+							Xóa
 						</Button>
 					</div>
 				</div>

@@ -19,7 +19,6 @@ import {
 	Table,
 	TableBody,
 	TableCell,
-	TableFooter,
 	TableHead,
 	TableHeader,
 	TableRow,
@@ -31,7 +30,19 @@ import { removeAccent } from '@/utils/string/remove-accent';
 import { startHolyLoader } from 'holy-loader';
 import { EyeIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import React, { CSSProperties, useEffect, useState } from 'react';
+import React, { CSSProperties, useEffect, useMemo, useState } from 'react';
+import {
+	Pagination,
+	PaginationContent,
+	PaginationEllipsis,
+	PaginationItem,
+	PaginationLink,
+	PaginationNext,
+	PaginationPrevious,
+} from '@/components/ui/pagination';
+import { ERoomStatus } from '@/services/room/getRoomList';
+import { IPromotionResponse } from '@/services/promotion/getPromotionList';
+import { QueryParams } from '@/hooks/use-query-pagination-params';
 
 export type TCellType = string | number | boolean | object;
 export type TActionType =
@@ -42,7 +53,7 @@ export type TActionType =
 	| 'detail'
 	| 'editAndDelete';
 
-interface ColumnDef<T extends { id: string | number }> {
+export interface ColumnDef<T extends { id: string | number }> {
 	label?: string;
 	field?: keyof T;
 	fieldClassName?: string;
@@ -87,7 +98,31 @@ interface DashboardTableProps<T extends { id: string | number }> {
 	searchContainerClassName?: string;
 	tableClassName?: string;
 	customAction?: React.ReactNode;
-	rowName?: string;
+	showSearchComponent?: boolean;
+	handleChangeStatus?: (status: ERoomStatus, room_ids: number[]) => void;
+	onPaginationModelChange?: ({
+		page,
+		limit,
+	}: {
+		page?: number;
+		limit?: number;
+	}) => void;
+	onFilterModelChange?: ({
+		search,
+		status,
+	}: {
+		search?: string;
+		status?: string;
+	}) => void;
+	onSortModelChange?: ({
+		direction,
+		column,
+	}: {
+		direction: string;
+		column: string;
+	}) => void;
+	meta?: IPromotionResponse['meta'];
+	params?: QueryParams;
 }
 
 const DashboardTable = <T extends { id: string | number }>({
@@ -101,13 +136,17 @@ const DashboardTable = <T extends { id: string | number }>({
 	rows,
 	action,
 	fieldSearch,
-	filterContent,
 	onCustomFilterChange,
 	searchInputClassName,
 	searchContainerClassName,
 	tableClassName,
-	customAction,
-	rowName,
+	showSearchComponent = true,
+	handleChangeStatus,
+	onPaginationModelChange,
+	onFilterModelChange,
+	onSortModelChange,
+	meta,
+	params,
 }: DashboardTableProps<T>) => {
 	const router = useRouter();
 	const [selectedItems, setSelectedItems] = useState<T[]>([]);
@@ -130,28 +169,53 @@ const DashboardTable = <T extends { id: string | number }>({
 		rowsPerPage: number;
 		page: number;
 	}>({
-		rowsPerPage: 10,
-		page: 1,
+		rowsPerPage: meta?.per_page || 10,
+		page: meta?.current_page || 1,
 	});
 
 	const [handledRows, setHandledRows] = useState<T[]>(rows);
 	const [paginatedRows, setPaginatedRows] = useState<T[]>([]);
+	const [searchValue, setSearchValue] = useState(params?.search || '');
 
-	const pageStart = handledRows.length
-		? (pagination.page - 1) * pagination.rowsPerPage + 1
-		: 0;
+	const totalPages = useMemo(
+		() =>
+			onPaginationModelChange
+				? (meta?.total_page as number)
+				: (Math.ceil(handledRows.length / pagination.rowsPerPage) ?? 0),
+		[handledRows, pagination, meta]
+	);
+
+	useEffect(() => {
+		if (meta) {
+			setPagination({
+				page: meta.current_page,
+				rowsPerPage: meta.per_page,
+			});
+		}
+	}, [meta]);
 
 	const onMovePage = (page: 1 | -1) => {
-		const maxPage = Math.ceil(handledRows.length / pagination.rowsPerPage);
+		const maxPage = onPaginationModelChange
+			? (meta?.total_page as number)
+			: Math.ceil(handledRows.length / pagination.rowsPerPage);
 		setPagination({
 			...pagination,
 			page: Math.min(Math.max(1, pagination.page + page), maxPage),
+		});
+
+		onPaginationModelChange?.({
+			page: Math.min(Math.max(1, pagination.page + page), maxPage),
+			limit: pagination.rowsPerPage,
 		});
 	};
 
 	useEffect(() => {
 		let result = [...rows];
-		if (conditional.filter && conditional.filter !== 'all') {
+		if (
+			conditional.filter &&
+			conditional.filter !== 'all' &&
+			!onFilterModelChange
+		) {
 			result = result.filter(
 				(row) =>
 					typeof row === 'object' &&
@@ -160,7 +224,11 @@ const DashboardTable = <T extends { id: string | number }>({
 					row['status'] === conditional.filter
 			);
 		}
-		if (conditional.search && !!conditional.search.trim()) {
+		if (
+			conditional.search &&
+			!!conditional.search.trim() &&
+			!onFilterModelChange
+		) {
 			const searchStr = removeAccent(conditional.search.toLowerCase());
 			result = result.filter((row) =>
 				fieldSearch?.some((field) => {
@@ -180,7 +248,7 @@ const DashboardTable = <T extends { id: string | number }>({
 				});
 			});
 		}
-		if (conditional && conditional.sort) {
+		if (conditional && conditional.sort && !onSortModelChange) {
 			const field = conditional.sort.field;
 			const type = conditional.sort.type;
 			result.sort((a, b) => {
@@ -190,20 +258,25 @@ const DashboardTable = <T extends { id: string | number }>({
 							(type === 'asc' ? 1 : -1);
 			});
 		}
-		setPagination((prev) => {
-			return {
-				...prev,
-				page:
-					result.length < (prev.page - 1) * prev.rowsPerPage ? 1 : prev.page,
-			};
-		});
+		// setPagination((prev) => {
+		// 	return {
+		// 		...prev,
+		// 		page: onFilterModelChange
+		// 			? 1
+		// 			: result.length < (prev.page - 1) * prev.rowsPerPage
+		// 				? 1
+		// 				: prev.page,
+		// 	};
+		// });
 		setHandledRows(result);
 	}, [conditional, rows]);
 
 	useEffect(() => {
 		const offset = (pagination.page - 1) * pagination.rowsPerPage;
 		setPaginatedRows(
-			handledRows.slice(offset, pagination.rowsPerPage * pagination.page)
+			onPaginationModelChange
+				? handledRows
+				: handledRows.slice(offset, pagination.rowsPerPage * pagination.page)
 		);
 	}, [handledRows, pagination]);
 
@@ -212,13 +285,6 @@ const DashboardTable = <T extends { id: string | number }>({
 			onCustomFilterChange(conditional.customFilter || {});
 		}
 	}, [conditional.customFilter, onCustomFilterChange]);
-
-	const updateCustomFilter = (filters: IFilterItem<T>) => {
-		setConditional((prev) => ({
-			...prev,
-			customFilter: filters,
-		}));
-	};
 
 	const renderFieldAction = (
 		fieldType: TActionType,
@@ -316,7 +382,7 @@ const DashboardTable = <T extends { id: string | number }>({
 				key={col.field ? String(col.field) : undefined}
 				style={{ ...col?.style }}
 				className={cn(
-					'border-r !px-3 py-1.5 text-neutral-600 last:border-r-0',
+					'h-8 border-r !px-3 py-0 text-neutral-600 last:border-r-0',
 					TextVariants.caption_14px_700,
 					!!col.actionType && 'w-[100px]',
 					col.fieldClassName
@@ -343,6 +409,7 @@ const DashboardTable = <T extends { id: string | number }>({
 										...conditional,
 										sort: undefined,
 									});
+									onSortModelChange?.({ direction: '', column: '' });
 								} else {
 									setConditional({
 										...conditional,
@@ -352,10 +419,15 @@ const DashboardTable = <T extends { id: string | number }>({
 												conditional.sort?.field === col.field ? 'desc' : 'asc',
 										},
 									});
+									onSortModelChange?.({
+										direction:
+											conditional.sort?.field === col.field ? 'desc' : 'asc',
+										column: col.field! as string,
+									});
 								}
 							}
 						}}
-						className={`relative flex ${col.sortable && 'cursor-pointer'} select-none items-center`}>
+						className={`relative flex h-6 ${col.sortable && 'cursor-pointer'} select-none items-center`}>
 						<Typography
 							tag="p"
 							variant={'caption_14px_700'}
@@ -424,28 +496,53 @@ const DashboardTable = <T extends { id: string | number }>({
 			...conditional,
 			search: val,
 		});
-	}, 200);
+		onFilterModelChange?.({ search: val, status: String(conditional.filter) });
+	}, 500);
+	const showActions = useMemo(
+		() => !!handleChangeStatus || (!!addButtonText && !!handleAdd),
+		[]
+	);
+
+	useEffect(() => {
+		const urlSearch = params?.search ?? '';
+		if (urlSearch && searchValue !== urlSearch) {
+			setSearchValue(urlSearch);
+		}
+	}, [params?.search]); // chỉ phụ thuộc vào params.search
 
 	return (
 		<div className={'flex flex-col gap-6'}>
-			<div
-				className={cn(
-					'flex flex-row flex-wrap items-center gap-4 lg:flex-nowrap',
-					searchContainerClassName
-				)}>
-				<Input
-					className={cn('h-10 w-[300px] py-2', searchInputClassName)}
-					startAdornment={<IconSearchBar width={24} height={24} />}
-					placeholder={searchPlaceholder}
-					onChange={(e) => handleSearch(e.target.value ?? '')}
-				/>
-				{customAction ? (
-					customAction
-				) : (
+			{showSearchComponent && (
+				<div
+					className={cn(
+						'items-center gap-4',
+						searchContainerClassName,
+						showActions
+							? 'flex flex-row flex-wrap lg:flex-nowrap'
+							: 'grid grid-cols-2'
+					)}>
+					<Input
+						className={cn(
+							'h-8 py-1',
+							searchInputClassName,
+							showActions && 'w-[300px]'
+						)}
+						startAdornment={<IconSearchBar width={24} height={24} />}
+						placeholder={searchPlaceholder}
+						onChange={(e) => {
+							handleSearch(e.target.value ?? '');
+							setSearchValue(e.target.value);
+						}}
+						value={searchValue}
+					/>
+
 					<SelectPopup
 						searchInput={false}
-						className="h-10 w-[160px] rounded-lg bg-white py-2"
-						containerClassName="w-fit"
+						className={cn(
+							'h-8 rounded-lg bg-white py-1',
+							showActions && 'w-[160px]'
+						)}
+						containerClassName={showActions ? 'w-fit ' : 'w-full col-span-1'}
 						labelClassName="mb-2"
 						classItemList={'h-auto'}
 						required
@@ -456,154 +553,261 @@ const DashboardTable = <T extends { id: string | number }>({
 								...conditional,
 								filter: value,
 							});
+							onFilterModelChange?.({
+								status: String(value),
+								search: conditional.search,
+							});
 						}}
-						selectedValue={conditional.filter}
+						selectedValue={(params?.['status'] ?? 'all') || conditional.filter}
 					/>
-				)}
-				{!!addButtonText && !!handleAdd && (
-					<Button
-						onClick={handleAdd}
-						className={'ml-auto h-10'}
-						variant={'secondary'}>
-						{addButtonText}
-					</Button>
-				)}
-			</div>
-			{filterContent && React.isValidElement(filterContent)
-				? React.cloneElement(
-						filterContent as React.ReactElement<FilterComponentProps<T>>,
-						{
-							onFilterChange: updateCustomFilter,
-							currentFilters: conditional.customFilter || {},
-						}
-					)
-				: filterContent}
+					{showActions && (
+						<div className={'ml-auto space-x-2'}>
+							{selectedItems.length > 0 && (
+								<>
+									<Button
+										onClick={() => {
+											handleChangeStatus?.(
+												ERoomStatus.inactive,
+												selectedItems.map((item) => +item.id)
+											);
+											setSelectedItems([]);
+										}}
+										disabled={selectedItems.length === 0}
+										className={
+											'h-10 border-2 border-accent-03 bg-transparent text-accent-03 hover:bg-neutral-50 disabled:cursor-not-allowed disabled:!bg-transparent'
+										}>
+										Hủy kích hoạt{' '}
+										{selectedItems.length > 0
+											? `(${selectedItems.length})`
+											: null}
+									</Button>
+									<Button
+										onClick={() => {
+											handleChangeStatus?.(
+												ERoomStatus.active,
+												selectedItems.map((item) => +item.id)
+											);
+											setSelectedItems([]);
+										}}
+										disabled={selectedItems.length === 0}
+										className={
+											'h-10 border-2 border-secondary-500 bg-transparent text-secondary-500 hover:bg-neutral-50 disabled:cursor-not-allowed disabled:!bg-transparent'
+										}>
+										Kích hoạt{' '}
+										{selectedItems.length > 0
+											? `(${selectedItems.length})`
+											: null}
+									</Button>
+								</>
+							)}
+							{!!addButtonText && !!handleAdd && (
+								<Button
+									onClick={handleAdd}
+									className={'h-8 py-1 border-none rounded-lg'}
+									variant={'secondary'}>
+									{addButtonText}
+								</Button>
+							)}
+						</div>
+					)}
+				</div>
+			)}
 			<div className={tableClassName}>
 				{paginatedRows.length > 0 ? (
-					<Table
-						className={'border-collapse'}
-						containerClassname="border rounded-lg">
-						<TableHeader className="bg-neutral-100">
-							<TableRow>
-								{checkboxSelection
-									? renderTableHead({ actionType: 'checkbox' })
-									: null}
-								{columns.map((col) => renderTableHead(col))}
-								{action
-									? renderTableHead({
-											label: action.name,
-											actionType: action.type,
-										})
-									: null}
-							</TableRow>
-						</TableHeader>
-						<TableBody>
-							{paginatedRows.map((row, index) => (
-								<TableRow
-									key={index}
-									{...(selectedItems.findIndex(
-										(item) => String(item.id) === String(row.id)
-									) >= 0
-										? { className: '!bg-secondary-00' }
-										: {})}>
+					<>
+						<Table
+							className={'border-collapse'}
+							containerClassname="border rounded-lg">
+							<TableHeader className="bg-neutral-100">
+								<TableRow>
 									{checkboxSelection
-										? renderTableCell({ actionType: 'checkbox' }, row)
+										? renderTableHead({ actionType: 'checkbox' })
 										: null}
-									{columns.map((col) => renderTableCell(col, row))}
+									{columns.map((col) => renderTableHead(col))}
 									{action
-										? renderTableCell(
-												{
-													label: action.name,
-													actionType: action.type,
-													fieldClassName: action.className,
-												},
-												row
-											)
+										? renderTableHead({
+												label: action.name,
+												actionType: action.type,
+											})
 										: null}
 								</TableRow>
-							))}
-						</TableBody>
-						<TableFooter>
-							<TableRow className={'!bg-white'}>
-								<TableCell colSpan={100} className="px-3 py-2">
-									<div
-										className={
-											'flex min-h-6 flex-row items-center justify-between'
-										}>
-										{selectedItems.length > 0 && (
-											<Typography>
-												{selectedItems.length} {rowName ?? 'dòng'} đã được chọn
-											</Typography>
+							</TableHeader>
+							<TableBody>
+								{paginatedRows.map((row, index) => (
+									<TableRow
+										key={index}
+										{...(selectedItems.findIndex(
+											(item) => String(item.id) === String(row.id)
+										) >= 0
+											? { className: '!bg-secondary-00' }
+											: {})}>
+										{checkboxSelection
+											? renderTableCell({ actionType: 'checkbox' }, row)
+											: null}
+										{columns.map((col) => renderTableCell(col, row))}
+										{action
+											? renderTableCell(
+													{
+														label: action.name,
+														actionType: action.type,
+														fieldClassName: action.className,
+													},
+													row
+												)
+											: null}
+									</TableRow>
+								))}
+							</TableBody>
+						</Table>
+						<div
+							className={
+								'mt-4 flex min-h-6 flex-row items-center justify-between'
+							}>
+							<div
+								className={
+									'sticky flex w-full flex-row items-center justify-between gap-3'
+								}>
+								<SelectPopup
+									selectedPrefix={'Số dòng đang hiển thị: '}
+									selectedSuffix={'dòng'}
+									selectedClassName={'font-semibold'}
+									showCheck={false}
+									containerClassName={'w-fit'}
+									className={'h-8 rounded-lg border px-3 py-1'}
+									placeholder={'Dòng'}
+									searchInput={false}
+									selectedValue={pagination.rowsPerPage}
+									data={[5, 10, 25, 50, 100].map((item) => ({
+										label: `${item}`,
+										value: item,
+									}))}
+									classItemList={'h-auto'}
+									onChange={(value) => {
+										onPaginationModelChange?.({
+											limit: +value,
+											page: 1,
+										});
+									}}
+								/>
+								<Pagination>
+									<PaginationContent>
+										<PaginationItem onClick={() => onMovePage(-1)}>
+											<PaginationPrevious
+												disabled={pagination.page <= 1}></PaginationPrevious>
+										</PaginationItem>
+
+										{pagination.page > 1 && (
+											<PaginationItem>
+												<PaginationLink
+													onClick={() => {
+														onPaginationModelChange
+															? onPaginationModelChange({
+																	page: 1,
+																	limit: pagination.rowsPerPage,
+																})
+															: setPagination({
+																	...pagination,
+																	page: 1,
+																});
+													}}>
+													1
+												</PaginationLink>
+											</PaginationItem>
 										)}
-										<div
-											className={
-												'sticky right-[14px] ml-auto flex flex-row items-center gap-3'
-											}>
-											<Typography
-												className={'w-fit select-none whitespace-nowrap'}>
-												Hiển thị
-											</Typography>
-											<SelectPopup
-												showCheck={false}
-												containerClassName={'w-fit'}
-												className={'h-8 w-[80px] rounded-lg px-3 py-2'}
-												placeholder={'Dòng'}
-												searchInput={false}
-												selectedValue={pagination.rowsPerPage}
-												data={[10, 25, 50, 100].map((item) => ({
-													label: `${item}`,
-													value: item,
-												}))}
-												classItemList={'h-auto'}
-												onChange={(value) => {
-													setPagination({
-														rowsPerPage: +value,
-														page: 1,
-													});
-												}}
-											/>
-											<Typography
-												className={'mx-6 w-fit select-none whitespace-nowrap'}>
-												{pageStart}-
-												{Math.min(
-													handledRows.length,
-													pageStart + pagination.rowsPerPage - 1
-												)}{' '}
-												of {handledRows.length}
-											</Typography>
-											<div>
-												<button
-													disabled={pagination.page <= 1}
-													className={`p-2 ${pagination.page > 1 ? 'cursor-pointer' : 'opacity-25'}`}
-													onClick={() => onMovePage(-1)}>
-													<IconChevron
-														color={GlobalUI.colors.neutrals['600']}
-														className={`h-4 w-4`}
-														direction={'left'}
-													/>
-												</button>
-												<button
-													disabled={
-														pagination.page >=
-														Math.ceil(
-															handledRows.length / pagination.rowsPerPage
-														)
-													}
-													className={`p-2 ${pagination.page < Math.ceil(handledRows.length / pagination.rowsPerPage) ? 'cursor-pointer' : 'opacity-25'}`}
-													onClick={() => onMovePage(1)}>
-													<IconChevron
-														color={GlobalUI.colors.neutrals['600']}
-														className={`ml-2 h-4 w-4`}
-														direction={'right'}
-													/>
-												</button>
-											</div>
-										</div>
-									</div>
-								</TableCell>
-							</TableRow>
-						</TableFooter>
-					</Table>
+
+										{pagination.page > 4 && (
+											<PaginationItem>
+												<PaginationEllipsis></PaginationEllipsis>
+											</PaginationItem>
+										)}
+
+										{Array.from({ length: 2 })
+											.map(
+												(_, index) =>
+													pagination.page - index - 1 > 1 && (
+														<PaginationItem key={index}>
+															<PaginationLink
+																onClick={() => {
+																	onPaginationModelChange
+																		? onPaginationModelChange({
+																				page: pagination.page - index - 1,
+																				limit: pagination.rowsPerPage,
+																			})
+																		: setPagination({
+																				...pagination,
+																				page: pagination.page - index - 1,
+																			});
+																}}>
+																{pagination.page - index - 1}
+															</PaginationLink>
+														</PaginationItem>
+													)
+											)
+											.reverse()}
+
+										<PaginationItem>
+											<PaginationLink isActive>
+												{pagination.page}
+											</PaginationLink>
+										</PaginationItem>
+
+										{Array.from({ length: 2 }).map(
+											(_, index) =>
+												pagination.page + index + 1 < totalPages && (
+													<PaginationItem key={index}>
+														<PaginationLink
+															onClick={() => {
+																onPaginationModelChange
+																	? onPaginationModelChange({
+																			page: pagination.page + index + 1,
+																			limit: pagination.rowsPerPage,
+																		})
+																	: setPagination({
+																			...pagination,
+																			page: pagination.page + index + 1,
+																		});
+															}}>
+															{pagination.page + index + 1}
+														</PaginationLink>
+													</PaginationItem>
+												)
+										)}
+
+										{pagination.page < totalPages - 3 && (
+											<>
+												<PaginationItem>
+													<PaginationEllipsis></PaginationEllipsis>
+												</PaginationItem>
+											</>
+										)}
+										{pagination.page <= totalPages - 1 && (
+											<PaginationItem>
+												<PaginationLink
+													onClick={() => {
+														onPaginationModelChange
+															? onPaginationModelChange({
+																	page: totalPages,
+																	limit: pagination.rowsPerPage,
+																})
+															: setPagination({
+																	...pagination,
+																	page: totalPages,
+																});
+													}}>
+													{totalPages}
+												</PaginationLink>
+											</PaginationItem>
+										)}
+										<PaginationItem>
+											<PaginationNext
+												disabled={pagination.page >= totalPages}
+												onClick={() => onMovePage(1)}></PaginationNext>
+										</PaginationItem>
+									</PaginationContent>
+								</Pagination>
+							</div>
+						</div>
+					</>
 				) : (
 					<div className={'space-y-2 py-14 text-center'}>
 						<Typography

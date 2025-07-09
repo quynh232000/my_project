@@ -17,7 +17,7 @@ export function mapRoomDetailToRoomConfiguration(
 		setup: {
 			type_id: data.type_id,
 			name_id: data.name_id,
-			name_custom: data.name_custom ?? "",
+			name: data.name ?? "",
 			direction_id: data.direction_id,
 			quantity: data.quantity,
 			status: data.status === 'active', // 'active' => true, 'inactive' => false

@@ -123,8 +123,8 @@ const faqInformationSchema = validate.object({
 });
 
 const locateOnMapSchema = validate.object({
-	latitude: validate.number({ message: "Vui lòng nhập vĩ độ" }).min(-90, "Vĩ độ tối thiểu là -90").max(90, "Vĩ độ tối đa là 90"),
-	longitude: validate.number({ message: "Vui lòng nhập kinh độ" }).min(-180, "Kinh độ tối thiểu là -180").max(180, "Kinh độ tối đa là 180"),
+	latitude: validate.number({ message: "Vui lòng nhập vĩ độ" }).min(-90, "Vĩ độ tối thiểu là -90").max(90, "Vĩ độ tối đa là 90").optional(),
+	longitude: validate.number({ message: "Vui lòng nhập kinh độ" }).min(-180, "Kinh độ tối thiểu là -180").max(180, "Kinh độ tối đa là 180").optional(),
 });
 
 export type TLocateOnMap = validate.infer<

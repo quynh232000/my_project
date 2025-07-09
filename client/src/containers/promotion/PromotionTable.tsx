@@ -1,6 +1,6 @@
 'use client';
 import DashboardTable, {
-	renderStatus
+	renderStatus,
 } from '@/components/shared/DashboardTable';
 import { DashboardRouter } from '@/constants/routers';
 import { filterData } from '@/containers/setting-room/data';
@@ -14,6 +14,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { useShallow } from 'zustand/react/shallow';
+import useQueryPaginationParams from '@/hooks/use-query-pagination-params';
 
 export interface IPromotion {
 	id: string;
@@ -25,9 +26,10 @@ export interface IPromotion {
 }
 
 const PromotionTable = () => {
+	const { setParams, params } = useQueryPaginationParams();
 	const router = useRouter();
 	const setLoading = useLoadingStore((state) => state.setLoading);
-	const { fetchPromotionList, promotionList, setPromotionList } =
+	const { fetchPromotionList, promotionList, setPromotionList, pagination } =
 		usePromotionStore();
 	const { roomList, fetchRoomList } = useRoomStore(
 		useShallow((state) => ({
@@ -35,6 +37,7 @@ const PromotionTable = () => {
 			fetchRoomList: state.fetchRoomList,
 		}))
 	);
+
 	const { data: priceList, fetchPrices } = usePricesStore();
 	const [data, setData] = useState<IPromotion[]>([]);
 
@@ -43,20 +46,21 @@ const PromotionTable = () => {
 		const res = await toggleStatusPromotion(id);
 		setLoading(false);
 		if (res && res.status) {
-			const promotion = promotionList.find(
+			const promotion = promotionList?.find(
 				(promotion) => String(promotion.id) === id
 			);
 			if (promotion) {
 				toast.success(`Cập nhật trạng thái ${promotion.name} thành công`);
-				const newPromotionArr = promotionList.map((promotion) => ({
-					...promotion,
-					status:
-						promotion.id === +id
-							? promotion.status === 'active'
-								? 'inactive'
-								: 'active'
-							: promotion.status,
-				}));
+				const newPromotionArr =
+					promotionList?.map((promotion) => ({
+						...promotion,
+						status:
+							promotion.id === +id
+								? promotion.status === 'active'
+									? 'inactive'
+									: 'active'
+								: promotion.status,
+					})) || [];
 				setPromotionList(newPromotionArr);
 			}
 		} else {
@@ -66,13 +70,22 @@ const PromotionTable = () => {
 
 	useEffect(() => {
 		setLoading(true);
-		Promise.all([fetchPromotionList(), fetchRoomList(), fetchPrices()]).finally(
-			() => setLoading(false)
+		Promise.all([fetchRoomList(), fetchPrices()]).finally(() =>
+			setLoading(false)
 		);
 	}, []);
 
 	useEffect(() => {
-		if (promotionList.length > 0) {
+		if (params && Object.keys(params).length > 0) {
+			setLoading(true);
+			fetchPromotionList({ force: true, query: params }).finally(() =>
+				setLoading(false)
+			);
+		}
+	}, [params]);
+
+	useEffect(() => {
+		if (promotionList) {
 			setData(
 				promotionList.map((promotion) => ({
 					id: String(promotion.id),
@@ -89,7 +102,7 @@ const PromotionTable = () => {
 					rooms:
 						promotion.rooms.length === roomList?.length
 							? 'Tất cả'
-							: `${promotion.rooms[0]?.name_custom ?? promotion.rooms[0]?.name} ${promotion.rooms?.length > 1 ? '(+' + (promotion.rooms?.length - 1) + ')' : ''}`,
+							: `${promotion.rooms[0]?.name} ${promotion.rooms?.length > 1 ? '(+' + (promotion.rooms?.length - 1) + ')' : ''}`,
 				}))
 			);
 		}
@@ -97,6 +110,30 @@ const PromotionTable = () => {
 
 	return (
 		<DashboardTable<IPromotion>
+			params={params}
+			meta={pagination}
+			onSortModelChange={({direction, column}) => {
+				setParams({
+					...params,
+					direction,
+					column
+				})
+			}}
+			onPaginationModelChange={({ page, limit }) => {
+				setParams({
+					...params,
+					page,
+					limit,
+				});
+			}}
+			onFilterModelChange={({ search, status }) => {
+				setParams({
+					...params,
+					search: search ? search : undefined,
+					status: status && status !== 'all' ? status : undefined,
+					page: 1,
+				});
+			}}
 			searchPlaceholder={'Tìm kiếm theo tên/mã khuyến mãi'}
 			filterPlaceholder={'Trạng thái'}
 			addButtonText={'Thêm khuyến mãi'}
@@ -106,8 +143,8 @@ const PromotionTable = () => {
 			columns={[
 				{ label: 'Tên khuyến mãi', field: 'name', sortable: true },
 				{ label: 'Giảm giá', field: 'value', sortable: true },
-				{ label: 'Loại giá áp dụng', field: 'price_types', sortable: true },
-				{ label: 'Loại phòng áp dụng', field: 'rooms', sortable: true },
+				{ label: 'Loại giá áp dụng', field: 'price_types', sortable: false },
+				{ label: 'Loại phòng áp dụng', field: 'rooms', sortable: false },
 				{
 					label: 'Trạng thái',
 					field: 'status',

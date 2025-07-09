@@ -8,9 +8,8 @@ export const initialState: RoomDetailState = {
 	services: undefined,
 	roomDetail: {
 		id: 0,
-		name: '',
 		name_id: 0,
-		name_custom: '',
+		name: '',
 		status: '',
 		type_id: 0,
 		direction_id: 0,

@@ -292,6 +292,9 @@ export default {
 				form: {
 					'input-bg': '#E9ECF3',
 				},
+				stroke: {
+					subtle: "#7b7b7b1a"
+				}
 			},
 			fontSize: {
 				sm: '12px',

@@ -16,6 +16,10 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
             padding: 10px 18px;
         }
+        .input-error{
+            color: var(--bs-form-invalid-border-color);
+            margin-top: 2px;
+        }
     </style>
 @endpush
 

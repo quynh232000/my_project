@@ -83,7 +83,7 @@ const PromotionForm = ({ promotionDetail }: PromotionFormProps) => {
 					router.replace(`${DashboardRouter.promotion}/${res.id}`, {
 						scroll: false,
 					});
-				await fetchPromotionList(true);
+				await fetchPromotionList({ force:true });
 			} else {
 				toast.error('Có lỗi xảy ra, vui lòng thử lại!');
 			}

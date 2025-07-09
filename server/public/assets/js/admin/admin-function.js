@@ -88,3 +88,56 @@ function handleConfirmDelete(id, url, r) {
     });
     //return false;
 }
+function generateSlug(str) {
+  str = str.toLowerCase();
+  str = str.replace(/đ/g, "d");
+  str = str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  str = str
+    .replace(/[^a-z0-9\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-");
+
+  return str;
+}
+function helperSelectAddress(element, apiUrl = '') {
+  
+    if (!element || !apiUrl) return;
+
+    const $el         = $(element);
+    const nextField   = $el.data('next');//country_id => city_id
+    const selectedId  = $el.val();
+    const fieldName   = $el.attr('name');
+
+    if (!nextField) return;
+
+    $.ajax({
+        type:     'POST',
+        url:      apiUrl,
+        dataType: 'json',
+        data: {
+            _token: $("meta[name='csrf-token']").attr("content"),
+            type:   fieldName,
+            id:     selectedId
+        },
+        success: function (res) {
+            if (!Array.isArray(res)) return;
+
+            const optionsHtml = ['<option value="">-- Chọn --</option>']
+                                .concat(res.map(item =>
+                                    `<option value="${item.id}">${item.name}</option>`
+                                ))
+                                .join('');
+
+            const $nextSelect = $(`select[name="${nextField}"]`);
+            if ($nextSelect.length) {
+                $nextSelect.html(optionsHtml);
+            }
+        },
+        beforeSend: function () {
+            $(`select[name="${nextField}"]`).html('<option>Đang tải...</option>');
+        },
+        error: function (xhr, status, error) {
+            console.error('Lỗi khi tải địa chỉ:', status, error);
+        }
+  });
+}

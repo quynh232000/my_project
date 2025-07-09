@@ -355,8 +355,8 @@ export default function AddressInfo() {
 					latitude && longitude ? { latitude, longitude } : undefined
 				}
 				onSubmit={(data) => {
-					setValue('address.latitude', data.latitude);
-					setValue('address.longitude', data.longitude);
+					setValue('address.latitude', data.latitude || 0);
+					setValue('address.longitude', data.longitude || 0);
 				}}
 			/>
 		</div>

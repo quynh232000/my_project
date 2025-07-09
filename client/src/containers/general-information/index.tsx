@@ -1,3 +1,4 @@
+'use client'
 import ButtonActionGroup from '@/components/shared/Button/ButtonActionGroup';
 import { Form } from '@/components/ui/form';
 import AddressInfo from '@/containers/general-information/common/AddressInfo';

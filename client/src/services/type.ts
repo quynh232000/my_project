@@ -1,5 +1,3 @@
-import { HttpStatusCode } from "axios";
-
 export const API_URL =
 	process.env.NEXT_PUBLIC_URL_TEST_API ||
 	'https://backend.190booking.com/api/v1/hms';
@@ -52,12 +50,6 @@ export const AppEndpoint = {
 	PROMOTION: '/promotion',
 	CUSTOMER: '/customer',
 } as const;
-
-export interface IResponse<T> {
-	data: T | null;
-	errorCode: HttpStatusCode;
-	message: string;
-}
 
 export interface IResponseStatus {
 	status: boolean;

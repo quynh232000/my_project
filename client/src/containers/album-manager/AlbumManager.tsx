@@ -3,8 +3,8 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { cn } from '@/lib/utils';
 import { TextVariants } from '@/components/shared/Typography/TextVariants';
 import { Separator } from '@/components/ui/separator';
-import HotelImageGalleries from '@/containers/album-manager/HotelImageGalleries';
-import RoomImageGallery from '@/containers/album-manager/RoomImageGallery';
+import HotelImageGalleries from '@/containers/album-manager/common/HotelImageGalleries';
+import RoomImageGallery from '@/containers/album-manager/common/RoomImageGallery';
 import HotelImageGalleryByLabel from '@/containers/album-manager/common/HotelImageGalleryByLabel';
 import { useAttributeStore } from '@/store/attributes/store';
 import { useLoadingStore } from '@/store/loading/store';
@@ -22,7 +22,7 @@ const AlbumManager = () => {
 		(state) => state.fetchImageTypeList
 	);
 	const setLoading = useLoadingStore((state) => state.setLoading);
-	const { setDeletedAlbumIds ,setSelectedTab} = useAlbumHotelStore(
+	const { setDeletedAlbumIds, setSelectedTab } = useAlbumHotelStore(
 		useShallow((state) => ({
 			setDeletedAlbumIds: state.setDeletedAlbumIds,
 			setSelectedTab: state.setSelectedTab,
@@ -68,8 +68,8 @@ const AlbumManager = () => {
 				)}
 				onClick={() => {
 					updateTab(index);
-					setDeletedAlbumIds([])
-					setSelectedTab(tab.key)
+					setDeletedAlbumIds([]);
+					setSelectedTab(tab.key);
 				}}>
 				{tab.title}
 			</button>
@@ -78,7 +78,7 @@ const AlbumManager = () => {
 
 	return (
 		<>
-			<div className="flex flex-wrap w-full justify-start gap-6 text-left">
+			<div className="flex w-full flex-wrap justify-start gap-6 text-left">
 				{renderTabs()}
 			</div>
 			<Separator />

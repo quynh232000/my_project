@@ -16,4 +16,5 @@ return [
     // 'TABLE_WARD'                => 'wards',
     // 'TABLE_WARD'                => 'wards',
     'TABLE_WARD'                => 'general_wards',
+    'TABLE_COUNTRY'                => 'general_country',
 ];

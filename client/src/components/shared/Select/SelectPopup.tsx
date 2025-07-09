@@ -45,6 +45,9 @@ interface SelectPopupProps {
 	placeholder?: string;
 	controllerRenderProps?: Omit<ControllerRenderProps, 'onChange' | 'value'>;
 	showCheck?: boolean;
+	selectedPrefix?: string;
+	selectedSuffix?: string;
+	selectedClassName?: string;
 }
 
 const SelectPopup = ({
@@ -121,7 +124,11 @@ const SelectPopup = ({
 								'items-center justify-start gap-2 truncate',
 								selectedName ? 'text-neutral-600' : 'text-neutral-300'
 							)}>
-							{selectedName || props.placeholder}
+							{props.selectedPrefix}
+							<span className={props.selectedClassName}>
+								{selectedName || props.placeholder} {" "}
+								{props.selectedSuffix}
+							</span>
 						</Typography>
 						<div className="ml-auto flex items-center gap-3">
 							{clearable && !!selectedName && (
@@ -170,7 +177,7 @@ const SelectPopup = ({
 								className={cn(
 									'shadow-md',
 									props.classItemList,
-									(props.data?.length ?? 0) >= 5 ? 'h-60' : 'h-auto'
+									(props.data?.length ?? 0) > 5 ? 'h-60' : 'h-auto'
 								)}>
 								<CommandEmpty>Không tìm thấy lựa chọn</CommandEmpty>
 								<CommandGroup>
@@ -182,7 +189,7 @@ const SelectPopup = ({
 												className={`${isSelected ? '!bg-neutral-100' : ''}`}
 												ref={isSelected ? listRef : null}
 												key={item.value}
-												value={item.label.toString()}
+												value={item.label?.toString()}
 												title={item.label}
 												onSelect={() => {
 													props.onChange?.(item.value);
@@ -213,5 +220,5 @@ const SelectPopup = ({
 		</Popover>
 	);
 };
-SelectPopup.displayName = 'SelectVisaProduct';
+SelectPopup.displayName = 'SelectPopup';
 export default SelectPopup;

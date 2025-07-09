@@ -9,7 +9,7 @@ class AdminModel extends Model
 {
 
     protected $table            = '';
-    protected $crudNotAccepted  = ['_token', 'prefix', 'controller', 'action', 'as', '_method', 'ID','avatar_remove'];
+    protected $crudNotAccepted  = ['_token', 'prefix', 'controller', 'action', 'as', '_method', 'ID', 'avatar_remove'];
     protected $_data                  = [];
     public $timestamps          = false;
     public $checkall            = true;
@@ -21,7 +21,7 @@ class AdminModel extends Model
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
-
+    // protected $guarded       = [];
 
     // okaosdkaos
 
@@ -79,7 +79,7 @@ class AdminModel extends Model
                 if ($sort == $field) {
                     $icon = $order == 'asc' ? '<i class="fa-sharp fa-solid fa-sort-down text-primary"></i>' : '<i class="fa-sharp fa-solid fa-sort-up text-primary"></i>';
                 }
-                $xhtml .= sprintf('<th class="text-center align-middle p-1%s"><a href="%s" class="text-dark">%s</a></th>', $className . $display, $link,$name_field . '&nbsp;' . $icon);
+                $xhtml .= sprintf('<th class="text-center align-middle p-1%s"><a href="%s" class="text-dark">%s</a></th>', $className . $display, $link, $name_field . '&nbsp;' . $icon);
             } else {
                 if ($this->checkall == true) {
 

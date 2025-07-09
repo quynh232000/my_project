@@ -10,8 +10,15 @@ import { Separator } from '@/components/ui/separator';
 import { CheckBoxView } from '@/components/shared/CheckBox/CheckBoxView';
 import { AmenityType } from '@/containers/setting-room/RoomAmenities/data';
 import useDebounce from '@/hooks/use-debounce';
-import { ISearchedAmenity } from '@/containers/amenities-and-services/AmenitiesAndServices';
 import { normalizeText } from '@/utils/string/remove-accent';
+import { IconCloseCircle } from '@/assets/Icons/filled';
+import { GlobalUI } from '@/themes/type';
+
+export interface ISearchedAmenity {
+	parentId: number;
+	id: number;
+	name: string;
+}
 
 interface Props {
 	originalList: AmenityType[];
@@ -23,6 +30,7 @@ const SearchAndBrowse = ({ originalList }: Props) => {
 	const [searchResult, setSearchResult] = useState<ISearchedAmenity[] | null>(
 		null
 	);
+	const [search, setSearch] = useState<string>('');
 	const toggleCategoryAll = (checked: boolean) => {
 		reset(
 			originalList.reduce((acc, cur) => {
@@ -70,26 +78,40 @@ const SearchAndBrowse = ({ originalList }: Props) => {
 				className={'text-neutral-600'}>
 				Tìm và duyệt
 			</Typography>
-			<div className={'mt-4 h-[550px] rounded-2xl border border-blue-100 p-4'}>
-				<div className={'flex items-center gap-3 rounded-xl bg-neutral-50 p-2'}>
-					<label htmlFor="amenitiesSearch" className="cursor-pointer">
-						<IconSearch className={'size-6'} />
-					</label>
-					<Input
-						id="amenitiesSearch"
-						placeholder={'Tìm tiện ích phòng'}
-						className={cn(
-							'h-auto rounded-none border-none bg-neutral-50 px-0 py-1',
-							TextVariants.caption_14px_600
-						)}
-						onChange={(e) => {
-							onSearch(e.target.value);
-						}}
-					/>
-				</div>
+			<div
+				className={
+					'mt-4 flex h-[550px] flex-col rounded-2xl border border-blue-100 p-4'
+				}>
+				<Input
+					endAdornment={
+						search && (
+							<IconCloseCircle
+								onClick={() => {
+									setSearch('');
+									onSearch('');
+								}}
+								fill={GlobalUI.colors.neutrals['300']}
+								color="#fff"
+								className="size-6 cursor-pointer"
+							/>
+						)
+					}
+					startAdornment={<IconSearch className={'size-6'} />}
+					id="amenitiesSearch"
+					placeholder={'Tìm tiện ích phòng'}
+					className={cn(
+						'h-12 border-transparent rounded-xl  bg-neutral-50 py-2 pr-2 focus:border-primary-500 focus:bg-white',
+						TextVariants.caption_14px_600
+					)}
+					value={search}
+					onChange={(e) => {
+						setSearch(e.target.value);
+						onSearch(e.target.value);
+					}}
+				/>
 				<div
 					className={
-						'mt-4 h-[400px] overflow-y-auto pr-4 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-neutral-200 [&::-webkit-scrollbar]:w-[6px]'
+						'mt-4 flex-1 overflow-y-auto pr-4 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-neutral-200 [&::-webkit-scrollbar]:w-[6px]'
 					}>
 					{!searchResult && (
 						<CheckBoxView

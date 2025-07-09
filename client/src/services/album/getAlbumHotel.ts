@@ -19,7 +19,6 @@ export interface RoomImageLabel {
 export interface RoomInfo {
 	id: number;
 	name_id: number;
-	name_custom: string | null;
 	name: string;
 }
 

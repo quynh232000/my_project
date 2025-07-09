@@ -27,12 +27,11 @@ export default function OtherPolicies() {
 		fetchOtherPolicy().finally(() => setLoading(false));
 	}, []);
 
-	console.log(otherPolicy);
 	return (
 		<>
 			{otherPolicy.length > 0 ? (
 				<DashboardTable<IPolicyOtherItem>
-					searchContainerClassName="hidden"
+					showSearchComponent={false}
 					columns={[
 						{ label: 'Tên chính sách', field: 'name', sortable: true },
 						{

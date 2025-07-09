@@ -7,7 +7,6 @@ export interface IRoomConfig {
 	id: number;
 	name: string;
 	name_id: number;
-	name_custom: string;
 	price_min: number;
 	quantity: number;
 	price_standard: number;

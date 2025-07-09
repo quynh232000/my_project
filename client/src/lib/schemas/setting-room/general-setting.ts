@@ -6,7 +6,7 @@ const RoomSetupSchema = validate.object({
 		message: 'Loại phòng không được để trống',
 	}),
 	name_id: validate.number({ message: 'Tên phòng không được để trống' }),
-	name_custom: validate.string().optional(),
+	name: validate.string().optional(),
 	direction_id: validate.number({
 		message: 'Hướng phòng không được để trống',
 	}),
@@ -281,7 +281,7 @@ export const initialRoomConfiguration: RoomConfiguration = {
 	setup: {
 		type_id: NaN,
 		name_id: NaN,
-		name_custom: '',
+		name: '',
 		direction_id: NaN,
 		quantity: NaN,
 		status: false,

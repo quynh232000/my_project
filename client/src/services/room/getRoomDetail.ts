@@ -4,7 +4,6 @@ import { AppEndpoint } from '@/services/type';
 export interface IRoomDetail {
 	id: number;
 	name_id: number;
-	name_custom: string;
 	name: string;
 	status: string;
 	type_id: number;

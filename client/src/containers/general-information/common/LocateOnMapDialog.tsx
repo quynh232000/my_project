@@ -101,7 +101,7 @@ export default function LocateOnMapDialog({
 											type="number"
 											placeholder="106.701303"
 											{...props}
-											value={isNaN(value) ? '' : value}
+											value={isNaN(Number(value)) ? '' : value}
 											onChange={(e) =>
 												onChange(
 													e.target.value?.length ? Number(e.target.value) : NaN
@@ -125,7 +125,7 @@ export default function LocateOnMapDialog({
 											type="number"
 											placeholder="10.7754514"
 											{...props}
-											value={isNaN(value) ? '' : value}
+											value={isNaN(Number(value)) ? '' : value}
 											onChange={(e) =>
 												onChange(
 													e.target.value?.length ? Number(e.target.value) : NaN

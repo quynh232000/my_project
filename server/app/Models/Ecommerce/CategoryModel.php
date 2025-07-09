@@ -181,8 +181,8 @@ class CategoryModel  extends AdminModel
         return '<select class="form-select mb-2" id="status" data-control="select2" name="status"
                         data-placeholder="Select an option" data-allow-clear="true">
                    ' . (!$default ? '<option value="" selected>Chọn trạng thái</option>' : '') . '
-                    <option value="active" ' . ($default == "active" ? "selected" : "") . '>Hiện</option>
-                    <option value="inactive" ' . ($default == "inactive" ? "selected" : "") . '>Ẩn</option>
+                    <option value="active" ' . ($default == "active" ? "selected" : "") . '>Active</option>
+                    <option value="inactive" ' . ($default == "inactive" ? "selected" : "") . '>Inactive</option>
                 </select>';
     }
     public function columnIcon_url($params, $field, $val)

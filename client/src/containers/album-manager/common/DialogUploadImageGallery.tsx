@@ -19,12 +19,12 @@ import { useFormContext, useWatch } from 'react-hook-form';
 import { useLoadingStore } from '@/store/loading/store';
 import ImageGalleryPreviewCard from '@/containers/album-manager/common/ImageGalleryPreviewCard';
 import { getClientSideCookie } from '@/utils/cookie';
-import { createAlbum } from '@/services/album/createAlbum';
 import { useRoomStore } from '@/store/room/store';
-import { kebabCase } from 'lodash';
+import kebabCase from 'lodash/kebabCase';
 import { toast } from 'sonner';
 import { useAlbumHotelStore } from '@/store/album/store';
 import { HotelRoomsResponse } from '@/services/album/getAlbumHotel';
+import { CreateAlbumRequestBody, createAlbum, IImage } from '@/services/album/createAlbum';
 
 export type TImageUploadItem = {
 	url: string;
@@ -76,13 +76,11 @@ const DialogUploadImageGallery = ({
 			{ shouldValidate: true }
 		);
 
-		const updatedImages = watch('imagesUpload').filter(
-			(_, idx) => index !== idx
-		);
+		const updatedImages = imagesUpload?.filter((_, idx) => index !== idx);
 
 		setValue('imagesUpload', updatedImages);
 		clearErrors('imagesUpload');
-		if (watch('filesUpload').length === 0) {
+		if (watch('filesUpload')?.length === 0) {
 			onClose();
 		}
 	};
@@ -92,23 +90,24 @@ const DialogUploadImageGallery = ({
 			roomId && (roomList?.length ?? 0) > 0
 				? roomList?.find((room) => room.id === +roomId)
 				: undefined;
-		const slug = room
-			? kebabCase(room.name_custom || room.name)
-			: `all-image-${hotel_id}`;
+		const slug = room ? kebabCase(room.name) : `all-image-${hotel_id}`;
 
 		setLoading(true);
-		const formData = new FormData();
-		formData.append('slug', slug);
-		formData.append('type', roomId ? 'room_type' : 'hotel');
-		roomId && formData.append('room_id', String(roomId));
-		formData.append('list-all', 'true');
 
-		data.imagesUpload.forEach((img, idx) => {
-			formData.append(`images[${idx}][image]`, img.file);
-			formData.append(`images[${idx}][label_id]`, img.tag);
-			formData.append(`images[${idx}][priority]`, String(idx + (getValues("images")?.length ?? 0)))
-		});
-		const res = await createAlbum<HotelRoomsResponse>(formData).finally(() =>
+		const images: IImage[] = data?.imagesUpload?.map((img, idx) => ({
+			image: img.file as File,
+			label_id: img.tag,
+			priority: String(idx + (getValues('images')?.length ?? 0)),
+		})) as IImage[];
+
+		const body: CreateAlbumRequestBody = {
+			slug,
+			list_all: true,
+			...(roomId && { room_id: String(roomId) }),
+			images
+		};
+
+		const res = await createAlbum<HotelRoomsResponse>(body).finally(() =>
 			setLoading(false)
 		);
 
@@ -184,7 +183,10 @@ const DialogUploadImageGallery = ({
 					</DialogClose>
 					<Button
 						onClick={handleClick ? handleClick : handleSubmit(onSubmit)}
-						disabled={Object.values(errors).length > 0 || handleClick && imagesUpload?.some(image => !image.tag)}
+						disabled={
+							Object.values(errors).length > 0 ||
+							(handleClick && imagesUpload?.some((image) => !image.tag))
+						}
 						type={'submit'}
 						variant={'secondary'}
 						className={cn(

@@ -1,10 +1,15 @@
+'use client';
 import React from 'react';
 import { ImageListDropZone } from '@/components/shared/ImageListDropZone';
 import { Controller, useFormContext } from 'react-hook-form';
 import { ImageGallerySectionType } from '@/lib/schemas/album/image-gallery-section';
 
-const UploadImageZone = ({placeholder} : {placeholder?: React.ReactNode}) => {
-	const { control,setValue } = useFormContext<ImageGallerySectionType>();
+const UploadImageZone = ({
+	placeholder,
+}: {
+	placeholder?: React.ReactNode;
+}) => {
+	const { control, setValue } = useFormContext<ImageGallerySectionType>();
 
 	return (
 		<Controller
@@ -17,17 +22,17 @@ const UploadImageZone = ({placeholder} : {placeholder?: React.ReactNode}) => {
 					hideOnSelect
 					placeholder={placeholder}
 					dropzoneClassName={
-						'min-h-[191px] h-full rounded-xl w-auto border border-dashed bg-white border-other-divider-01 '
+						'min-h-[159px] h-full rounded-xl w-auto border border-dashed bg-white border-other-divider-01 '
 					}
 					onSubmit={(file) => {
 						onChange(file);
 						setValue(
 							'imagesUpload',
 							file.map((item) => ({
-								url:  URL.createObjectURL(item),
+								url: URL.createObjectURL(item),
 								tag: '',
 								file: item,
-								priority: 0
+								priority: 0,
 							}))
 						);
 					}}

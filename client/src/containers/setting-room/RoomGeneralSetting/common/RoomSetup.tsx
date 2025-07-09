@@ -110,7 +110,7 @@ export default function RoomSetup() {
 					)}
 				/>
 				<FormField
-					name={'setup.name_custom'}
+					name={'setup.name'}
 					control={control}
 					render={({ field }) => (
 						<FormItem className="col-span-12 lg:col-span-1">

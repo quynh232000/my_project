@@ -1,4 +1,5 @@
 import { OptionType } from '@/components/shared/Select/SelectPopup';
+import { TSelectColumn } from '@/containers/booking-orders/data';
 
 export const ageRanges = [
 	{ label: '1', value: '1' },
@@ -34,3 +35,45 @@ export const filterData: OptionType[] = [
 		label: 'Hoạt động',
 	},
 ];
+
+export const gridViewData: TSelectColumn[] = [
+	{
+		title: 'Mã đặt phòng',
+		value: 'id',
+	},
+	{
+		title: 'Tên phòng',
+		value: 'name',
+	},
+	{
+		title: 'Sức chứa',
+		value: 'max_capacity',
+	},
+	{
+		title: 'Kích thước',
+		value: 'area',
+	},
+	{
+		title: 'Số lượng',
+		value: 'quantity',
+	},
+	{
+		title: 'Trạng thái',
+		value: 'status',
+	}
+];
+
+export const tabDefs = [
+	{
+		title: 'Thiết lập chung',
+		key: 'general',
+	},
+	{
+		title: 'Hình ảnh phòng',
+		key: 'image',
+	},
+	{
+		title: 'Tiện ích phòng',
+		key: 'amenities',
+	},
+]

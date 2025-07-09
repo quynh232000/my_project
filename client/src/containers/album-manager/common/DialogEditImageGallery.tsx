@@ -1,3 +1,4 @@
+'use client'
 import React, { useEffect, useState } from 'react';
 import {
 	Dialog,
@@ -19,8 +20,6 @@ import { ImageDropzone } from '@/components/shared/ImageDropzone';
 import { useAttributeStore } from '@/store/attributes/store';
 import { ImageGallerySectionType } from '@/lib/schemas/album/image-gallery-section';
 import SelectImageGalleryPopup from '@/containers/album-manager/common/SelectImageGalleryPopup';
-import { createAlbum, IResponse } from '@/services/album/createAlbum';
-import { updateAlbum } from '@/services/album/updateAlbum';
 import { useLoadingStore } from '@/store/loading/store';
 import { v4 as uuidv4 } from 'uuid';
 import SelectPopup from '@/components/shared/Select/SelectPopup';
@@ -28,6 +27,19 @@ import { mapToLabelValue } from '@/containers/setting-room/helpers';
 import { useAlbumHotelStore } from '@/store/album/store';
 import { useShallow } from 'zustand/react/shallow';
 import { HotelRoomsResponse } from '@/services/album/getAlbumHotel';
+import {
+	CreateAlbumRequestBody,
+	createAlbum,
+	IImage,
+	IResponse,
+} from '@/services/album/createAlbum';
+import kebabCase from 'lodash/kebabCase';
+import { useRoomStore } from '@/store/room/store';
+import { getClientSideCookie } from '@/utils/cookie';
+import {
+	UpdateAlbumRequestBody,
+	updateAlbum,
+} from '@/services/album/updateAlbum';
 
 const DialogEditImageGallery = ({
 	open,
@@ -66,6 +78,7 @@ const DialogEditImageGallery = ({
 			imageRoomList: state.imageRoomList,
 		}))
 	);
+	const roomList = useRoomStore((state) => state.roomList);
 
 	useEffect(() => {
 		if (selectedTag) {
@@ -105,32 +118,45 @@ const DialogEditImageGallery = ({
 				setValue(`images.${index}`, imageData);
 			} else {
 				if (image instanceof File) {
-					let formData = new FormData();
-					formData.append('room_id', String(roomId));
-					formData.append('type', roomId ? 'room_type' : 'hotel');
-					formData.append('list-all', 'true');
-					formData.append(`images[0][image]`, image);
-					formData.append(`images[0][label_id]`, selectTag);
-					formData.append(`images[0][priority]`, String(list[index].priority));
-					promiseArr.push(createAlbum<HotelRoomsResponse>(formData));
+					const hotel_id = getClientSideCookie('hotel_id');
+					const room =
+						roomId && (roomList?.length ?? 0) > 0
+							? roomList?.find((room) => room.id === +roomId)
+							: undefined;
+					const slug = room ? kebabCase(room.name) : `all-image-${hotel_id}`;
+					const images: IImage[] = [
+						{
+							image: image,
+							priority: String(list[index].priority),
+							label_id: selectTag,
+						},
+					];
 
-					formData = new FormData();
-					formData.append('id', String(roomId));
-					formData.append('type', roomId ? 'room_type' : 'hotel');
-					formData.append(`delete_images[]`, String(image_id));
-					formData.append('list-all', 'true');
-					promiseArr.push(updateAlbum<HotelRoomsResponse>(formData));
+					const bodyCreateAlbum: CreateAlbumRequestBody = {
+						slug,
+						images,
+						list_all: true,
+						...(roomId && { room_id: String(roomId) }),
+					};
+					promiseArr.push(createAlbum<HotelRoomsResponse>(bodyCreateAlbum));
+
+					const bodyUpdateAlbum: UpdateAlbumRequestBody = {
+						...(roomId && {id: String(roomId)}),
+						idsDeleteArr: [image_id],
+						list_all: true,
+					};
+					promiseArr.push(updateAlbum<HotelRoomsResponse>(bodyUpdateAlbum));
 				} else {
-					const formData = new FormData();
-					formData.append('id', String(roomId));
-					formData.append('type', roomId ? 'room_type' : 'hotel');
-					formData.append(`update[${image_id}][label_id]`, selectTag);
-					formData.append('list-all', 'true');
-					formData.append(
-						`update[${image_id}][priority]`,
-						String(list[index].priority)
-					);
-					promiseArr.push(updateAlbum<HotelRoomsResponse>(formData));
+					const bodyUpdateAlbum: UpdateAlbumRequestBody = {
+						...(roomId && {id: String(roomId)}),
+						list_all: true,
+						images: [{
+							label_id: selectTag,
+							priority: String(list[index].priority),
+							image_id: String(image_id)
+						}]
+					};
+					promiseArr.push(updateAlbum<HotelRoomsResponse>(bodyUpdateAlbum));
 				}
 			}
 		}
