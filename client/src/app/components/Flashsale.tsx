@@ -146,7 +146,7 @@ function Flashsale() {
               >
                 {data.map((item) => {
                   return (
-                    <SwiperSlide key={item.id}>
+                    <SwiperSlide key={item.id+"okok"}>
                         <Link href={'/khach-san/'+item.slug}>
                             <div  className="bg-white rounded-lg shadow-lg relative">
                                 <span className=" absolute top-0 left-0 z-[1] bg-yellow-500 px-4 py-1 text-sm text-white rounded-tl-lg rounded-br-lg">-{item.sale}</span>

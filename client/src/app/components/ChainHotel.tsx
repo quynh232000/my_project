@@ -135,7 +135,7 @@ export default function ChainHotel() {
               >
                 {data.map((item) => {
                   return (
-                    <SwiperSlide key={item.id+'okok'} >
+                    <SwiperSlide key={item.id+'okok111'} >
                         <div className="grid grid-cols-2 gap-3">
                           <div className=" relative rounded-lg ">
                               <div className=" relative h-[390px] w-full rounded-lg overflow-hidden">

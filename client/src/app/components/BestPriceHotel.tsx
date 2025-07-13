@@ -142,8 +142,8 @@ export default function BestPriceHotel() {
               <div className="text-[14px] text-gray-600">Tiết kiệm chi phí với các khách sạn hợp tác chiến lược cùng Quin Booking, cam kết giá tốt nhất và chất lượng dịch vụ tốt nhất dành cho bạn.</div>
               <div className="flex gap-3 items-center mt-4 flex-wrap">
 
-                {dataFlight.map(item=>{
-                  return <div className="border rounded-full py-2 px-4 bg-white hover:bg-primary-100 border-primary-400 cursor-pointer text-[14px]" key={"ok"+item.name}>{item.name}</div>
+                {dataFlight.map((item)=>{
+                  return <div className="border rounded-full py-2 px-4 bg-white hover:bg-primary-100 border-primary-400 cursor-pointer text-[14px]" key={"best_price1_"+item.name}>{item.name}</div>
                 })}
               </div>
            </div>
@@ -167,7 +167,7 @@ export default function BestPriceHotel() {
               >
                 {data.map((item) => {
                   return (
-                    <SwiperSlide key={item.name+'1'} >
+                    <SwiperSlide key={item.name+'1111'} >
                          <Link href={'/khach-san/'+item.slug}>
                             <div  className="bg-white rounded-lg shadow-lg relative">
                                 <span className=" absolute top-0 left-0 z-[1] bg-yellow-500 px-4 py-1 text-sm text-white rounded-tl-lg rounded-br-lg">-{item.sale}</span>

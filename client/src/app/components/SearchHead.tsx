@@ -19,7 +19,7 @@ import { FiMinus } from "react-icons/fi";
 import { LuHotel } from "react-icons/lu";
 import { useRouter } from "next/navigation";
 import { formatDate } from "@/utils/common";
-function SearchHead({navActiveKey}:{navActiveKey:string}) {
+function SearchHead({navActiveKey,className}:{navActiveKey:string,className?:string}) {
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
 
@@ -71,7 +71,7 @@ function SearchHead({navActiveKey}:{navActiveKey:string}) {
     router.push('/'+navActiveKey+'/search?'+new URLSearchParams(params).toString())
   }
   return (
-    <div className='  flex relative'>
+    <div className={'  flex relative bg-white '+ (className && className)}>
         <div className='flex-1 flex items-center '>
           {/* location */}
           <div className='border-r p-2  px-5 w-[30%]'>
