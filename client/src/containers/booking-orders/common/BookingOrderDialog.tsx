@@ -41,15 +41,15 @@ const BookingOrderDialog = ({
 				key: 'customer_date_detail',
 				component: (
 					<BookingGuestAndDateDetails
-						orderDetails={orderDetails}></BookingGuestAndDateDetails>
+						orderDetails={
+							orderDetails
+						}></BookingGuestAndDateDetails>
 				),
 			},
 			{
 				title: 'Phòng và số khách lưu trú',
 				key: 'room_occupancy_info',
-				component: (
-					<RoomAndOccupancyInfo></RoomAndOccupancyInfo>
-				),
+				component: <RoomAndOccupancyInfo></RoomAndOccupancyInfo>,
 			},
 			{
 				title: 'Nhận tiền xuất chi',
@@ -65,12 +65,17 @@ const BookingOrderDialog = ({
 			<DialogContent
 				onPointerDownOutside={() => onClose()}
 				hideButtonClose={true}
-				className={'rounded-2xl max-h-[90vh] p-0 overflow-hidden sm:max-w-[888px] gap-0'}>
+				className={
+					'max-h-[90vh] gap-0 overflow-hidden rounded-2xl p-0 sm:max-w-[888px]'
+				}>
 				<DialogHeader className={'hidden'}>
 					<DialogTitle></DialogTitle>
 					<DialogDescription></DialogDescription>
 				</DialogHeader>
-				<div className={"p-6 bg-gradient-to-r from-[#254CCA] to-secondary-500"}>
+				<div
+					className={
+						'bg-gradient-to-r from-[#254CCA] to-secondary-500 p-6'
+					}>
 					<div className={'mb-4 flex items-center justify-between'}>
 						<Typography
 							tag={'h3'}
@@ -82,7 +87,7 @@ const BookingOrderDialog = ({
 							type={'button'}
 							onClick={() => onClose()}
 							className={
-								'min-w-fit flex h-8 w-8 items-center justify-center rounded-full bg-neutral-50 p-2'
+								'flex h-8 w-8 min-w-fit items-center justify-center rounded-full bg-neutral-50 p-2'
 							}>
 							<IconClose
 								width={20}
@@ -91,10 +96,10 @@ const BookingOrderDialog = ({
 							/>
 						</Button>
 					</div>
-					<div className={"flex items-center gap-3"}>
+					<div className={'flex items-center gap-3'}>
 						<Button
 							className={cn(
-								'min-w-fit h-8 rounded-lg bg-white px-3 py-1 text-neutral-600 hover:opacity-80',
+								'h-8 min-w-fit rounded-lg bg-white px-3 py-1 text-neutral-600 hover:opacity-80',
 								TextVariants.caption_14px_600
 							)}>
 							<IconDownload
@@ -105,19 +110,19 @@ const BookingOrderDialog = ({
 						</Button>
 						<Button
 							className={cn(
-								'min-w-fit h-8 rounded-lg bg-white px-3 py-1 text-neutral-600 hover:opacity-80',
+								'h-8 min-w-fit rounded-lg bg-white px-3 py-1 text-neutral-600 hover:opacity-80',
 								TextVariants.caption_14px_600
 							)}>
-							<IconPrinter
-								className={'size-4'}
-							/>
+							<IconPrinter className={'size-4'} />
 							In
 						</Button>
 					</div>
 				</div>
-				<div className={"p-6"}>
+				<div className={'p-6'}>
 					<div
-						className={'grid grid-cols-3 gap-1 rounded-[6px] bg-neutral-100 p-1 mb-4'}>
+						className={
+							'mb-4 grid grid-cols-3 gap-1 rounded-[6px] bg-neutral-100 p-1'
+						}>
 						{tabs.map((tab, i) => (
 							<Button
 								key={i}

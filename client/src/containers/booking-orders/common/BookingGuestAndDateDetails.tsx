@@ -10,7 +10,9 @@ const renderStatus = (status: string) => {
 				<Typography
 					tag={'span'}
 					variant={'caption_14px_400'}
-					className={'rounded-lg bg-green-50 px-4 py-1 text-accent-02'}>
+					className={
+						'rounded-lg bg-green-50 px-4 py-1 text-accent-02'
+					}>
 					Đã xác nhận
 				</Typography>
 			);
@@ -28,7 +30,9 @@ const renderStatus = (status: string) => {
 				<Typography
 					tag={'span'}
 					variant={'caption_14px_400'}
-					className={'bg-orange-50-50 rounded-lg px-4 py-1 text-accent-04'}>
+					className={
+						'bg-orange-50-50 rounded-lg px-4 py-1 text-accent-04'
+					}>
 					Chờ xác nhận
 				</Typography>
 			);
@@ -54,7 +58,10 @@ const BookingGuestAndDateDetails = ({
 	return (
 		<div className={'text-neutral-600'}>
 			<div className={'flex items-center gap-4'}>
-				<Typography tag={'p'} variant={'caption_14px_400'} className={'w-60'}>
+				<Typography
+					tag={'p'}
+					variant={'caption_14px_400'}
+					className={'w-60'}>
 					Mã đặt phòng
 				</Typography>
 				<Typography tag={'p'} variant={'caption_14px_400'}>
@@ -63,14 +70,20 @@ const BookingGuestAndDateDetails = ({
 			</div>
 			<Separator orientation={'horizontal'} className={'my-2'} />
 			<div className={'flex items-center gap-4'}>
-				<Typography tag={'p'} variant={'caption_14px_400'} className={'w-60'}>
+				<Typography
+					tag={'p'}
+					variant={'caption_14px_400'}
+					className={'w-60'}>
 					Trạng thái đơn
 				</Typography>
 				{orderDetails && renderStatus(orderDetails?.status)}
 			</div>
 			<Separator orientation={'horizontal'} className={'my-2'} />
 			<div className={'flex items-center gap-4'}>
-				<Typography tag={'p'} variant={'caption_14px_400'} className={'w-60'}>
+				<Typography
+					tag={'p'}
+					variant={'caption_14px_400'}
+					className={'w-60'}>
 					Tên khách
 				</Typography>
 				<Typography tag={'p'} variant={'caption_14px_400'}>
@@ -79,14 +92,20 @@ const BookingGuestAndDateDetails = ({
 			</div>
 			<Separator orientation={'horizontal'} className={'my-2'} />
 			<div className={'flex items-center gap-4'}>
-				<Typography tag={'p'} variant={'caption_14px_400'} className={'w-60'}>
+				<Typography
+					tag={'p'}
+					variant={'caption_14px_400'}
+					className={'w-60'}>
 					Email
 				</Typography>
 				{maskStringStart(orderDetails?.email || '', 4)}
 			</div>
 			<Separator orientation={'horizontal'} className={'my-2'} />
 			<div className={'flex items-center gap-4'}>
-				<Typography tag={'p'} variant={'caption_14px_400'} className={'w-60'}>
+				<Typography
+					tag={'p'}
+					variant={'caption_14px_400'}
+					className={'w-60'}>
 					Số điện thoại
 				</Typography>
 				{maskStringStart(
@@ -96,7 +115,10 @@ const BookingGuestAndDateDetails = ({
 			</div>
 			<Separator orientation={'horizontal'} className={'my-2'} />
 			<div className={'flex items-center gap-4'}>
-				<Typography tag={'p'} variant={'caption_14px_400'} className={'w-60'}>
+				<Typography
+					tag={'p'}
+					variant={'caption_14px_400'}
+					className={'w-60'}>
 					Ngày ở
 				</Typography>
 				<Typography tag={'p'} variant={'caption_14px_400'}>
@@ -106,7 +128,10 @@ const BookingGuestAndDateDetails = ({
 			</div>
 			<Separator orientation={'horizontal'} className={'my-2'} />
 			<div className={'flex items-center gap-4'}>
-				<Typography tag={'p'} variant={'caption_14px_400'} className={'w-60'}>
+				<Typography
+					tag={'p'}
+					variant={'caption_14px_400'}
+					className={'w-60'}>
 					Thời gian đặt phòng
 				</Typography>
 				<Typography tag={'p'} variant={'caption_14px_400'}>

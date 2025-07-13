@@ -5,7 +5,7 @@ import { TOKEN_EXPIRED_MESSAGE } from '@/configs/axios/axios';
 import {
 	AuthRouters,
 	PropertySelectRouters,
-	RefreshRouters
+	RefreshRouters,
 } from '@/constants/routers';
 import { PropertyTable } from '@/containers/property/PropertyTable';
 import {
@@ -26,7 +26,8 @@ export default async function Page() {
 		propertyList = await getPropertyList();
 	} catch (error) {
 		const axiosError = error as AxiosError;
-		const msg = (axiosError?.response?.data as { message: string })?.message;
+		const msg = (axiosError?.response?.data as { message: string })
+			?.message;
 		if (msg === TOKEN_EXPIRED_MESSAGE) {
 			return redirect(
 				`${RefreshRouters.index}?redirect=${PropertySelectRouters.index}`

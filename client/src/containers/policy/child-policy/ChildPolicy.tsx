@@ -35,7 +35,12 @@ export default function ChildPolicy({ className }: Props) {
 		defaultValues: {
 			ageLimit: 12,
 			rows: [
-				{ age_from: 0, age_to: NaN, fee_type: 'free', meal_type: ROBB.RO },
+				{
+					age_from: 0,
+					age_to: NaN,
+					fee_type: 'free',
+					meal_type: ROBB.RO,
+				},
 			],
 		},
 		resolver: zodResolver(policySchema),
@@ -135,7 +140,9 @@ export default function ChildPolicy({ className }: Props) {
 								{
 									'Thay đổi độ tuổi trẻ em tối đa sẽ phải thiết lập lại Phụ thu trẻ em trong '
 								}
-								<Link href={DashboardRouter.priceType} className="underline">
+								<Link
+									href={DashboardRouter.priceType}
+									className="underline">
 									loại giá (Rate plan).
 								</Link>
 							</Typography>
@@ -147,7 +154,9 @@ export default function ChildPolicy({ className }: Props) {
 				<ChildPolicyTableForm prefix={''} />
 				<ButtonActionGroup
 					className={'mt-0'}
-					actionCancel={() => router.push(DashboardRouter.policyCancel)}
+					actionCancel={() =>
+						router.push(DashboardRouter.policyCancel)
+					}
 				/>
 			</form>
 		</FormProvider>

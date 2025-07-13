@@ -17,9 +17,12 @@ export default function NotFound() {
 						không tồn tại.
 					</h2>
 					<p
-						className={'mb-8 text-center text-md font-normal text-neutral-500'}>
-						Có vẻ như đường dẫn không đúng hoặc trang này đã bị xóa. Hãy kiểm
-						tra lại hoặc trở về trang chủ để tiếp tục khám phá.
+						className={
+							'mb-8 text-center text-md font-normal text-neutral-500'
+						}>
+						Có vẻ như đường dẫn không đúng hoặc trang này đã bị xóa.
+						Hãy kiểm tra lại hoặc trở về trang chủ để tiếp tục khám
+						phá.
 					</p>
 				</div>
 				<Link

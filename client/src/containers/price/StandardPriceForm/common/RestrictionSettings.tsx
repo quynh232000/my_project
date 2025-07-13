@@ -34,7 +34,9 @@ export default function RestrictionSettings() {
 					rules={maxDay ? { deps: ['date_max'] } : {}}
 					render={({ field: { onChange, value, ...props } }) => (
 						<FormItem className="col-span-2 lg:col-span-1">
-							<FormLabel required>Số ngày đặt trước tối thiểu</FormLabel>
+							<FormLabel required>
+								Số ngày đặt trước tối thiểu
+							</FormLabel>
 							<div className="relative mt-2">
 								<FormControl>
 									<NumberInput
@@ -47,7 +49,11 @@ export default function RestrictionSettings() {
 										{...props}
 										value={value}
 										onValueChange={(e) => {
-											onChange(e.value.length === 0 ? NaN : Number(e.value));
+											onChange(
+												e.value.length === 0
+													? NaN
+													: Number(e.value)
+											);
 										}}
 									/>
 								</FormControl>
@@ -57,8 +63,8 @@ export default function RestrictionSettings() {
 								tag="p"
 								variant="caption_12px_500"
 								className="mt-2 text-neutral-400">
-								Số ngày tối thiểu trước ngày nhận phòng mà khách có thể đặt loại
-								giá này.
+								Số ngày tối thiểu trước ngày nhận phòng mà khách
+								có thể đặt loại giá này.
 							</Typography>
 						</FormItem>
 					)}
@@ -70,7 +76,9 @@ export default function RestrictionSettings() {
 					rules={minDay ? { deps: ['date_min'] } : {}}
 					render={({ field: { onChange, value, ...props } }) => (
 						<FormItem className="col-span-2 lg:col-span-1">
-							<FormLabel required>Số ngày đặt trước tối đa</FormLabel>
+							<FormLabel required>
+								Số ngày đặt trước tối đa
+							</FormLabel>
 
 							<div className="relative mt-2">
 								<FormControl>
@@ -84,7 +92,11 @@ export default function RestrictionSettings() {
 										{...props}
 										value={value}
 										onValueChange={(e) => {
-											onChange(e.value.length === 0 ? NaN : Number(e.value));
+											onChange(
+												e.value.length === 0
+													? NaN
+													: Number(e.value)
+											);
 										}}
 									/>
 								</FormControl>
@@ -95,8 +107,8 @@ export default function RestrictionSettings() {
 								tag="p"
 								variant="caption_12px_500"
 								className="mt-2 text-neutral-400">
-								Số ngày tối đa trước ngày nhận phòng mà khách có thể đặt loại
-								giá này.
+								Số ngày tối đa trước ngày nhận phòng mà khách có
+								thể đặt loại giá này.
 							</Typography>
 						</FormItem>
 					)}
@@ -121,7 +133,11 @@ export default function RestrictionSettings() {
 										{...props}
 										value={value}
 										onValueChange={(e) => {
-											onChange(e.value.length === 0 ? NaN : Number(e.value));
+											onChange(
+												e.value.length === 0
+													? NaN
+													: Number(e.value)
+											);
 										}}
 									/>
 								</FormControl>
@@ -131,8 +147,8 @@ export default function RestrictionSettings() {
 								tag="p"
 								variant="caption_12px_500"
 								className="mt-2 text-neutral-400">
-								Số đêm tối thiểu khách phải ở lại để đủ tiêu chuẩn cho gói giá
-								này.
+								Số đêm tối thiểu khách phải ở lại để đủ tiêu
+								chuẩn cho gói giá này.
 							</Typography>
 						</FormItem>
 					)}
@@ -157,7 +173,11 @@ export default function RestrictionSettings() {
 										{...props}
 										value={value}
 										onValueChange={(e) => {
-											onChange(e.value.length === 0 ? NaN : Number(e.value));
+											onChange(
+												e.value.length === 0
+													? NaN
+													: Number(e.value)
+											);
 										}}
 									/>
 								</FormControl>
@@ -167,8 +187,8 @@ export default function RestrictionSettings() {
 								tag="p"
 								variant="caption_12px_500"
 								className="mt-2 text-neutral-400">
-								Số đêm tối đa khách có thể ở lại để đủ tiêu chuẩn cho gói giá
-								này.
+								Số đêm tối đa khách có thể ở lại để đủ tiêu
+								chuẩn cho gói giá này.
 							</Typography>
 						</FormItem>
 					)}

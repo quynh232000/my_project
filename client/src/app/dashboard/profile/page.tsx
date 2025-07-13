@@ -11,7 +11,10 @@ export default async function Page() {
 	console.log('----------pathName: ', safePathName);
 	return (
 		<DashboardContainer>
-			<DashboardHeroTitle title={'Hồ sơ chỗ nghỉ'} pathName={safePathName} />
+			<DashboardHeroTitle
+				title={'Hồ sơ chỗ nghỉ'}
+				pathName={safePathName}
+			/>
 			<DashboardCard>
 				<TabHeadRecordedRecords />
 			</DashboardCard>

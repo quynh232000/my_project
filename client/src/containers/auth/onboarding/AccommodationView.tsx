@@ -17,7 +17,7 @@ export default function AccommodationView({ className }: ClassNameProp) {
 				return <AccommodationSizeSelector />;
 			case 3:
 				// return <AccommodationAddressForm />;
-				return <div/>
+				return <div />;
 			case 4:
 				return <AccommodationActivation />;
 			default:

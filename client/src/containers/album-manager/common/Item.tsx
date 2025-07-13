@@ -74,7 +74,10 @@ const Item = React.forwardRef<HTMLDivElement, ItemProps>(
 								.includes(String(item.image_id))}
 							className={'absolute left-4 top-4 z-40 bg-white'}
 							onCheckedChange={(checked) =>
-								onCheck?.(item.image_id as number, checked as boolean)
+								onCheck?.(
+									item.image_id as number,
+									checked as boolean
+								)
 							}
 						/>
 					) : null}
@@ -84,7 +87,9 @@ const Item = React.forwardRef<HTMLDivElement, ItemProps>(
 								'absolute inset-0 hidden flex-col items-center justify-center gap-2 bg-other-overlay transition-all group-hover:flex'
 							}>
 							<div
-								className={'flex flex-wrap items-center justify-center gap-2'}>
+								className={
+									'flex flex-wrap items-center justify-center gap-2'
+								}>
 								<Button
 									type={'button'}
 									onClick={(e) => {

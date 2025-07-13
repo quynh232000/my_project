@@ -19,7 +19,9 @@ export default function AppLogo({ hideBrand }: AppLogoProps) {
 				/>
 			</svg>
 			{!hideBrand && (
-				<Typography variant={'headline_24px_700'} className={'text-nowrap'}>
+				<Typography
+					variant={'headline_24px_700'}
+					className={'text-nowrap'}>
 					190 HMS
 				</Typography>
 			)}

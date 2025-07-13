@@ -1,8 +1,8 @@
-'use client'
+'use client';
 import ButtonActionGroup from '@/components/shared/Button/ButtonActionGroup';
 import { useAccommodationProfileStore } from '@/store/accommodation-profile/store';
 import { useServiceStore } from '@/store/services/store';
-import {  useState } from 'react';
+import { useState } from 'react';
 import { useShallow } from 'zustand/react/shallow';
 import SearchAndBrowse from '@/containers/setting-room/RoomAmenities/common/SearchAndBrowse';
 import SelectedUtilities from '@/containers/setting-room/RoomAmenities/common/SelectedUtilities';
@@ -18,19 +18,20 @@ export default function AmenitiesAndServices({
 	onNext,
 }: AmenitiesAndServicesProps) {
 	const [openDialog, setOpenDialog] = useState(false);
-	const { hotelServiceList,fetchHotelServiceList } = useServiceStore(
+	const { hotelServiceList, fetchHotelServiceList } = useServiceStore(
 		useShallow((state) => ({
 			hotelServiceList: state.hotelServiceList,
 			fetchHotelServiceList: state.fetchHotelServiceList,
 		}))
 	);
-	const { services, fetchServices, setServices } = useAccommodationProfileStore(
-		useShallow((state) => ({
-			services: state.services,
-			fetchServices: state.fetchServices,
-			setServices: state.setServices,
-		}))
-	);
+	const { services, fetchServices, setServices } =
+		useAccommodationProfileStore(
+			useShallow((state) => ({
+				services: state.services,
+				fetchServices: state.fetchServices,
+				setServices: state.setServices,
+			}))
+		);
 
 	const { form, onSubmit, originalList } = useAmenityForm({
 		type: 'hotel',

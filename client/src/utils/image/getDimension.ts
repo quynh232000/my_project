@@ -1,4 +1,6 @@
-export const getImageDimensions = (file: File): Promise<{ width: number; height: number }> => {
+export const getImageDimensions = (
+	file: File
+): Promise<{ width: number; height: number }> => {
 	return new Promise((resolve, reject) => {
 		if (!file.type.startsWith('image/')) {
 			reject(new Error('File is not an image'));
@@ -19,4 +21,4 @@ export const getImageDimensions = (file: File): Promise<{ width: number; height:
 		};
 		img.src = url;
 	});
-}
+};

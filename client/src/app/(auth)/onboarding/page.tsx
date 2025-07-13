@@ -10,7 +10,9 @@ export default function Page() {
 			<div className={'flex min-h-screen flex-col'}>
 				<AppHeader />
 				<ContainerView
-					containerClassName={'flex-1 flex items-center justify-center'}
+					containerClassName={
+						'flex-1 flex items-center justify-center'
+					}
 					className={'flex'}>
 					<OnboardingNotice className={'flex-1'} />
 					<AccommodationView className={'flex-1'} />

@@ -107,7 +107,7 @@ export const SidebarConfig = {
 						{
 							title: 'Nhóm người dùng',
 							url: 'user/user-group',
-						}
+						},
 					],
 				},
 				{

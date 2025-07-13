@@ -1,5 +1,7 @@
 'use client';
-import DashboardTable, { renderStatus } from '@/components/shared/DashboardTable';
+import DashboardTable, {
+	renderStatus,
+} from '@/components/shared/DashboardTable';
 import { DashboardRouter } from '@/constants/routers';
 import { filterData } from '@/containers/setting-room/data';
 import { TGroupUser, userGroupList } from '@/containers/user/data';
@@ -33,8 +35,9 @@ const UserGroupTable = () => {
 				]}
 				rows={
 					// data ? (data as Array<Omit<TPriceType, 'id'> & { id: number }>) : []
-					(userGroupList as Array<Omit<TGroupUser, 'id'> & { id: number }>) ??
-					[]
+					(userGroupList as Array<
+						Omit<TGroupUser, 'id'> & { id: number }
+					>) ?? []
 				}
 				action={{
 					name: 'Thiết lập',

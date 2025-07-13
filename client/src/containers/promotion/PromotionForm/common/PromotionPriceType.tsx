@@ -42,7 +42,9 @@ const PromotionPriceType = () => {
 								if (value === 'all' && priceTypeList) {
 									setValue(
 										'priceType.price_type_ids',
-										priceTypeList.map((priceType) => priceType.id) as number[]
+										priceTypeList.map(
+											(priceType) => priceType.id
+										) as number[]
 									);
 								}
 							}}>
@@ -57,7 +59,9 @@ const PromotionPriceType = () => {
 								<Label
 									htmlFor="type_price_all"
 									containerClassName={'mb-0'}
-									className={'cursor-pointer text-neutral-600'}>
+									className={
+										'cursor-pointer text-neutral-600'
+									}>
 									Tất cả loại giá
 								</Label>
 							</div>
@@ -73,7 +77,9 @@ const PromotionPriceType = () => {
 									<Label
 										htmlFor="type_price_specific"
 										containerClassName={'mb-0'}
-										className={'cursor-pointer text-neutral-600'}>
+										className={
+											'cursor-pointer text-neutral-600'
+										}>
 										Chọn loại giá
 									</Label>
 								</div>
@@ -104,29 +110,50 @@ const PromotionPriceType = () => {
 										'flex flex-wrap items-center gap-6 md:flex-nowrap'
 									}>
 									{priceTypeList &&
-										priceTypeList.map((priceType, index) => (
-											<CheckBoxView
-												value={field.value?.includes(priceType.id as number)}
-												onValueChange={(val) => {
-													const newArr = val
-														? [...(field?.value || []), priceType.id]
-														: (field.value || []).filter(
-																(val) => val !== priceType.id
-															);
-													setValue(field.name, newArr as number[], {
-														shouldValidate: true,
-													});
-												}}
-												id={priceType.name}
-												key={index}>
-												<Typography
-													tag={'p'}
-													variant={'caption_14px_400'}
-													className={'text-neutral-600'}>
-													{priceType.name}
-												</Typography>
-											</CheckBoxView>
-										))}
+										priceTypeList.map(
+											(priceType, index) => (
+												<CheckBoxView
+													value={field.value?.includes(
+														priceType.id as number
+													)}
+													onValueChange={(val) => {
+														const newArr = val
+															? [
+																	...(field?.value ||
+																		[]),
+																	priceType.id,
+																]
+															: (
+																	field.value ||
+																	[]
+																).filter(
+																	(val) =>
+																		val !==
+																		priceType.id
+																);
+														setValue(
+															field.name,
+															newArr as number[],
+															{
+																shouldValidate: true,
+															}
+														);
+													}}
+													id={priceType.name}
+													key={index}>
+													<Typography
+														tag={'p'}
+														variant={
+															'caption_14px_400'
+														}
+														className={
+															'text-neutral-600'
+														}>
+														{priceType.name}
+													</Typography>
+												</CheckBoxView>
+											)
+										)}
 								</div>
 								<FieldErrorMessage
 									errors={formState.errors}

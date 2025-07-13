@@ -37,15 +37,18 @@ export async function middleware(request: NextRequest) {
 		const redirect = url.searchParams.get('redirect');
 		if (redirect && refresh_token) {
 			try {
-				const response = await fetch(`${API_URL}${AppEndpoint.REFRESH_TOKEN}`, {
-					method: 'POST',
-					body: JSON.stringify({
-						refresh_token,
-					}),
-					headers: {
-						'Content-Type': 'application/json',
-					},
-				});
+				const response = await fetch(
+					`${API_URL}${AppEndpoint.REFRESH_TOKEN}`,
+					{
+						method: 'POST',
+						body: JSON.stringify({
+							refresh_token,
+						}),
+						headers: {
+							'Content-Type': 'application/json',
+						},
+					}
+				);
 				const data: ILogin = await response.json();
 				const {
 					meta: {
@@ -63,7 +66,9 @@ export async function middleware(request: NextRequest) {
 						expires: addDays(new Date(), 7),
 					});
 				}
-				return NextResponse.redirect(new URL(redirect, request.nextUrl));
+				return NextResponse.redirect(
+					new URL(redirect, request.nextUrl)
+				);
 			} catch (error) {
 				return handleResetToken(store, request);
 			}
@@ -80,36 +85,40 @@ export async function middleware(request: NextRequest) {
 		}
 	}
 
-	if (pathname === '/') {
-		if (access_token) {
-			store.delete('hotel_id');
-			return NextResponse.redirect(
-				new URL(PropertySelectRouters.index, request.nextUrl)
-			);
-		} else
-			return NextResponse.redirect(
-				new URL(AuthRouters.signIn, request.nextUrl)
-			);
-	}
+	// if (pathname === '/') {
+	// 	if (access_token) {
+	// 		store.delete('hotel_id');
+	// 		return NextResponse.redirect(
+	// 			new URL(PropertySelectRouters.index, request.nextUrl)
+	// 		);
+	// 	} else
+	// 		return NextResponse.redirect(
+	// 			new URL(AuthRouters.signIn, request.nextUrl)
+	// 		);
+	// }
 
-	if (pathname.startsWith('/dashboard')) {
-		if (!access_token) {
-			return NextResponse.redirect(
-				new URL(AuthRouters.signIn, request.nextUrl)
-			);
-		}
-		if (!hotel_id) {
-			return NextResponse.redirect(
-				new URL(PropertySelectRouters.index, request.nextUrl)
-			);
-		}
-	}
+	// if (pathname.startsWith('/dashboard')) {
+	// 	if (!access_token) {
+	// 		return NextResponse.redirect(
+	// 			new URL(AuthRouters.signIn, request.nextUrl)
+	// 		);
+	// 	}
+	// 	if (!hotel_id) {
+	// 		return NextResponse.redirect(
+	// 			new URL(PropertySelectRouters.index, request.nextUrl)
+	// 		);
+	// 	}
+	// }
 
 	if (access_token) {
-		if (Object.values(AuthRouters).some((path) => pathname.startsWith(path))) {
+		if (
+			Object.values(AuthRouters).some((path) => pathname.startsWith(path))
+		) {
 			return NextResponse.redirect(
 				new URL(
-					hotel_id ? DashboardRouter.profile : PropertySelectRouters.index,
+					hotel_id
+						? DashboardRouter.profile
+						: PropertySelectRouters.index,
 					request.nextUrl
 				)
 			);

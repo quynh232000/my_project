@@ -24,7 +24,11 @@ import kebabCase from 'lodash/kebabCase';
 import { toast } from 'sonner';
 import { useAlbumHotelStore } from '@/store/album/store';
 import { HotelRoomsResponse } from '@/services/album/getAlbumHotel';
-import { CreateAlbumRequestBody, createAlbum, IImage } from '@/services/album/createAlbum';
+import {
+	CreateAlbumRequestBody,
+	createAlbum,
+	IImage,
+} from '@/services/album/createAlbum';
 
 export type TImageUploadItem = {
 	url: string;
@@ -104,7 +108,7 @@ const DialogUploadImageGallery = ({
 			slug,
 			list_all: true,
 			...(roomId && { room_id: String(roomId) }),
-			images
+			images,
 		};
 
 		const res = await createAlbum<HotelRoomsResponse>(body).finally(() =>
@@ -182,10 +186,13 @@ const DialogUploadImageGallery = ({
 						</Button>
 					</DialogClose>
 					<Button
-						onClick={handleClick ? handleClick : handleSubmit(onSubmit)}
+						onClick={
+							handleClick ? handleClick : handleSubmit(onSubmit)
+						}
 						disabled={
 							Object.values(errors).length > 0 ||
-							(handleClick && imagesUpload?.some((image) => !image.tag))
+							(handleClick &&
+								imagesUpload?.some((image) => !image.tag))
 						}
 						type={'submit'}
 						variant={'secondary'}

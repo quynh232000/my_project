@@ -10,9 +10,13 @@ export default async function Page() {
 
 	return (
 		<DashboardContainer>
-			<DashboardHeroTitle title={'Quản lý phòng'} pathName={pathName} extraTitle={<RoomActions/>}/>
+			<DashboardHeroTitle
+				title={'Quản lý phòng'}
+				pathName={pathName}
+				extraTitle={<RoomActions />}
+			/>
 			<DashboardCard>
-				<RoomTable/>
+				<RoomTable />
 			</DashboardCard>
 		</DashboardContainer>
 	);

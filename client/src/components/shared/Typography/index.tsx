@@ -9,7 +9,7 @@ interface Props extends React.HTMLAttributes<HTMLHeadingElement> {
 	variant?: keyof typeof TextVariants;
 	tag?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'p' | 'span';
 	style?: React.CSSProperties;
-	title?: string
+	title?: string;
 }
 
 const Typography = forwardRef<HTMLHeadingElement, Props>(

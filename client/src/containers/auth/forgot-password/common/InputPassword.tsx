@@ -10,7 +10,13 @@ interface Props extends InputHTMLAttributes<HTMLInputElement> {
 	className?: string;
 }
 
-const InputPassword = ({ password, setPassword, placeholder, className="", ...props }: Props) => {
+const InputPassword = ({
+	password,
+	setPassword,
+	placeholder,
+	className = '',
+	...props
+}: Props) => {
 	const [showPassword, setShowPassword] = useState(false);
 	return (
 		<div className="relative">

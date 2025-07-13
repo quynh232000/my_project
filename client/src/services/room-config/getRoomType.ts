@@ -15,13 +15,17 @@ export type IRoomType = {
 	room_names: IRoomNameItem[];
 };
 
-export const getRoomType = async ({with_name = false}:{with_name?: boolean}): Promise<IRoomType[] | null> => {
+export const getRoomType = async ({
+	with_name = false,
+}: {
+	with_name?: boolean;
+}): Promise<IRoomType[] | null> => {
 	try {
 		const hotel_id = getClientSideCookie('hotel_id');
 		const { data } = await CallAPI().get(`${AppEndpoint.ROOM_TYPE}`, {
 			params: {
 				hotel_id,
-				with_name
+				with_name,
 			},
 		});
 		if (!data) {

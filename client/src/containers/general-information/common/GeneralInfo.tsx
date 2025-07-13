@@ -46,13 +46,18 @@ export default function GeneralInfo() {
 							name={'generalInfo.name'}
 							control={control}
 							render={({ field }) => (
-								<FormItem className={'col-span-12 space-y-2 lg:col-span-1'}>
+								<FormItem
+									className={
+										'col-span-12 space-y-2 lg:col-span-1'
+									}>
 									<FormLabel required>Tên chỗ nghỉ</FormLabel>
 									<FormControl>
 										<Input
 											type="text"
 											placeholder="Sheraton Saigon Grand Opera Hotel"
-											className={'h-[44px] py-2 leading-6'}
+											className={
+												'h-[44px] py-2 leading-6'
+											}
 											{...field}
 										/>
 									</FormControl>
@@ -63,19 +68,32 @@ export default function GeneralInfo() {
 						<FormField
 							name={'generalInfo.avg_price'}
 							control={control}
-							render={({ field: { onChange, value, ...props } }) => (
-								<FormItem className={'col-span-12 space-y-2 lg:col-span-1'}>
-									<FormLabel required>Giá trung bình</FormLabel>
+							render={({
+								field: { onChange, value, ...props },
+							}) => (
+								<FormItem
+									className={
+										'col-span-12 space-y-2 lg:col-span-1'
+									}>
+									<FormLabel required>
+										Giá trung bình
+									</FormLabel>
 									<FormControl>
 										<NumberInput
 											placeholder="1,200,000đ"
 											inputMode={'numeric'}
 											suffix={'đ'}
 											value={value}
-											className={'h-[44px] py-2 leading-6'}
+											className={
+												'h-[44px] py-2 leading-6'
+											}
 											{...props}
 											onValueChange={(e) => {
-												onChange(e.value.length === 0 ? '' : Number(e.value));
+												onChange(
+													e.value.length === 0
+														? ''
+														: Number(e.value)
+												);
 											}}
 										/>
 									</FormControl>
@@ -89,9 +107,16 @@ export default function GeneralInfo() {
 							<FormField
 								name="generalInfo.accommodation_id"
 								control={control}
-								render={({ field: { onChange, value, ...props } }) => (
-									<FormItem className={'col-span-12 space-y-2 lg:col-span-1'}>
-										<FormLabel required>Loại chỗ nghỉ</FormLabel>
+								render={({
+									field: { onChange, value, ...props },
+								}) => (
+									<FormItem
+										className={
+											'col-span-12 space-y-2 lg:col-span-1'
+										}>
+										<FormLabel required>
+											Loại chỗ nghỉ
+										</FormLabel>
 										<FormControl>
 											<SelectPopup
 												required
@@ -100,7 +125,9 @@ export default function GeneralInfo() {
 												selectedValue={value}
 												data={
 													accommodationTypeList
-														? mapToLabelValue(accommodationTypeList)
+														? mapToLabelValue(
+																accommodationTypeList
+															)
 														: []
 												}
 												labelClassName="mb-2"
@@ -118,27 +145,49 @@ export default function GeneralInfo() {
 								name={'generalInfo.stars'}
 								control={control}
 								render={({ field }) => (
-									<FormItem className={'col-span-1 space-y-2'}>
+									<FormItem
+										className={'col-span-1 space-y-2'}>
 										<FormLabel required>Hạng sao</FormLabel>
 										<FormControl>
-											<div className={'flex h-[44px] items-center'}>
-												{[...Array(5)].map((_, index) => (
-													<IconStarFill
-														key={index}
-														width={24}
-														height={24}
-														className={`cursor-pointer transition-colors`}
-														onMouseEnter={() => setHoverIndex(index)}
-														onMouseLeave={() => setHoverIndex(null)}
-														onClick={() => field.onChange(index + 1)}
-														color={
-															index + 1 <= (field.value ?? -1) ||
-															index <= (hoverIndex ?? -1)
-																? '#F5D93D'
-																: '#E6E8EC'
-														}
-													/>
-												))}
+											<div
+												className={
+													'flex h-[44px] items-center'
+												}>
+												{[...Array(5)].map(
+													(_, index) => (
+														<IconStarFill
+															key={index}
+															width={24}
+															height={24}
+															className={`cursor-pointer transition-colors`}
+															onMouseEnter={() =>
+																setHoverIndex(
+																	index
+																)
+															}
+															onMouseLeave={() =>
+																setHoverIndex(
+																	null
+																)
+															}
+															onClick={() =>
+																field.onChange(
+																	index + 1
+																)
+															}
+															color={
+																index + 1 <=
+																	(field.value ??
+																		-1) ||
+																index <=
+																	(hoverIndex ??
+																		-1)
+																	? '#F5D93D'
+																	: '#E6E8EC'
+															}
+														/>
+													)
+												)}
 											</div>
 										</FormControl>
 										<FormMessage />
@@ -152,8 +201,11 @@ export default function GeneralInfo() {
 							<FormField
 								name={'generalInfo.chain_id'}
 								control={control}
-								render={({ field: { onChange, value, ...props } }) => (
-									<FormItem className={'col-span-1 space-y-2'}>
+								render={({
+									field: { onChange, value, ...props },
+								}) => (
+									<FormItem
+										className={'col-span-1 space-y-2'}>
 										<FormLabel>Thuộc chuỗi</FormLabel>
 										<FormControl>
 											<SelectPopup
@@ -162,7 +214,13 @@ export default function GeneralInfo() {
 												placeholder="Chọn chuỗi"
 												onChange={onChange}
 												selectedValue={value ?? ''}
-												data={chainList ? mapToLabelValue(chainList) : []}
+												data={
+													chainList
+														? mapToLabelValue(
+																chainList
+															)
+														: []
+												}
 												labelClassName="mb-2"
 												controllerRenderProps={props}
 												className="h-[44px] rounded-lg bg-white py-2"
@@ -176,9 +234,16 @@ export default function GeneralInfo() {
 						<FormField
 							name={'generalInfo.room_number'}
 							control={control}
-							render={({ field: { value, onChange, ...props } }) => (
-								<FormItem className={'col-span-12 space-y-2 lg:col-span-1'}>
-									<FormLabel required>Số lượng phòng</FormLabel>
+							render={({
+								field: { value, onChange, ...props },
+							}) => (
+								<FormItem
+									className={
+										'col-span-12 space-y-2 lg:col-span-1'
+									}>
+									<FormLabel required>
+										Số lượng phòng
+									</FormLabel>
 									<FormControl>
 										<NumberInput
 											placeholder="20"
@@ -186,9 +251,15 @@ export default function GeneralInfo() {
 											suffix={''}
 											value={value}
 											{...props}
-											className={'h-[44px] py-2 leading-6'}
+											className={
+												'h-[44px] py-2 leading-6'
+											}
 											onValueChange={(e) => {
-												onChange(e.value.length === 0 ? '' : Number(e.value));
+												onChange(
+													e.value.length === 0
+														? ''
+														: Number(e.value)
+												);
 											}}
 										/>
 									</FormControl>
@@ -203,16 +274,24 @@ export default function GeneralInfo() {
 								name={'generalInfo.time_checkin'}
 								control={control}
 								render={({ field }) => (
-									<FormItem className={'col-span-1 space-y-2'}>
+									<FormItem
+										className={'col-span-1 space-y-2'}>
 										<FormControl>
 											<TimePicker
 												required
 												label={'Giờ nhận phòng'}
 												triggerLabel={
-													field.value ? field.value?.slice(0, 5) : ''
+													field.value
+														? field.value?.slice(
+																0,
+																5
+															)
+														: ''
 												}
 												onChange={field.onChange}
-												className={'h-[44px] rounded-lg bg-white py-2'}
+												className={
+													'h-[44px] rounded-lg bg-white py-2'
+												}
 											/>
 										</FormControl>
 										<FormMessage />
@@ -225,16 +304,24 @@ export default function GeneralInfo() {
 								name={'generalInfo.time_checkout'}
 								control={control}
 								render={({ field }) => (
-									<FormItem className={'col-span-1 space-y-2'}>
+									<FormItem
+										className={'col-span-1 space-y-2'}>
 										<FormControl>
 											<TimePicker
 												required
 												label={'Giờ trả phòng'}
 												triggerLabel={
-													field.value ? field.value?.slice(0, 5) : ''
+													field.value
+														? field.value?.slice(
+																0,
+																5
+															)
+														: ''
 												}
 												onChange={field.onChange}
-												className={'h-[44px] rounded-lg bg-white py-2'}
+												className={
+													'h-[44px] rounded-lg bg-white py-2'
+												}
 											/>
 										</FormControl>
 										<FormMessage />
@@ -249,7 +336,10 @@ export default function GeneralInfo() {
 						name="generalInfo.image"
 						control={control}
 						render={({ field: { value, onChange, ref } }) => (
-							<FormItem className={'col-span-12 space-y-2 lg:col-span-1'}>
+							<FormItem
+								className={
+									'col-span-12 space-y-2 lg:col-span-1'
+								}>
 								<FormLabel required>Ảnh đại diện</FormLabel>
 								<div className="overflow-hidden rounded-xl">
 									<FormControl>
@@ -257,12 +347,17 @@ export default function GeneralInfo() {
 											hoverEffect
 											ref={ref}
 											defaultImage={
-												typeof value === 'string' ? value : undefined
+												typeof value === 'string'
+													? value
+													: undefined
 											}
 											dropzoneClassName={
 												'h-[212px] w-full cursor-pointer rounded-xl border-2 border-dashed border-inherit'
 											}
-											dimension={{ width: 684, height: 456 }}
+											dimension={{
+												width: 684,
+												height: 456,
+											}}
 											placeholder={
 												<div
 													className={
@@ -276,17 +371,26 @@ export default function GeneralInfo() {
 														src={
 															'/images/pages/general-information/image-upload.png'
 														}
-														className={'h-[86px] w-[78px] object-cover'}
+														className={
+															'h-[86px] w-[78px] object-cover'
+														}
 													/>
 													<Typography
 														tag="p"
-														variant={'caption_12px_600'}
-														className={'text-neutral-700'}>
-														Kéo và thả tệp vào đây, hoặc duyệt
+														variant={
+															'caption_12px_600'
+														}
+														className={
+															'text-neutral-700'
+														}>
+														Kéo và thả tệp vào đây,
+														hoặc duyệt
 													</Typography>
 												</div>
 											}
-											onSubmit={(file) => onChange(file[0])}
+											onSubmit={(file) =>
+												onChange(file[0])
+											}
 										/>
 									</FormControl>
 								</div>
@@ -300,8 +404,8 @@ export default function GeneralInfo() {
 							'mt-4 list-inside list-disc space-y-2 text-sm font-medium leading-4 text-neutral-400'
 						}>
 						<li>
-							Giữ hình ảnh dưới {ALLOW_FILE_SIZE / (1024 * 1024)}MB và định dạng{' '}
-							{ALLOW_FILE_TYPE.join(', ')}
+							Giữ hình ảnh dưới {ALLOW_FILE_SIZE / (1024 * 1024)}
+							MB và định dạng {ALLOW_FILE_TYPE.join(', ')}
 						</li>
 						<li>Kích thước tối thiểu: 684px x 456px</li>
 					</ul>

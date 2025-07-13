@@ -6,12 +6,17 @@ import DepositPolicy from '@/containers/policy/other-policies/deposit-policy/Dep
 
 // CHÍNH SÁCH ĐẶT CỌC
 export default async function Page() {
-	const { pathName } = await getFullURLServerComponent()
+	const { pathName } = await getFullURLServerComponent();
 
-	return <DashboardContainer>
-		<DashboardHeroTitle title={"Chính sách đặt cọc"} pathName={pathName} />
-		<DashboardCard>
-			<DepositPolicy />
-		</DashboardCard>
-	</DashboardContainer>
+	return (
+		<DashboardContainer>
+			<DashboardHeroTitle
+				title={'Chính sách đặt cọc'}
+				pathName={pathName}
+			/>
+			<DashboardCard>
+				<DepositPolicy />
+			</DashboardCard>
+		</DashboardContainer>
+	);
 }

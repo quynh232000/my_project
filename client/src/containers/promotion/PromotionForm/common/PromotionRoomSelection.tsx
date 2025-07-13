@@ -65,7 +65,9 @@ const PromotionRoomSelection = () => {
 								<Label
 									htmlFor="type_room_all"
 									containerClassName={'mb-0'}
-									className={'cursor-pointer text-neutral-600'}>
+									className={
+										'cursor-pointer text-neutral-600'
+									}>
 									Tất cả loại phòng có loại giá đã chọn
 								</Label>
 							</div>
@@ -81,7 +83,9 @@ const PromotionRoomSelection = () => {
 									<Label
 										htmlFor="type_room_specific"
 										containerClassName={'mb-0'}
-										className={'cursor-pointer text-neutral-600'}>
+										className={
+											'cursor-pointer text-neutral-600'
+										}>
 										Chọn phòng
 									</Label>
 								</div>
@@ -107,15 +111,27 @@ const PromotionRoomSelection = () => {
 						name={'roomType.room_ids'}
 						render={({ field }) => (
 							<div className={'mt-4 pl-7'}>
-								<div className={'flex flex-wrap items-center gap-6'}>
+								<div
+									className={
+										'flex flex-wrap items-center gap-6'
+									}>
 									{roomList?.map((room, index) => (
 										<CheckBoxView
-											value={field.value?.includes(room.id)}
+											value={field.value?.includes(
+												room.id
+											)}
 											onValueChange={(val) => {
 												const newArr = val
-													? [...(field?.value || []), room.id]
-													: (field.value || []).filter(
-															(val) => val !== room.id
+													? [
+															...(field?.value ||
+																[]),
+															room.id,
+														]
+													: (
+															field.value || []
+														).filter(
+															(val) =>
+																val !== room.id
 														);
 												setValue(field.name, newArr, {
 													shouldValidate: true,

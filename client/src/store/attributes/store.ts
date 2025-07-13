@@ -1,8 +1,6 @@
 import { create } from 'zustand/react';
 import { AttributeStore } from '@/store/attributes/type';
-import {
-	getAttributes,
-} from '@/services/attributes/getAttributes';
+import { getAttributes } from '@/services/attributes/getAttributes';
 import { getRoomType } from '@/services/room-config/getRoomType';
 import { getAttributeImageType } from '@/services/attributes/getAttributeImageType';
 import { getChainList } from '@/services/accommodation/getChainList';
@@ -33,7 +31,9 @@ export const useAttributeStore = create<AttributeStore>((set, get) => ({
 	},
 	fetchDirectionList: async (force = false) => {
 		if (!get().directionList || force) {
-			const directionList = await getAttributes({ type: 'direction_type' });
+			const directionList = await getAttributes({
+				type: 'direction_type',
+			});
 			if (directionList && directionList.length > 0) {
 				return set({ directionList });
 			} else {
@@ -75,7 +75,9 @@ export const useAttributeStore = create<AttributeStore>((set, get) => ({
 	},
 	fetchServingTypeList: async (force = false) => {
 		if (!get().servingTypeList || force) {
-			const servingTypeList = await getAttributes({ type: 'serving_type' });
+			const servingTypeList = await getAttributes({
+				type: 'serving_type',
+			});
 			if (servingTypeList && servingTypeList.length > 0) {
 				return set({ servingTypeList });
 			} else {
@@ -85,7 +87,9 @@ export const useAttributeStore = create<AttributeStore>((set, get) => ({
 	},
 	fetchBreakFastTypeList: async (force = false) => {
 		if (!get().breakFastTypeList || force) {
-			const breakFastTypeList = await getAttributes({ type: 'breakfast_type' });
+			const breakFastTypeList = await getAttributes({
+				type: 'breakfast_type',
+			});
 			if (breakFastTypeList && breakFastTypeList.length > 0) {
 				return set({ breakFastTypeList });
 			} else {
@@ -95,7 +99,9 @@ export const useAttributeStore = create<AttributeStore>((set, get) => ({
 	},
 	fetchAdultRequireList: async (force = false) => {
 		if (!get().adultRequireList || force) {
-			const adultRequireList = await getAttributes({ type: 'adult_require' });
+			const adultRequireList = await getAttributes({
+				type: 'adult_require',
+			});
 			if (adultRequireList && adultRequireList.length > 0) {
 				return set({ adultRequireList });
 			} else {

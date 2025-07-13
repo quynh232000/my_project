@@ -200,7 +200,9 @@ export default function RoomTable() {
 					(room) => {
 						startHolyLoader();
 						setLoading(true);
-						router.push(`${DashboardRouter.room}/${room.id}?tab=general`);
+						router.push(
+							`${DashboardRouter.room}/${room.id}?tab=general`
+						);
 					},
 				],
 			}}

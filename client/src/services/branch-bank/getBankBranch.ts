@@ -12,14 +12,11 @@ export const getBankBranch = async (): Promise<IBankBranch[] | null> => {
 	try {
 		const hotel_id = getClientSideCookie('hotel_id');
 
-		const { data } = await CallAPI().get(
-			`${AppEndpoint.GET_BANK_BRANCH}`,
-			{
-				params: {
-					hotel_id,
-				},
-			}
-		);
+		const { data } = await CallAPI().get(`${AppEndpoint.GET_BANK_BRANCH}`, {
+			params: {
+				hotel_id,
+			},
+		});
 		if (!data) {
 			return null;
 		}

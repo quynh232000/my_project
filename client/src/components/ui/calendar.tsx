@@ -22,7 +22,8 @@ function Calendar({
 			locale={vi}
 			showOutsideDays={showOutsideDays}
 			formatters={{
-				formatCaption: (month) => `T${month.getMonth() + 1} ${month.getFullYear()}`,
+				formatCaption: (month) =>
+					`T${month.getMonth() + 1} ${month.getFullYear()}`,
 			}}
 			className={cn('', className)}
 			classNames={{
@@ -44,7 +45,8 @@ function Calendar({
 				nav_button_next: 'absolute right-1 border-none',
 				table: 'w-full border-collapse space-y-1',
 				head_row: 'flex',
-				head_cell: 'text-neutral-500 rounded-md w-9 font-normal text-[0.8rem]',
+				head_cell:
+					'text-neutral-500 rounded-md w-9 font-normal text-[0.8rem]',
 				row: 'flex w-full mt-2',
 				cell: 'h-9 w-9 min-w-min text-center text-sm p-0 relative [&:has([aria-selected].day-range-end)]:rounded-r-md [&:has([aria-selected].day-outside)]:bg-neutral-100/50  first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20',
 				day: cn(
@@ -53,7 +55,7 @@ function Calendar({
 				),
 				day_range_end: 'day-range-end',
 				day_selected:
-					'bg-secondary-100 text-neutral-600 hover:bg-secondary-100 hover:text-neutral-50 focus:bg-secondary-100 focus:text-neutral-600 rounded-full',
+					'bg-primary-100 text-neutral-600 hover:bg-primary-100 hover:text-neutral-50 focus:bg-primary-100 focus:text-neutral-600 rounded-full',
 				day_today: ' text-neutral-600',
 				day_outside:
 					'day-outside text-neutral-500 aria-selected:bg-neutral-100/50 aria-selected:text-neutral-500',
@@ -65,10 +67,16 @@ function Calendar({
 			}}
 			components={{
 				IconLeft: ({ className, ...props }) => (
-					<ChevronLeft className={cn('h-5 w-5', className)} {...props} />
+					<ChevronLeft
+						className={cn('h-5 w-5', className)}
+						{...props}
+					/>
 				),
 				IconRight: ({ className, ...props }) => (
-					<ChevronRight className={cn('h-5 w-5', className)} {...props} />
+					<ChevronRight
+						className={cn('h-5 w-5', className)}
+						{...props}
+					/>
 				),
 				Head: () => {
 					return (

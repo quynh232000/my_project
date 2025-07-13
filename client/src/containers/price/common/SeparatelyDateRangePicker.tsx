@@ -30,7 +30,7 @@ const SeparatelyDateRangePicker = () => {
 
 	const {
 		field: { value, onChange },
-		formState: {errors}
+		formState: { errors },
 	} = useController({
 		name: 'date',
 		control,
@@ -100,9 +100,13 @@ const SeparatelyDateRangePicker = () => {
 						}}
 						className={`h-10 w-full rounded-xl border-2 border-other-divider-02 pl-3 text-neutral-600 hover:border-secondary-500 hover:bg-transparent ${target === 'from' && open && 'border-secondary-500'}`}>
 						<Typography variant={'caption_14px_400'}>
-							{value ? getTimeConvert(value?.from ?? value) : 'dd/mm/yyyy'}
+							{value
+								? getTimeConvert(value?.from ?? value)
+								: 'dd/mm/yyyy'}
 						</Typography>
-						<IconCalendarAll className={'ml-auto !h-5 !w-5 text-neutral-400'} />
+						<IconCalendarAll
+							className={'ml-auto !h-5 !w-5 text-neutral-400'}
+						/>
 					</Button>
 					<FieldErrorMessage errors={errors} name={'date.from'} />
 				</div>
@@ -123,18 +127,23 @@ const SeparatelyDateRangePicker = () => {
 						}}
 						className={`h-10 w-full rounded-xl border-2 border-other-divider-02 pl-3 text-neutral-600 hover:border-secondary-500 hover:bg-transparent ${target === 'to' && 'border-secondary-500'}`}>
 						<Typography variant={'caption_14px_400'}>
-							{value.to ? getTimeConvert(value?.to) : 'dd/mm/yyyy'}
+							{value.to
+								? getTimeConvert(value?.to)
+								: 'dd/mm/yyyy'}
 						</Typography>
-						<IconCalendarAll className={'ml-auto !h-5 !w-5 text-neutral-400'} />
+						<IconCalendarAll
+							className={'ml-auto !h-5 !w-5 text-neutral-400'}
+						/>
 					</Button>
 					<FieldErrorMessage errors={errors} name={'date.to'} />
-
 				</div>
 			</PopoverAnchor>
 			<PopoverContent
 				sideOffset={-16}
 				side={'top'}
-				className={'border-neutral-divider mt-6 w-auto border bg-white p-0'}>
+				className={
+					'border-neutral-divider mt-6 w-auto border bg-white p-0'
+				}>
 				{open && (
 					<Calendar
 						locale={vi}

@@ -7,7 +7,10 @@ import { PromotionType } from '@/lib/schemas/discount/discount';
 
 const PromotionDuration = () => {
 	const { control, setValue } = useFormContext<PromotionType>();
-	const expiryWatch = useWatch({ control, name: 'discountDuration.noExpiry' });
+	const expiryWatch = useWatch({
+		control,
+		name: 'discountDuration.noExpiry',
+	});
 
 	return (
 		<div className={'rounded-lg border border-blue-100 bg-white p-4'}>

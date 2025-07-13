@@ -179,11 +179,13 @@ const CheckIconAnimation = () => {
 
 			{/* check */}
 			<motion.div
+			{...({} as any)}
 				initial={{ scale: 0 }}
 				animate={{ scale: 1 }}
 				transition={{ duration: 0.3 }}
 				className={'rounded-full bg-[#27A376] p-5'}>
 				<motion.div
+				{...({} as any)}
 					initial={{ scale: 0 }}
 					animate={{ scale: 1 }}
 					transition={{ duration: 0.3, delay: 0.3 }}

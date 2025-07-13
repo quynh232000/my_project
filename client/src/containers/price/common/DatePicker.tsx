@@ -63,9 +63,14 @@ export const DatePicker = ({
 										'h-10 w-full justify-start rounded-lg border-2 border-other-divider-02 pl-3 text-left text-[14px] font-normal text-neutral-600 hover:bg-transparent hover:text-black',
 										!disabled && 'hover:border-blue-500',
 										!field.value && '',
-										disabled && 'bg-neutral-50 text-neutral-300 hover:text-neutral-300 cursor-not-allowed'
+										disabled &&
+											'cursor-not-allowed bg-neutral-50 text-neutral-300 hover:text-neutral-300'
 									)}>
-									<IconCalendar width={20} height={20} className="font-bold" />
+									<IconCalendar
+										width={20}
+										height={20}
+										className="font-bold"
+									/>
 									<p>
 										{field.value ? (
 											format('dd/MM/yyyy', field.value)
@@ -79,7 +84,9 @@ export const DatePicker = ({
 											direction={'down'}
 											width={14}
 											height={14}
-											color={GlobalUI.colors.neutrals['4']}
+											color={
+												GlobalUI.colors.neutrals['4']
+											}
 										/>
 									</div>
 								</Button>
@@ -99,7 +106,9 @@ export const DatePicker = ({
 										setOpen(false);
 									}
 								}}
-								onMonthChange={(date) => setFocusedMonth(date.getMonth())}
+								onMonthChange={(date) =>
+									setFocusedMonth(date.getMonth())
+								}
 								disabled={(date) =>
 									date.getMonth() !== focusedMonth ||
 									date < subDays(1, new Date())

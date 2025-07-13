@@ -76,7 +76,8 @@ export default function StandardPriceForm({
 						id: res.id,
 						status: value.status ?? 'active',
 						created_at:
-							value.created_at ?? format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
+							value.created_at ??
+							format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
 						user: value.user ?? {
 							id: userInformation.id,
 							full_name: userInformation.full_name,
@@ -84,7 +85,9 @@ export default function StandardPriceForm({
 					});
 					await fetchRoomList(true);
 					!priceItem &&
-						router.replace(DashboardRouter.priceType + `/${res.id}`);
+						router.replace(
+							DashboardRouter.priceType + `/${res.id}`
+						);
 
 					toast.success(
 						`${priceItem ? `Chỉnh sửa loại giá ${value.name} thành công` : 'Thêm loại giá thành công!'}`

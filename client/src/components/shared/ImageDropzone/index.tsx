@@ -100,7 +100,10 @@ export const ImageDropzone: React.FC<ImageDropzoneProps> = (props) => {
 
 	const dimensionValidate = (file: ImageFile) => {
 		if (file.width && file.height && dimension) {
-			if (file.width < dimension.width || file.height < dimension.height) {
+			if (
+				file.width < dimension.width ||
+				file.height < dimension.height
+			) {
 				return {
 					code: 'dimension-wrong',
 					message: `Ảnh không đạt kích thước tối thiểu: ${dimension.width}x${dimension.height}px`,
@@ -127,31 +130,32 @@ export const ImageDropzone: React.FC<ImageDropzoneProps> = (props) => {
 						const files =
 							'dataTransfer' in event
 								? event?.dataTransfer?.files
-								: 'target' in event && event.target instanceof HTMLInputElement
+								: 'target' in event &&
+									  event.target instanceof HTMLInputElement
 									? event?.target?.files
 									: null;
 						const promises: Promise<File | DataTransferItem>[] = [];
 						if (files) {
 							for (let index = 0; index < files.length; index++) {
 								const file: ImageFile = files[index];
-								const promise: Promise<File | DataTransferItem> = new Promise(
-									(resolve, _) => {
-										const image = new Image();
-										const url = URL.createObjectURL(file);
-										setUploadedImageURL(url);
-										image.src = url;
-										image.onload = function () {
-											file.width = image.width;
-											file.height = image.height;
-											URL.revokeObjectURL(url);
-											resolve(file);
-										};
-										image.onerror = function (_) {
-											URL.revokeObjectURL(url);
-											resolve(file);
-										};
-									}
-								);
+								const promise: Promise<
+									File | DataTransferItem
+								> = new Promise((resolve, _) => {
+									const image = new Image();
+									const url = URL.createObjectURL(file);
+									setUploadedImageURL(url);
+									image.src = url;
+									image.onload = function () {
+										file.width = image.width;
+										file.height = image.height;
+										URL.revokeObjectURL(url);
+										resolve(file);
+									};
+									image.onerror = function (_) {
+										URL.revokeObjectURL(url);
+										resolve(file);
+									};
+								});
 								promises.push(promise);
 							}
 						}
@@ -164,8 +168,11 @@ export const ImageDropzone: React.FC<ImageDropzoneProps> = (props) => {
 	return (
 		<div className={cn('relative flex flex-col gap-2', className)}>
 			{label ? (
-				<Typography variant={'caption_14px_500'} className={'text-neutral-600'}>
-					{label} {required && <span className={'text-red-500'}>*</span>}
+				<Typography
+					variant={'caption_14px_500'}
+					className={'text-neutral-600'}>
+					{label}{' '}
+					{required && <span className={'text-red-500'}>*</span>}
 				</Typography>
 			) : null}
 			<input

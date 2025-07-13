@@ -13,10 +13,10 @@ export const updateCancelPolicy = async (
 ): Promise<IResponseStatus> => {
 	try {
 		const hotel_id = getClientSideCookie('hotel_id');
-		const { data } = await CallAPI().post(
-			`${AppEndpoint.CANCEL_POLICY}`,
-			{ ...body, hotel_id }
-		);
+		const { data } = await CallAPI().post(`${AppEndpoint.CANCEL_POLICY}`, {
+			...body,
+			hotel_id,
+		});
 		if (!data) {
 			return {
 				status: false,

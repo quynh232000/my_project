@@ -10,17 +10,14 @@ export const createRoom = async (
 ): Promise<IResponseStatus> => {
 	try {
 		const hotel_id = getClientSideCookie('hotel_id');
-		const res = await CallAPI().post(
-			`${AppEndpoint.ROOM}`,
-			{
-				...payload,
-				hotel_id
-			}
-		);
+		const res = await CallAPI().post(`${AppEndpoint.ROOM}`, {
+			...payload,
+			hotel_id,
+		});
 		if (!res.data) {
 			return {
 				status: false,
-				message: 'Có lỗi xảy ra, vui lòng thử lại!'
+				message: 'Có lỗi xảy ra, vui lòng thử lại!',
 			};
 		}
 		return parseErrorStatus(res.data);

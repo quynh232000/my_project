@@ -117,7 +117,9 @@ export default function Page() {
 						<FormField
 							name="email"
 							control={control}
-							render={({ field: { value, onChange, ...fieldProps } }) => (
+							render={({
+								field: { value, onChange, ...fieldProps },
+							}) => (
 								<FormItem className="mb-6">
 									<FormLabel required>Email</FormLabel>
 									<FormControl>
@@ -128,12 +130,19 @@ export default function Page() {
 											{...fieldProps}
 											value={value}
 											onChange={onChange}
-											className={errors.email ? 'border-red-400' : ''}
+											className={
+												errors.email
+													? 'border-red-400'
+													: ''
+											}
 											endAdornment={
 												isValid ? (
 													<IconCheck
 														className="size-6"
-														color={GlobalUI.colors.accent['2']}
+														color={
+															GlobalUI.colors
+																.accent['2']
+														}
 													/>
 												) : undefined
 											}
@@ -147,18 +156,28 @@ export default function Page() {
 						<FormField
 							name="password"
 							control={control}
-							render={({ field: { value, onChange, ...fieldProps } }) => (
+							render={({
+								field: { value, onChange, ...fieldProps },
+							}) => (
 								<FormItem className="mb-6">
 									<FormLabel required>Mật khẩu</FormLabel>
 									<FormControl>
 										<Input
-											type={showPassword ? 'text' : 'password'}
+											type={
+												showPassword
+													? 'text'
+													: 'password'
+											}
 											autoComplete="current-password"
 											placeholder="Nhập mật khẩu"
 											{...fieldProps}
 											value={value}
 											onChange={onChange}
-											className={errors.password ? 'border-red-400' : ''}
+											className={
+												errors.password
+													? 'border-red-400'
+													: ''
+											}
 											endAdornment={
 												<IconEyeHidden
 													className="cursor-pointer"
@@ -183,7 +202,9 @@ export default function Page() {
 												id="check-box"
 												defaultValue={value}
 												onValueChange={onChange}>
-												<Typography tag="p" variant="caption_14px_400">
+												<Typography
+													tag="p"
+													variant="caption_14px_400">
 													Nhớ tài khoản
 												</Typography>
 											</CheckBoxView>
@@ -207,7 +228,9 @@ export default function Page() {
 								TextVariants.content_16px_600
 							)}
 							disabled={loading || !isValid}>
-							{loading ? <LoadingSpinner className="animate-spin" /> : null}
+							{loading ? (
+								<LoadingSpinner className="animate-spin" />
+							) : null}
 							Đăng nhập
 						</button>
 						{/* <div

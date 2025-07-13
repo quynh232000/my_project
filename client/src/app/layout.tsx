@@ -4,6 +4,8 @@ import './globals.css';
 import HolyLoader from 'holy-loader';
 import { Toaster } from '@/components/ui/sonner';
 import LoadingView from '@/components/shared/Loading/LoadingView';
+import Header from '@/components/layouts/app/Header';
+import Footer from '@/components/layouts/app/Footer';
 
 const geistSans = Inter({
 	variable: '--font-geist-sans',
@@ -12,10 +14,12 @@ const geistSans = Inter({
 });
 
 export const metadata: Metadata = {
-	title: '190Booking - HMS',
-	description: 'Hotel Management System for partners of 190Booking',
+	title: 'Quin Booking',
+	description:
+		'Quin booking - Nền tảng du lịch nhiều người truy cập nhất Việt Nam | quin-booking.mr-quynh.site',
 };
-
+import 'swiper/css';
+import 'swiper/css/scrollbar';
 export default function RootLayout({
 	children,
 }: Readonly<{
@@ -24,10 +28,14 @@ export default function RootLayout({
 	return (
 		<html lang="vi" className={'overflow-x-hidden !scroll-smooth'}>
 			<body className={`${geistSans.className} w-full antialiased`}>
-				<HolyLoader />
-				{children}
-				<Toaster />
-				<LoadingView />
+				<div>
+					<Header />
+					<HolyLoader />
+					{children}
+					<Toaster />
+					<LoadingView />
+					<Footer/>
+				</div>
 			</body>
 		</html>
 	);

@@ -33,7 +33,11 @@ export default function OtherPolicies() {
 				<DashboardTable<IPolicyOtherItem>
 					showSearchComponent={false}
 					columns={[
-						{ label: 'Tên chính sách', field: 'name', sortable: true },
+						{
+							label: 'Tên chính sách',
+							field: 'name',
+							sortable: true,
+						},
 						{
 							label: 'Trạng thái',
 							field: 'is_active',
@@ -65,7 +69,9 @@ export default function OtherPolicies() {
 						handle: [
 							(policy) => {
 								startHolyLoader();
-								router.push(`${DashboardRouter.policyOther}/${policy.slug}`);
+								router.push(
+									`${DashboardRouter.policyOther}/${policy.slug}`
+								);
 							},
 						],
 					}}

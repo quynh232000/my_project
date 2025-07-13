@@ -47,8 +47,9 @@ export default function AddressInfo() {
 	const addressData = useMemo(
 		() => ({
 			countryStr:
-				listCountry.find((countryItem) => `${countryItem.id}` === `${country}`)
-					?.name ?? '',
+				listCountry.find(
+					(countryItem) => `${countryItem.id}` === `${country}`
+				)?.name ?? '',
 			cityStr:
 				listProvince.list.find(
 					(provinceItem) => `${provinceItem.id}` === `${city}`
@@ -197,7 +198,9 @@ export default function AddressInfo() {
 					/>
 				)}
 				<div
-					className={'absolute left-0 top-0 h-full w-full cursor-pointer'}
+					className={
+						'absolute left-0 top-0 h-full w-full cursor-pointer'
+					}
 					onClick={() => {
 						fetchCoordinate().then(() => {
 							setShowModal(true);
@@ -224,7 +227,9 @@ export default function AddressInfo() {
 							<FormField
 								name="address.country_id"
 								control={control}
-								render={({ field: { value, onChange, ...props } }) => (
+								render={({
+									field: { value, onChange, ...props },
+								}) => (
 									<FormItem className={'col-span-2'}>
 										<FormLabel required>Quốc gia</FormLabel>
 										<FormControl>
@@ -247,16 +252,24 @@ export default function AddressInfo() {
 							<FormField
 								name="address.city_id"
 								control={control}
-								render={({ field: { value, onChange, ...props } }) => (
+								render={({
+									field: { value, onChange, ...props },
+								}) => (
 									<FormItem className={'col-span-2'}>
-										<FormLabel required>Tỉnh/Thành phố</FormLabel>
+										<FormLabel required>
+											Tỉnh/Thành phố
+										</FormLabel>
 										<FormControl>
 											<SelectPopup
-												placeholder={'Chọn Tỉnh/Thành phố'}
+												placeholder={
+													'Chọn Tỉnh/Thành phố'
+												}
 												className="h-[44px] rounded-lg bg-white py-2"
 												labelClassName="mb-2"
 												data={selectData.provinceData}
-												controllerRenderProps={{ ...props }}
+												controllerRenderProps={{
+													...props,
+												}}
 												selectedValue={value}
 												onChange={onChange}
 											/>
@@ -272,16 +285,22 @@ export default function AddressInfo() {
 							<FormField
 								name="address.district_id"
 								control={control}
-								render={({ field: { value, onChange, ...props } }) => (
+								render={({
+									field: { value, onChange, ...props },
+								}) => (
 									<FormItem className={'col-span-2'}>
-										<FormLabel required>Quận/Huyện</FormLabel>
+										<FormLabel required>
+											Quận/Huyện
+										</FormLabel>
 										<FormControl>
 											<SelectPopup
 												placeholder={'Chọn Quận/Huyện'}
 												className="h-[44px] rounded-lg bg-white py-2"
 												labelClassName="mb-2"
 												data={selectData.districtData}
-												controllerRenderProps={{ ...props }}
+												controllerRenderProps={{
+													...props,
+												}}
 												selectedValue={value}
 												onChange={onChange}
 											/>
@@ -295,16 +314,22 @@ export default function AddressInfo() {
 							<FormField
 								name="address.ward_id"
 								control={control}
-								render={({ field: { value, onChange, ...props } }) => (
+								render={({
+									field: { value, onChange, ...props },
+								}) => (
 									<FormItem className={'col-span-2'}>
-										<FormLabel required>Phường/Xã</FormLabel>
+										<FormLabel required>
+											Phường/Xã
+										</FormLabel>
 										<FormControl>
 											<SelectPopup
 												labelClassName="mb-2"
 												className="h-[44px] rounded-lg bg-white py-2"
 												placeholder={'Chọn Phường/Xã'}
 												data={selectData.wardData}
-												controllerRenderProps={{ ...props }}
+												controllerRenderProps={{
+													...props,
+												}}
 												selectedValue={value}
 												onChange={onChange}
 											/>
@@ -343,7 +368,10 @@ export default function AddressInfo() {
 						<span className={'text-red-500'}>*</span>
 					</Typography>
 
-					<div className={'mt-2 h-[220px] w-full overflow-hidden rounded-xl'}>
+					<div
+						className={
+							'mt-2 h-[220px] w-full overflow-hidden rounded-xl'
+						}>
 						{renderMap}
 					</div>
 				</div>

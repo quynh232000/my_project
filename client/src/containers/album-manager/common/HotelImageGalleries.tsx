@@ -15,7 +15,11 @@ const HotelImageGalleries = () => {
 					<ImageGallerySection
 						title={'Tất cả ảnh'}
 						imageList={
-							albumHotel ? formatRoomImagesForImageUpload(albumHotel.hotel) : []
+							albumHotel
+								? formatRoomImagesForImageUpload(
+										albumHotel.hotel
+									)
+								: []
 						}
 					/>
 					<AllRoomImageGalleries />

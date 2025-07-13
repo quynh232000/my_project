@@ -75,7 +75,8 @@ const SidebarProvider = React.forwardRef<
 		const open = openProp ?? _open;
 		const setOpen = React.useCallback(
 			(value: boolean | ((value: boolean) => boolean)) => {
-				const openState = typeof value === 'function' ? value(open) : value;
+				const openState =
+					typeof value === 'function' ? value(open) : value;
 				if (setOpenProp) {
 					setOpenProp(openState);
 				} else {
@@ -104,7 +105,15 @@ const SidebarProvider = React.forwardRef<
 				setOpenMobile,
 				toggleSidebar,
 			}),
-			[state, open, setOpen, isMobile, openMobile, setOpenMobile, toggleSidebar]
+			[
+				state,
+				open,
+				setOpen,
+				isMobile,
+				openMobile,
+				setOpenMobile,
+				toggleSidebar,
+			]
 		);
 
 		return (
@@ -170,7 +179,10 @@ const Sidebar = React.forwardRef<
 
 		if (isMobile) {
 			return (
-				<Sheet open={openMobile} onOpenChange={setOpenMobile} {...props}>
+				<Sheet
+					open={openMobile}
+					onOpenChange={setOpenMobile}
+					{...props}>
 					<SheetContent
 						data-mobile="true"
 						className="w-[--sidebar-width] bg-sidebar p-0 [&>button]:hidden"
@@ -182,9 +194,13 @@ const Sidebar = React.forwardRef<
 						side={side}>
 						<SheetHeader className="sr-only">
 							<SheetTitle>Sidebar</SheetTitle>
-							<SheetDescription>Displays the mobile sidebar.</SheetDescription>
+							<SheetDescription>
+								Displays the mobile sidebar.
+							</SheetDescription>
 						</SheetHeader>
-						<div className="flex h-full w-full flex-col">{children}</div>
+						<div className="flex h-full w-full flex-col">
+							{children}
+						</div>
 					</SheetContent>
 				</Sheet>
 			);
@@ -220,8 +236,7 @@ const Sidebar = React.forwardRef<
 						className
 					)}
 					{...props}>
-					<div
-						className="flex h-full w-full flex-col bg-sidebar group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:border group-data-[variant=floating]:border-sidebar-border group-data-[variant=floating]:shadow">
+					<div className="flex h-full w-full flex-col bg-sidebar group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:border group-data-[variant=floating]:border-sidebar-border group-data-[variant=floating]:shadow">
 						{children}
 					</div>
 				</div>
@@ -316,7 +331,10 @@ const SidebarGroup = React.forwardRef<
 	return (
 		<div
 			ref={ref}
-			className={cn('relative flex w-full min-w-0 flex-col p-2', className)}
+			className={cn(
+				'relative flex w-full min-w-0 flex-col p-2',
+				className
+			)}
 			{...props}
 		/>
 	);
@@ -327,11 +345,7 @@ const SidebarGroupContent = React.forwardRef<
 	HTMLDivElement,
 	React.ComponentProps<'div'>
 >(({ className, ...props }, ref) => (
-	<div
-		ref={ref}
-		className={cn('w-full text-sm', className)}
-		{...props}
-	/>
+	<div ref={ref} className={cn('w-full text-sm', className)} {...props} />
 ));
 SidebarGroupContent.displayName = 'SidebarGroupContent';
 
@@ -351,11 +365,7 @@ const SidebarMenuItem = React.forwardRef<
 	HTMLLIElement,
 	React.ComponentProps<'li'>
 >(({ className, ...props }, ref) => (
-	<li
-		ref={ref}
-		className={cn('relative', className)}
-		{...props}
-	/>
+	<li ref={ref} className={cn('relative', className)} {...props} />
 ));
 SidebarMenuItem.displayName = 'SidebarMenuItem';
 

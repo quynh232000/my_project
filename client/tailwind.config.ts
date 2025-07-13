@@ -18,7 +18,7 @@ const utilities = plugin(function ({ addUtilities }) {
 			justifyContent: 'start',
 			padding: '12px 16px',
 			borderLeftWidth: '1px',
-			zIndex: "3"
+			zIndex: '3',
 		},
 		'.body': {
 			borderRadius: '8px 8px 0 0',
@@ -61,7 +61,7 @@ const utilities = plugin(function ({ addUtilities }) {
 			backgroundSize: '75%',
 			backgroundPosition: 'center',
 			backgroundRepeat: 'no-repeat',
-			zIndex: "2"
+			zIndex: '2',
 		},
 		'.selected:after': {
 			left: 'unset',
@@ -73,7 +73,7 @@ const utilities = plugin(function ({ addUtilities }) {
 			visibility: 'hidden',
 		},
 		'.row.hid svg': {
-			transform: 'rotate(0deg) !important'
+			transform: 'rotate(0deg) !important',
 		},
 	});
 });
@@ -147,6 +147,10 @@ export default {
 						height: '0',
 					},
 				},
+				'fadeInLeft': {
+					'0%': { 'opacity': '0', transform: 'translateX(-20px)' },
+					'100%': { 'opacity': '1', transform: 'translateX(0)' },
+				},
 			},
 			animation: {
 				'caret-blink': 'caret-blink 1.25s ease-out infinite',
@@ -156,19 +160,21 @@ export default {
 				'accordion-up': 'accordion-up 0.2s ease-out',
 				'sidebar-slide-down': 'sidebar-slide-down 0.2s ease-out',
 				'sidebar-slide-up': 'sidebar-slide-up 0.2s ease-out',
+				fadeInLeft: 'fadeInLeft 1s ease-out',
 			},
 			colors: {
 				primary: {
-					'50': '#F0F3FD',
-					'100': '#B0BBDF',
-					'200': '#8A9AD0',
-					'300': '#546CBB',
-					'400': '#3350AD',
-					'500': '#002499',
-					'600': '#00218B',
-					'700': '#001A6D',
-					'800': '#001454',
-					'900': '#000F40',
+					'50': '#F5F3FE',
+					'100': '#EDE8FD',
+					'200': '#DACEFA',
+					'300': '#C4B1F7',
+					'400': '#AC8DF5',
+					'500': '#8037F1',
+					'600': '#7A34E6',
+					'700': '#6D2FCE',
+					'800': '#5F29B2',
+					'900': '#4D2191',
+					'950': '#371767',
 				},
 				secondary: {
 					'50': '#EAF3FF',
@@ -279,22 +285,24 @@ export default {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',
 					primary: 'hsl(var(--sidebar-primary))',
-					'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
+					'primary-foreground':
+						'hsl(var(--sidebar-primary-foreground))',
 					accent: 'hsl(var(--sidebar-accent))',
-					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
+					'accent-foreground':
+						'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))',
 				},
 				alert: {
 					'error-base': '#E03137',
-					'warning-dark': '#E6BB20'
+					'warning-dark': '#E6BB20',
 				},
 				form: {
 					'input-bg': '#E9ECF3',
 				},
 				stroke: {
-					subtle: "#7b7b7b1a"
-				}
+					subtle: '#7b7b7b1a',
+				},
 			},
 			fontSize: {
 				sm: '12px',
@@ -324,6 +332,10 @@ export default {
 			maxWidth: {
 				md: '480px',
 			},
+			width: {
+				content: '1188px'
+
+			}
 		},
 		container: {
 			screens: {
@@ -332,6 +344,7 @@ export default {
 				lg: '1024px',
 				xl: '1280px',
 			},
+
 		},
 	},
 	plugins: [tailwindAnimation, utilities],

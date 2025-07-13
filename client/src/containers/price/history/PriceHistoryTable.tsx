@@ -86,8 +86,16 @@ const PriceTable = () => {
 						field: 'apply_date',
 					},
 					{ label: 'Loại giá', field: 'type_price', sortable: true },
-					{ label: 'Người chỉnh sửa', field: 'created_by', sortable: true },
-					{ label: 'Ngày chỉnh sửa', field: 'updated_date', sortable: true },
+					{
+						label: 'Người chỉnh sửa',
+						field: 'created_by',
+						sortable: true,
+					},
+					{
+						label: 'Ngày chỉnh sửa',
+						field: 'updated_date',
+						sortable: true,
+					},
 				]}
 				rows={
 					priceHistory

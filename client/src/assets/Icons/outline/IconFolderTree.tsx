@@ -1,5 +1,5 @@
-import * as React from "react"
-import { SVGProps, memo } from "react"
+import * as React from 'react';
+import { SVGProps, memo } from 'react';
 const SvgComponent = (props: SVGProps<SVGSVGElement>) => (
 	<svg
 		width={14}
@@ -7,8 +7,7 @@ const SvgComponent = (props: SVGProps<SVGSVGElement>) => (
 		viewBox="0 0 14 79"
 		fill="none"
 		xmlns="http://www.w3.org/2000/svg"
-		{...props}
-	>
+		{...props}>
 		<path
 			d="M1 1V69.75"
 			stroke="#EEF0F1"
@@ -22,6 +21,6 @@ const SvgComponent = (props: SVGProps<SVGSVGElement>) => (
 			strokeLinecap="round"
 		/>
 	</svg>
-)
-const Memo = memo(SvgComponent)
-export default Memo
+);
+const Memo = memo(SvgComponent);
+export default Memo;

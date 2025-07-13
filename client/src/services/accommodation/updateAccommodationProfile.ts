@@ -14,11 +14,17 @@ export const updateAccommodationProfile = async (
 		const addressObj = { ...body.address };
 		const { fullAddress, ...addressData } = addressObj;
 		const { image, chain_id, ...generalData } = generalObj;
-		const coordinate = addressObj?.latitude && addressObj?.longitude ? { latitude: addressObj.latitude, longitude: addressObj.longitude } : fullAddress
-			? await getAddressCoordinate(fullAddress)
-			: null;
+		const coordinate =
+			addressObj?.latitude && addressObj?.longitude
+				? {
+						latitude: addressObj.latitude,
+						longitude: addressObj.longitude,
+					}
+				: fullAddress
+					? await getAddressCoordinate(fullAddress)
+					: null;
 		Object.entries({
-			_method: "PUT",
+			_method: 'PUT',
 			hotel_id: hotel_id,
 			...(chain_id ? { chain_id } : {}),
 			...generalData,

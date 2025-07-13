@@ -10,9 +10,14 @@ const Page = async () => {
 	const { pathName } = await getFullURLServerComponent();
 	return (
 		<DashboardContainer>
-			<DashboardHeroTitle extraTitle={<ActionDownloadCSV/>} displayName={{"history": "Lịch sử giá"}} pathName={pathName} title={'Lịch sử giá'} />
+			<DashboardHeroTitle
+				extraTitle={<ActionDownloadCSV />}
+				displayName={{ history: 'Lịch sử giá' }}
+				pathName={pathName}
+				title={'Lịch sử giá'}
+			/>
 			<DashboardCard>
-				<PriceHistoryTable/>
+				<PriceHistoryTable />
 			</DashboardCard>
 		</DashboardContainer>
 	);

@@ -67,27 +67,39 @@ const ImageGalleryPreviewCard = ({
 					name={`imagesUpload.${idx}.tag`}
 					render={({ field: { value, onChange, ...props } }) => (
 						<FormItem>
-							<FormLabel required>Thêm một thẻ để miêu tả ảnh</FormLabel>
+							<FormLabel required>
+								Thêm một thẻ để miêu tả ảnh
+							</FormLabel>
 							{roomId ? (
 								<SelectPopup
-									disabled={errors.filesUpload?.[idx] !== undefined}
+									disabled={
+										errors.filesUpload?.[idx] !== undefined
+									}
 									className={'h-10 rounded-lg'}
 									placeholder={'Thêm thẻ'}
-									data={imageRoomList ? mapToLabelValue(imageRoomList) : []}
+									data={
+										imageRoomList
+											? mapToLabelValue(imageRoomList)
+											: []
+									}
 									selectedValue={value}
 									onChange={(value) => onChange(`${value}`)}
 									controllerRenderProps={props}
 								/>
 							) : labelParentId ? (
 								<SelectPopup
-									disabled={errors.filesUpload?.[idx] !== undefined}
+									disabled={
+										errors.filesUpload?.[idx] !== undefined
+									}
 									className={'h-10 rounded-lg'}
 									placeholder={'Thêm thẻ'}
 									data={
 										imageTypeList
 											? mapToLabelValue(
 													imageTypeList.find(
-														(imageType) => imageType.id === labelParentId
+														(imageType) =>
+															imageType.id ===
+															labelParentId
 													)?.children || []
 												)
 											: []
@@ -98,11 +110,14 @@ const ImageGalleryPreviewCard = ({
 								/>
 							) : (
 								<SelectImageGalleryPopup
-									disabled={errors.filesUpload?.[idx] !== undefined}
+									disabled={
+										errors.filesUpload?.[idx] !== undefined
+									}
 									className={'h-10 rounded-lg'}
 									placeholder={'Thêm thẻ'}
 									data={imageTypeList?.filter(
-										(imageType) => imageType.slug !== 'image_room'
+										(imageType) =>
+											imageType.slug !== 'image_room'
 									)}
 									selectedValue={value}
 									onChange={(value) => onChange(`${value}`)}
@@ -124,7 +139,8 @@ const ImageGalleryPreviewCard = ({
 									variant={'caption_12px_500'}
 									className={cn('text-accent-03')}>
 									{errors.filesUpload?.[idx]?.message ||
-										errors.imagesUpload?.[idx]?.tag?.message}
+										errors.imagesUpload?.[idx]?.tag
+											?.message}
 								</Typography>
 							</div>
 						</div>

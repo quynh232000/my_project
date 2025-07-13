@@ -33,7 +33,7 @@ export const useRoomStore = create<RoomStore>((set, get) => ({
 	setRoomList: (list) => set({ roomList: list }),
 
 	allColumns: [],
-	setAllColumns: (columns) => set({allColumns: columns}),
+	setAllColumns: (columns) => set({ allColumns: columns }),
 	visibleFields: ['id', 'name', 'max_capacity', 'area', 'quantity', 'status'],
 	setVisibleFields: (fields) => set({ visibleFields: fields }),
 }));

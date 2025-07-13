@@ -29,9 +29,14 @@ const CancellationPolicy = () => {
 			const getCancelPolicyId = getValues(
 				'cancellationPolicy.policy_cancel_id'
 			);
-			const policyCancel = local?.find((item) => item.id === getCancelPolicyId);
+			const policyCancel = local?.find(
+				(item) => item.id === getCancelPolicyId
+			);
 			if (policyCancel?.status === CancelPolicyStatus.INACTIVE) {
-				setValue('cancellationPolicy.type', ECancellationPolicy.general);
+				setValue(
+					'cancellationPolicy.type',
+					ECancellationPolicy.general
+				);
 				unregister('cancellationPolicy.policy_cancel_id');
 			}
 		}
@@ -56,10 +61,16 @@ const CancellationPolicy = () => {
 										? ECancellationPolicy.custom
 										: ECancellationPolicy.general
 								);
-								if (value === String(ECancellationPolicy.custom)) {
-									register('cancellationPolicy.policy_cancel_id');
+								if (
+									value === String(ECancellationPolicy.custom)
+								) {
+									register(
+										'cancellationPolicy.policy_cancel_id'
+									);
 								} else {
-									unregister('cancellationPolicy.policy_cancel_id');
+									unregister(
+										'cancellationPolicy.policy_cancel_id'
+									);
 								}
 							}}
 							value={String(field.value)}>
@@ -104,11 +115,15 @@ const CancellationPolicy = () => {
 					render={({ field: { onChange, value, ...props } }) => (
 						<div className={'ml-7 mt-4'}>
 							<SelectPopup
-								className={cn('h-10 w-full rounded-lg lg:w-[372px]')}
+								className={cn(
+									'h-10 w-full rounded-lg lg:w-[372px]'
+								)}
 								placeholder={'Chọn chính sách riêng'}
 								data={local
 									?.filter(
-										(policy) => policy.status === CancelPolicyStatus.ACTIVE
+										(policy) =>
+											policy.status ===
+											CancelPolicyStatus.ACTIVE
 									)
 									?.map((policy) => ({
 										value: policy.id,
@@ -120,7 +135,10 @@ const CancellationPolicy = () => {
 								}}
 								controllerRenderProps={{ ...props }}
 							/>
-							<FieldErrorMessage errors={formState.errors} name={props.name} />
+							<FieldErrorMessage
+								errors={formState.errors}
+								name={props.name}
+							/>
 						</div>
 					)}
 				/>

@@ -38,7 +38,10 @@ export default function AppSidebar() {
 		let initialIndex = -1;
 		SidebarConfig.menu.forEach((menu) => {
 			menu.items.forEach((item, index) => {
-				if (item.menu && pathname.includes(`/${menu.url}/${item.url}`)) {
+				if (
+					item.menu &&
+					pathname.includes(`/${menu.url}/${item.url}`)
+				) {
 					initialIndex = index;
 				}
 			});
@@ -71,7 +74,8 @@ export default function AppSidebar() {
 								</span>
 								<IconGrid />
 							</Link>
-							<SidebarMenu className={`${open ? 'gap-0' : 'gap-2'}`}>
+							<SidebarMenu
+								className={`${open ? 'gap-0' : 'gap-2'}`}>
 								{menu.items.map((item, index) => {
 									const isActive = pathname.includes(
 										`/${menu.url}/${item.url}`
@@ -81,14 +85,21 @@ export default function AppSidebar() {
 											className={'group/collapsible'}
 											key={item.url}
 											defaultOpen={isActive}
-											open={open && index === collapsibleOpenIndex}
+											open={
+												open &&
+												index === collapsibleOpenIndex
+											}
 											onOpenChange={(collapsibleOpen) => {
-												setCollapsibleOpenIndex(collapsibleOpen ? index : -1);
+												setCollapsibleOpenIndex(
+													collapsibleOpen ? index : -1
+												);
 											}}
 											onClick={() => {
 												if (!open) {
 													setOpen(true);
-													router.push(`/${menu.url}/${item.menu[0].url}`);
+													router.push(
+														`/${menu.url}/${item.menu[0].url}`
+													);
 												}
 											}}>
 											<SidebarGroup className={'p-0'}>
@@ -97,18 +108,34 @@ export default function AppSidebar() {
 													asChild
 													isActive={isActive}>
 													<CollapsibleTrigger
-														className={'flex h-auto gap-[10px] py-4'}>
+														className={
+															'flex h-auto gap-[10px] py-4'
+														}>
 														<item.icon
-															className={'h-5 w-5'}
+															className={
+																'h-5 w-5'
+															}
 															{...(open && {
 																color: isActive
-																	? GlobalUI.colors.secondary['500']
-																	: GlobalUI.colors.neutrals['300'],
+																	? GlobalUI
+																			.colors
+																			.secondary[
+																			'500'
+																		]
+																	: GlobalUI
+																			.colors
+																			.neutrals[
+																			'300'
+																		],
 															})}
 														/>
 														<Typography
-															variant={'caption_14px_600'}
-															className={'truncate'}>
+															variant={
+																'caption_14px_600'
+															}
+															className={
+																'truncate'
+															}>
 															{item.title}
 														</Typography>
 														<ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
@@ -123,39 +150,59 @@ export default function AppSidebar() {
 															className={
 																'flex flex-col gap-0.5 overflow-hidden'
 															}>
-															{item.menu.map((subItem) => {
-																const isSubmenuActive = item.shouldMatchPrefix
-																	? pathname === `/${menu.url}/${subItem.url}`
-																	: pathname.includes(
-																			`/${menu.url}/${subItem.url}`
-																		);
-																return (
-																	<SidebarMenuItem
-																		key={subItem.url}
-																		className={'pl-6'}>
-																		<IconFolderTree
-																			className={'absolute bottom-[50%] left-3'}
-																		/>
-																		<SidebarMenuButton
-																			asChild
-																			tooltip={subItem.title}
-																			className={`${isSubmenuActive ? '!bg-secondary-00 pl-4 shadow-[inset_0_-2px_1px_0_rgba(0,0,0,0.05),_inset_0_1px_1px_0_#fff]' : 'pl-2'} !py-3`}
-																			isActive={isSubmenuActive}>
-																			<Link
-																				prefetch={false}
-																				href={`/${menu.url}/${subItem.url}`}
-																				className={'h-auto py-4'}>
-																				<span
+															{item.menu.map(
+																(subItem) => {
+																	const isSubmenuActive =
+																		item.shouldMatchPrefix
+																			? pathname ===
+																				`/${menu.url}/${subItem.url}`
+																			: pathname.includes(
+																					`/${menu.url}/${subItem.url}`
+																				);
+																	return (
+																		<SidebarMenuItem
+																			key={
+																				subItem.url
+																			}
+																			className={
+																				'pl-6'
+																			}>
+																			<IconFolderTree
+																				className={
+																					'absolute bottom-[50%] left-3'
+																				}
+																			/>
+																			<SidebarMenuButton
+																				asChild
+																				tooltip={
+																					subItem.title
+																				}
+																				className={`${isSubmenuActive ? '!bg-secondary-00 pl-4 shadow-[inset_0_-2px_1px_0_rgba(0,0,0,0.05),_inset_0_1px_1px_0_#fff]' : 'pl-2'} !py-3`}
+																				isActive={
+																					isSubmenuActive
+																				}>
+																				<Link
+																					prefetch={
+																						false
+																					}
+																					href={`/${menu.url}/${subItem.url}`}
 																					className={
-																						TextVariants.caption_14px_500
+																						'h-auto py-4'
 																					}>
-																					{subItem.title}
-																				</span>
-																			</Link>
-																		</SidebarMenuButton>
-																	</SidebarMenuItem>
-																);
-															})}
+																					<span
+																						className={
+																							TextVariants.caption_14px_500
+																						}>
+																						{
+																							subItem.title
+																						}
+																					</span>
+																				</Link>
+																			</SidebarMenuButton>
+																		</SidebarMenuItem>
+																	);
+																}
+															)}
 														</SidebarMenu>
 													</CollapsibleContent>
 												)}
@@ -175,11 +222,22 @@ export default function AppSidebar() {
 														className={'h-5 w-5'}
 														{...(open && {
 															color: isActive
-																? GlobalUI.colors.secondary['500']
-																: GlobalUI.colors.neutrals['300'],
+																? GlobalUI
+																		.colors
+																		.secondary[
+																		'500'
+																	]
+																: GlobalUI
+																		.colors
+																		.neutrals[
+																		'300'
+																	],
 														})}
 													/>
-													<span className={TextVariants.caption_14px_600}>
+													<span
+														className={
+															TextVariants.caption_14px_600
+														}>
 														{item.title}
 													</span>
 												</Link>

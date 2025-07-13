@@ -24,7 +24,9 @@ const BookingOrderSearch = () => {
 
 			return (
 				<>
-					<span className="font-semibold text-secondary-500">{matchPart}</span>
+					<span className="font-semibold text-secondary-500">
+						{matchPart}
+					</span>
 					<span className="text-neutral-600">{restPart}</span>
 				</>
 			);
@@ -34,10 +36,14 @@ const BookingOrderSearch = () => {
 	};
 
 	const handleSearch = (text: string) => {
-		const searchStr = removeAccent(text.toLowerCase().trim().replace(/\s+/g, ' '));
+		const searchStr = removeAccent(
+			text.toLowerCase().trim().replace(/\s+/g, ' ')
+		);
 
 		const result = bookingOrderList.filter((row) => {
-			const normalizedName = removeAccent(row.name.toLowerCase().trim().replace(/\s+/g, ' '));
+			const normalizedName = removeAccent(
+				row.name.toLowerCase().trim().replace(/\s+/g, ' ')
+			);
 			return normalizedName.startsWith(searchStr);
 		});
 
@@ -69,30 +75,48 @@ const BookingOrderSearch = () => {
 							</Typography>
 							<div className={'space-y-2'}>
 								{data.map((bookingOrder) => (
-									<div key={bookingOrder.id} className={'flex gap-6 p-1'}>
+									<div
+										key={bookingOrder.id}
+										className={'flex gap-6 p-1'}>
 										<Typography
 											tag={'p'}
 											variant={'caption_14px_400'}
-											className={'text-nowrap text-neutral-600'}>
+											className={
+												'text-nowrap text-neutral-600'
+											}>
 											{bookingOrder.id}
 										</Typography>
 										<Typography
 											tag="p"
 											variant="caption_14px_400"
 											className="text-nowrap">
-											{highlightMatch(bookingOrder.name, search)}
+											{highlightMatch(
+												bookingOrder.name,
+												search
+											)}
 										</Typography>
 										<Typography
 											tag={'p'}
 											variant={'caption_14px_400'}
-											className={'text-nowrap text-neutral-600'}>
+											className={
+												'text-nowrap text-neutral-600'
+											}>
 											{bookingOrder.time_order}
 										</Typography>
 										<Typography
 											tag={'p'}
 											variant={'caption_14px_400'}
-											className={'text-nowrap text-neutral-600'}>
-											Ngày ở: {bookingOrder.date.from.toLocaleDateString("vi-vn")} - {bookingOrder.date.to.toLocaleDateString("vi-vn")}
+											className={
+												'text-nowrap text-neutral-600'
+											}>
+											Ngày ở:{' '}
+											{bookingOrder.date.from.toLocaleDateString(
+												'vi-vn'
+											)}{' '}
+											-{' '}
+											{bookingOrder.date.to.toLocaleDateString(
+												'vi-vn'
+											)}
 										</Typography>
 									</div>
 								))}

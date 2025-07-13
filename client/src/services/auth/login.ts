@@ -6,7 +6,12 @@ import { AxiosError } from 'axios';
 export interface ILogin {
 	status: boolean;
 	message: string;
-	meta: { access_token: string; token_type: string; expires_in: number, refresh_token?: string };
+	meta: {
+		access_token: string;
+		token_type: string;
+		expires_in: number;
+		refresh_token?: string;
+	};
 	data: {
 		id: number;
 		register_id: number;

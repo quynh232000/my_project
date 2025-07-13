@@ -80,7 +80,10 @@ export default function RoomGeneralSetting({
 				...value.extras,
 				fe_extra_beds: value.extras.extra_beds.map((item) => ({
 					...item,
-					age_to: item.age_to === Number(MAX_AGE_VALUE) ? null : item.age_to,
+					age_to:
+						item.age_to === Number(MAX_AGE_VALUE)
+							? null
+							: item.age_to,
 				})),
 				update_fe_extra_beds: {} as {
 					[key: string]: FeeExtraBedType;
@@ -107,7 +110,8 @@ export default function RoomGeneralSetting({
 					: Math.max(
 							value.capacity.standard_guests +
 								value.capacity.max_extra_children,
-							value.capacity.standard_guests + value.capacity.max_extra_adults
+							value.capacity.standard_guests +
+								value.capacity.max_extra_adults
 						),
 			smoking: Number(formValue.smoking),
 			breakfast: Number(formValue.breakfast),

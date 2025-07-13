@@ -4,7 +4,11 @@ import DashboardContainer from '@/components/shared/Dashboard/DashboardContainer
 import { DashboardHeroTitle } from '@/components/shared/Dashboard/DashboardHeroTitle';
 import { DashboardCard } from '@/components/shared/Dashboard/DashboardCard';
 import PromotionForm from '@/containers/promotion/PromotionForm';
-import { DashboardRouter, AuthRouters, RefreshRouters } from '@/constants/routers';
+import {
+	DashboardRouter,
+	AuthRouters,
+	RefreshRouters,
+} from '@/constants/routers';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { IPromotionItem } from '@/services/promotion/getPromotionList';
@@ -29,13 +33,21 @@ export default async function Page({
 		const hotel_id = cookieStore.get('hotel_id')?.value ?? 0;
 		if (!!hotel_id) {
 			try {
-				promotionDetail = await getPromotionDetail({ id: +id, hotel_id: +hotel_id });
+				promotionDetail = await getPromotionDetail({
+					id: +id,
+					hotel_id: +hotel_id,
+				});
 			} catch (error) {
 				const axiosError = error as AxiosError;
-				const msg = (axiosError?.response?.data as { message: string })?.message;
-				if (axiosError?.response?.status === HttpStatusCode.Unauthorized) {
+				const msg = (axiosError?.response?.data as { message: string })
+					?.message;
+				if (
+					axiosError?.response?.status === HttpStatusCode.Unauthorized
+				) {
 					if (msg === TOKEN_EXPIRED_MESSAGE) {
-						redirect(`${RefreshRouters.index}?redirect=${DashboardRouter.promotion}/${id}`);
+						redirect(
+							`${RefreshRouters.index}?redirect=${DashboardRouter.promotion}/${id}`
+						);
 					} else {
 						redirect(AuthRouters.signIn + '?force=true');
 					}
@@ -47,7 +59,7 @@ export default async function Page({
 			redirect(DashboardRouter.promotion);
 		}
 	}
-	
+
 	const promotionName = isCreate
 		? 'Khuyến mãi'
 		: (promotionDetail && promotionDetail.name) || '';
@@ -56,7 +68,11 @@ export default async function Page({
 		<DashboardContainer>
 			<DashboardHeroTitle
 				{...(promotionDetail
-					? { displayName: { [promotionDetail.id]: promotionDetail.name } }
+					? {
+							displayName: {
+								[promotionDetail.id]: promotionDetail.name,
+							},
+						}
 					: { displayName: { create: 'Khuyến mãi' } })}
 				pathName={pathName}
 				title={promotionName}

@@ -18,7 +18,6 @@ const FilterContent = () => {
 	const [orderTypePriceData, setOrderTypePriceData] =
 		useState<TSelectCheckbox[]>(orderTypePrice);
 
-
 	return (
 		<div className={'mb-[14px] grid grid-cols-5 gap-3'}>
 			<BookingOrderSearch />

@@ -88,15 +88,18 @@ const DialogPricingSetting = ({
 			reset({
 				room_id: priceSetting.room_id,
 				price_type_id: priceSetting.price_type_id,
-				data: Array.from({ length: priceSetting.max_capacity }).map((_, i) => {
-					return priceSetting.max_capacity - i === priceSetting.standard_index
-						? undefined
-						: {
-								capacity: priceSetting.max_capacity - i,
-								price: NaN,
-								status: 'inactive',
-							};
-				}),
+				data: Array.from({ length: priceSetting.max_capacity }).map(
+					(_, i) => {
+						return priceSetting.max_capacity - i ===
+							priceSetting.standard_index
+							? undefined
+							: {
+									capacity: priceSetting.max_capacity - i,
+									price: NaN,
+									status: 'inactive',
+								};
+					}
+				),
 			});
 			priceSetting.data?.forEach((currentPrice) => {
 				currentPrice.capacity !== priceSetting.standard_index &&
@@ -124,7 +127,9 @@ const DialogPricingSetting = ({
 						</Typography>
 						<span
 							onClick={() => onClose()}
-							className={'cursor-pointer rounded-full bg-neutral-50 p-2'}>
+							className={
+								'cursor-pointer rounded-full bg-neutral-50 p-2'
+							}>
 							<IconClose
 								className={'size-4'}
 								color={GlobalUI.colors.neutrals['5']}
@@ -135,14 +140,14 @@ const DialogPricingSetting = ({
 						tag={'p'}
 						variant={'caption_14px_400'}
 						className={'mt-4 text-neutral-600'}>
-						Giá có thể thay đổi theo số lượng khách. Bạn có thể đặt mức giảm giá
-						cố định, theo phần trăm và quyết định cách tính giá cho từng nhóm
-						khách.
+						Giá có thể thay đổi theo số lượng khách. Bạn có thể đặt
+						mức giảm giá cố định, theo phần trăm và quyết định cách
+						tính giá cho từng nhóm khách.
 					</Typography>
 					<Form {...form}>
 						<form onSubmit={form.handleSubmit(onSubmit)}>
-							<div className={'bg-blue-200 p-4 mt-4 rounded-3xl'}>
-								<div className={'bg-white p-4 rounded-lg'}>
+							<div className={'mt-4 rounded-3xl bg-blue-200 p-4'}>
+								<div className={'rounded-lg bg-white p-4'}>
 									<Typography
 										variant={'content_16px_700'}
 										tag={'h4'}
@@ -157,12 +162,17 @@ const DialogPricingSetting = ({
 									</Typography>
 
 									<div className={'mt-4 rounded-lg'}>
-										<div className={'flex items-center px-6 py-3'}>
+										<div
+											className={
+												'flex items-center px-6 py-3'
+											}>
 											<div className={'w-[144px]'}>
 												<Typography
 													tag={'span'}
 													variant={'caption_14px_600'}
-													className={'text-neutral-600'}>
+													className={
+														'text-neutral-600'
+													}>
 													Sức chứa
 												</Typography>
 											</div>
@@ -170,32 +180,52 @@ const DialogPricingSetting = ({
 												<Typography
 													tag={'span'}
 													variant={'caption_14px_600'}
-													className={'text-neutral-600'}>
+													className={
+														'text-neutral-600'
+													}>
 													Giá
 												</Typography>
 											</div>
 										</div>
 										{priceSetting?.max_capacity &&
 											Array.from({
-												length: priceSetting?.max_capacity ?? 0,
+												length:
+													priceSetting?.max_capacity ??
+													0,
 											})?.map((_, i) => {
 												const isActive =
-													priceSetting.max_capacity - i ===
+													priceSetting.max_capacity -
+														i ===
 														priceSetting.standard_index ||
-													watch(`data.${i}.status`) === 'active';
+													watch(
+														`data.${i}.status`
+													) === 'active';
 												return (
-													<div key={i} className={'flex py-4'}>
+													<div
+														key={i}
+														className={'flex py-4'}>
 														<div
-															className={'flex w-[208px] items-center gap-2'}>
-															<IconUser className={'size-4 text-neutral-400'} />
+															className={
+																'flex w-[208px] items-center gap-2'
+															}>
+															<IconUser
+																className={
+																	'size-4 text-neutral-400'
+																}
+															/>
 															<Typography
 																tag={'span'}
-																variant={'caption_12px_500'}
+																variant={
+																	'caption_12px_500'
+																}
 																className={`text-neutral-600 transition-[opacity] ${!isActive && 'opacity-50'}`}>
-																x{priceSetting?.max_capacity - i}
+																x
+																{priceSetting?.max_capacity -
+																	i}
 																{i === 0
 																	? ' (Tối đa)'
-																	: priceSetting.max_capacity - i ===
+																	: priceSetting.max_capacity -
+																				i ===
 																		  priceSetting.standard_index
 																		? ' (Tiêu chuẩn)'
 																		: ''}
@@ -205,44 +235,83 @@ const DialogPricingSetting = ({
 															className={`flex flex-1 items-center gap-6 transition-[opacity] ${!isActive && 'opacity-50'}`}>
 															<Typography
 																tag={'span'}
-																variant={'caption_14px_400'}
-																className={'text-neutral-600'}>
-																{priceSetting.max_capacity - i >
+																variant={
+																	'caption_14px_400'
+																}
+																className={
+																	'text-neutral-600'
+																}>
+																{priceSetting.max_capacity -
+																	i >
 																priceSetting?.standard_index
 																	? 'Tăng thêm trên giá tiêu chuẩn'
-																	: priceSetting.max_capacity - i <
+																	: priceSetting.max_capacity -
+																				i <
 																		  priceSetting?.standard_index
 																		? 'Giảm thêm trên giá tiêu chuẩn'
 																		: 'Giá tiêu chuẩn'}
 															</Typography>
-															{priceSetting.max_capacity - i !==
+															{priceSetting.max_capacity -
+																i !==
 																priceSetting.standard_index && (
 																<FormField
 																	name={`data.${i}.price`}
-																	control={control}
+																	control={
+																		control
+																	}
 																	rules={{}}
 																	render={({
-																		field: { value, onChange, ...props },
+																		field: {
+																			value,
+																			onChange,
+																			...props
+																		},
 																	}) => (
 																		<FormItem
-																			className={'max-w-[218px] space-y-0'}>
-																			<div className={'relative'}>
+																			className={
+																				'max-w-[218px] space-y-0'
+																			}>
+																			<div
+																				className={
+																					'relative'
+																				}>
 																				<FormControl>
 																					<NumberInput
-																						disabled={!isActive}
+																						disabled={
+																							!isActive
+																						}
 																						placeholder="1,200,000đ"
-																						inputMode={'numeric'}
-																						suffix={'đ'}
-																						value={value}
-																						maxLength={11}
-																						className={'h-10 py-2 leading-6'}
+																						inputMode={
+																							'numeric'
+																						}
+																						suffix={
+																							'đ'
+																						}
+																						value={
+																							value
+																						}
+																						maxLength={
+																							11
+																						}
+																						className={
+																							'h-10 py-2 leading-6'
+																						}
 																						{...props}
-																						endAdornment={'VND'}
-																						onValueChange={(e) => {
+																						endAdornment={
+																							'VND'
+																						}
+																						onValueChange={(
+																							e
+																						) => {
 																							onChange(
-																								e.value.length === 0
+																								e
+																									.value
+																									.length ===
+																									0
 																									? NaN
-																									: Number(e.value)
+																									: Number(
+																											e.value
+																										)
 																							);
 																						}}
 																					/>
@@ -254,23 +323,43 @@ const DialogPricingSetting = ({
 																/>
 															)}
 														</div>
-														{priceSetting.max_capacity - i !==
+														{priceSetting.max_capacity -
+															i !==
 															priceSetting.standard_index && (
 															<FormField
 																name={`data.${i}.status`}
-																control={control}
-																render={({ field }) => (
-																	<FormItem className={'flex items-center'}>
+																control={
+																	control
+																}
+																render={({
+																	field,
+																}) => (
+																	<FormItem
+																		className={
+																			'flex items-center'
+																		}>
 																		<FormControl>
 																			<Switch
-																				checked={field.value === 'active'}
-																				onCheckedChange={(val) => {
-																					if (!val) {
+																				checked={
+																					field.value ===
+																					'active'
+																				}
+																				onCheckedChange={(
+																					val
+																				) => {
+																					if (
+																						!val
+																					) {
 																						clearErrors();
-																						setValue(`data.${i}.price`, NaN);
+																						setValue(
+																							`data.${i}.price`,
+																							NaN
+																						);
 																					}
 																					field.onChange(
-																						val ? 'active' : 'inactive'
+																						val
+																							? 'active'
+																							: 'inactive'
 																					);
 																				}}
 																			/>

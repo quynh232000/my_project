@@ -59,7 +59,9 @@ const CapacitySchema = validate
 	.superRefine((data, ctx) => {
 		if (data.allow_extra_guests === 'both') {
 			const maxAllowed =
-				data.standard_guests + data.max_extra_adults + data.max_extra_children;
+				data.standard_guests +
+				data.max_extra_adults +
+				data.max_extra_children;
 			if (data.max_capacity === undefined) {
 				return ctx.addIssue({
 					code: validate.ZodIssueCode.custom,
@@ -70,14 +72,16 @@ const CapacitySchema = validate
 			if ((data?.max_capacity ?? 0) < data.standard_guests) {
 				return ctx.addIssue({
 					code: validate.ZodIssueCode.custom,
-					message: 'Sức chứa tối đa không được nhỏ hơn số khách tiêu chuẩn',
+					message:
+						'Sức chứa tối đa không được nhỏ hơn số khách tiêu chuẩn',
 					path: ['max_capacity'],
 				});
 			}
 			if ((data?.max_capacity ?? 0) > maxAllowed) {
 				return ctx.addIssue({
 					code: validate.ZodIssueCode.custom,
-					message: 'Sức chứa tối đa không được vượt quá tổng số khách cho phép',
+					message:
+						'Sức chứa tối đa không được vượt quá tổng số khách cho phép',
 					path: ['max_capacity'],
 				});
 			}
@@ -114,7 +118,8 @@ const BedTypeSchema = validate
 		if (data.hasAlternativeBed && !data.sub_bed_type_id) {
 			ctx.addIssue({
 				code: 'custom',
-				message: 'Bạn cần phải chọn loại giường thay thế khi bật tùy chọn',
+				message:
+					'Bạn cần phải chọn loại giường thay thế khi bật tùy chọn',
 				path: ['sub_bed_type_id'],
 			});
 		}
@@ -125,10 +130,14 @@ const BedTypeSchema = validate
 				path: ['sub_bed_quantity'],
 			});
 		}
-		if (data.hasAlternativeBed && data.bed_type_id === data.sub_bed_type_id) {
+		if (
+			data.hasAlternativeBed &&
+			data.bed_type_id === data.sub_bed_type_id
+		) {
 			ctx.addIssue({
 				code: 'custom',
-				message: 'Loại giường thay thế không được trùng với giường chính',
+				message:
+					'Loại giường thay thế không được trùng với giường chính',
 				path: ['sub_bed_type_id'],
 			});
 		}
@@ -234,7 +243,8 @@ const ExtraOptionsSchema = validate.object({
 				if (
 					data[i].age_to !== null &&
 					typeof data[i].age_to === 'number' &&
-					+(data[i].age_to as number) <= +(data[i - 1].age_to as number)
+					+(data[i].age_to as number) <=
+						+(data[i - 1].age_to as number)
 				)
 					return ctx.addIssue({
 						code: validate.ZodIssueCode.custom,

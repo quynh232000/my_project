@@ -62,17 +62,17 @@ foreach ($groups as $group) {
 
 // hotel
 //Hotel
-require_once(PATH_ROUTE . DS . 'hotel' . DS . 'attribute.php');
-require_once(PATH_ROUTE . DS . 'hotel' . DS . 'bank.php');
-require_once(PATH_ROUTE . DS . 'hotel' . DS . 'chain.php');
-require_once(PATH_ROUTE . DS . 'hotel' . DS . 'customer.php');
-require_once(PATH_ROUTE . DS . 'hotel' . DS . 'hotel.php');
-require_once(PATH_ROUTE . DS . 'hotel' . DS . 'policy-setting.php');
-require_once(PATH_ROUTE . DS . 'hotel' . DS . 'room-type.php');
-require_once(PATH_ROUTE . DS . 'hotel' . DS . 'service.php');
-require_once(PATH_ROUTE . DS . 'hotel' . DS . 'review.php');
-require_once(PATH_ROUTE . DS . 'hotel' . DS . 'partner-register.php');
-require_once(PATH_ROUTE . DS . 'hotel' . DS . 'payment-info.php');
+// require_once(PATH_ROUTE . DS . 'hotel' . DS . 'attribute.php');
+// require_once(PATH_ROUTE . DS . 'hotel' . DS . 'bank.php');
+// require_once(PATH_ROUTE . DS . 'hotel' . DS . 'chain.php');
+// require_once(PATH_ROUTE . DS . 'hotel' . DS . 'customer.php');
+// require_once(PATH_ROUTE . DS . 'hotel' . DS . 'hotel.php');
+// require_once(PATH_ROUTE . DS . 'hotel' . DS . 'policy-setting.php');
+// require_once(PATH_ROUTE . DS . 'hotel' . DS . 'room-type.php');
+// require_once(PATH_ROUTE . DS . 'hotel' . DS . 'service.php');
+// require_once(PATH_ROUTE . DS . 'hotel' . DS . 'review.php');
+// require_once(PATH_ROUTE . DS . 'hotel' . DS . 'partner-register.php');
+// require_once(PATH_ROUTE . DS . 'hotel' . DS . 'payment-info.php');
 
 
 

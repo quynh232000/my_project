@@ -105,7 +105,9 @@ const QuickRoomToggle = ({
 					</Typography>
 					<span
 						onClick={_onClose}
-						className={'cursor-pointer rounded-full bg-neutral-50 p-2'}>
+						className={
+							'cursor-pointer rounded-full bg-neutral-50 p-2'
+						}>
 						<IconClose
 							className={'size-4'}
 							color={GlobalUI.colors.neutrals['5']}
@@ -137,7 +139,9 @@ const QuickRoomToggle = ({
 													from: field?.value?.from,
 													to: field?.value?.to,
 												}}
-												onSelectDateRange={field.onChange}
+												onSelectDateRange={
+													field.onChange
+												}
 											/>
 										</FormControl>
 										{errors?.date?.message ? (
@@ -145,7 +149,11 @@ const QuickRoomToggle = ({
 										) : (
 											<FieldErrorMessage
 												errors={errors}
-												name={errors?.date?.from ? 'date.from' : 'date.to'}
+												name={
+													errors?.date?.from
+														? 'date.from'
+														: 'date.to'
+												}
 											/>
 										)}
 									</FormItem>
@@ -173,19 +181,28 @@ const QuickRoomToggle = ({
 										render={({ field }) => (
 											<CheckBoxView
 												id={`availability-${day}`}
-												value={field.value.includes(day)}
+												value={field.value.includes(
+													day
+												)}
 												onValueChange={(val) => {
 													const newValue = val
 														? [...field.value, day]
-														: field.value.filter((val) => val !== day);
+														: field.value.filter(
+																(val) =>
+																	val !== day
+															);
 
 													field.onChange(newValue);
 												}}>
 												<Typography
 													tag={'p'}
 													variant={'caption_14px_400'}
-													className={'text-nowrap text-neutral-600'}>
-													{day + 1 < 8 ? `Thứ ${day + 1}` : 'Chủ nhật'}
+													className={
+														'text-nowrap text-neutral-600'
+													}>
+													{day + 1 < 8
+														? `Thứ ${day + 1}`
+														: 'Chủ nhật'}
 												</Typography>
 											</CheckBoxView>
 										)}
@@ -202,27 +219,51 @@ const QuickRoomToggle = ({
 								control={control}
 								name={'room_ids'}
 								render={({ field }) => (
-									<div className={'mt-4 grid grid-cols-2 gap-4'}>
+									<div
+										className={
+											'mt-4 grid grid-cols-2 gap-4'
+										}>
 										{roomList
-											?.filter((room) => room.status === ERoomStatus.active)
+											?.filter(
+												(room) =>
+													room.status ===
+													ERoomStatus.active
+											)
 											.map((type, index) => (
 												<CheckBoxView
 													key={index}
 													id={type.name}
-													value={field.value?.includes(type.id) || false}
+													value={
+														field.value?.includes(
+															type.id
+														) || false
+													}
 													onValueChange={(val) => {
 														const newArr = val
-															? [...(field?.value || []), type.id]
-															: (field.value || []).filter(
-																	(val) => val !== type.id
+															? [
+																	...(field?.value ||
+																		[]),
+																	type.id,
+																]
+															: (
+																	field.value ||
+																	[]
+																).filter(
+																	(val) =>
+																		val !==
+																		type.id
 																);
 														field.onChange(newArr);
 													}}>
 													<Typography
 														tag={'p'}
 														title={type.name}
-														variant={'caption_14px_400'}
-														className={'truncate text-nowrap text-neutral-600'}>
+														variant={
+															'caption_14px_400'
+														}
+														className={
+															'truncate text-nowrap text-neutral-600'
+														}>
 														{type.name ?? 'N/A'}
 													</Typography>
 												</CheckBoxView>
@@ -249,7 +290,9 @@ const QuickRoomToggle = ({
 										<RadioGroup
 											defaultValue={field.value}
 											onChange={field.onChange}
-											className={'grid grid-cols-2 gap-4'}>
+											className={
+												'grid grid-cols-2 gap-4'
+											}>
 											<div className="flex items-center space-x-2">
 												<RadioGroupItem
 													value="open"
@@ -261,7 +304,9 @@ const QuickRoomToggle = ({
 												<Label
 													htmlFor="status-open"
 													containerClassName={'mb-0'}
-													className={'cursor-pointer text-neutral-600'}>
+													className={
+														'cursor-pointer text-neutral-600'
+													}>
 													Mở phòng
 												</Label>
 											</div>
@@ -276,7 +321,9 @@ const QuickRoomToggle = ({
 												<Label
 													htmlFor="status-close"
 													containerClassName={'mb-0'}
-													className={'cursor-pointer text-neutral-600'}>
+													className={
+														'cursor-pointer text-neutral-600'
+													}>
 													Đóng phòng
 												</Label>
 											</div>

@@ -1,7 +1,13 @@
 import * as React from 'react';
 import { SVGProps, memo } from 'react';
 const IconStar = (props: SVGProps<SVGSVGElement>) => (
-	<svg width="1em" height="1em" viewBox="0 0 18 19" fill="back" xmlns="http://www.w3.org/2000/svg" {...props}>
+	<svg
+		width="1em"
+		height="1em"
+		viewBox="0 0 18 19"
+		fill="back"
+		xmlns="http://www.w3.org/2000/svg"
+		{...props}>
 		<g id="Icons/Line/IconStar">
 			<path
 				id="Vector"

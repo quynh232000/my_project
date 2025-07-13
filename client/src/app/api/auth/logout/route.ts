@@ -12,7 +12,7 @@ export async function POST(): Promise<NextResponse<LogoutResponse>> {
 
 		const response = NextResponse.json({
 			success: true,
-			message: 'Successfully logged out'
+			message: 'Successfully logged out',
 		});
 
 		response.cookies.delete('access_token');
@@ -26,7 +26,7 @@ export async function POST(): Promise<NextResponse<LogoutResponse>> {
 		return NextResponse.json(
 			{
 				success: false,
-				message: 'Failed to logout'
+				message: 'Failed to logout',
 			},
 			{ status: 500 }
 		);

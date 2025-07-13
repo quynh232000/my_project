@@ -49,10 +49,15 @@ export default function RoomPricing() {
 					name="pricing.price_min"
 					control={control}
 					render={({ field: { value, onChange, ...props } }) => (
-						<FormItem className={'col-span-3 space-y-2 lg:col-span-1'}>
+						<FormItem
+							className={'col-span-3 space-y-2 lg:col-span-1'}>
 							<FormLabel>
-								Giá tối thiểu <span className={'text-red-500'}>*</span>
-								<AppTooltip icon={<IconQuestion />} content={'Tooltip'} />
+								Giá tối thiểu{' '}
+								<span className={'text-red-500'}>*</span>
+								<AppTooltip
+									icon={<IconQuestion />}
+									content={'Tooltip'}
+								/>
 							</FormLabel>
 							<div className={'relative'}>
 								<FormControl>
@@ -65,7 +70,11 @@ export default function RoomPricing() {
 										{...props}
 										value={value}
 										onValueChange={(e) => {
-											onChange(e.value.length === 0 ? '' : Number(e.value));
+											onChange(
+												e.value.length === 0
+													? ''
+													: Number(e.value)
+											);
 										}}
 									/>
 								</FormControl>
@@ -79,10 +88,15 @@ export default function RoomPricing() {
 					name="pricing.price_standard"
 					control={control}
 					render={({ field: { value, onChange, ...props } }) => (
-						<FormItem className={'col-span-3 space-y-2 lg:col-span-1'}>
+						<FormItem
+							className={'col-span-3 space-y-2 lg:col-span-1'}>
 							<FormLabel>
-								Giá cơ bản/phòng/đêm <span className={'text-red-500'}>*</span>
-								<AppTooltip icon={<IconQuestion />} content={'Tooltip'} />
+								Giá cơ bản/phòng/đêm{' '}
+								<span className={'text-red-500'}>*</span>
+								<AppTooltip
+									icon={<IconQuestion />}
+									content={'Tooltip'}
+								/>
 							</FormLabel>
 							<div className={'relative'}>
 								<FormControl>
@@ -95,7 +109,11 @@ export default function RoomPricing() {
 										{...props}
 										value={value}
 										onValueChange={(e) => {
-											onChange(e.value.length === 0 ? '' : Number(e.value));
+											onChange(
+												e.value.length === 0
+													? ''
+													: Number(e.value)
+											);
 										}}
 									/>
 								</FormControl>
@@ -109,10 +127,15 @@ export default function RoomPricing() {
 					name="pricing.price_max"
 					control={control}
 					render={({ field: { value, onChange, ...props } }) => (
-						<FormItem className={'col-span-3 space-y-2 lg:col-span-1'}>
+						<FormItem
+							className={'col-span-3 space-y-2 lg:col-span-1'}>
 							<FormLabel>
-								Giá tối đa <span className={'text-red-500'}>*</span>
-								<AppTooltip icon={<IconQuestion />} content={'Tooltip'} />
+								Giá tối đa{' '}
+								<span className={'text-red-500'}>*</span>
+								<AppTooltip
+									icon={<IconQuestion />}
+									content={'Tooltip'}
+								/>
 							</FormLabel>
 							<div className={'relative'}>
 								<FormControl>
@@ -125,7 +148,11 @@ export default function RoomPricing() {
 										{...props}
 										value={value}
 										onValueChange={(e) => {
-											onChange(e.value.length === 0 ? '' : Number(e.value));
+											onChange(
+												e.value.length === 0
+													? ''
+													: Number(e.value)
+											);
 										}}
 									/>
 								</FormControl>

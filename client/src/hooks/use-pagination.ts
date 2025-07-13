@@ -23,7 +23,10 @@ export const usePagination = ({
 }: UsePaginationProps): UsePaginationReturn => {
 	const [currentPage, setCurrentPage] = useState(initialPage);
 
-	const totalPages = useMemo(() => Math.ceil(totalItems / itemsPerPage), [totalItems, itemsPerPage]);
+	const totalPages = useMemo(
+		() => Math.ceil(totalItems / itemsPerPage),
+		[totalItems, itemsPerPage]
+	);
 
 	const nextPage = () => {
 		setCurrentPage((page) => Math.min(page + 1, totalPages));

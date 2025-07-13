@@ -18,7 +18,11 @@ const useQueryPaginationParams = () => {
 				current.set(key, value.toString());
 			}
 		});
-		window.history.replaceState({}, '', `${pathname}?${current.toString()}`);
+		window.history.replaceState(
+			{},
+			'',
+			`${pathname}?${current.toString()}`
+		);
 	};
 
 	useEffect(() => {
@@ -53,7 +57,9 @@ const useQueryPaginationParams = () => {
 				column: params.column || undefined,
 				direction: params.direction || undefined,
 				status:
-					params.status === 'all' ? undefined : params.status || undefined,
+					params.status === 'all'
+						? undefined
+						: params.status || undefined,
 			});
 		}
 	}, [JSON.stringify(params), isParsedParams]);

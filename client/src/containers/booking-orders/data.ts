@@ -14,7 +14,7 @@ export type TBookingOrder = {
 	email: string;
 	phone: string;
 	max_extra_adults: number;
-	max_extra_children: number
+	max_extra_children: number;
 };
 
 export const bookingOrderList: TBookingOrder[] = [
@@ -25,10 +25,10 @@ export const bookingOrderList: TBookingOrder[] = [
 		time_order: '24/12/2025, 13:59',
 		name: 'Anh Duc Nguyen',
 		date: {
-			from: new Date("4/30/2025"),
-			to: new Date("5/3/2025")
+			from: new Date('4/30/2025'),
+			to: new Date('5/3/2025'),
 		},
-		room_guests: "Phòng Tiêu Chuẩn (1018442099)",
+		room_guests: 'Phòng Tiêu Chuẩn (1018442099)',
 		total_price: '600.000',
 		max_extra_adults: 3,
 		max_extra_children: 4,
@@ -41,10 +41,10 @@ export const bookingOrderList: TBookingOrder[] = [
 		time_order: '24/12/2025, 13:59',
 		name: 'Nguyen Quynh',
 		date: {
-			from: new Date("4/30/2025"),
-			to: new Date("5/3/2025")
+			from: new Date('4/30/2025'),
+			to: new Date('5/3/2025'),
 		},
-		room_guests: "Phòng Tiêu Chuẩn (1018442099)",
+		room_guests: 'Phòng Tiêu Chuẩn (1018442099)',
 		total_price: '600.000',
 		max_extra_adults: 3,
 		max_extra_children: 4,
@@ -57,10 +57,10 @@ export const bookingOrderList: TBookingOrder[] = [
 		time_order: '24/12/2025, 13:59',
 		name: 'Minh Trung',
 		date: {
-			from: new Date("4/30/2025"),
-			to: new Date("5/3/2025")
+			from: new Date('4/30/2025'),
+			to: new Date('5/3/2025'),
 		},
-		room_guests: "Phòng Tiêu Chuẩn (1018442099)",
+		room_guests: 'Phòng Tiêu Chuẩn (1018442099)',
 		total_price: '600.000',
 		max_extra_adults: 3,
 		max_extra_children: 4,
@@ -71,9 +71,9 @@ export const bookingOrderList: TBookingOrder[] = [
 export type TSelectCheckbox = {
 	title: string;
 	value: string;
-	checked: boolean
+	checked: boolean;
 };
-export type TSelectColumn= {
+export type TSelectColumn = {
 	title: string;
 	value: string;
 };
@@ -81,42 +81,42 @@ export const gridViewData: TSelectCheckbox[] = [
 	{
 		title: 'Mã đặt phòng',
 		value: 'id',
-		checked: false
+		checked: false,
 	},
 	{
 		title: 'Tên khách',
 		value: 'name_customer',
-		checked: false
+		checked: false,
 	},
 	{
 		title: 'Ngày ở',
 		value: 'date',
-		checked: false
+		checked: false,
 	},
 	{
 		title: 'Phòng và số người ở',
 		value: 'room_guests',
-		checked: false
+		checked: false,
 	},
 	{
 		title: 'Tổng giá bán',
 		value: 'total_price',
-		checked: false
+		checked: false,
 	},
 	{
 		title: 'Thời gian đặt',
 		value: 'time_booking',
-		checked: false
+		checked: false,
 	},
 	{
 		title: 'OTA thu hộ',
 		value: 'ota',
-		checked: false
+		checked: false,
 	},
 	{
 		title: 'Ghi chú',
 		value: 'note',
-		checked: false
+		checked: false,
 	},
 ];
 
@@ -124,22 +124,22 @@ export const orderStatus: TSelectCheckbox[] = [
 	{
 		title: 'Tất cả',
 		value: 'all',
-		checked: false
+		checked: false,
 	},
 	{
 		title: 'Chờ xác nhận',
 		value: 'pending',
-		checked: false
+		checked: false,
 	},
 	{
 		title: 'Đã xác nhận',
 		value: 'active',
-		checked: false
+		checked: false,
 	},
 	{
 		title: 'Đã hủy bỏ',
 		value: 'inactive',
-		checked: false
+		checked: false,
 	},
 ];
 
@@ -147,22 +147,22 @@ export const orderTypeRoom: TSelectCheckbox[] = [
 	{
 		title: 'Tất cả',
 		value: 'all',
-		checked: false
+		checked: false,
 	},
 	{
 		title: 'Chờ xác nhận',
 		value: 'pending',
-		checked: false
+		checked: false,
 	},
 	{
 		title: 'Đã xác nhận',
 		value: 'active',
-		checked: false
+		checked: false,
 	},
 	{
 		title: 'Đã hủy bỏ',
 		value: 'inactive',
-		checked: false
+		checked: false,
 	},
 ];
 
@@ -170,26 +170,22 @@ export const orderTypePrice: TSelectCheckbox[] = [
 	{
 		title: 'Tất cả',
 		value: 'all',
-		checked: false
-		
+		checked: false,
 	},
 	{
 		title: 'Giá tiêu chuẩn',
 		value: 'pending',
-		checked: false
-		
+		checked: false,
 	},
 	{
 		title: 'Giá linh động',
 		value: 'active',
-		checked: false
-		
+		checked: false,
 	},
 	{
 		title: 'Giá hè 2025',
 		value: 'inactive',
-		checked: false
-		
+		checked: false,
 	},
 ];
 
@@ -268,7 +264,10 @@ export const payoutDetails = [
 		title: 'Thông tin xuất chi',
 		children: [
 			{ title: 'Tổng tiền đặt chỗ', value: '2.700.000đ' },
-			{ title: 'Trạng thái thanh toán của khách', value: 'Đã thanh toán' },
+			{
+				title: 'Trạng thái thanh toán của khách',
+				value: 'Đã thanh toán',
+			},
 			{ title: 'Ngày thanh toán', value: '26/05/2025' },
 			{ title: 'Đơn vị xử lý thanh toán', value: '190Booking' },
 			{ title: 'Mã giao dịch', value: 'TXN-23095-HSDQ' },
@@ -332,38 +331,38 @@ export const roomOccupancyInfo: IOccupancyInfo = {
 
 export const cancelPolicy = [
 	{
-		"id": 682,
-		"policy_cancel_id": 66,
-		"day": 0,
-		"fee_type": ECancelFeeType.FEE,
-		"fee": 100
+		id: 682,
+		policy_cancel_id: 66,
+		day: 0,
+		fee_type: ECancelFeeType.FEE,
+		fee: 100,
 	},
 	{
-		"id": 683,
-		"policy_cancel_id": 66,
-		"day": 12,
-		"fee_type": ECancelFeeType.FREE,
-		"fee": 0
+		id: 683,
+		policy_cancel_id: 66,
+		day: 12,
+		fee_type: ECancelFeeType.FREE,
+		fee: 0,
 	},
 	{
-		"id": 684,
-		"policy_cancel_id": 66,
-		"day": 10,
-		"fee_type": ECancelFeeType.FEE,
-		"fee": 20
+		id: 684,
+		policy_cancel_id: 66,
+		day: 10,
+		fee_type: ECancelFeeType.FEE,
+		fee: 20,
 	},
 	{
-		"id": 685,
-		"policy_cancel_id": 66,
-		"day": 5,
-		"fee_type": ECancelFeeType.FEE,
-		"fee": 75
+		id: 685,
+		policy_cancel_id: 66,
+		day: 5,
+		fee_type: ECancelFeeType.FEE,
+		fee: 75,
 	},
 	{
-		"id": 686,
-		"policy_cancel_id": 66,
-		"day": 1,
-		"fee_type": ECancelFeeType.FEE,
-		"fee": 99
-	}
-]
+		id: 686,
+		policy_cancel_id: 66,
+		day: 1,
+		fee_type: ECancelFeeType.FEE,
+		fee: 99,
+	},
+];

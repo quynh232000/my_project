@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import React, { useEffect, useState } from 'react';
 import {
 	Dialog,
@@ -109,7 +109,10 @@ const DialogEditImageGallery = ({
 				id: uuidv4(),
 				url: imageUrl,
 				tag: selectTag,
-				file: image instanceof File ? image : getValues(`images.${index}`).file,
+				file:
+					image instanceof File
+						? image
+						: getValues(`images.${index}`).file,
 				image_id: image_id,
 				priority: getValues(`images.${index}`).priority,
 			};
@@ -123,7 +126,9 @@ const DialogEditImageGallery = ({
 						roomId && (roomList?.length ?? 0) > 0
 							? roomList?.find((room) => room.id === +roomId)
 							: undefined;
-					const slug = room ? kebabCase(room.name) : `all-image-${hotel_id}`;
+					const slug = room
+						? kebabCase(room.name)
+						: `all-image-${hotel_id}`;
 					const images: IImage[] = [
 						{
 							image: image,
@@ -138,30 +143,38 @@ const DialogEditImageGallery = ({
 						list_all: true,
 						...(roomId && { room_id: String(roomId) }),
 					};
-					promiseArr.push(createAlbum<HotelRoomsResponse>(bodyCreateAlbum));
+					promiseArr.push(
+						createAlbum<HotelRoomsResponse>(bodyCreateAlbum)
+					);
 
 					const bodyUpdateAlbum: UpdateAlbumRequestBody = {
-						...(roomId && {id: String(roomId)}),
+						...(roomId && { id: String(roomId) }),
 						idsDeleteArr: [image_id],
 						list_all: true,
 					};
-					promiseArr.push(updateAlbum<HotelRoomsResponse>(bodyUpdateAlbum));
+					promiseArr.push(
+						updateAlbum<HotelRoomsResponse>(bodyUpdateAlbum)
+					);
 				} else {
 					const bodyUpdateAlbum: UpdateAlbumRequestBody = {
-						...(roomId && {id: String(roomId)}),
+						...(roomId && { id: String(roomId) }),
 						list_all: true,
-						images: [{
-							label_id: selectTag,
-							priority: String(list[index].priority),
-							image_id: String(image_id)
-						}]
+						images: [
+							{
+								label_id: selectTag,
+								priority: String(list[index].priority),
+								image_id: String(image_id),
+							},
+						],
 					};
-					promiseArr.push(updateAlbum<HotelRoomsResponse>(bodyUpdateAlbum));
+					promiseArr.push(
+						updateAlbum<HotelRoomsResponse>(bodyUpdateAlbum)
+					);
 				}
 			}
 		}
-		const [resStore, resUpdate] = await Promise.all(promiseArr).finally(() =>
-			setLoading(false)
+		const [resStore, resUpdate] = await Promise.all(promiseArr).finally(
+			() => setLoading(false)
 		);
 
 		const lastRes =
@@ -207,7 +220,9 @@ const DialogEditImageGallery = ({
 						</DialogClose>
 					</div>
 					<div
-						className={'flex flex-col gap-4 md:grid md:grid-cols-[190px_,1fr]'}>
+						className={
+							'flex flex-col gap-4 md:grid md:grid-cols-[190px_,1fr]'
+						}>
 						<div className={'overflow-hidden rounded-lg'}>
 							<Controller
 								control={control}
@@ -239,9 +254,15 @@ const DialogEditImageGallery = ({
 								<SelectPopup
 									className="mt-2 h-11 rounded-lg bg-white"
 									placeholder={'Thêm thẻ'}
-									data={imageRoomList ? mapToLabelValue(imageRoomList) : []}
+									data={
+										imageRoomList
+											? mapToLabelValue(imageRoomList)
+											: []
+									}
 									selectedValue={selectTag}
-									onChange={(value) => setSelectTag(`${value}`)}
+									onChange={(value) =>
+										setSelectTag(`${value}`)
+									}
 								/>
 							) : labelParentId ? (
 								<SelectPopup
@@ -251,23 +272,30 @@ const DialogEditImageGallery = ({
 										imageTypeList
 											? mapToLabelValue(
 													imageTypeList?.find(
-														(imageType) => imageType.id === labelParentId
+														(imageType) =>
+															imageType.id ===
+															labelParentId
 													)?.children || []
 												)
 											: []
 									}
 									selectedValue={selectTag}
-									onChange={(value) => setSelectTag(`${value}`)}
+									onChange={(value) =>
+										setSelectTag(`${value}`)
+									}
 								/>
 							) : (
 								<SelectImageGalleryPopup
 									className="mt-2 h-11 rounded-lg bg-white"
 									placeholder={'Thêm thẻ'}
 									data={imageTypeList?.filter(
-										(imageType) => imageType.slug !== 'image_room'
+										(imageType) =>
+											imageType.slug !== 'image_room'
 									)}
 									selectedValue={selectTag}
-									onChange={(value) => setSelectTag(`${value}`)}
+									onChange={(value) =>
+										setSelectTag(`${value}`)
+									}
 								/>
 							)}
 
@@ -275,25 +303,35 @@ const DialogEditImageGallery = ({
 								<div className={'space-y-2'}>
 									{errors.imageEdit ? (
 										<div className={'mt-3 space-y-3'}>
-											<div className={'flex items-center gap-2'}>
+											<div
+												className={
+													'flex items-center gap-2'
+												}>
 												<IconCloseCircle />
 												<Typography
 													tag={'span'}
 													variant={'caption_12px_500'}
-													className={cn('text-accent-03')}>
+													className={cn(
+														'text-accent-03'
+													)}>
 													{errors.imageEdit?.message}
 												</Typography>
 											</div>
 										</div>
 									) : (
-										<div className={'mt-3 flex items-center gap-2'}>
+										<div
+											className={
+												'mt-3 flex items-center gap-2'
+											}>
 											<span>
 												<IconCheckCircleV2 />
 											</span>
 											<Typography
 												tag={'span'}
 												variant={'caption_12px_500'}
-												className={cn('text-accent-02')}>
+												className={cn(
+													'text-accent-02'
+												)}>
 												Tải ảnh thành công
 											</Typography>
 										</div>
@@ -326,7 +364,9 @@ const DialogEditImageGallery = ({
 								'rounded-xl border-2 border-neutral-100 bg-secondary-500 px-6 py-3 text-white',
 								TextVariants.caption_14px_600
 							)}
-							disabled={Object.values(errors).length > 0 || !selectTag}
+							disabled={
+								Object.values(errors).length > 0 || !selectTag
+							}
 							onClick={handleConfirmImage}>
 							Áp dụng
 						</Button>

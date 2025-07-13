@@ -20,14 +20,11 @@ export const resetPassword = async ({
 	password_confirmation,
 }: ResetPasswordBody): Promise<IResetPassword> => {
 	try {
-		const response = await CallAPI().post(
-			`${AppEndpoint.RESET_PASSWORD}`,
-			{
-				email,
-				password,
-				password_confirmation,
-			}
-		);
+		const response = await CallAPI().post(`${AppEndpoint.RESET_PASSWORD}`, {
+			email,
+			password,
+			password_confirmation,
+		});
 		return response.data;
 	} catch (err: unknown) {
 		throw handleAPIError(err as AxiosError);

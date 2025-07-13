@@ -44,14 +44,24 @@ const DiscountApplication = () => {
 								field.onChange(val);
 								if (val === 'day_of_weeks') {
 									unregister('discountType.discount');
-									register('discountType.specificDaysDiscount');
-									const defaultDays = Array.from(weekDays, (day) => ({
-										day_of_week: day,
-										value: null,
-									}));
-									setValue('discountType.specificDaysDiscount', defaultDays);
+									register(
+										'discountType.specificDaysDiscount'
+									);
+									const defaultDays = Array.from(
+										weekDays,
+										(day) => ({
+											day_of_week: day,
+											value: null,
+										})
+									);
+									setValue(
+										'discountType.specificDaysDiscount',
+										defaultDays
+									);
 								} else {
-									unregister('discountType.specificDaysDiscount');
+									unregister(
+										'discountType.specificDaysDiscount'
+									);
 									register('discountType.discount');
 								}
 							}}>
@@ -68,7 +78,9 @@ const DiscountApplication = () => {
 										<Label
 											htmlFor={`type_room_${option.value}`}
 											containerClassName={'mb-0'}
-											className={'cursor-pointer text-neutral-600'}>
+											className={
+												'cursor-pointer text-neutral-600'
+											}>
 											{option.label}
 										</Label>
 									</div>
@@ -76,55 +88,103 @@ const DiscountApplication = () => {
 										(field.value === 'day_of_weeks' ? (
 											<FormField
 												control={control}
-												name={'discountType.specificDaysDiscount'}
+												name={
+													'discountType.specificDaysDiscount'
+												}
 												render={({}) => (
 													<FormItem>
 														<div
 															className={
 																'ml-7 grid grid-cols-1 gap-4 lg:grid-cols-7'
 															}>
-															{weekDays.map((day, i) => {
-																const currentValue =
-																	watch(
-																		'discountType.specificDaysDiscount'
-																	)?.find((item) => item.day_of_week === day)
-																		?.value ?? '';
+															{weekDays.map(
+																(day, i) => {
+																	const currentValue =
+																		watch(
+																			'discountType.specificDaysDiscount'
+																		)?.find(
+																			(
+																				item
+																			) =>
+																				item.day_of_week ===
+																				day
+																		)
+																			?.value ??
+																		'';
 
-																return (
-																	<div key={i} className={'space-y-1'}>
-																		<Typography
-																			tag={'p'}
-																			variant={'caption_14px_400'}
-																			className={'text-neutral-600'}>
-																			{day + 1 <= 7
-																				? `Thứ ${day + 1}`
-																				: 'Chủ nhật'}
-																		</Typography>
-																		<Input
-																			value={currentValue}
-																			onChange={(e) => {
-																				if (formatPercent(e.target.value) > 0) {
-																					setValue(
-																						`discountType.specificDaysDiscount.${i}.value`,
-																						formatPercent(e.target.value)
-																					);
-																				} else {
-																					setValue(
-																						`discountType.specificDaysDiscount.${i}.value`,
-																						null
-																					);
+																	return (
+																		<div
+																			key={
+																				i
+																			}
+																			className={
+																				'space-y-1'
+																			}>
+																			<Typography
+																				tag={
+																					'p'
 																				}
-																			}}
-																			placeholder={'% giảm giá'}
-																			className={'h-10 px-3 py-2'}
-																		/>
-																		<FieldErrorMessage
-																			errors={formState.errors}
-																			name={field.name}
-																		/>
-																	</div>
-																);
-															})}
+																				variant={
+																					'caption_14px_400'
+																				}
+																				className={
+																					'text-neutral-600'
+																				}>
+																				{day +
+																					1 <=
+																				7
+																					? `Thứ ${day + 1}`
+																					: 'Chủ nhật'}
+																			</Typography>
+																			<Input
+																				value={
+																					currentValue
+																				}
+																				onChange={(
+																					e
+																				) => {
+																					if (
+																						formatPercent(
+																							e
+																								.target
+																								.value
+																						) >
+																						0
+																					) {
+																						setValue(
+																							`discountType.specificDaysDiscount.${i}.value`,
+																							formatPercent(
+																								e
+																									.target
+																									.value
+																							)
+																						);
+																					} else {
+																						setValue(
+																							`discountType.specificDaysDiscount.${i}.value`,
+																							null
+																						);
+																					}
+																				}}
+																				placeholder={
+																					'% giảm giá'
+																				}
+																				className={
+																					'h-10 px-3 py-2'
+																				}
+																			/>
+																			<FieldErrorMessage
+																				errors={
+																					formState.errors
+																				}
+																				name={
+																					field.name
+																				}
+																			/>
+																		</div>
+																	);
+																}
+															)}
 														</div>
 														<FormMessage />
 													</FormItem>
@@ -135,20 +195,43 @@ const DiscountApplication = () => {
 												control={control}
 												name={`discountType.discount`}
 												render={({
-													field: { value, onChange, ...fieldProps },
+													field: {
+														value,
+														onChange,
+														...fieldProps
+													},
 												}) => (
 													<FormItem>
 														<FormControl>
-															<div className={'relative lg:w-[368px]'}>
+															<div
+																className={
+																	'relative lg:w-[368px]'
+																}>
 																<Input
-																	className={'h-[44px] w-full py-2 leading-6'}
-																	inputMode={'numeric'}
+																	className={
+																		'h-[44px] w-full py-2 leading-6'
+																	}
+																	inputMode={
+																		'numeric'
+																	}
 																	placeholder="Nhập số % giảm giá"
-																	endAdornment={'%'}
+																	endAdornment={
+																		'%'
+																	}
 																	{...fieldProps}
-																	value={value}
-																	onChange={(e) => {
-																		onChange(formatPercent(e.target.value));
+																	value={
+																		value
+																	}
+																	onChange={(
+																		e
+																	) => {
+																		onChange(
+																			formatPercent(
+																				e
+																					.target
+																					.value
+																			)
+																		);
 																	}}
 																/>
 															</div>
@@ -161,7 +244,10 @@ const DiscountApplication = () => {
 								</div>
 							))}
 						</RadioGroup>
-						<FieldErrorMessage errors={formState.errors} name={field.name} />
+						<FieldErrorMessage
+							errors={formState.errors}
+							name={field.name}
+						/>
 					</div>
 				)}
 			/>

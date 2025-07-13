@@ -1,5 +1,5 @@
 export interface RoomAmenitiesType {
-	[key: string]: string[]
+	[key: string]: string[];
 }
 
 export interface AmenityTypeItem {

@@ -10,7 +10,7 @@ export type ImageType = {
 	tag: string;
 	file: File | string;
 	image_id: number | null;
-	priority: number ;
+	priority: number;
 };
 
 const RoomImageList = ({
@@ -37,14 +37,14 @@ const RoomImageList = ({
 						className={'px-4 pb-2 pt-4 text-neutral-600'}
 						text={'Ảnh đang hoạt động'}
 					/>
-						<SortableList
-							list={imageListWatch}
-							onRemove={onRemove}
-							onEdit={onEdit}
-							onMove={(list) => {
-								setValue("images", list)
-							}}
-						/>
+					<SortableList
+						list={imageListWatch}
+						onRemove={onRemove}
+						onEdit={onEdit}
+						onMove={(list) => {
+							setValue('images', list);
+						}}
+					/>
 				</div>
 			) : (
 				<div
@@ -61,7 +61,8 @@ const RoomImageList = ({
 						tag={'p'}
 						variant={'caption_14px_500'}
 						className={'text-neutral-400'}>
-						Kéo thả hoặc duyệt ảnh ở cột bên trên để thêm ảnh phòng này
+						Kéo thả hoặc duyệt ảnh ở cột bên trên để thêm ảnh phòng
+						này
 					</Typography>
 				</div>
 			)}

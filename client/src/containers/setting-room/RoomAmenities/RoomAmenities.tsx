@@ -38,7 +38,7 @@ const RoomAmenities = ({ onNext }: RoomAmenitiesProps) => {
 		setServices,
 		fetchServiceList: fetchRoomServiceList,
 		serviceList: roomServiceList,
-		pointId: roomDetail.id
+		pointId: roomDetail.id,
 	});
 
 	return (

@@ -33,7 +33,9 @@ const schemaUploadFile = (isAlbumSchema: boolean) => {
 		});
 
 	return {
-		filesUpload: isAlbumSchema ? fileUploadSchema : fileUploadSchema.optional(),
+		filesUpload: isAlbumSchema
+			? fileUploadSchema
+			: fileUploadSchema.optional(),
 		imagesUpload: isAlbumSchema
 			? imageUploadSchema
 			: imageUploadSchema.optional(),
@@ -74,9 +76,9 @@ const checkErrorImage = async (file: string | File) => {
 	const errors: string[] = [];
 	if (file instanceof File) {
 		if (
-			!ALLOW_FILE_TYPE.map((type) => `image/${type.toLowerCase()}`).includes(
-				file.type
-			)
+			!ALLOW_FILE_TYPE.map(
+				(type) => `image/${type.toLowerCase()}`
+			).includes(file.type)
 		) {
 			errors.push(`định dạng JPG/JPEG`);
 		}

@@ -11,7 +11,7 @@ const Page = async () => {
 		<DashboardContainer>
 			<DashboardHeroTitle pathName={pathName} title={'Loại giá'} />
 			<DashboardCard>
-				<PriceTable/>
+				<PriceTable />
 			</DashboardCard>
 		</DashboardContainer>
 	);

@@ -22,7 +22,7 @@ type FormData = { [key: string]: boolean };
 export default function PolicyGeneral({ className }: Props) {
 	const router = useRouter();
 	const { data, fetchGeneralPolicy } = useGeneralPolicyStore();
-	const setLoading = useLoadingStore(state => state.setLoading);
+	const setLoading = useLoadingStore((state) => state.setLoading);
 	const { handleSubmit, reset, control } = useForm<FormData>();
 
 	const onSubmit = async (formData: FormData) => {
@@ -55,7 +55,10 @@ export default function PolicyGeneral({ className }: Props) {
 		if (data) {
 			reset(
 				Object.fromEntries(
-					data.map((policy) => [policy.id, !!policy.policy_general?.is_allow])
+					data.map((policy) => [
+						policy.id,
+						!!policy.policy_general?.is_allow,
+					])
 				)
 			);
 		}
@@ -64,7 +67,9 @@ export default function PolicyGeneral({ className }: Props) {
 	return (
 		<>
 			{(data?.length ?? 0) > 0 ? (
-				<form onSubmit={handleSubmit(onSubmit)} className={cn('', className)}>
+				<form
+					onSubmit={handleSubmit(onSubmit)}
+					className={cn('', className)}>
 					<ul className={'flex flex-col gap-6'}>
 						{data?.map((item) => (
 							<li
@@ -82,15 +87,21 @@ export default function PolicyGeneral({ className }: Props) {
 									name={String(item.id)}
 									render={({ field }) => (
 										<RadioGroup
-											onValueChange={(val) => field.onChange(val === 'true')}
+											onValueChange={(val) =>
+												field.onChange(val === 'true')
+											}
 											defaultValue={String(field.value)}
-											className={'flex flex-1 items-center'}>
+											className={
+												'flex flex-1 items-center'
+											}>
 											<div className="flex gap-6">
 												<div className="flex items-center space-x-2">
 													<RadioGroupItem
 														id={`yes-${item.id}`}
 														value="true"
-														checked={field.value === true}
+														checked={
+															field.value === true
+														}
 														className="border-2 border-other-divider data-[state=checked]:border-secondary-500"
 													/>
 													<label
@@ -105,7 +116,10 @@ export default function PolicyGeneral({ className }: Props) {
 													<RadioGroupItem
 														id={`no-${item.id}`}
 														value="false"
-														checked={field.value === false}
+														checked={
+															field.value ===
+															false
+														}
 														className="border-2 border-other-divider data-[state=checked]:border-secondary-500"
 													/>
 													<label
@@ -125,7 +139,9 @@ export default function PolicyGeneral({ className }: Props) {
 						))}
 					</ul>
 					<ButtonActionGroup
-						actionCancel={() => router.push(DashboardRouter.policyChildren)}
+						actionCancel={() =>
+							router.push(DashboardRouter.policyChildren)
+						}
 					/>
 				</form>
 			) : (

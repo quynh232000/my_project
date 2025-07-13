@@ -5,7 +5,8 @@ import { MAX_AGE_VALUE } from '@/containers/setting-room/RoomGeneralSetting/comm
 export const mapToLabelValue = (
 	items: { id: string | number; name: string }[]
 ) =>
-	items && items.map((item) => ({
+	items &&
+	items.map((item) => ({
 		label: item.name,
 		value: item.id,
 	}));
@@ -17,7 +18,7 @@ export function mapRoomDetailToRoomConfiguration(
 		setup: {
 			type_id: data.type_id,
 			name_id: data.name_id,
-			name: data.name ?? "",
+			name: data.name ?? '',
 			direction_id: data.direction_id,
 			quantity: data.quantity,
 			status: data.status === 'active', // 'active' => true, 'inactive' => false
@@ -48,7 +49,8 @@ export function mapRoomDetailToRoomConfiguration(
 			hasExtraBed: data.extra_beds.length > 0,
 			extra_beds: data.extra_beds.map((item) => ({
 				...item,
-				age_to: item.age_to === null ? Number(MAX_AGE_VALUE) : item.age_to,
+				age_to:
+					item.age_to === null ? Number(MAX_AGE_VALUE) : item.age_to,
 			})),
 		},
 	};

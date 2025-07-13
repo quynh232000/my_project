@@ -6,11 +6,17 @@ import ExtraBed from '@/containers/policy/other-policies/extra-bed/ExtraBed';
 
 // CHÍNH SÁCH NÔI/CŨI GIƯỜNG PHỤ
 export default async function Page() {
-	const { pathName } = await getFullURLServerComponent()
-	return <DashboardContainer>
-		<DashboardHeroTitle className='text-2xl leading-8 font-bold' title={"Nôi/cũi và giường phụ"} pathName={pathName} />
-		<DashboardCard>
-			<ExtraBed />
-		</DashboardCard>
-	</DashboardContainer>
+	const { pathName } = await getFullURLServerComponent();
+	return (
+		<DashboardContainer>
+			<DashboardHeroTitle
+				className="text-2xl font-bold leading-8"
+				title={'Nôi/cũi và giường phụ'}
+				pathName={pathName}
+			/>
+			<DashboardCard>
+				<ExtraBed />
+			</DashboardCard>
+		</DashboardContainer>
+	);
 }

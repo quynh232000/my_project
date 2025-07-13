@@ -3,7 +3,6 @@ import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import Item, { ItemProps } from '@/containers/album-manager/common/Item';
 
-
 const SortableItem: FC<ItemProps> = (props) => {
 	const {
 		isDragging,

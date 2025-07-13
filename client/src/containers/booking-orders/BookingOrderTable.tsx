@@ -51,7 +51,8 @@ const renderDateOrder = (date: TCellType) => {
 				variant={'caption_12px_500'}
 				className={'text-neutral-400'}>
 				{Math.ceil(
-					(data.to.getTime() - data.from.getTime()) / (1000 * 60 * 60 * 24)
+					(data.to.getTime() - data.from.getTime()) /
+						(1000 * 60 * 60 * 24)
 				)}{' '}
 				đêm
 			</Typography>

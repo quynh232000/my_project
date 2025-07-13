@@ -66,7 +66,8 @@ export const promotionSchema = validate.object({
 						day_of_week: validate.number(),
 						value: validate
 							.number({
-								required_error: 'Vui lòng nhập % giảm giá cho từng ngày',
+								required_error:
+									'Vui lòng nhập % giảm giá cho từng ngày',
 							})
 							.min(0, 'Tối thiểu 0%')
 							.max(100, 'Tối đa 100%')
@@ -78,7 +79,8 @@ export const promotionSchema = validate.object({
 		.refine(
 			(data) => {
 				return !(
-					(data.type === 'each_nights' || data.type === 'first_night') &&
+					(data.type === 'each_nights' ||
+						data.type === 'first_night') &&
 					data.discount === undefined
 				);
 			},
@@ -92,8 +94,9 @@ export const promotionSchema = validate.object({
 				!(
 					data.type === 'day_of_weeks' &&
 					(!data.specificDaysDiscount ||
-						data.specificDaysDiscount.filter((d) => d.value !== null).length ===
-							0)
+						data.specificDaysDiscount.filter(
+							(d) => d.value !== null
+						).length === 0)
 				),
 			{
 				message: 'Phải nhập ít nhất 1 ngày có giảm giá',
@@ -118,7 +121,8 @@ export const promotionSchema = validate.object({
 		.refine(
 			(data) => {
 				return !(
-					data.end_date && data.end_date?.getTime() < data.start_date?.getTime()
+					data.end_date &&
+					data.end_date?.getTime() < data.start_date?.getTime()
 				);
 			},
 			{

@@ -7,7 +7,7 @@ export type TQueryParams = {
 	page?: number;
 	status?: string;
 	search?: string;
-}
+};
 
 export interface PromotionStore {
 	promotionList: IPromotionItem[] | undefined;

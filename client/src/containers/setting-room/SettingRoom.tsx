@@ -27,20 +27,27 @@ export default function SettingRoom({ isEdit, roomDetail }: SettingRoomProps) {
 			setServices: state.setServices,
 		}))
 	);
-	const {updateTab, selectedIndex} = useTabStateWithQueryParam(tabDefs);
+	const { updateTab, selectedIndex } = useTabStateWithQueryParam(tabDefs);
 
 	const handleNext = useCallback(() => {
-		if (!roomDetail || !roomDetail?.id || selectedIndex === tabDefs.length - 1) {
+		if (
+			!roomDetail ||
+			!roomDetail?.id ||
+			selectedIndex === tabDefs.length - 1
+		) {
 			return router.back();
 		}
 		updateTab(selectedIndex !== null ? selectedIndex + 1 : 0);
 	}, [roomDetail, selectedIndex, router, updateTab]);
 
-	const components = useMemo(() => [
-		<RoomGeneralSetting key={1} onNext={handleNext} />,
-		<RoomImageSetting key={2} onNext={handleNext} />,
-		<RoomAmenities key={3} onNext={handleNext} />,
-	], [handleNext])
+	const components = useMemo(
+		() => [
+			<RoomGeneralSetting key={1} onNext={handleNext} />,
+			<RoomImageSetting key={2} onNext={handleNext} />,
+			<RoomAmenities key={3} onNext={handleNext} />,
+		],
+		[handleNext]
+	);
 
 	const renderTabs = useCallback(() => {
 		return tabDefs.map((tab, index) =>
@@ -85,7 +92,6 @@ export default function SettingRoom({ isEdit, roomDetail }: SettingRoomProps) {
 			setServices(undefined);
 		};
 	}, [setAlbum, setServices]);
-
 
 	return (
 		<>

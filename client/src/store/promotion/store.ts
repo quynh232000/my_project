@@ -10,7 +10,7 @@ export const usePromotionStore = create<PromotionStore>((set, get) => ({
 	pagination: {} as IPromotionResponse['meta'],
 	fetchPromotionList: async ({ force = false, query }) => {
 		if (!get().promotionList || force) {
-			const promotionList = await getPromotionList({query});
+			const promotionList = await getPromotionList({ query });
 			if (promotionList) {
 				return set({
 					promotionList: promotionList.data.items,

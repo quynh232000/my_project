@@ -42,14 +42,21 @@ export default function IntroductionInfo() {
 											placeholder="2015"
 											maxLength={4}
 											inputMode={'numeric'}
-											className={'h-[44px] py-2 leading-6'}
+											className={
+												'h-[44px] py-2 leading-6'
+											}
 											{...field}
 											value={
-												field.value && !Number.isNaN(field.value)
+												field.value &&
+												!Number.isNaN(field.value)
 													? field.value
 													: ''
 											}
-											onChange={(e) => field.onChange(Number(e.target.value))}
+											onChange={(e) =>
+												field.onChange(
+													Number(e.target.value)
+												)
+											}
 										/>
 									</FormControl>
 									<FormMessage />
@@ -61,7 +68,9 @@ export default function IntroductionInfo() {
 						<FormField
 							name="introduction.bar_count"
 							control={control}
-							render={({ field: { value, onChange, ...props } }) => (
+							render={({
+								field: { value, onChange, ...props },
+							}) => (
 								<FormItem className={'col-span-1 space-y-2'}>
 									<FormLabel required>Số quán bar</FormLabel>
 									<FormControl>
@@ -70,10 +79,16 @@ export default function IntroductionInfo() {
 											inputMode={'numeric'}
 											value={value}
 											suffix={''}
-											className={'h-[44px] py-2 leading-6'}
+											className={
+												'h-[44px] py-2 leading-6'
+											}
 											{...props}
 											onValueChange={(e) => {
-												onChange(e.value.length === 0 ? '' : Number(e.value));
+												onChange(
+													e.value.length === 0
+														? ''
+														: Number(e.value)
+												);
 											}}
 										/>
 									</FormControl>
@@ -86,7 +101,9 @@ export default function IntroductionInfo() {
 						<FormField
 							name="introduction.floor_count"
 							control={control}
-							render={({ field: { value, onChange, ...props } }) => (
+							render={({
+								field: { value, onChange, ...props },
+							}) => (
 								<FormItem className={'col-span-1 space-y-2'}>
 									<FormLabel required>Số tầng</FormLabel>
 									<FormControl>
@@ -95,10 +112,16 @@ export default function IntroductionInfo() {
 											inputMode={'numeric'}
 											suffix={''}
 											value={value}
-											className={'h-[44px] py-2 leading-6'}
+											className={
+												'h-[44px] py-2 leading-6'
+											}
 											{...props}
 											onValueChange={(e) => {
-												onChange(e.value.length === 0 ? '' : Number(e.value));
+												onChange(
+													e.value.length === 0
+														? ''
+														: Number(e.value)
+												);
 											}}
 										/>
 									</FormControl>
@@ -113,7 +136,9 @@ export default function IntroductionInfo() {
 						<FormField
 							name="introduction.restaurant_count"
 							control={control}
-							render={({ field: { value, onChange, ...props } }) => (
+							render={({
+								field: { value, onChange, ...props },
+							}) => (
 								<FormItem className={'col-span-1 space-y-2'}>
 									<FormLabel required>Số nhà hàng</FormLabel>
 									<FormControl>
@@ -123,9 +148,15 @@ export default function IntroductionInfo() {
 											suffix={''}
 											value={value}
 											{...props}
-											className={'h-[44px] py-2 leading-6'}
+											className={
+												'h-[44px] py-2 leading-6'
+											}
 											onValueChange={(e) => {
-												onChange(e.value.length === 0 ? '' : Number(e.value));
+												onChange(
+													e.value.length === 0
+														? ''
+														: Number(e.value)
+												);
 											}}
 										/>
 									</FormControl>
@@ -138,9 +169,13 @@ export default function IntroductionInfo() {
 						<FormField
 							name="introduction.language"
 							control={control}
-							render={({ field: { value, onChange, ...props } }) => (
+							render={({
+								field: { value, onChange, ...props },
+							}) => (
 								<FormItem className={'col-span-1 space-y-2'}>
-									<FormLabel required>Ngôn ngữ hỗ trợ</FormLabel>
+									<FormLabel required>
+										Ngôn ngữ hỗ trợ
+									</FormLabel>
 									<FormControl>
 										<SelectPopup
 											placeholder={'Chọn ngôn ngữ hỗ trợ'}
@@ -167,7 +202,10 @@ export default function IntroductionInfo() {
 					render={({ field }) => (
 						<FormItem>
 							<FormControl>
-								<Editor content={field.value ?? ''} onChange={field.onChange} />
+								<Editor
+									content={field.value ?? ''}
+									onChange={field.onChange}
+								/>
 							</FormControl>
 							<FormMessage />
 						</FormItem>

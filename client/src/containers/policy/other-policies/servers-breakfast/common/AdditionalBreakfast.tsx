@@ -47,8 +47,10 @@ export default function AdditionalBreakfast() {
 				(row, index) =>
 					index === 0 ||
 					(!row.age_to &&
-						+(extra_breakfast?.[index - 1]?.age_to ?? 0) < ageLimit) ||
-					+(extra_breakfast?.[index - 1]?.age_to ?? 0) < (row.age_to ?? 0)
+						+(extra_breakfast?.[index - 1]?.age_to ?? 0) <
+							ageLimit) ||
+					+(extra_breakfast?.[index - 1]?.age_to ?? 0) <
+						(row.age_to ?? 0)
 			);
 
 			if (rows.length !== extra_breakfast.length) {
@@ -58,7 +60,8 @@ export default function AdditionalBreakfast() {
 				);
 			} else if (isGapInvalid) {
 				const newRows = extra_breakfast.map((row, index, arr) => {
-					const prevAgeTo = index === 0 ? 0 : (arr[index - 1]?.age_to ?? 0);
+					const prevAgeTo =
+						index === 0 ? 0 : (arr[index - 1]?.age_to ?? 0);
 					return {
 						...row,
 						age_from: prevAgeTo,
@@ -77,7 +80,8 @@ export default function AdditionalBreakfast() {
 			...(extra_breakfast ? [...extra_breakfast] : []),
 			{
 				age_from: Number(
-					extra_breakfast && extra_breakfast[extra_breakfast.length - 1].age_to
+					extra_breakfast &&
+						extra_breakfast[extra_breakfast.length - 1].age_to
 				),
 				age_to: null,
 				fee_type: 'free',
@@ -93,11 +97,17 @@ export default function AdditionalBreakfast() {
 	};
 
 	const getValidOption = (index: number) => {
-		const data = (extra_breakfast ? [...extra_breakfast] : []).slice(0, index);
-		const maxAge = Math.max(...data.map((item) => +(item.age_to as number)));
-		return [...ageRanges, { label: 'Trở lên', value: MAX_AGE_VALUE }].filter(
-			(item) => +item.value > maxAge
+		const data = (extra_breakfast ? [...extra_breakfast] : []).slice(
+			0,
+			index
 		);
+		const maxAge = Math.max(
+			...data.map((item) => +(item.age_to as number))
+		);
+		return [
+			...ageRanges,
+			{ label: 'Trở lên', value: MAX_AGE_VALUE },
+		].filter((item) => +item.value > maxAge);
 	};
 
 	const errorMessages = useMemo(() => {
@@ -165,10 +175,14 @@ export default function AdditionalBreakfast() {
 								<TableCell
 									className={cn(
 										'grid w-full grid-cols-2 gap-4 border border-t-0 py-3',
-										index + 1 === array.length && 'rounded-bl-lg'
+										index + 1 === array.length &&
+											'rounded-bl-lg'
 									)}>
 									<div className={'space-y-2'}>
-										<div className={'flex items-center gap-2'}>
+										<div
+											className={
+												'flex items-center gap-2'
+											}>
 											<Typography
 												tag={'span'}
 												variant={'caption_14px_400'}
@@ -200,35 +214,61 @@ export default function AdditionalBreakfast() {
 													},
 												}
 											: {})}
-										render={({ field: { value, onChange } }) => (
+										render={({
+											field: { value, onChange },
+										}) => (
 											<div className={'space-y-2'}>
-												<div className={'flex items-center gap-2'}>
+												<div
+													className={
+														'flex items-center gap-2'
+													}>
 													<Typography
 														tag={'span'}
-														variant={'caption_14px_400'}
+														variant={
+															'caption_14px_400'
+														}
 														text={'Đến'}
-														className={'text-neutral-600'}
+														className={
+															'text-neutral-600'
+														}
 													/>
 													<SelectPopup
 														placeholder="Chọn độ tuổi"
 														labelClassName="hidden"
 														searchInput={false}
 														className="h-6 overflow-hidden rounded-lg border-none bg-neutral-50 px-2 py-0"
-														data={getValidOption(index)}
-														selectedValue={value ?? undefined}
-														onChange={(value) => onChange(Number(value))}
+														data={getValidOption(
+															index
+														)}
+														selectedValue={
+															value ?? undefined
+														}
+														onChange={(value) =>
+															onChange(
+																Number(value)
+															)
+														}
 													/>
 												</div>
 											</div>
 										)}
 									/>
 								</TableCell>
-								<TableCell className={'w-[190px] border-b border-t-0 py-3'}>
+								<TableCell
+									className={
+										'w-[190px] border-b border-t-0 py-3'
+									}>
 									<Controller
 										name={`breakfast.extra_breakfast.${index}.fee_type`}
 										control={control}
-										rules={{ deps: [`breakfast.extra_breakfast.${index}.fee`] }}
-										render={({ field: { value, onChange, name } }) => (
+										rules={{
+											deps: [
+												`breakfast.extra_breakfast.${index}.fee`,
+											],
+										}}
+										render={({
+											field: { value, onChange, name },
+										}) => (
 											<div className={'flex-1 space-y-2'}>
 												<SelectPopup
 													labelClassName="hidden"
@@ -250,10 +290,12 @@ export default function AdditionalBreakfast() {
 								<TableCell
 									className={cn(
 										'w-[175px] border border-t-0 py-3',
-										index + 1 === array.length && 'rounded-br-lg'
+										index + 1 === array.length &&
+											'rounded-br-lg'
 									)}>
-									{getValues(`breakfast.extra_breakfast.${index}.fee_type`) ===
-									'free' ? (
+									{getValues(
+										`breakfast.extra_breakfast.${index}.fee_type`
+									) === 'free' ? (
 										<Typography
 											tag={'span'}
 											variant={'caption_14px_400'}
@@ -264,9 +306,17 @@ export default function AdditionalBreakfast() {
 										<Controller
 											name={`breakfast.extra_breakfast.${index}.fee`}
 											control={control}
-											render={({ field: { value, onChange, ...props } }) => (
+											render={({
+												field: {
+													value,
+													onChange,
+													...props
+												},
+											}) => (
 												<div
-													className={'flex items-center justify-between gap-2'}>
+													className={
+														'flex items-center justify-between gap-2'
+													}>
 													<NumberInput
 														inputMode={'numeric'}
 														placeholder="1,200,000đ"
@@ -280,14 +330,24 @@ export default function AdditionalBreakfast() {
 														value={value}
 														onValueChange={(e) => {
 															onChange(
-																e.value.length === 0 ? NaN : Number(e.value)
+																e.value
+																	.length ===
+																	0
+																	? NaN
+																	: Number(
+																			e.value
+																		)
 															);
 														}}
 													/>
 													<Typography
 														tag={'span'}
-														variant={'caption_14px_400'}
-														className={'text-neutral-600'}>
+														variant={
+															'caption_14px_400'
+														}
+														className={
+															'text-neutral-600'
+														}>
 														đ/người
 													</Typography>
 												</div>
@@ -295,8 +355,12 @@ export default function AdditionalBreakfast() {
 										/>
 									)}
 								</TableCell>
-								<TableCell className={'w-[50px] !bg-white py-3'}>
-									<div className={'flex flex-row items-center gap-3'}>
+								<TableCell
+									className={'w-[50px] !bg-white py-3'}>
+									<div
+										className={
+											'flex flex-row items-center gap-3'
+										}>
 										{index > 0 && (
 											<IconTrash
 												onClick={() => onRemove(index)}
@@ -311,7 +375,9 @@ export default function AdditionalBreakfast() {
 					{errorMessages && (
 						<TableFooter>
 							<TableRow>
-								<TableCell colSpan={9999} className="!bg-white pl-0">
+								<TableCell
+									colSpan={9999}
+									className="!bg-white pl-0">
 									<div className="flex flex-row items-center gap-2 rounded-lg bg-red-50 px-4 py-3">
 										<IconExclamationCircle
 											color={GlobalUI.colors.red['500']}
@@ -339,10 +405,15 @@ export default function AdditionalBreakfast() {
 							key={index}
 							className={'mt-3 flex items-center'}
 							onClick={onAdd}>
-							<IconPlus color={'#2A85FF'} className="!h-[16px] !w-[16px]" />
+							<IconPlus
+								color={'#2A85FF'}
+								className="!h-[16px] !w-[16px]"
+							/>
 							<Typography
 								tag="p"
-								className={'ml-2 text-left text-base text-secondary-500'}
+								className={
+									'ml-2 text-left text-base text-secondary-500'
+								}
 								text="Thêm hàng"
 							/>
 						</button>

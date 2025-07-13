@@ -69,9 +69,11 @@ export default function DepositPolicy() {
 	useEffect(() => {
 		(async () => {
 			setLoading(true);
-			const data = await getPolicyOtherDetail<TPolicyDeposit['settings']>({
-				slug: 'deposit-policy',
-			});
+			const data = await getPolicyOtherDetail<TPolicyDeposit['settings']>(
+				{
+					slug: 'deposit-policy',
+				}
+			);
 			if (data) {
 				methods.reset({
 					isActive: data.is_active,
@@ -79,7 +81,8 @@ export default function DepositPolicy() {
 						? {
 								...data.settings,
 								method_deposit: data.settings?.method_deposit,
-								type_deposit: data.settings?.type_deposit as EDepositAmountType,
+								type_deposit: data.settings
+									?.type_deposit as EDepositAmountType,
 							}
 						: undefined,
 				});

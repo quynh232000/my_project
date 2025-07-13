@@ -1,8 +1,8 @@
 import { z } from 'zod';
 
 export enum EPaymentInformationType {
-	PERSONAL = "personal",
-	BUSINESS = "business",
+	PERSONAL = 'personal',
+	BUSINESS = 'business',
 }
 
 export enum EPaymentInformationStatus {
@@ -18,9 +18,7 @@ export const PaymentInformationSchema = z.object({
 	bank_id: z
 		.number({ message: 'Vui lòng chọn ngân hàng' })
 		.min(1, 'Vui lòng chọn ngân hàng'),
-	bank_branch: z
-		.string()
-		.optional(),
+	bank_branch: z.string().optional(),
 	name_account: z
 		.string({
 			message: 'Vui lòng nhập tên tài khoản',
@@ -35,24 +33,26 @@ export const PaymentInformationSchema = z.object({
 	status: z.nativeEnum(EPaymentInformationStatus).optional(),
 	is_default: z.number().optional(),
 	name_company: z
-		.string().min(1, { message: "Vui lòng nhập tên công ty" })
+		.string()
+		.min(1, { message: 'Vui lòng nhập tên công ty' })
 		.optional(),
 	contact_person: z
-		.string().min(1, { message: "Vui lòng nhập tên liên hệ" })
+		.string()
+		.min(1, { message: 'Vui lòng nhập tên liên hệ' })
 		.optional(),
-	address: z
-		.string().min(1, { message: "Vui lòng nhập địa chỉ" })
-		.optional(),
+	address: z.string().min(1, { message: 'Vui lòng nhập địa chỉ' }).optional(),
 	tax_code: z
-		.string().min(1, { message: "Vui lòng nhập mã số thuế" })
+		.string()
+		.min(1, { message: 'Vui lòng nhập mã số thuế' })
 		.optional(),
 	email: z
-		.string().email({ message: "Email không đúng định dạng" })
+		.string()
+		.email({ message: 'Email không đúng định dạng' })
 		.optional(),
 	phone: z
-		.string().min(8, { message: "Vui lòng nhập số điện thoại hợp lệ" })
+		.string()
+		.min(8, { message: 'Vui lòng nhập số điện thoại hợp lệ' })
 		.optional(),
 });
-
 
 export type PaymentInformationForm = z.infer<typeof PaymentInformationSchema>;

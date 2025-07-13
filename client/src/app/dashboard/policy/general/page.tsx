@@ -6,11 +6,16 @@ import PolicyGeneral from '@/containers/policy/policy-general/PolicyGeneral';
 
 // CHÍNH SÁCH CHUNG
 export default async function Page() {
-	const { pathName } = await getFullURLServerComponent()
-	return <DashboardContainer>
-		<DashboardHeroTitle title={"Chính sách chung"} pathName={pathName} />
-		<DashboardCard>
-			<PolicyGeneral />
-		</DashboardCard>
-	</DashboardContainer>
+	const { pathName } = await getFullURLServerComponent();
+	return (
+		<DashboardContainer>
+			<DashboardHeroTitle
+				title={'Chính sách chung'}
+				pathName={pathName}
+			/>
+			<DashboardCard>
+				<PolicyGeneral />
+			</DashboardCard>
+		</DashboardContainer>
+	);
 }

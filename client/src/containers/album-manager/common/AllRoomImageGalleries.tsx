@@ -26,8 +26,8 @@ const AllRoomImageGalleries = () => {
 	useEffect(() => {
 		(async () => {
 			setLoading(true);
-			await Promise.all([fetchRoomList(), fetchImageRoomList()]).finally(() =>
-				setLoading(false)
+			await Promise.all([fetchRoomList(), fetchImageRoomList()]).finally(
+				() => setLoading(false)
 			);
 		})();
 	}, []);
@@ -36,7 +36,10 @@ const AllRoomImageGalleries = () => {
 		if (albumHotel && roomList && roomList.length > 0) {
 			setRoomImage(
 				roomList.filter(
-					(item) => !Object.keys(albumHotel?.rooms).includes(String(item.id))
+					(item) =>
+						!Object.keys(albumHotel?.rooms).includes(
+							String(item.id)
+						)
 				)
 			);
 		}

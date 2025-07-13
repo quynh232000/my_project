@@ -10,9 +10,13 @@ const Page = async () => {
 	const { pathName } = await getFullURLServerComponent();
 	return (
 		<DashboardContainer>
-			<DashboardHeroTitle pathName={pathName} title={'Đơn đặt phòng'} extraTitle={<BookingOrderActions/>}/>
-			<DashboardCard className={"lg:p-4 bg-other-white"}>
-				<BookingOrderTable/>
+			<DashboardHeroTitle
+				pathName={pathName}
+				title={'Đơn đặt phòng'}
+				extraTitle={<BookingOrderActions />}
+			/>
+			<DashboardCard className={'bg-other-white lg:p-4'}>
+				<BookingOrderTable />
 			</DashboardCard>
 		</DashboardContainer>
 	);

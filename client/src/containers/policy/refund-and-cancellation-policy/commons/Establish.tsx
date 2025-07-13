@@ -171,9 +171,14 @@ export default function Establish() {
 					) : (
 						<CancellationTimeline
 							cancelable={
-								global ? global.status === CancelPolicyStatus.ACTIVE : false
+								global
+									? global.status ===
+										CancelPolicyStatus.ACTIVE
+									: false
 							}
-							policyRow={global?.cancel_rules ? global?.cancel_rules : []}
+							policyRow={
+								global?.cancel_rules ? global?.cancel_rules : []
+							}
 						/>
 					)}
 				</div>
@@ -194,8 +199,13 @@ export default function Establish() {
 								policy={policy}
 								key={index}
 								onChangeActive={(id, isActive) => {
-									if (isActive || policy.price_types?.length === 0) {
-										const policyItem = local?.find((item) => item.id === id);
+									if (
+										isActive ||
+										policy.price_types?.length === 0
+									) {
+										const policyItem = local?.find(
+											(item) => item.id === id
+										);
 										if (policyItem) {
 											policyItem.status = isActive
 												? CancelPolicyStatus.ACTIVE
@@ -250,7 +260,8 @@ export default function Establish() {
 					<DialogContent
 						hideButtonClose
 						className={`p-8 ${dialog?.type === 'edit' && 'max-h-[90vh] w-[1200px] max-w-[90vw] overflow-y-auto'}`}>
-						{dialog?.type === 'updateStatus' || dialog?.type === 'delete' ? (
+						{dialog?.type === 'updateStatus' ||
+						dialog?.type === 'delete' ? (
 							<>
 								<DialogHeader>
 									<DialogTitle className="text-2xl font-semibold leading-8">
@@ -259,7 +270,8 @@ export default function Establish() {
 											: 'Xoá chính sách?'}
 									</DialogTitle>
 									<DialogDescription className="!mt-4 text-base font-normal leading-6">
-										{editedPolicy?.code} - {editedPolicy?.name}
+										{editedPolicy?.code} -{' '}
+										{editedPolicy?.name}
 									</DialogDescription>
 								</DialogHeader>
 								{editedPolicy?.price_types &&
@@ -278,13 +290,15 @@ export default function Establish() {
 													/>
 												</div>
 												<ul className="mt-[5px] list-none pl-8">
-													{editedPolicy?.price_types?.map((item, key) => (
-														<li
-															key={key}
-															className="text-base font-normal leading-6">
-															{item.name}
-														</li>
-													))}
+													{editedPolicy?.price_types?.map(
+														(item, key) => (
+															<li
+																key={key}
+																className="text-base font-normal leading-6">
+																{item.name}
+															</li>
+														)
+													)}
 												</ul>
 											</div>
 											<Typography variant="caption_14px_400">
@@ -292,8 +306,10 @@ export default function Establish() {
 												{dialog?.type === 'updateStatus'
 													? 'ngưng kích hoạt'
 													: 'xoá'}
-												, phòng này sẽ được tự động áp dụng theo chính sách
-												chung của khách sạn. Bạn vẫn muốn tiếp tục?
+												, phòng này sẽ được tự động áp
+												dụng theo chính sách chung của
+												khách sạn. Bạn vẫn muốn tiếp
+												tục?
 											</Typography>
 										</>
 									)}
@@ -301,23 +317,39 @@ export default function Establish() {
 								<div className="mt-6 flex w-full justify-center gap-4">
 									<Button
 										variant={'secondary'}
-										onClick={() => setDialog({ ...dialog, isOpen: false })}>
+										onClick={() =>
+											setDialog({
+												...dialog,
+												isOpen: false,
+											})
+										}>
 										Hủy
 									</Button>
 									<Button
 										variant={'destructive'}
 										onClick={() => {
 											if (dialog?.id) {
-												if (dialog?.type === 'updateStatus') {
-													const policyItem = local?.find(
-														(item) => item.id === dialog?.id
-													);
+												if (
+													dialog?.type ===
+													'updateStatus'
+												) {
+													const policyItem =
+														local?.find(
+															(item) =>
+																item.id ===
+																dialog?.id
+														);
 													if (policyItem) {
-														policyItem.status = CancelPolicyStatus.INACTIVE;
-														handleUpdatePolicy(policyItem);
+														policyItem.status =
+															CancelPolicyStatus.INACTIVE;
+														handleUpdatePolicy(
+															policyItem
+														);
 													}
 												} else {
-													handleDeletePolicy(dialog?.id);
+													handleDeletePolicy(
+														dialog?.id
+													);
 												}
 											}
 										}}>
@@ -330,13 +362,17 @@ export default function Establish() {
 						) : (
 							<>
 								<DialogHeader>
-									<DialogTitle>Chỉnh sửa chính sách</DialogTitle>
+									<DialogTitle>
+										Chỉnh sửa chính sách
+									</DialogTitle>
 									<DialogDescription>
 										Bạn sẽ chỉnh sửa chính sách ở đây
 									</DialogDescription>
 								</DialogHeader>
 								<SeparateCancellationPolicyForm
-									onCancel={() => setDialog({ ...dialog, isOpen: false })}
+									onCancel={() =>
+										setDialog({ ...dialog, isOpen: false })
+									}
 									defaultValues={
 										editedPolicy
 											? {
@@ -344,8 +380,11 @@ export default function Establish() {
 													code: editedPolicy?.code,
 													name: editedPolicy?.name,
 													status:
-														editedPolicy?.status === CancelPolicyStatus.ACTIVE,
-													rows: editedPolicy?.cancel_rules ?? [],
+														editedPolicy?.status ===
+														CancelPolicyStatus.ACTIVE,
+													rows:
+														editedPolicy?.cancel_rules ??
+														[],
 												}
 											: undefined
 									}

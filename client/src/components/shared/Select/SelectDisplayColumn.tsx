@@ -22,7 +22,6 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { TextVariants } from '@/components/shared/Typography/TextVariants';
 import { GlobalUI } from '@/themes/type';
 
-
 interface SelectCheckboxProps<TValue extends string = string> {
 	onChange?: (value: string) => void;
 	data?: TSelectColumn[];
@@ -79,7 +78,9 @@ const SelectDisplayColumn = <TValue extends string>({
 								width={12}
 								height={12}
 								color={
-									isIconChevronLight ? '#fff' : GlobalUI.colors.neutrals['400']
+									isIconChevronLight
+										? '#fff'
+										: GlobalUI.colors.neutrals['400']
 								}
 							/>
 						</div>
@@ -102,14 +103,20 @@ const SelectDisplayColumn = <TValue extends string>({
 					)}>
 					<Command
 						filter={(value, search) => {
-							return normalizeText(value).includes(normalizeText(search))
+							return normalizeText(value).includes(
+								normalizeText(search)
+							)
 								? 1
 								: 0;
 						}}>
 						<CommandList>
-							<ScrollArea className={cn('h-auto', props.classItemList)}>
-								<CommandEmpty>Không tìm thấy lựa chọn</CommandEmpty>
-								<CommandGroup className={'m-0 bg-other-white px-3 py-2'}>
+							<ScrollArea
+								className={cn('h-auto', props.classItemList)}>
+								<CommandEmpty>
+									Không tìm thấy lựa chọn
+								</CommandEmpty>
+								<CommandGroup
+									className={'m-0 bg-other-white px-3 py-2'}>
 									{props.data &&
 										props.data.length > 0 &&
 										props.data.map((item) => {
@@ -122,21 +129,47 @@ const SelectDisplayColumn = <TValue extends string>({
 													value={item.value}
 													title={item.value}
 													onSelect={() => {
-														props.onChange?.(item.value);
+														props.onChange?.(
+															item.value
+														);
 													}}>
-													<div className={'flex w-full items-center gap-2'}>
+													<div
+														className={
+															'flex w-full items-center gap-2'
+														}>
 														<Checkbox
 															id={`checkbox_${item.value}`}
-															checked={props.columns?.includes(item.value as TValue)}
-															onCheckedChange={(checked) => {
-																const current = props.columns ?? [];
-																const isIncluded = current.includes(item.value as TValue);
-																const newList = checked
-																	? isIncluded
-																		? current
-																		: [...current, item.value as TValue]
-																	: current.filter((column) => column !== item.value);
-																props.handleChangeData?.(newList);
+															checked={props.columns?.includes(
+																item.value as TValue
+															)}
+															onCheckedChange={(
+																checked
+															) => {
+																const current =
+																	props.columns ??
+																	[];
+																const isIncluded =
+																	current.includes(
+																		item.value as TValue
+																	);
+																const newList =
+																	checked
+																		? isIncluded
+																			? current
+																			: [
+																					...current,
+																					item.value as TValue,
+																				]
+																		: current.filter(
+																				(
+																					column
+																				) =>
+																					column !==
+																					item.value
+																			);
+																props.handleChangeData?.(
+																	newList
+																);
 															}}
 															className="duration-800 transition-all ease-in-out"
 														/>

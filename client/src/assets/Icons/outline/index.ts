@@ -113,5 +113,5 @@ export {
 	IconWallet,
 	IconLink,
 	IconUser,
-	IconFolderTree
+	IconFolderTree,
 };

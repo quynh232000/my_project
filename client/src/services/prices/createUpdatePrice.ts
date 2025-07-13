@@ -10,24 +10,21 @@ export const createUpdatePrice = async (
 ): Promise<IResponseStatus> => {
 	try {
 		const hotel_id = getClientSideCookie('hotel_id');
-		const { data } = await CallAPI().post(
-			`${AppEndpoint.PRICE_TYPE}`,
-			{
-				...(body.id ? { id: body.id } : {}),
-				hotel_id: hotel_id,
-				name: body.name,
-				rate_type: body.rate_type,
-				room_ids: body.room_ids,
-				policy_cancel_id: !!body.cancellationPolicy.policy_cancel_id
-					? body.cancellationPolicy.policy_cancel_id
-					: null,
-				policy_children: body?.policy?.rows ?? [],
-				date_min: body.date_min,
-				date_max: body.date_max,
-				night_min: body.night_min,
-				night_max: body.night_max,
-			}
-		);
+		const { data } = await CallAPI().post(`${AppEndpoint.PRICE_TYPE}`, {
+			...(body.id ? { id: body.id } : {}),
+			hotel_id: hotel_id,
+			name: body.name,
+			rate_type: body.rate_type,
+			room_ids: body.room_ids,
+			policy_cancel_id: !!body.cancellationPolicy.policy_cancel_id
+				? body.cancellationPolicy.policy_cancel_id
+				: null,
+			policy_children: body?.policy?.rows ?? [],
+			date_min: body.date_min,
+			date_max: body.date_max,
+			night_min: body.night_min,
+			night_max: body.night_max,
+		});
 		if (!data) {
 			return {
 				status: false,

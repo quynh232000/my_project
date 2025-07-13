@@ -11,14 +11,14 @@ export const updateCustomerDetail = async (
 		const hotel_id = getClientSideCookie('hotel_id');
 		const res = await CallAPI().post(`${AppEndpoint.CUSTOMER}`, {
 			...payload,
-			hotel_id
+			hotel_id,
 		});
 		return parseErrorStatus(res.data);
 	} catch (error) {
 		console.error('updateCustomerDetail', error);
 		return {
 			status: false,
-			message: 'Có lỗi xảy ra, vui lòng thử lại!'
+			message: 'Có lỗi xảy ra, vui lòng thử lại!',
 		};
 	}
 };

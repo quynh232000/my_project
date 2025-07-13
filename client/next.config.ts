@@ -1,9 +1,11 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-	/* config options here */
+	/* config options here  'export'*/
 	output: process.env.DOMAIN === 'localhost' ? undefined : 'standalone',
+	// trailingSlash: true,
 	images: {
+		// unoptimized: true,
 		remotePatterns: [
 			{
 				protocol: 'https',
@@ -38,7 +40,8 @@ const nextConfig: NextConfig = {
 				hostname: 'flagcdn.com',
 			},
 		],
-		contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+		contentSecurityPolicy:
+			"default-src 'self'; script-src 'none'; sandbox;",
 	},
 };
 

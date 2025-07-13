@@ -30,11 +30,11 @@ export interface IAccommodationProfileAPI {
 	floor_count: number | null;
 	language: string | null;
 	faqs:
-	| {
-		question: string;
-		reply: string;
-	}[]
-	| null;
+		| {
+				question: string;
+				reply: string;
+		  }[]
+		| null;
 	description: string | null;
 	created_at: string;
 	created_by: number;

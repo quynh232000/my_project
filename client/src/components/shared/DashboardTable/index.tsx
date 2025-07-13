@@ -92,7 +92,9 @@ interface DashboardTableProps<T extends { id: string | number }> {
 		className?: string;
 	};
 	fieldSearch?: (keyof T)[];
-	filterContent?: React.ReactElement<FilterComponentProps<T>> | React.ReactNode;
+	filterContent?:
+		| React.ReactElement<FilterComponentProps<T>>
+		| React.ReactNode;
 	onCustomFilterChange?: (filters: IFilterItem<T>) => void;
 	searchInputClassName?: string;
 	searchContainerClassName?: string;
@@ -234,9 +236,9 @@ const DashboardTable = <T extends { id: string | number }>({
 				fieldSearch?.some((field) => {
 					const fieldValue = row[field];
 					if (!fieldValue) return false;
-					return removeAccent(String(fieldValue).toLowerCase()).includes(
-						searchStr
-					);
+					return removeAccent(
+						String(fieldValue).toLowerCase()
+					).includes(searchStr);
 				})
 			);
 		}
@@ -252,8 +254,10 @@ const DashboardTable = <T extends { id: string | number }>({
 			const field = conditional.sort.field;
 			const type = conditional.sort.type;
 			result.sort((a, b) => {
-				return typeof b[field] === 'number' && typeof a[field] === 'number'
-					? (Number(b[field]) - Number(a[field])) * (type === 'asc' ? -1 : 1)
+				return typeof b[field] === 'number' &&
+					typeof a[field] === 'number'
+					? (Number(b[field]) - Number(a[field])) *
+							(type === 'asc' ? -1 : 1)
 					: String(a[field]).localeCompare(String(b[field])) *
 							(type === 'asc' ? 1 : -1);
 			});
@@ -276,7 +280,10 @@ const DashboardTable = <T extends { id: string | number }>({
 		setPaginatedRows(
 			onPaginationModelChange
 				? handledRows
-				: handledRows.slice(offset, pagination.rowsPerPage * pagination.page)
+				: handledRows.slice(
+						offset,
+						pagination.rowsPerPage * pagination.page
+					)
 		);
 	}, [handledRows, pagination]);
 
@@ -293,7 +300,10 @@ const DashboardTable = <T extends { id: string | number }>({
 		switch (fieldType) {
 			case 'checkbox':
 				return (
-					<div className={'flex items-center justify-center hover:opacity-80'}>
+					<div
+						className={
+							'flex items-center justify-center hover:opacity-80'
+						}>
 						<Checkbox
 							checked={
 								selectedItems.findIndex(
@@ -305,7 +315,11 @@ const DashboardTable = <T extends { id: string | number }>({
 									setSelectedItems((prev) => [...prev, val]);
 								} else {
 									setSelectedItems((prev) =>
-										prev.filter((item) => String(item.id) !== String(val.id))
+										prev.filter(
+											(item) =>
+												String(item.id) !==
+												String(val.id)
+										)
 									);
 								}
 							}}
@@ -358,7 +372,10 @@ const DashboardTable = <T extends { id: string | number }>({
 				);
 			case 'editAndDelete':
 				return (
-					<div className={'flex w-[150px] items-center justify-center gap-4'}>
+					<div
+						className={
+							'flex w-[150px] items-center justify-center gap-4'
+						}>
 						<button
 							onClick={() => action?.handle?.[0]?.(val)}
 							className={'hover:opacity-80'}>
@@ -409,19 +426,28 @@ const DashboardTable = <T extends { id: string | number }>({
 										...conditional,
 										sort: undefined,
 									});
-									onSortModelChange?.({ direction: '', column: '' });
+									onSortModelChange?.({
+										direction: '',
+										column: '',
+									});
 								} else {
 									setConditional({
 										...conditional,
 										sort: {
 											field: col.field!,
 											type:
-												conditional.sort?.field === col.field ? 'desc' : 'asc',
+												conditional.sort?.field ===
+												col.field
+													? 'desc'
+													: 'asc',
 										},
 									});
 									onSortModelChange?.({
 										direction:
-											conditional.sort?.field === col.field ? 'desc' : 'asc',
+											conditional.sort?.field ===
+											col.field
+												? 'desc'
+												: 'asc',
 										column: col.field! as string,
 									});
 								}
@@ -496,7 +522,10 @@ const DashboardTable = <T extends { id: string | number }>({
 			...conditional,
 			search: val,
 		});
-		onFilterModelChange?.({ search: val, status: String(conditional.filter) });
+		onFilterModelChange?.({
+			search: val,
+			status: String(conditional.filter),
+		});
 	}, 500);
 	const showActions = useMemo(
 		() => !!handleChangeStatus || (!!addButtonText && !!handleAdd),
@@ -527,7 +556,9 @@ const DashboardTable = <T extends { id: string | number }>({
 							searchInputClassName,
 							showActions && 'w-[300px]'
 						)}
-						startAdornment={<IconSearchBar width={24} height={24} />}
+						startAdornment={
+							<IconSearchBar width={24} height={24} />
+						}
 						placeholder={searchPlaceholder}
 						onChange={(e) => {
 							handleSearch(e.target.value ?? '');
@@ -542,7 +573,9 @@ const DashboardTable = <T extends { id: string | number }>({
 							'h-8 rounded-lg bg-white py-1',
 							showActions && 'w-[160px]'
 						)}
-						containerClassName={showActions ? 'w-fit ' : 'w-full col-span-1'}
+						containerClassName={
+							showActions ? 'w-fit ' : 'w-full col-span-1'
+						}
 						labelClassName="mb-2"
 						classItemList={'h-auto'}
 						required
@@ -558,7 +591,9 @@ const DashboardTable = <T extends { id: string | number }>({
 								search: conditional.search,
 							});
 						}}
-						selectedValue={(params?.['status'] ?? 'all') || conditional.filter}
+						selectedValue={
+							(params?.['status'] ?? 'all') || conditional.filter
+						}
 					/>
 					{showActions && (
 						<div className={'ml-auto space-x-2'}>
@@ -568,7 +603,9 @@ const DashboardTable = <T extends { id: string | number }>({
 										onClick={() => {
 											handleChangeStatus?.(
 												ERoomStatus.inactive,
-												selectedItems.map((item) => +item.id)
+												selectedItems.map(
+													(item) => +item.id
+												)
 											);
 											setSelectedItems([]);
 										}}
@@ -585,7 +622,9 @@ const DashboardTable = <T extends { id: string | number }>({
 										onClick={() => {
 											handleChangeStatus?.(
 												ERoomStatus.active,
-												selectedItems.map((item) => +item.id)
+												selectedItems.map(
+													(item) => +item.id
+												)
 											);
 											setSelectedItems([]);
 										}}
@@ -603,7 +642,9 @@ const DashboardTable = <T extends { id: string | number }>({
 							{!!addButtonText && !!handleAdd && (
 								<Button
 									onClick={handleAdd}
-									className={'h-8 py-1 border-none rounded-lg'}
+									className={
+										'h-8 rounded-lg border-none py-1'
+									}
 									variant={'secondary'}>
 									{addButtonText}
 								</Button>
@@ -621,7 +662,9 @@ const DashboardTable = <T extends { id: string | number }>({
 							<TableHeader className="bg-neutral-100">
 								<TableRow>
 									{checkboxSelection
-										? renderTableHead({ actionType: 'checkbox' })
+										? renderTableHead({
+												actionType: 'checkbox',
+											})
 										: null}
 									{columns.map((col) => renderTableHead(col))}
 									{action
@@ -637,20 +680,28 @@ const DashboardTable = <T extends { id: string | number }>({
 									<TableRow
 										key={index}
 										{...(selectedItems.findIndex(
-											(item) => String(item.id) === String(row.id)
+											(item) =>
+												String(item.id) ===
+												String(row.id)
 										) >= 0
 											? { className: '!bg-secondary-00' }
 											: {})}>
 										{checkboxSelection
-											? renderTableCell({ actionType: 'checkbox' }, row)
+											? renderTableCell(
+													{ actionType: 'checkbox' },
+													row
+												)
 											: null}
-										{columns.map((col) => renderTableCell(col, row))}
+										{columns.map((col) =>
+											renderTableCell(col, row)
+										)}
 										{action
 											? renderTableCell(
 													{
 														label: action.name,
 														actionType: action.type,
-														fieldClassName: action.className,
+														fieldClassName:
+															action.className,
 													},
 													row
 												)
@@ -673,7 +724,9 @@ const DashboardTable = <T extends { id: string | number }>({
 									selectedClassName={'font-semibold'}
 									showCheck={false}
 									containerClassName={'w-fit'}
-									className={'h-8 rounded-lg border px-3 py-1'}
+									className={
+										'h-8 rounded-lg border px-3 py-1'
+									}
 									placeholder={'Dòng'}
 									searchInput={false}
 									selectedValue={pagination.rowsPerPage}
@@ -691,9 +744,12 @@ const DashboardTable = <T extends { id: string | number }>({
 								/>
 								<Pagination>
 									<PaginationContent>
-										<PaginationItem onClick={() => onMovePage(-1)}>
+										<PaginationItem
+											onClick={() => onMovePage(-1)}>
 											<PaginationPrevious
-												disabled={pagination.page <= 1}></PaginationPrevious>
+												disabled={
+													pagination.page <= 1
+												}></PaginationPrevious>
 										</PaginationItem>
 
 										{pagination.page > 1 && (
@@ -701,10 +757,12 @@ const DashboardTable = <T extends { id: string | number }>({
 												<PaginationLink
 													onClick={() => {
 														onPaginationModelChange
-															? onPaginationModelChange({
-																	page: 1,
-																	limit: pagination.rowsPerPage,
-																})
+															? onPaginationModelChange(
+																	{
+																		page: 1,
+																		limit: pagination.rowsPerPage,
+																	}
+																)
 															: setPagination({
 																	...pagination,
 																	page: 1,
@@ -724,21 +782,37 @@ const DashboardTable = <T extends { id: string | number }>({
 										{Array.from({ length: 2 })
 											.map(
 												(_, index) =>
-													pagination.page - index - 1 > 1 && (
-														<PaginationItem key={index}>
+													pagination.page -
+														index -
+														1 >
+														1 && (
+														<PaginationItem
+															key={index}>
 															<PaginationLink
 																onClick={() => {
 																	onPaginationModelChange
-																		? onPaginationModelChange({
-																				page: pagination.page - index - 1,
-																				limit: pagination.rowsPerPage,
-																			})
-																		: setPagination({
-																				...pagination,
-																				page: pagination.page - index - 1,
-																			});
+																		? onPaginationModelChange(
+																				{
+																					page:
+																						pagination.page -
+																						index -
+																						1,
+																					limit: pagination.rowsPerPage,
+																				}
+																			)
+																		: setPagination(
+																				{
+																					...pagination,
+																					page:
+																						pagination.page -
+																						index -
+																						1,
+																				}
+																			);
 																}}>
-																{pagination.page - index - 1}
+																{pagination.page -
+																	index -
+																	1}
 															</PaginationLink>
 														</PaginationItem>
 													)
@@ -753,21 +827,34 @@ const DashboardTable = <T extends { id: string | number }>({
 
 										{Array.from({ length: 2 }).map(
 											(_, index) =>
-												pagination.page + index + 1 < totalPages && (
+												pagination.page + index + 1 <
+													totalPages && (
 													<PaginationItem key={index}>
 														<PaginationLink
 															onClick={() => {
 																onPaginationModelChange
-																	? onPaginationModelChange({
-																			page: pagination.page + index + 1,
-																			limit: pagination.rowsPerPage,
-																		})
-																	: setPagination({
-																			...pagination,
-																			page: pagination.page + index + 1,
-																		});
+																	? onPaginationModelChange(
+																			{
+																				page:
+																					pagination.page +
+																					index +
+																					1,
+																				limit: pagination.rowsPerPage,
+																			}
+																		)
+																	: setPagination(
+																			{
+																				...pagination,
+																				page:
+																					pagination.page +
+																					index +
+																					1,
+																			}
+																		);
 															}}>
-															{pagination.page + index + 1}
+															{pagination.page +
+																index +
+																1}
 														</PaginationLink>
 													</PaginationItem>
 												)
@@ -785,10 +872,12 @@ const DashboardTable = <T extends { id: string | number }>({
 												<PaginationLink
 													onClick={() => {
 														onPaginationModelChange
-															? onPaginationModelChange({
-																	page: totalPages,
-																	limit: pagination.rowsPerPage,
-																})
+															? onPaginationModelChange(
+																	{
+																		page: totalPages,
+																		limit: pagination.rowsPerPage,
+																	}
+																)
 															: setPagination({
 																	...pagination,
 																	page: totalPages,
@@ -800,8 +889,13 @@ const DashboardTable = <T extends { id: string | number }>({
 										)}
 										<PaginationItem>
 											<PaginationNext
-												disabled={pagination.page >= totalPages}
-												onClick={() => onMovePage(1)}></PaginationNext>
+												disabled={
+													pagination.page >=
+													totalPages
+												}
+												onClick={() =>
+													onMovePage(1)
+												}></PaginationNext>
 										</PaginationItem>
 									</PaginationContent>
 								</Pagination>
@@ -866,7 +960,8 @@ export function renderStatus<T>(
 			},
 		},
 	};
-	const statusPalete = statusesPalete?.[status as keyof typeof statusesPalete];
+	const statusPalete =
+		statusesPalete?.[status as keyof typeof statusesPalete];
 	if (!statusPalete) return 'undefined';
 
 	return (

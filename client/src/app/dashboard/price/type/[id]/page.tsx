@@ -2,7 +2,11 @@ import { DashboardCard } from '@/components/shared/Dashboard/DashboardCard';
 import DashboardContainer from '@/components/shared/Dashboard/DashboardContainer';
 import { DashboardHeroTitle } from '@/components/shared/Dashboard/DashboardHeroTitle';
 import { TOKEN_EXPIRED_MESSAGE } from '@/configs/axios/axios';
-import { AuthRouters, DashboardRouter, RefreshRouters } from '@/constants/routers';
+import {
+	AuthRouters,
+	DashboardRouter,
+	RefreshRouters,
+} from '@/constants/routers';
 import ButtonBack from '@/containers/price/common/ButtonBack';
 import StandardPriceForm from '@/containers/price/StandardPriceForm';
 import { TPriceType } from '@/lib/schemas/type-price/standard-price';
@@ -25,7 +29,7 @@ export default async function Page({
 
 	const isCreate = id === 'create';
 	const hotel_id = cookiesStore.get('hotel_id');
-	
+
 	let priceDetail: TPriceType | null = null;
 
 	if (!isCreate) {
@@ -34,10 +38,15 @@ export default async function Page({
 				priceDetail = await getPriceDetail(+id, +hotel_id.value);
 			} catch (error) {
 				const axiosError = error as AxiosError;
-				const msg = (axiosError?.response?.data as { message: string })?.message;
-				if (axiosError?.response?.status === HttpStatusCode.Unauthorized) {
+				const msg = (axiosError?.response?.data as { message: string })
+					?.message;
+				if (
+					axiosError?.response?.status === HttpStatusCode.Unauthorized
+				) {
 					if (msg === TOKEN_EXPIRED_MESSAGE) {
-						return redirect(`${RefreshRouters.index}?redirect=${DashboardRouter.priceType}/${id}`);
+						return redirect(
+							`${RefreshRouters.index}?redirect=${DashboardRouter.priceType}/${id}`
+						);
 					} else {
 						return redirect(AuthRouters.signIn + '?force=true');
 					}
@@ -59,7 +68,9 @@ export default async function Page({
 			<DashboardHeroTitle
 				actionBack={<ButtonBack url={DashboardRouter.priceType} />}
 				{...(priceDetail && {
-					displayName: { [priceDetail.id as number]: priceDetail.name },
+					displayName: {
+						[priceDetail.id as number]: priceDetail.name,
+					},
 				})}
 				pathName={pathName}
 				title={title}

@@ -11,7 +11,7 @@ const Page = async () => {
 		<DashboardContainer>
 			<DashboardHeroTitle pathName={pathName} title={'Nhóm người dùng'} />
 			<DashboardCard>
-				<UserGroupTable/>
+				<UserGroupTable />
 			</DashboardCard>
 		</DashboardContainer>
 	);

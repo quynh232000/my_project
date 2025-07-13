@@ -41,7 +41,11 @@ const renderAuthor = (user: TCellType) => {
 
 const PriceTable = () => {
 	const router = useRouter();
-	const { data, fetchPrices, deletePrice: deletePriceStore } = usePricesStore();
+	const {
+		data,
+		fetchPrices,
+		deletePrice: deletePriceStore,
+	} = usePricesStore();
 	const setLoading = useLoadingStore((state) => state.setLoading);
 	const setForceFetch = useCancelPolicyStore((state) => state.setForceFetch);
 
@@ -108,7 +112,11 @@ const PriceTable = () => {
 					},
 				]}
 				rows={
-					data ? (data as Array<Omit<TPriceType, 'id'> & { id: number }>) : []
+					data
+						? (data as Array<
+								Omit<TPriceType, 'id'> & { id: number }
+							>)
+						: []
 				}
 				action={{
 					name: 'Thiết lập',
@@ -117,7 +125,9 @@ const PriceTable = () => {
 						(row) => {
 							startHolyLoader();
 							setLoading(true);
-							router.push(DashboardRouter.priceType + `/${row.id}`);
+							router.push(
+								DashboardRouter.priceType + `/${row.id}`
+							);
 						},
 						(row) => {
 							setDeletePriceId(row.id);
@@ -138,8 +148,8 @@ const PriceTable = () => {
 						</DialogTitle>
 						<DialogDescription
 							className={`text-center ${TextVariants.content_16px_400}`}>
-							Thao tác này sẽ xóa loại giá mà bạn đã chọn. Bạn có chắc chắc muốn
-							tiếp tục?
+							Thao tác này sẽ xóa loại giá mà bạn đã chọn. Bạn có
+							chắc chắc muốn tiếp tục?
 						</DialogDescription>
 					</DialogHeader>
 					<DialogFooter className={'sm:justify-start'}>

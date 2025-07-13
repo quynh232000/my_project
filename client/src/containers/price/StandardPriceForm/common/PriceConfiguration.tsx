@@ -18,7 +18,8 @@ const PriceConfiguration = () => {
 			render={({ field }) => (
 				<div className={'rounded-2xl bg-white p-5'}>
 					<h2 className={cn(TextVariants.caption_18px_700)}>
-						Cài đặt giá<span className={'ml-1 text-red-500'}>*</span>
+						Cài đặt giá
+						<span className={'ml-1 text-red-500'}>*</span>
 					</h2>
 					<div className={'mt-4'}>
 						<RadioGroup
@@ -42,10 +43,12 @@ const PriceConfiguration = () => {
 							</div>
 							<div className="flex items-center space-x-2">
 								<RadioGroupItem
-									value={String(EPriceSetting.based_on_existing)}
+									value={String(
+										EPriceSetting.based_on_existing
+									)}
 									id="based_on_existing"
 									className={
-										'size-5 border-2 border-other-divider bg-white text-secondary-500 data-[state=checked]:border-secondary-500 cursor-default'
+										'size-5 cursor-default border-2 border-other-divider bg-white text-secondary-500 data-[state=checked]:border-secondary-500'
 									}
 								/>
 								<Label

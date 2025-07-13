@@ -30,7 +30,7 @@ import ServersBreakFastForm from './common/ServersBreakFastForm';
 
 export default function ServersBreakfast() {
 	const router = useRouter();
-	const setOtherPolicy = useOtherPolicyStore(state => state.setOtherPolicy);
+	const setOtherPolicy = useOtherPolicyStore((state) => state.setOtherPolicy);
 	const methods = useForm<BreakFastServiceFormValue>({
 		resolver: zodResolver(breakfastServiceObject),
 		defaultValues: { breakfast: undefined },
@@ -55,14 +55,19 @@ export default function ServersBreakfast() {
 						is_active: data.is_active,
 						...data.settings,
 						isBreakfast:
-							data.settings && data.settings?.extra_breakfast?.length > 0
+							data.settings &&
+							data.settings?.extra_breakfast?.length > 0
 								? EUseBreakfastType.yes
 								: EUseBreakfastType.no,
-						extra_breakfast: data.settings?.extra_breakfast.map((item) => ({
-							...item,
-							age_to:
-								item.age_to === null ? Number(MAX_AGE_VALUE) : item.age_to,
-						})),
+						extra_breakfast: data.settings?.extra_breakfast.map(
+							(item) => ({
+								...item,
+								age_to:
+									item.age_to === null
+										? Number(MAX_AGE_VALUE)
+										: item.age_to,
+							})
+						),
 					},
 				});
 			}
@@ -81,7 +86,10 @@ export default function ServersBreakfast() {
 						...item,
 						fee_type: item.fee_type as 'free' | 'charged',
 						fee: Number.isNaN(item.fee) ? 0 : item.fee,
-						age_to: item.age_to === Number(MAX_AGE_VALUE) ? null : item.age_to,
+						age_to:
+							item.age_to === Number(MAX_AGE_VALUE)
+								? null
+								: item.age_to,
 					}))
 				: [],
 		};
@@ -95,7 +103,9 @@ export default function ServersBreakfast() {
 			});
 
 			if (res?.status) {
-				toast.success('Cập nhật chính sách phục vụ bữa sáng thành công');
+				toast.success(
+					'Cập nhật chính sách phục vụ bữa sáng thành công'
+				);
 				setOtherPolicy([]);
 			}
 			setLoading(false);
@@ -121,7 +131,9 @@ export default function ServersBreakfast() {
 							<FormControl>
 								<RadioGroup
 									value={`${field.value}`}
-									onValueChange={(value) => field.onChange(value === 'true')}
+									onValueChange={(value) =>
+										field.onChange(value === 'true')
+									}
 									className={'mt-4 flex gap-6'}>
 									<div className="flex items-center space-x-2">
 										<RadioGroupItem
@@ -161,7 +173,9 @@ export default function ServersBreakfast() {
 				/>
 				{watchIsActive && <ServersBreakFastForm />}
 				<ButtonActionGroup
-					actionCancel={() => router.push(DashboardRouter.policyOther)}
+					actionCancel={() =>
+						router.push(DashboardRouter.policyOther)
+					}
 				/>
 			</form>
 		</FormProvider>

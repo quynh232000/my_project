@@ -28,7 +28,11 @@ const SelectedUtilities = ({ onOpenDialog, originalList }: Props) => {
 	return (
 		<div className={'flex flex-col'}>
 			<div className={'flex items-center justify-between'}>
-				<h3 className={cn('text-neutral-600', TextVariants.caption_14px_700)}>
+				<h3
+					className={cn(
+						'text-neutral-600',
+						TextVariants.caption_14px_700
+					)}>
 					Tiện ích đã chọn{' '}
 					<span className={'text-neutral-300'}>({totalSelect})</span>
 				</h3>
@@ -53,7 +57,9 @@ const SelectedUtilities = ({ onOpenDialog, originalList }: Props) => {
 							Object.entries(selectedItemList)
 								.filter(([_, item]) => (item?.length ?? 0) > 0)
 								.map(([id, item], index) => {
-									const list = originalList.find((data) => `${data.id}` === id);
+									const list = originalList.find(
+										(data) => `${data.id}` === id
+									);
 									return (
 										list &&
 										list.children.length > 0 && (
@@ -61,26 +67,42 @@ const SelectedUtilities = ({ onOpenDialog, originalList }: Props) => {
 												<Typography
 													tag={'p'}
 													variant={'caption_14px_700'}
-													className={'text-neutral-600'}>
+													className={
+														'text-neutral-600'
+													}>
 													{list.title}
-													<span className={'ml-1 text-neutral-300'}>
+													<span
+														className={
+															'ml-1 text-neutral-300'
+														}>
 														({item?.length})
 													</span>
 												</Typography>
 												<div className={'mt-2'}>
 													{list.children
 														?.filter((amenity) =>
-															item?.includes(`${amenity.id}`)
+															item?.includes(
+																`${amenity.id}`
+															)
 														)
-														.map((val, index: number) => (
-															<Typography
-																key={index}
-																tag={'p'}
-																variant={'caption_14px_400'}
-																className={'px-2 py-1 text-neutral-600'}>
-																{val.name}
-															</Typography>
-														))}
+														.map(
+															(
+																val,
+																index: number
+															) => (
+																<Typography
+																	key={index}
+																	tag={'p'}
+																	variant={
+																		'caption_14px_400'
+																	}
+																	className={
+																		'px-2 py-1 text-neutral-600'
+																	}>
+																	{val.name}
+																</Typography>
+															)
+														)}
 												</div>
 											</div>
 										)

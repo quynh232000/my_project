@@ -6,7 +6,8 @@ import {
 	FormControl,
 	FormField,
 	FormItem,
-	FormLabel, FormMessage,
+	FormLabel,
+	FormMessage,
 } from '@/components/ui/form';
 
 const UserGroupFormInfo = () => {
@@ -19,9 +20,13 @@ const UserGroupFormInfo = () => {
 				<FormItem>
 					<FormLabel required>Tên nhóm người dùng</FormLabel>
 					<FormControl>
-						<Input placeholder={'Lễ Tân'} {...field} className={'h-10 py-2'} />
+						<Input
+							placeholder={'Lễ Tân'}
+							{...field}
+							className={'h-10 py-2'}
+						/>
 					</FormControl>
-					<FormMessage/>
+					<FormMessage />
 				</FormItem>
 			)}
 		/>

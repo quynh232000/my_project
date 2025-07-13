@@ -23,9 +23,7 @@ export const AppTooltip: React.FC<AppTooltipProps> = ({
 }) => {
 	return (
 		<Tooltip>
-			<TooltipTrigger asChild>
-				{icon}
-			</TooltipTrigger>
+			<TooltipTrigger asChild>{icon}</TooltipTrigger>
 			<TooltipContent side="right" align="center" {...contentProps}>
 				<Typography tag="p" variant={'caption_12px_400'}>
 					{content}

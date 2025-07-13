@@ -44,7 +44,10 @@ export const useRoomDetailStore = create<RoomDetailState & RoomDetailActions>(
 			const roomDetail = get().roomDetail;
 			const services = get().services;
 			if (!!roomDetail.id && !services) {
-				const data = await getHotelServices({ type: 'room', point_id: roomDetail.id });
+				const data = await getHotelServices({
+					type: 'room',
+					point_id: roomDetail.id,
+				});
 				set({ services: data });
 			}
 		},

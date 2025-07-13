@@ -48,27 +48,27 @@ const BookingOrderDatePicker = ({
 			{
 				title: 'Mốc thời gian',
 				key: 'time',
-				component: <PresetTimeSelector
-				></PresetTimeSelector>,
+				component: <PresetTimeSelector></PresetTimeSelector>,
 			},
 			{
 				title: 'Lựa chọn khác',
 				key: 'date_picker',
-				component: <CustomDateTimePicker
-					handleSearch={() => setOpen(false)}
-					showSummaryAndSearch={true}
-					dateRange={{
-						from: date.from,
-						to: date.to,
-					}}
-					onSelectDateRange={(value) => {
-						if (value)
-							setDate({
-								from: value.from,
-								to: value.to,
-							});
-					}}
-				></CustomDateTimePicker>,
+				component: (
+					<CustomDateTimePicker
+						handleSearch={() => setOpen(false)}
+						showSummaryAndSearch={true}
+						dateRange={{
+							from: date.from,
+							to: date.to,
+						}}
+						onSelectDateRange={(value) => {
+							if (value)
+								setDate({
+									from: value.from,
+									to: value.to,
+								});
+						}}></CustomDateTimePicker>
+				),
 			},
 		],
 		[date]

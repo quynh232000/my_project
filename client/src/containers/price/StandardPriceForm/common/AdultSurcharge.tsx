@@ -114,7 +114,10 @@ const AdultSurcharge = ({ priceItem }: AdultSurchargeProps) => {
 								</Label>
 							</div>
 						</RadioGroup>
-						<FieldErrorMessage errors={formState.errors} name={field.name} />
+						<FieldErrorMessage
+							errors={formState.errors}
+							name={field.name}
+						/>
 					</div>
 				)}
 			/>

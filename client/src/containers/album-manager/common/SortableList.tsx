@@ -9,10 +9,7 @@ import {
 	useSensor,
 	useSensors,
 } from '@dnd-kit/core';
-import {
-	rectSortingStrategy,
-	SortableContext,
-} from '@dnd-kit/sortable';
+import { rectSortingStrategy, SortableContext } from '@dnd-kit/sortable';
 import React, { useState } from 'react';
 import { cn } from '@/lib/utils';
 import UploadImageZone from '@/containers/album-manager/common/UploadImageZone';
@@ -24,7 +21,10 @@ import { HotelRoomsResponse } from '@/services/album/getAlbumHotel';
 import { useAlbumHotelStore } from '@/store/album/store';
 import { toast } from 'sonner';
 import { reorderList } from '@/containers/album-manager/data';
-import { UpdateAlbumRequestBody, updateAlbum } from '@/services/album/updateAlbum';
+import {
+	UpdateAlbumRequestBody,
+	updateAlbum,
+} from '@/services/album/updateAlbum';
 
 interface SortableListProps extends React.HTMLAttributes<HTMLDivElement> {
 	list: ImageType[];
@@ -68,27 +68,29 @@ export const SortableList = ({
 	const handleDragEnd = async (event: DragEndEvent) => {
 		const { active, over } = event;
 		const oldIndex = list.findIndex((item) => item.id === active.id);
-		const newIndex = over ? list.findIndex((item) => item.id === over.id) : -1;
+		const newIndex = over
+			? list.findIndex((item) => item.id === over.id)
+			: -1;
 		if (oldIndex >= 0 && newIndex >= 0 && oldIndex !== newIndex) {
 			setLoading(true);
 			const newList = reorderList(list, oldIndex, newIndex);
 			onMove(newList);
 
 			const bodyUpdateAlbum: UpdateAlbumRequestBody = {
-				...(roomId && {id: String(roomId)}),
+				...(roomId && { id: String(roomId) }),
 				list_all: true,
 				images: newList.map((item) => ({
 					image_id: String(item.image_id),
-					priority: String(item.priority)
+					priority: String(item.priority),
 				})),
 			};
 
-			const res = await updateAlbum<HotelRoomsResponse>(bodyUpdateAlbum).finally(() =>
-				setLoading(false)
-			);
+			const res = await updateAlbum<HotelRoomsResponse>(
+				bodyUpdateAlbum
+			).finally(() => setLoading(false));
 			if (!res) {
 				onMove(list);
-				toast.error("Thay đổi vị trí ảnh thất bại")
+				toast.error('Thay đổi vị trí ảnh thất bại');
 			} else {
 				setAlbumHotel(res.data);
 			}
@@ -129,7 +131,13 @@ export const SortableList = ({
 						))}
 				</SortableContext>
 				<DragOverlay adjustScale style={{ transformOrigin: '0 0 ' }}>
-					{draggingItem && <Item item={draggingItem} isDragging showTag={showTag}/>}
+					{draggingItem && (
+						<Item
+							item={draggingItem}
+							isDragging
+							showTag={showTag}
+						/>
+					)}
 				</DragOverlay>
 			</DndContext>
 			<UploadImageZone />

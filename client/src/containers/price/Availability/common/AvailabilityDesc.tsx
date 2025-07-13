@@ -67,7 +67,9 @@ const AvailabilityDesc = () => {
 				const isAvailableId = isNaN(+room)
 					? 'all'
 					: roomList?.find(
-							(room) => room.status === ERoomStatus.active && room.id === roomId
+							(room) =>
+								room.status === ERoomStatus.active &&
+								room.id === roomId
 						)?.id || 'all';
 				setParams({ room: isAvailableId });
 			} else {
@@ -80,7 +82,9 @@ const AvailabilityDesc = () => {
 		if (start) {
 			const parsedDate = parse(start, 'yyyy-MM-dd', new Date());
 			if (!isNaN(parsedDate.getDate())) {
-				startDate = isBefore(parsedDate, new Date()) ? new Date() : parsedDate;
+				startDate = isBefore(parsedDate, new Date())
+					? new Date()
+					: parsedDate;
 			}
 		}
 		if (end) {
@@ -139,7 +143,11 @@ const AvailabilityDesc = () => {
 				current.set(key, value.toString());
 			}
 		});
-		window.history.replaceState({}, '', `${pathname}?${current.toString()}`);
+		window.history.replaceState(
+			{},
+			'',
+			`${pathname}?${current.toString()}`
+		);
 	};
 
 	return (
@@ -158,7 +166,9 @@ const AvailabilityDesc = () => {
 				data={[
 					{ label: 'Tất cả phòng', value: 'all' },
 					...mapToLabelValue(
-						roomList?.filter((room) => room.status === ERoomStatus.active) ?? []
+						roomList?.filter(
+							(room) => room.status === ERoomStatus.active
+						) ?? []
 					),
 				]}
 			/>

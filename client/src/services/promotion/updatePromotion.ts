@@ -14,13 +14,13 @@ export const updatePromotion = async (
 			`${AppEndpoint.PROMOTION}/${payload.id}`,
 			{
 				...payload,
-				hotel_id
+				hotel_id,
 			}
 		);
 		if (!res.data) {
 			return {
 				status: false,
-				message: 'Có lỗi xảy ra, vui lòng thử lại!'
+				message: 'Có lỗi xảy ra, vui lòng thử lại!',
 			};
 		}
 		return parseErrorStatus(res.data);

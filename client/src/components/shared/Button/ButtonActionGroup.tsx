@@ -21,7 +21,11 @@ const ButtonActionGroup = ({
 }) => {
 	return (
 		<div className={cn('mt-6 flex justify-end gap-2', className)}>
-			<Button onClick={actionCancel} variant={'outline'} type={'button'} className={btnClassName}>
+			<Button
+				onClick={actionCancel}
+				variant={'outline'}
+				type={'button'}
+				className={btnClassName}>
 				{titleBtnCancel}
 			</Button>
 			<Button

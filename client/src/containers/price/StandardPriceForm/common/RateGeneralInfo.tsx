@@ -20,8 +20,10 @@ export default function RateGeneralInfo() {
 				control={control}
 				render={({ field: { onChange, value, ...props } }) => (
 					<FormItem className="col-span-2 lg:col-span-1">
-						<FormLabel className={cn(TextVariants.caption_14px_500)}>
-							Tên loại giá<span className={'ml-1 text-red-500'}>*</span>
+						<FormLabel
+							className={cn(TextVariants.caption_14px_500)}>
+							Tên loại giá
+							<span className={'ml-1 text-red-500'}>*</span>
 						</FormLabel>
 						<FormControl>
 							<Input
@@ -45,8 +47,10 @@ export default function RateGeneralInfo() {
 				control={control}
 				render={({ field: { onChange, value, ...props } }) => (
 					<FormItem className="col-span-2 lg:col-span-1">
-						<FormLabel className={cn(TextVariants.caption_14px_500)}>
-							Rate type<span className={'ml-1 text-red-500'}>*</span>
+						<FormLabel
+							className={cn(TextVariants.caption_14px_500)}>
+							Rate type
+							<span className={'ml-1 text-red-500'}>*</span>
 						</FormLabel>
 						<FormControl>
 							<Input

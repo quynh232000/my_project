@@ -4,7 +4,9 @@ import { getClientSideCookie } from '@/utils/cookie';
 import { IResponse } from '@/services/album/createAlbum';
 
 export interface IAlbumUpdate {
-	priority?: string; label_id?: string; image_id: string
+	priority?: string;
+	label_id?: string;
+	image_id: string;
 }
 export interface UpdateAlbumRequestBody {
 	id?: string;
@@ -29,8 +31,16 @@ export const updateAlbum = async <T>(
 			);
 		body.images &&
 			body.images?.forEach((img) => {
-				img.label_id && formData.append(`update[${img.image_id}][label_id]`, img.label_id);
-				img.priority && formData.append(`update[${img.image_id}][priority]`, img.priority);
+				img.label_id &&
+					formData.append(
+						`update[${img.image_id}][label_id]`,
+						img.label_id
+					);
+				img.priority &&
+					formData.append(
+						`update[${img.image_id}][priority]`,
+						img.priority
+					);
 			});
 
 		const res = await CallAPI(API_URL, true, 'multipart/form-data').post(

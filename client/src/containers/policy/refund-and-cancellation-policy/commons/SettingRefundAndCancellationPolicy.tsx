@@ -62,7 +62,13 @@ export default function SettingRefundAndCancellationPolicy() {
 			} else {
 				reset({
 					cancelable: false,
-					rows: [{ day: ABSENT_VALUE, fee: 100, fee_type: ECancelFeeType.FEE }],
+					rows: [
+						{
+							day: ABSENT_VALUE,
+							fee: 100,
+							fee_type: ECancelFeeType.FEE,
+						},
+					],
 				});
 			}
 		} else {

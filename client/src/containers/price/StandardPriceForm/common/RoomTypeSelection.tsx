@@ -78,10 +78,15 @@ const RoomTypeSelection = () => {
 								value={field.value.includes(room.id)}
 								onValueChange={(val) => {
 									if (val) {
-										field.onChange([...field.value, room.id]);
+										field.onChange([
+											...field.value,
+											room.id,
+										]);
 									} else {
 										field.onChange(
-											field.value.filter((item) => item !== room.id)
+											field.value.filter(
+												(item) => item !== room.id
+											)
 										);
 									}
 								}}>

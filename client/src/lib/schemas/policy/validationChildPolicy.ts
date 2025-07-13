@@ -12,7 +12,10 @@ const policyRowSchema = z.object({
 		.min(1, 'Vui lòng chọn độ tuổi'),
 	fee_type: z.enum(['free', 'charged', 'limit']),
 	quantity_child: z
-		.union([z.nan(), z.number({ message: 'Vui lòng nhập số trẻ em miễn phí' })])
+		.union([
+			z.nan(),
+			z.number({ message: 'Vui lòng nhập số trẻ em miễn phí' }),
+		])
 		.optional(),
 	fee: z
 		.union([

@@ -69,7 +69,9 @@ const useAmenityForm = ({
 			const defaultValue = services.reduce(
 				(acc, group) => {
 					if (group?.id && Array.isArray(group?.children)) {
-						acc[group.id] = group.children.map((child) => String(child.id));
+						acc[group.id] = group.children.map((child) =>
+							String(child.id)
+						);
 					}
 					return acc;
 				},

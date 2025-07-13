@@ -4,7 +4,10 @@ import { TextVariants } from '@/components/shared/Typography/TextVariants';
 
 const WelcomeFooter = () => {
 	return (
-		<div className={'flex items-center justify-center gap-2.5 py-12 flex-wrap lg:flex-nowrap'}>
+		<div
+			className={
+				'flex flex-wrap items-center justify-center gap-2.5 py-12 lg:flex-nowrap'
+			}>
 			<Typography className={'text-neutral-300'}>
 				© 2025 190Booking. All rights reserved.
 			</Typography>

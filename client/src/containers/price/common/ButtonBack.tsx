@@ -9,7 +9,9 @@ const ButtonBack = ({ url = '' }: { url?: string }) => {
 	return (
 		<div
 			onClick={() => (url ? router.push(url) : router.back())}
-			className={'flex size-8 cursor-pointer items-center justify-center'}>
+			className={
+				'flex size-8 cursor-pointer items-center justify-center'
+			}>
 			<IconChevron
 				direction={'left'}
 				className={'size-5'}

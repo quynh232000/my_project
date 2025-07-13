@@ -10,7 +10,7 @@ export default async function Page() {
 		<DashboardContainer>
 			<DashboardHeroTitle pathName={pathName} title={'Khuyến mãi'} />
 			<DashboardCard>
-				<PromotionTable/>
+				<PromotionTable />
 			</DashboardCard>
 		</DashboardContainer>
 	);

@@ -75,7 +75,10 @@ export const CancellationTimeline = ({
 						<div className={'mt-[33px] flex flex-row'}>
 							{[...validRows, absentRow].map((row, i, arr) => {
 								const palette = getRowPalette(
-									{ ...row, day: row.day - (arr[i + 1]?.day ?? 0) },
+									{
+										...row,
+										day: row.day - (arr[i + 1]?.day ?? 0),
+									},
 									i,
 									i === validRows.length
 								);
@@ -92,7 +95,8 @@ export const CancellationTimeline = ({
 											style={{
 												background:
 													i === validRows.length
-														? GlobalUI.colors.accent['3']
+														? GlobalUI.colors
+																.accent['3']
 														: palette.background,
 											}}
 											className={`absolute left-0 w-[1px] ${i === validRows.length ? 'bottom-1/2 h-10 translate-y-1/2' : 'bottom-0 h-6'}`}>
@@ -100,7 +104,9 @@ export const CancellationTimeline = ({
 												tag="p"
 												variant={'caption_12px_600'}
 												className={`absolute bottom-full mb-0.5 -translate-x-1/2 whitespace-nowrap text-neutral-600 ${i === validRows.length ? 'text-accent-03' : 'text-neutral-600'}`}>
-												{row.day === 0 ? 'Check in' : `${row.day} ngày`}
+												{row.day === 0
+													? 'Check in'
+													: `${row.day} ngày`}
 											</Typography>
 										</div>
 										<Typography
@@ -109,13 +115,15 @@ export const CancellationTimeline = ({
 											style={{
 												color:
 													i === validRows.length
-														? GlobalUI.colors.accent['3']
+														? GlobalUI.colors
+																.accent['3']
 														: palette.background,
 											}}
 											className={
 												'absolute left-1/2 top-1.5 mt-2 -translate-x-1/2 whitespace-nowrap'
 											}>
-											{row.fee_type === ECancelFeeType.FREE
+											{row.fee_type ===
+											ECancelFeeType.FREE
 												? 'Miễn phí'
 												: row.fee + '%'}
 										</Typography>
@@ -146,11 +154,15 @@ export const CancellationTimeline = ({
 				<>
 					<div className={'mt-[33px] flex flex-row'}>
 						<div
-							style={{ backgroundColor: GlobalUI.colors.accent['3'] }}
+							style={{
+								backgroundColor: GlobalUI.colors.accent['3'],
+							}}
 							className={`relative h-2 w-full`}>
 							<div
 								className={`absolute bottom-0 left-0 h-6 w-[1px]`}
-								style={{ background: GlobalUI.colors.accent['3'] }}>
+								style={{
+									background: GlobalUI.colors.accent['3'],
+								}}>
 								<Typography
 									tag="p"
 									variant={'caption_12px_600'}
@@ -168,7 +180,9 @@ export const CancellationTimeline = ({
 								Không hoàn không huỷ
 							</Typography>
 							<div
-								style={{ background: GlobalUI.colors.accent['3'] }}
+								style={{
+									background: GlobalUI.colors.accent['3'],
+								}}
 								className={`absolute bottom-1/2 right-0 h-10 w-[1px] translate-y-1/2`}>
 								<Typography
 									tag="p"

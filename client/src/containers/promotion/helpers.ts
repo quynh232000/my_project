@@ -13,14 +13,17 @@ export function mapPromotionDetailToPromotionConfiguration(
 		name: data.name,
 		priceType: {
 			type:
-				priceTypeList && priceTypeList.length === data.price_types.length
+				priceTypeList &&
+				priceTypeList.length === data.price_types.length
 					? 'all'
 					: 'specific',
 			price_type_ids: data.price_types?.map((item) => item.id),
 		},
 		roomType: {
 			type:
-				roomList && roomList.length === data.rooms.length ? 'all' : 'specific',
+				roomList && roomList.length === data.rooms.length
+					? 'all'
+					: 'specific',
 			room_ids: data.rooms?.map((item) => item.id),
 		},
 		discountType: {

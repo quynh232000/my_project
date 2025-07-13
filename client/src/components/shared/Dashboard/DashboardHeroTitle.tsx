@@ -12,15 +12,26 @@ interface IProps {
 	displayName?: Record<string, string>;
 }
 
-export const DashboardHeroTitle = ({ title, pathName, className, containerClassName, extraContent, extraTitle, actionBack, displayName }: IProps & ClassNameProp) => {
-
+export const DashboardHeroTitle = ({
+	title,
+	pathName,
+	className,
+	containerClassName,
+	extraContent,
+	extraTitle,
+	actionBack,
+	displayName,
+}: IProps & ClassNameProp) => {
 	const path = pathName?.split('/')?.slice?.(1) ?? [];
 
 	return (
 		<div className={cn('py-6', containerClassName)}>
-			<BreadcrumbURL pathName={path} displayName={displayName}/>
-			<div className={'mt-3 flex items-center justify-between gap-5 flex-wrap lg:flex-nowrap'}>
-				<div className={"flex items-center gap-2 "}>
+			<BreadcrumbURL pathName={path} displayName={displayName} />
+			<div
+				className={
+					'mt-3 flex flex-wrap items-center justify-between gap-5 lg:flex-nowrap'
+				}>
+				<div className={'flex items-center gap-2'}>
 					{actionBack}
 					<Typography
 						tag={'h1'}

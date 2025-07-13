@@ -16,6 +16,6 @@ export interface AddressState {
 	};
 }
 
-export interface AddressActions{
+export interface AddressActions {
 	getAddress: (type: keyof AddressState, upperId?: number) => Promise<void>;
 }

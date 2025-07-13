@@ -41,7 +41,10 @@ const createFormSchema = (min?: number, max?: number) => {
 	return z.object({
 		val: z
 			.number({ message: 'Vui lòng nhập giá trị hợp lệ' })
-			.min(min ?? 0, `Giá trị không được nhỏ hơn ${priceConvert(min ?? 0)}`)
+			.min(
+				min ?? 0,
+				`Giá trị không được nhỏ hơn ${priceConvert(min ?? 0)}`
+			)
 			.max(
 				max ?? 999999999,
 				`Giá trị không được lớn hơn ${priceConvert(max ?? 999999999)}`
@@ -119,23 +122,40 @@ const AvailabilityCellsPopover = ({
 						render={({ field: { value, onChange } }) => (
 							<FormItem>
 								<div className="mt-2 flex flex-row items-center gap-2">
-									<Typography variant="caption_12px_400" className="flex-1">
+									<Typography
+										variant="caption_12px_400"
+										className="flex-1">
 										{type ? palete[type].label : ''}
 									</Typography>
 
 									<div className="relative">
 										<FormControl>
 											<NumberInput
-												placeholder={type ? palete[type].placeholder : ''}
+												placeholder={
+													type
+														? palete[type]
+																.placeholder
+														: ''
+												}
 												inputMode="numeric"
 												suffix=""
 												className={`h-10 w-[150px] rounded-xl py-2 leading-6`}
-												endAdornment={type ? palete[type].suffix : ''}
+												endAdornment={
+													type
+														? palete[type].suffix
+														: ''
+												}
 												value={value ?? NaN}
-												maxLength={type ? palete[type].maxLength : undefined}
+												maxLength={
+													type
+														? palete[type].maxLength
+														: undefined
+												}
 												onValueChange={(e) => {
 													onChange(
-														e.value.length === 0 ? NaN : Number(e.value)
+														e.value.length === 0
+															? NaN
+															: Number(e.value)
 													);
 												}}
 											/>

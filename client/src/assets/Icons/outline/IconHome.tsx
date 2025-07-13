@@ -1,5 +1,5 @@
-import * as React from "react"
-import { SVGProps, memo } from "react"
+import * as React from 'react';
+import { SVGProps, memo } from 'react';
 const IconHome = (props: SVGProps<SVGSVGElement>) => (
 	<svg
 		xmlns="http://www.w3.org/2000/svg"
@@ -7,16 +7,15 @@ const IconHome = (props: SVGProps<SVGSVGElement>) => (
 		height="1em"
 		viewBox="0 0 24 24"
 		fill="none"
-		{...props}
-	>
+		{...props}>
 		<path
 			d="M8.12602 14C8.57006 15.7253 10.1362 17 12 17C13.8638 17 15.4299 15.7253 15.874 14M11.0177 2.76404L4.23539 8.03917C3.78202 8.39179 3.55534 8.5681 3.39203 8.7889C3.24737 8.98449 3.1396 9.20483 3.07403 9.4391C3 9.70356 3 9.99074 3 10.5651V17.8C3 18.9201 3 19.4802 3.21799 19.908C3.40973 20.2843 3.71569 20.5903 4.09202 20.782C4.51984 21 5.07989 21 6.2 21H17.8C18.9201 21 19.4802 21 19.908 20.782C20.2843 20.5903 20.5903 20.2843 20.782 19.908C21 19.4802 21 18.9201 21 17.8V10.5651C21 9.99074 21 9.70356 20.926 9.4391C20.8604 9.20483 20.7526 8.98449 20.608 8.7889C20.4447 8.5681 20.218 8.39179 19.7646 8.03917L12.9823 2.76404C12.631 2.49079 12.4553 2.35417 12.2613 2.30165C12.0902 2.25531 11.9098 2.25531 11.7387 2.30165C11.5447 2.35417 11.369 2.49079 11.0177 2.76404Z"
-			stroke={props.color||"#777E90"}
+			stroke={props.color || '#777E90'}
 			strokeWidth={2}
 			strokeLinecap="round"
 			strokeLinejoin="round"
 		/>
 	</svg>
-)
-const Memo = memo(IconHome)
-export default Memo
+);
+const Memo = memo(IconHome);
+export default Memo;

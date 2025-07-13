@@ -57,7 +57,11 @@ const ImageGalleryAction = () => {
 								deletedIds = roomIds;
 							} else {
 								deletedIds = albumHotel.hotel
-									.filter((image) => image.label?.parents?.slug === selectedTab)
+									.filter(
+										(image) =>
+											image.label?.parents?.slug ===
+											selectedTab
+									)
 									.map((image) => ({
 										id: String(image.id),
 										room_id: undefined,
@@ -69,7 +73,8 @@ const ImageGalleryAction = () => {
 						}
 					}}>
 					{albumHotel
-						? deletedAlbumIds.length < hotelIds.length + roomIds.length
+						? deletedAlbumIds.length <
+							hotelIds.length + roomIds.length
 							? 'Chọn tất cả ảnh'
 							: 'Bỏ chọn tất cả ảnh'
 						: 'Chọn tất cả ảnh'}

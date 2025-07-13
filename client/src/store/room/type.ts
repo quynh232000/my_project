@@ -16,7 +16,5 @@ export interface RoomStore {
 	allColumns: ColumnDef<IRoomItem>[];
 	setAllColumns: (columns: ColumnDef<IRoomItem>[]) => void;
 	visibleFields: (keyof IRoomItem)[];
-	setVisibleFields: (
-		fields: (keyof IRoomItem)[]
-	) => void;
+	setVisibleFields: (fields: (keyof IRoomItem)[]) => void;
 }

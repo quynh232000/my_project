@@ -60,7 +60,7 @@ export const gridViewData: TSelectColumn[] = [
 	{
 		title: 'Trạng thái',
 		value: 'status',
-	}
+	},
 ];
 
 export const tabDefs = [
@@ -76,4 +76,4 @@ export const tabDefs = [
 		title: 'Tiện ích phòng',
 		key: 'amenities',
 	},
-]
+];

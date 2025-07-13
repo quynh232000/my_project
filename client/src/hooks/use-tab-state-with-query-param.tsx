@@ -13,9 +13,15 @@ const useTabStateWithQueryParam = (tabs: ITabItem[]) => {
 	const [isParsedParams, setIsParsedParams] = useState<boolean>(false);
 	const updateUrlWithTab = useCallback(
 		(newTabKey: string) => {
-			const current = new URLSearchParams(Array.from(searchParams.entries()));
+			const current = new URLSearchParams(
+				Array.from(searchParams.entries())
+			);
 			current.set('tab', newTabKey);
-			window.history.replaceState({}, '', `${pathname}?${current.toString()}`);
+			window.history.replaceState(
+				{},
+				'',
+				`${pathname}?${current.toString()}`
+			);
 		},
 		[searchParams, pathname]
 	);

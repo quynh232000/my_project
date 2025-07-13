@@ -106,8 +106,11 @@ const RoomPricingSettings = ({
 		const selectableRoom =
 			roomList?.filter(
 				(room) =>
-					(room.status === ERoomStatus.active && priceIds?.[0] === 0) ||
-					room?.price_types?.map((item) => item.id)?.includes(priceIds?.[0])
+					(room.status === ERoomStatus.active &&
+						priceIds?.[0] === 0) ||
+					room?.price_types
+						?.map((item) => item.id)
+						?.includes(priceIds?.[0])
 			) ?? [];
 		const selectableRoomIds = selectableRoom?.map((room) => room.id);
 		const selectedRoom = getValues('room_ids');
@@ -167,7 +170,9 @@ const RoomPricingSettings = ({
 					</Typography>
 					<span
 						onClick={_onClose}
-						className={'cursor-pointer rounded-full bg-neutral-50 p-2'}>
+						className={
+							'cursor-pointer rounded-full bg-neutral-50 p-2'
+						}>
 						<IconClose
 							className={'size-4'}
 							color={GlobalUI.colors.neutrals['5']}
@@ -199,7 +204,9 @@ const RoomPricingSettings = ({
 													from: field?.value?.from,
 													to: field?.value?.to,
 												}}
-												onSelectDateRange={field.onChange}
+												onSelectDateRange={
+													field.onChange
+												}
 											/>
 										</FormControl>
 										{errors?.date?.message ? (
@@ -207,7 +214,11 @@ const RoomPricingSettings = ({
 										) : (
 											<FieldErrorMessage
 												errors={errors}
-												name={errors?.date?.from ? 'date.from' : 'date.to'}
+												name={
+													errors?.date?.from
+														? 'date.from'
+														: 'date.to'
+												}
 											/>
 										)}
 									</FormItem>
@@ -226,8 +237,11 @@ const RoomPricingSettings = ({
 												<Typography
 													tag={'p'}
 													variant={'caption_14px_400'}
-													className={'text-nowrap text-neutral-600'}>
-													Cho phép ghi đè giá cũ trong khoảng thời gian chọn
+													className={
+														'text-nowrap text-neutral-600'
+													}>
+													Cho phép ghi đè giá cũ trong
+													khoảng thời gian chọn
 												</Typography>
 												<AppTooltip
 													icon={<IconQuestion />}
@@ -248,7 +262,11 @@ const RoomPricingSettings = ({
 										) : (
 											<FieldErrorMessage
 												errors={errors}
-												name={errors?.date?.from ? 'date.from' : 'date.to'}
+												name={
+													errors?.date?.from
+														? 'date.from'
+														: 'date.to'
+												}
 											/>
 										)}
 									</FormItem>
@@ -266,7 +284,9 @@ const RoomPricingSettings = ({
 								render={({ field }) => (
 									<FormItem className={'mt-4'}>
 										<input
-											className={'absolute h-0 w-0 overflow-hidden'}
+											className={
+												'absolute h-0 w-0 overflow-hidden'
+											}
 											ref={field.ref}
 										/>
 										<FormMessage className={'mt-4'} />
@@ -274,12 +294,19 @@ const RoomPricingSettings = ({
 											<RadioGroup
 												className="flex flex-wrap gap-x-0 !bg-white"
 												value={String(field.value[0])}
-												onValueChange={(val) => field.onChange([+val])}>
+												onValueChange={(val) =>
+													field.onChange([+val])
+												}>
 												<div className="flex h-fit w-1/2 items-center space-x-2 pr-4">
-													<RadioGroupItem id="standard" value={`0`} />
+													<RadioGroupItem
+														id="standard"
+														value={`0`}
+													/>
 													<Label
 														htmlFor="standard"
-														containerClassName={'m-0'}
+														containerClassName={
+															'm-0'
+														}
 														className={`cursor-pointer ${TextVariants.caption_14px_400}`}>
 														Giá tiêu chuẩn
 													</Label>
@@ -290,11 +317,17 @@ const RoomPricingSettings = ({
 														key={priceType.id}>
 														<RadioGroupItem
 															id={priceType.name}
-															value={String(priceType.id)}
+															value={String(
+																priceType.id
+															)}
 														/>
 														<Label
-															htmlFor={priceType.name}
-															containerClassName={'m-0'}
+															htmlFor={
+																priceType.name
+															}
+															containerClassName={
+																'm-0'
+															}
 															className={`cursor-pointer ${TextVariants.caption_14px_400}`}>
 															{priceType.name}
 														</Label>
@@ -322,39 +355,75 @@ const RoomPricingSettings = ({
 								render={({ field }) => (
 									<FormItem className={'space-y-0'}>
 										<input
-											className={'absolute h-0 w-0 overflow-hidden'}
+											className={
+												'absolute h-0 w-0 overflow-hidden'
+											}
 											ref={field.ref}
 										/>
 										<FormMessage className={'!mt-4'} />
 										<FormControl>
-											<div className={'flex flex-wrap !bg-white'}>
-												{availableRoom?.map((type, index) => (
-													<CheckBoxView
-														containerClassName={`w-1/2 mt-4 ${index % 2 === 0 ? 'pr-2' : ''}`}
-														key={index}
-														id={type.name}
-														value={field.value?.includes(type.id) || false}
-														onValueChange={(val) => {
-															const newArr = val
-																? [...(field?.value || []), type.id]
-																: (field.value || []).filter(
-																		(val: number) => val !== type.id
-																	);
-															field.onChange(newArr);
-														}}>
-														<Typography
-															tag={'p'}
-															title={type.name}
-															variant={'caption_14px_400'}
-															className={
-																'truncate text-nowrap text-neutral-600'
-															}>
-															{type.name ?? 'N/A'}
-														</Typography>
-													</CheckBoxView>
-												))}
-												{availableRoom?.length === 0 && (
-													<Typography className={'mx-auto text-accent-03'}>
+											<div
+												className={
+													'flex flex-wrap !bg-white'
+												}>
+												{availableRoom?.map(
+													(type, index) => (
+														<CheckBoxView
+															containerClassName={`w-1/2 mt-4 ${index % 2 === 0 ? 'pr-2' : ''}`}
+															key={index}
+															id={type.name}
+															value={
+																field.value?.includes(
+																	type.id
+																) || false
+															}
+															onValueChange={(
+																val
+															) => {
+																const newArr =
+																	val
+																		? [
+																				...(field?.value ||
+																					[]),
+																				type.id,
+																			]
+																		: (
+																				field.value ||
+																				[]
+																			).filter(
+																				(
+																					val: number
+																				) =>
+																					val !==
+																					type.id
+																			);
+																field.onChange(
+																	newArr
+																);
+															}}>
+															<Typography
+																tag={'p'}
+																title={
+																	type.name
+																}
+																variant={
+																	'caption_14px_400'
+																}
+																className={
+																	'truncate text-nowrap text-neutral-600'
+																}>
+																{type.name ??
+																	'N/A'}
+															</Typography>
+														</CheckBoxView>
+													)
+												)}
+												{availableRoom?.length ===
+													0 && (
+													<Typography
+														className={
+															'mx-auto text-accent-03'
+														}>
 														{priceIds?.length > 0
 															? 'Không có phòng nào áp dụng loại giá trên'
 															: 'Vui lòng chọn trước loại giá'}
@@ -374,7 +443,9 @@ const RoomPricingSettings = ({
 								control={control}
 								render={({ field }) => (
 									<input
-										className={'absolute h-0 w-0 overflow-hidden'}
+										className={
+											'absolute h-0 w-0 overflow-hidden'
+										}
 										ref={field.ref}
 									/>
 								)}
@@ -405,14 +476,22 @@ const RoomPricingSettings = ({
 													onValueChange={(e) => {
 														field.onChange(e);
 														form.clearErrors(
-															e ? 'day_of_week' : `day_of_week.${day}.price`
+															e
+																? 'day_of_week'
+																: `day_of_week.${day}.price`
 														);
 													}}>
 													<Typography
 														tag={'p'}
-														variant={'caption_14px_400'}
-														className={'text-nowrap text-neutral-600'}>
-														{day + 1 < 8 ? `Thứ ${day + 1}` : 'Chủ nhật'}
+														variant={
+															'caption_14px_400'
+														}
+														className={
+															'text-nowrap text-neutral-600'
+														}>
+														{day + 1 < 8
+															? `Thứ ${day + 1}`
+															: 'Chủ nhật'}
 													</Typography>
 												</CheckBoxView>
 											)}
@@ -420,12 +499,22 @@ const RoomPricingSettings = ({
 										<FormField
 											control={form.control}
 											name={`day_of_week.${day}.price`}
-											render={({ field: { onChange, value, ...props } }) => (
+											render={({
+												field: {
+													onChange,
+													value,
+													...props
+												},
+											}) => (
 												<FormItem>
 													<div className={'relative'}>
 														<FormControl>
 															<NumberInput
-																disabled={!day_of_week?.[day]?.active}
+																disabled={
+																	!day_of_week?.[
+																		day
+																	]?.active
+																}
 																placeholder="1,500,000"
 																inputMode="numeric"
 																suffix=""
@@ -433,12 +522,22 @@ const RoomPricingSettings = ({
 																className="h-[52px] rounded-xl py-2 leading-6"
 																{...props}
 																value={value}
-																onValueChange={(e) => {
+																onValueChange={(
+																	e
+																) => {
 																	onChange(
-																		e.value.length === 0 ? NaN : Number(e.value)
+																		e.value
+																			.length ===
+																			0
+																			? NaN
+																			: Number(
+																					e.value
+																				)
 																	);
 																}}
-																endAdornment={'VND'}
+																endAdornment={
+																	'VND'
+																}
 															/>
 														</FormControl>
 													</div>

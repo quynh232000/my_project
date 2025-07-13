@@ -34,10 +34,9 @@ const SelectPopover = ({
 	const [open, setOpen] = useState(false);
 	return (
 		<Popover onOpenChange={setOpen} open={open}>
-			<PopoverTrigger className={cn('w-full text-start', triggerClassName)}>
-				<Label required={required}>
-					{label}
-				</Label>
+			<PopoverTrigger
+				className={cn('w-full text-start', triggerClassName)}>
+				<Label required={required}>{label}</Label>
 				<div
 					className={cn(
 						TextVariants.caption_14px_400,
@@ -58,10 +57,15 @@ const SelectPopover = ({
 					setOpen(false);
 				}}
 				align={'center'}
-				className={cn('rounded-lg shadow-2xl border-other-divider !border', containerClassName)}>
+				className={cn(
+					'rounded-lg !border border-other-divider shadow-2xl',
+					containerClassName
+				)}>
 				<ScrollArea className={'h-60 min-w-64'}>
 					<div className={'flex flex-col p-3'}>
-						{data?.map((item, index: number) => renderItem(item, index))}
+						{data?.map((item, index: number) =>
+							renderItem(item, index)
+						)}
 					</div>
 					<ScrollBar className={'hidden'} />
 				</ScrollArea>

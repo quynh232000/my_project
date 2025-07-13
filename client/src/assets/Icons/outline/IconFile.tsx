@@ -1,5 +1,5 @@
-import * as React from "react"
-import { SVGProps, memo } from "react"
+import * as React from 'react';
+import { SVGProps, memo } from 'react';
 const SvgComponent = (props: SVGProps<SVGSVGElement>) => (
 	<svg
 		xmlns="http://www.w3.org/2000/svg"
@@ -7,8 +7,7 @@ const SvgComponent = (props: SVGProps<SVGSVGElement>) => (
 		height={20}
 		viewBox="0 0 20 20"
 		fill="none"
-		{...props}
-	>
+		{...props}>
 		<path
 			d="M11.6673 9.16663H6.66732M8.33398 12.5H6.66732M13.334 5.83329H6.66732M16.6673 5.66663V14.3333C16.6673 15.7334 16.6673 16.4335 16.3948 16.9683C16.1552 17.4387 15.7727 17.8211 15.3023 18.0608C14.7675 18.3333 14.0674 18.3333 12.6673 18.3333H7.33398C5.93385 18.3333 5.23379 18.3333 4.69901 18.0608C4.2286 17.8211 3.84615 17.4387 3.60647 16.9683C3.33398 16.4335 3.33398 15.7334 3.33398 14.3333V5.66663C3.33398 4.26649 3.33398 3.56643 3.60647 3.03165C3.84615 2.56124 4.2286 2.17879 4.69901 1.93911C5.23379 1.66663 5.93385 1.66663 7.33398 1.66663H12.6673C14.0674 1.66663 14.7675 1.66663 15.3023 1.93911C15.7727 2.17879 16.1552 2.56124 16.3948 3.03165C16.6673 3.56643 16.6673 4.26649 16.6673 5.66663Z"
 			stroke="currentColor"
@@ -17,6 +16,6 @@ const SvgComponent = (props: SVGProps<SVGSVGElement>) => (
 			strokeLinejoin="round"
 		/>
 	</svg>
-)
-const Memo = memo(SvgComponent)
-export default Memo
+);
+const Memo = memo(SvgComponent);
+export default Memo;

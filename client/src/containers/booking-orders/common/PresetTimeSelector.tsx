@@ -17,8 +17,13 @@ const PresetTimeSelector = () => {
 						{timeSelect.title}
 					</Typography>
 					{timeSelect.children.map((item, index) => (
-						<div className={'flex items-center gap-2 py-1'} key={index}>
-							<RadioGroupItem id={`time-${item.value}`} value={item.value} />
+						<div
+							className={'flex items-center gap-2 py-1'}
+							key={index}>
+							<RadioGroupItem
+								id={`time-${item.value}`}
+								value={item.value}
+							/>
 							<Label
 								htmlFor={`time-${item.value}`}
 								containerClassName={'m-0'}

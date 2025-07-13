@@ -100,7 +100,7 @@ const SearchAndBrowse = ({ originalList }: Props) => {
 					id="amenitiesSearch"
 					placeholder={'Tìm tiện ích phòng'}
 					className={cn(
-						'h-12 border-transparent rounded-xl  bg-neutral-50 py-2 pr-2 focus:border-primary-500 focus:bg-white',
+						'h-12 rounded-xl border-transparent bg-neutral-50 py-2 pr-2 focus:border-primary-500 focus:bg-white',
 						TextVariants.caption_14px_600
 					)}
 					value={search}
@@ -121,7 +121,9 @@ const SearchAndBrowse = ({ originalList }: Props) => {
 								originalList.every(
 									(amenitiesGroup) =>
 										amenitiesGroup.children.length ===
-										selectedItemList?.[`${amenitiesGroup.id}`]?.length
+										selectedItemList?.[
+											`${amenitiesGroup.id}`
+										]?.length
 								)
 							}
 							onValueChange={toggleCategoryAll}>
@@ -143,20 +145,29 @@ const SearchAndBrowse = ({ originalList }: Props) => {
 									<CheckBoxView
 										key={index}
 										id={`amenity-${item.parentId}-${index}`}
-										value={selectedItemList?.[`${item.parentId}`]?.includes(
-											`${item.id}`
-										)}
+										value={selectedItemList?.[
+											`${item.parentId}`
+										]?.includes(`${item.id}`)}
 										onValueChange={(val) => {
 											let groupSelected: string[] =
-												selectedItemList?.[`${item.parentId}`] ?? [];
+												selectedItemList?.[
+													`${item.parentId}`
+												] ?? [];
 											if (val) {
-												groupSelected.push(`${item.id}`);
-											} else {
-												groupSelected = groupSelected.filter(
-													(val) => val !== `${item.id}`
+												groupSelected.push(
+													`${item.id}`
 												);
+											} else {
+												groupSelected =
+													groupSelected.filter(
+														(val) =>
+															val !== `${item.id}`
+													);
 											}
-											setValue(`${item.parentId}`, groupSelected);
+											setValue(
+												`${item.parentId}`,
+												groupSelected
+											);
 										}}>
 										<Typography
 											tag={'p'}
@@ -188,48 +199,93 @@ const SearchAndBrowse = ({ originalList }: Props) => {
 												<CheckBoxView
 													id={`amenity-${amenityGroup.id}`}
 													value={
-														field.value?.length === amenityGroup.children.length
+														field.value?.length ===
+														amenityGroup.children
+															.length
 													}
 													onValueChange={(checked) =>
 														field.onChange(
 															checked
 																? (amenityGroup.children.map(
-																		(item) => `${item.id}`
+																		(
+																			item
+																		) =>
+																			`${item.id}`
 																	) ?? [])
 																: []
 														)
 													}>
 													<Typography
 														tag={'p'}
-														variant={'caption_14px_700'}
-														className={'text-neutral-600'}>
+														variant={
+															'caption_14px_700'
+														}
+														className={
+															'text-neutral-600'
+														}>
 														{amenityGroup.title}
 													</Typography>
 												</CheckBoxView>
-												{amenityGroup.children.length > 0 && (
-													<div className={cn('mt-3 space-y-1 pl-7')}>
-														{amenityGroup.children.map((amenity, index) => (
-															<CheckBoxView
-																key={index}
-																id={`amenity-${amenityGroup.id}-${amenity.id}`}
-																value={field.value?.includes(`${amenity.id}`)}
-																onValueChange={(val) => {
-																	const newArr = val
-																		? [...(field?.value || []), `${amenity.id}`]
-																		: (field.value || []).filter(
-																				(val: string) =>
-																					val !== String(amenity.id)
-																			);
-																	field.onChange(newArr);
-																}}>
-																<Typography
-																	tag={'p'}
-																	variant={'caption_14px_400'}
-																	className={'text-neutral-600'}>
-																	{amenity.name}
-																</Typography>
-															</CheckBoxView>
-														))}
+												{amenityGroup.children.length >
+													0 && (
+													<div
+														className={cn(
+															'mt-3 space-y-1 pl-7'
+														)}>
+														{amenityGroup.children.map(
+															(
+																amenity,
+																index
+															) => (
+																<CheckBoxView
+																	key={index}
+																	id={`amenity-${amenityGroup.id}-${amenity.id}`}
+																	value={field.value?.includes(
+																		`${amenity.id}`
+																	)}
+																	onValueChange={(
+																		val
+																	) => {
+																		const newArr =
+																			val
+																				? [
+																						...(field?.value ||
+																							[]),
+																						`${amenity.id}`,
+																					]
+																				: (
+																						field.value ||
+																						[]
+																					).filter(
+																						(
+																							val: string
+																						) =>
+																							val !==
+																							String(
+																								amenity.id
+																							)
+																					);
+																		field.onChange(
+																			newArr
+																		);
+																	}}>
+																	<Typography
+																		tag={
+																			'p'
+																		}
+																		variant={
+																			'caption_14px_400'
+																		}
+																		className={
+																			'text-neutral-600'
+																		}>
+																		{
+																			amenity.name
+																		}
+																	</Typography>
+																</CheckBoxView>
+															)
+														)}
 													</div>
 												)}
 											</div>

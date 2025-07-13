@@ -47,7 +47,10 @@ export default function RoomSetup() {
 
 	return (
 		<div className={'space-y-4 rounded-lg bg-white p-4'}>
-			<div className={'flex items-center justify-between gap-2 rounded-lg'}>
+			<div
+				className={
+					'flex items-center justify-between gap-2 rounded-lg'
+				}>
 				<Typography
 					tag={'h3'}
 					variant="content_16px_600"
@@ -76,7 +79,11 @@ export default function RoomSetup() {
 									labelClassName="mb-2"
 									className="h-[44px] rounded-lg bg-white py-2"
 									controllerRenderProps={fieldProps}
-									data={roomTypeList ? mapToLabelValue(roomTypeList) : []}
+									data={
+										roomTypeList
+											? mapToLabelValue(roomTypeList)
+											: []
+									}
 									selectedValue={value}
 									onChange={(val) => {
 										onChange(Number(val));
@@ -143,7 +150,11 @@ export default function RoomSetup() {
 									labelClassName="mb-2"
 									className="h-[44px] rounded-lg bg-white py-2"
 									controllerRenderProps={fieldProps}
-									data={directionList ? mapToLabelValue(directionList) : []}
+									data={
+										directionList
+											? mapToLabelValue(directionList)
+											: []
+									}
 									selectedValue={value}
 									onChange={(val) => onChange(Number(val))}
 								/>
@@ -167,7 +178,11 @@ export default function RoomSetup() {
 									{...fieldProps}
 									value={value}
 									onValueChange={(e) => {
-										onChange(e.value.length === 0 ? '' : Number(e.value));
+										onChange(
+											e.value.length === 0
+												? ''
+												: Number(e.value)
+										);
 									}}
 								/>
 							</FormControl>
@@ -193,7 +208,11 @@ export default function RoomSetup() {
 										{...fieldProps}
 										value={value}
 										onValueChange={(e) => {
-											onChange(e.value.length === 0 ? '' : Number(e.value));
+											onChange(
+												e.value.length === 0
+													? ''
+													: Number(e.value)
+											);
 										}}
 									/>
 								</FormControl>

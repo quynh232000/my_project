@@ -16,13 +16,13 @@ export const updateRoomDetail = async (
 		const hotel_id = getClientSideCookie('hotel_id');
 		const res = await CallAPI().put(`${AppEndpoint.ROOM}/${payload.id}`, {
 			...payload,
-			hotel_id
+			hotel_id,
 		});
 
 		if (!res.data) {
 			return {
 				status: false,
-				message: 'Có lỗi xảy ra, vui lòng thử lại!'
+				message: 'Có lỗi xảy ra, vui lòng thử lại!',
 			};
 		}
 		return parseErrorStatus(res.data);

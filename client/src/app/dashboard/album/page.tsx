@@ -14,11 +14,11 @@ const Page = async () => {
 			<DashboardHeroTitle
 				pathName={pathName}
 				title={'Thư viện ảnh'}
-				extraContent={<ImageUploadNote/>}
-				extraTitle={<ImageGalleryAction/>}
+				extraContent={<ImageUploadNote />}
+				extraTitle={<ImageGalleryAction />}
 			/>
 			<DashboardCard>
-				<AlbumManager/>
+				<AlbumManager />
 			</DashboardCard>
 		</DashboardContainer>
 	);

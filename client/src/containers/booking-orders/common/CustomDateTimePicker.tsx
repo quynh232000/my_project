@@ -39,9 +39,10 @@ const CustomDateTimePicker = ({
 		} else {
 			if (isBefore(selectedDate, dateRange?.from)) {
 				onSelectDateRange({ from: selectedDate, to: dateRange?.from });
-			} else onSelectDateRange({ from: dateRange?.from, to: selectedDate });
-			!handleSearch &&  onClose?.()
-			setTarget("from")
+			} else
+				onSelectDateRange({ from: dateRange?.from, to: selectedDate });
+			!handleSearch && onClose?.();
+			setTarget('from');
 		}
 	};
 	return (
@@ -57,11 +58,11 @@ const CustomDateTimePicker = ({
 				numberOfMonths={2}
 				showOutsideDays={false}
 			/>
-			{showSummaryAndSearch  && (
-				<div className={cn('mt-4 flex items-center justify-between')}>
+			{showSummaryAndSearch && (
+				<div className={cn('mt-4 flex items-center justify-between ')}>
 					<div
 						className={cn(
-							'flex items-center gap-6 text-neutral-600',
+							'flex items-center gap-6 text-neutral-600 ',
 							TextVariants.caption_12px_600
 						)}>
 						<span>
@@ -79,14 +80,14 @@ const CustomDateTimePicker = ({
 							</span>
 						</span>
 					</div>
-					{ handleSearch &&
+					{handleSearch && (
 						<Button
 							variant={'secondary'}
 							onClick={handleSearch}
 							className={'min-w-fit px-3 py-1'}>
 							Tìm kiếm
 						</Button>
-					}
+					)}
 				</div>
 			)}
 		</>

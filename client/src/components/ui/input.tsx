@@ -73,7 +73,10 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 					</div>
 				)}
 				{!!endAdornment && (
-					<div className={'absolute right-2.5 top-2/4 -translate-y-1/2'}>
+					<div
+						className={
+							'absolute right-2.5 top-2/4 -translate-y-1/2'
+						}>
 						{endAdornment}
 					</div>
 				)}

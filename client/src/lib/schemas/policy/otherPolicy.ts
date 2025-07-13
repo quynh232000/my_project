@@ -2,8 +2,8 @@ import { MAX_AGE_VALUE } from '@/containers/setting-room/RoomGeneralSetting/comm
 import { z } from 'zod';
 
 export enum EDepositAmountType {
-	'fixed' = "fixed",
-	'percent' = "percent",
+	'fixed' = 'fixed',
+	'percent' = 'percent',
 }
 export const EDepositMethod = z.enum(['cash', 'credit_card', 'banking']);
 
@@ -17,13 +17,20 @@ export const depositPolicySchema = z
 			.default(EDepositAmountType.fixed),
 		method_deposit: z
 			.array(EDepositMethod, {
-				required_error: 'Vui lòng chọn ít nhất 1 phương thức đặt cọc được chấp nhận',
+				required_error:
+					'Vui lòng chọn ít nhất 1 phương thức đặt cọc được chấp nhận',
 			})
-			.min(1, 'Vui lòng chọn ít nhất 1 phương thức đặt cọc được chấp nhận'),
+			.min(
+				1,
+				'Vui lòng chọn ít nhất 1 phương thức đặt cọc được chấp nhận'
+			),
 	})
 	.refine(
 		(val) =>
-			!(val.type_deposit === EDepositAmountType.percent && val.amount > 100),
+			!(
+				val.type_deposit === EDepositAmountType.percent &&
+				val.amount > 100
+			),
 		{
 			message: 'Số tiền cọc theo phần trăm vượt quá 100%',
 			path: ['amount'],
@@ -32,7 +39,8 @@ export const depositPolicySchema = z
 	.refine(
 		(val) =>
 			!(
-				val.type_deposit === EDepositAmountType.fixed && val.amount > 999999999
+				val.type_deposit === EDepositAmountType.fixed &&
+				val.amount > 999999999
 			),
 		{
 			message: 'Số tiền cọc quá lớn',
@@ -90,94 +98,101 @@ export enum EUseBreakfastType {
 	yes = 'yes',
 }
 
-export const breakfastServiceSchema = z.object({
-	is_active: z.boolean(),
-	time_from: z.string().optional(),
-	time_to: z.string().optional(),
-	breakfast_type: z.number().optional(),
-	serving_type: z.number().optional(),
-	isBreakfast: z.nativeEnum(EUseBreakfastType).default(EUseBreakfastType.no),
-	extra_breakfast: z
-		.array(BreakfastFeeSchema)
-		.superRefine((data, ctx) => {
-			for (let i = 1; i < data.length; i++) {
-				const prevAgeTo = data[i - 1].age_to;
-				const currAgeTo = data[i].age_to;
+export const breakfastServiceSchema = z
+	.object({
+		is_active: z.boolean(),
+		time_from: z.string().optional(),
+		time_to: z.string().optional(),
+		breakfast_type: z.number().optional(),
+		serving_type: z.number().optional(),
+		isBreakfast: z
+			.nativeEnum(EUseBreakfastType)
+			.default(EUseBreakfastType.no),
+		extra_breakfast: z
+			.array(BreakfastFeeSchema)
+			.superRefine((data, ctx) => {
+				for (let i = 1; i < data.length; i++) {
+					const prevAgeTo = data[i - 1].age_to;
+					const currAgeTo = data[i].age_to;
+					if (
+						prevAgeTo !== null &&
+						currAgeTo !== null &&
+						+currAgeTo <= +prevAgeTo
+					) {
+						ctx.addIssue({
+							code: z.ZodIssueCode.custom,
+							message: 'Vui lòng chọn độ tuổi tăng dần',
+							path: [`${i}.age_to`],
+						});
+					}
+				}
+			})
+			.superRefine((data, ctx) => {
 				if (
-					prevAgeTo !== null &&
-					currAgeTo !== null &&
-					+currAgeTo <= +prevAgeTo
+					data?.length > 0 &&
+					data[data.length - 1].age_to !== Number(MAX_AGE_VALUE)
 				) {
-					ctx.addIssue({
+					return ctx.addIssue({
 						code: z.ZodIssueCode.custom,
-						message: 'Vui lòng chọn độ tuổi tăng dần',
-						path: [`${i}.age_to`],
+						message:
+							'Vui lòng cài đặt giá bổ sung để bao gồm toàn bộ khung tuổi đi kèm',
+						path: [`${data.length - 1}.age_to`],
+					});
+				}
+			})
+			.optional(),
+	})
+	.superRefine((data, ctx) => {
+		if (data.is_active) {
+			if (!data.time_from) {
+				ctx.addIssue({
+					path: ['time_from'],
+					code: z.ZodIssueCode.custom,
+					message: 'Vui lòng nhập thời gian bắt đầu',
+				});
+			}
+			if (!data.time_to) {
+				ctx.addIssue({
+					path: ['time_to'],
+					code: z.ZodIssueCode.custom,
+					message: 'Vui lòng nhập thời gian kết thúc',
+				});
+			}
+			if (
+				data.breakfast_type === undefined ||
+				data.breakfast_type === null
+			) {
+				ctx.addIssue({
+					path: ['breakfast_type'],
+					code: z.ZodIssueCode.custom,
+					message: 'Vui lòng chọn kiểu',
+				});
+			}
+			if (data.serving_type === undefined || data.serving_type === null) {
+				ctx.addIssue({
+					path: ['serving_type'],
+					code: z.ZodIssueCode.custom,
+					message: 'Vui lòng chọn loại',
+				});
+			}
+
+			if (data.time_to && data.time_from) {
+				const [fromHours, fromMinutes] = data.time_from.split(':');
+				const [toHours, toMinutes] = data.time_to.split(':');
+
+				const fromTotalMinutes = +fromHours * 60 + +fromMinutes;
+				const toTotalMinutes = +toHours * 60 + +toMinutes;
+
+				if (fromTotalMinutes > toTotalMinutes) {
+					ctx.addIssue({
+						path: ['time_to'],
+						code: z.ZodIssueCode.custom,
+						message: 'Giờ kết thúc không thể bé hơn giờ bắt đầu',
 					});
 				}
 			}
-		})
-		.superRefine((data, ctx) => {
-			if (
-				data?.length > 0 &&
-				data[data.length - 1].age_to !== Number(MAX_AGE_VALUE)
-			) {
-				return ctx.addIssue({
-					code: z.ZodIssueCode.custom,
-					message:
-						'Vui lòng cài đặt giá bổ sung để bao gồm toàn bộ khung tuổi đi kèm',
-					path: [`${data.length - 1}.age_to`],
-				});
-			}
-		})
-		.optional(),
-}).superRefine((data, ctx) => {
-	if (data.is_active) {
-		if (!data.time_from) {
-			ctx.addIssue({
-				path: ['time_from'],
-				code: z.ZodIssueCode.custom,
-				message: 'Vui lòng nhập thời gian bắt đầu',
-			});
 		}
-		if (!data.time_to) {
-			ctx.addIssue({
-				path: ['time_to'],
-				code: z.ZodIssueCode.custom,
-				message: 'Vui lòng nhập thời gian kết thúc',
-			});
-		}
-		if (data.breakfast_type === undefined || data.breakfast_type === null) {
-			ctx.addIssue({
-				path: ['breakfast_type'],
-				code: z.ZodIssueCode.custom,
-				message: 'Vui lòng chọn kiểu',
-			});
-		}
-		if (data.serving_type === undefined || data.serving_type === null) {
-			ctx.addIssue({
-				path: ['serving_type'],
-				code: z.ZodIssueCode.custom,
-				message: 'Vui lòng chọn loại',
-			});
-		}
-
-		if (data.time_to && data.time_from) {
-			const [fromHours, fromMinutes] = data.time_from.split(':');
-			const [toHours, toMinutes] = data.time_to.split(":")
-
-			const fromTotalMinutes = +fromHours * 60 + +fromMinutes;
-			const toTotalMinutes = +toHours * 60 + +toMinutes;
-
-			if (fromTotalMinutes > toTotalMinutes) {
-				ctx.addIssue({
-					path: ["time_to"],
-					code: z.ZodIssueCode.custom,
-					message: "Giờ kết thúc không thể bé hơn giờ bắt đầu"
-				})
-			}
-		}
-	}
-});
+	});
 
 export const otherPolicySchema = z.object({
 	extraBed: z.boolean().default(false),

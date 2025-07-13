@@ -50,7 +50,9 @@ const PromotionTable = () => {
 				(promotion) => String(promotion.id) === id
 			);
 			if (promotion) {
-				toast.success(`Cập nhật trạng thái ${promotion.name} thành công`);
+				toast.success(
+					`Cập nhật trạng thái ${promotion.name} thành công`
+				);
 				const newPromotionArr =
 					promotionList?.map((promotion) => ({
 						...promotion,
@@ -112,12 +114,12 @@ const PromotionTable = () => {
 		<DashboardTable<IPromotion>
 			params={params}
 			meta={pagination}
-			onSortModelChange={({direction, column}) => {
+			onSortModelChange={({ direction, column }) => {
 				setParams({
 					...params,
 					direction,
-					column
-				})
+					column,
+				});
 			}}
 			onPaginationModelChange={({ page, limit }) => {
 				setParams({
@@ -143,8 +145,16 @@ const PromotionTable = () => {
 			columns={[
 				{ label: 'Tên khuyến mãi', field: 'name', sortable: true },
 				{ label: 'Giảm giá', field: 'value', sortable: true },
-				{ label: 'Loại giá áp dụng', field: 'price_types', sortable: false },
-				{ label: 'Loại phòng áp dụng', field: 'rooms', sortable: false },
+				{
+					label: 'Loại giá áp dụng',
+					field: 'price_types',
+					sortable: false,
+				},
+				{
+					label: 'Loại phòng áp dụng',
+					field: 'rooms',
+					sortable: false,
+				},
 				{
 					label: 'Trạng thái',
 					field: 'status',
@@ -163,7 +173,9 @@ const PromotionTable = () => {
 					(promotion) => {
 						startHolyLoader();
 						setLoading(true);
-						router.push(`${DashboardRouter.promotion}/${promotion.id}`);
+						router.push(
+							`${DashboardRouter.promotion}/${promotion.id}`
+						);
 					},
 				],
 			}}

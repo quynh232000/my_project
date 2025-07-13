@@ -86,10 +86,14 @@ const ImageGallerySection = ({
 						roomId={roomId}
 						onEdit={(id) => {
 							const images = method.getValues('images') ?? [];
-							const idx = images.findIndex((item) => item.id === id);
+							const idx = images.findIndex(
+								(item) => item.id === id
+							);
 							if (idx >= 0) {
 								setDialogEditImage({
-									image: images?.[idx]?.file || images?.[idx]?.url,
+									image:
+										images?.[idx]?.file ||
+										images?.[idx]?.url,
 									index: idx,
 									selectedTag: images?.[idx]?.tag,
 									image_id: images?.[idx]?.image_id,
@@ -101,21 +105,31 @@ const ImageGallerySection = ({
 							if (checked) {
 								newArr.push({
 									id: String(id),
-									room_id: roomId ? String(roomId) : undefined,
+									room_id: roomId
+										? String(roomId)
+										: undefined,
 								});
 							} else {
-								newArr = newArr.filter((item) => item.id !== String(id));
+								newArr = newArr.filter(
+									(item) => item.id !== String(id)
+								);
 							}
 							setDeletedAlbumIds(newArr);
 						}}
 						onRemove={(id) => {
 							const images = method.getValues('images') ?? [];
-							const idx = images.findIndex((item) => item.id === id);
+							const idx = images.findIndex(
+								(item) => item.id === id
+							);
 							if (idx >= 0) {
-								setDialogDeleteImageAlbum(String(images?.[idx]?.image_id));
+								setDialogDeleteImageAlbum(
+									String(images?.[idx]?.image_id)
+								);
 								const arr = {
 									id: String(images?.[idx]?.image_id),
-									room_id: roomId ? String(roomId) : undefined,
+									room_id: roomId
+										? String(roomId)
+										: undefined,
 								};
 								setDeletedAlbumIds([...deletedAlbumIds, arr]);
 							}

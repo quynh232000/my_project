@@ -6,11 +6,16 @@ import MinimumCheckInAge from '@/containers/policy/other-policies/minimum-check-
 
 // CHÍNH SÁCH KHÁC
 export default async function Page() {
-	const { pathName } = await getFullURLServerComponent()
-	return <DashboardContainer>
-		<DashboardHeroTitle title={"Độ tuổi tối thiểu nhận phòng"} pathName={pathName} />
-		<DashboardCard>
-			<MinimumCheckInAge />
-		</DashboardCard>
-	</DashboardContainer>
+	const { pathName } = await getFullURLServerComponent();
+	return (
+		<DashboardContainer>
+			<DashboardHeroTitle
+				title={'Độ tuổi tối thiểu nhận phòng'}
+				pathName={pathName}
+			/>
+			<DashboardCard>
+				<MinimumCheckInAge />
+			</DashboardCard>
+		</DashboardContainer>
+	);
 }

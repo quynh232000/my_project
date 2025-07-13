@@ -9,10 +9,7 @@ import {
 	useSensor,
 	useSensors,
 } from '@dnd-kit/core';
-import {
-	rectSortingStrategy,
-	SortableContext,
-} from '@dnd-kit/sortable';
+import { rectSortingStrategy, SortableContext } from '@dnd-kit/sortable';
 import React, { useState } from 'react';
 import { ImageType } from '@/containers/setting-room/RoomImageSetting/common/RoomImageList';
 import Item from '@/containers/album-manager/common/Item';
@@ -25,7 +22,6 @@ interface SortableListProps {
 	onRemove: (id: number | string) => void;
 	onMove: (list: ImageType[]) => void;
 	showTag?: boolean;
-
 }
 
 export const SortableList = ({
@@ -33,7 +29,7 @@ export const SortableList = ({
 	onEdit,
 	onRemove,
 	onMove,
-	showTag=true
+	showTag = true,
 }: SortableListProps) => {
 	const [activeId, setActiveId] = useState<string | null>(null);
 
@@ -56,7 +52,9 @@ export const SortableList = ({
 	const handleDragEnd = (event: DragEndEvent) => {
 		const { active, over } = event;
 		const oldIndex = list.findIndex((item) => item?.id === active?.id);
-		const newIndex = over ? list.findIndex((item) => item?.id === over?.id) : -1;
+		const newIndex = over
+			? list.findIndex((item) => item?.id === over?.id)
+			: -1;
 		if (oldIndex >= 0 && newIndex >= 0 && oldIndex !== newIndex) {
 			const newList = reorderList(list, oldIndex, newIndex);
 			onMove(newList);
@@ -97,7 +95,9 @@ export const SortableList = ({
 						))}
 				</SortableContext>
 				<DragOverlay adjustScale style={{ transformOrigin: '0 0 ' }}>
-					{draggingItem && <Item item={draggingItem} isDragging showTag={false}/>}
+					{draggingItem && (
+						<Item item={draggingItem} isDragging showTag={false} />
+					)}
 				</DragOverlay>
 			</DndContext>
 		</div>

@@ -6,7 +6,10 @@ import { parseErrorStatus, IStatusType } from '@/utils/errors/parseErrorStatus';
 import { AxiosError } from 'axios';
 
 interface props {
-	policies: (Omit<IPolicyChildren, "hotel_id" | "id" | "quantity_child" | "fee"> & { id?: number, quantity_child?: number, fee?: number })[];
+	policies: (Omit<
+		IPolicyChildren,
+		'hotel_id' | 'id' | 'quantity_child' | 'fee'
+	> & { id?: number; quantity_child?: number; fee?: number })[];
 }
 
 export const updatePolicyChildren = async ({
@@ -14,17 +17,14 @@ export const updatePolicyChildren = async ({
 }: props): Promise<IResponseStatus> => {
 	const hotel_id = getClientSideCookie('hotel_id');
 	try {
-		const res = await CallAPI().post(
-			`${AppEndpoint.POLICY_CHILDREN}`,
-			{
-				policies,
-				hotel_id
-			}
-		);
+		const res = await CallAPI().post(`${AppEndpoint.POLICY_CHILDREN}`, {
+			policies,
+			hotel_id,
+		});
 		if (!res.data) {
 			return {
 				status: false,
-				message: 'Có lỗi xảy ra, vui lòng thử lại!'
+				message: 'Có lỗi xảy ra, vui lòng thử lại!',
 			};
 		}
 		return parseErrorStatus(res.data);

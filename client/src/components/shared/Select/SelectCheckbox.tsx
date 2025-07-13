@@ -22,7 +22,6 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { TextVariants } from '@/components/shared/Typography/TextVariants';
 import { GlobalUI } from '@/themes/type';
 
-
 interface SelectCheckboxProps {
 	onChange?: (value: string | number) => void;
 	data?: TSelectCheckbox[];
@@ -78,7 +77,9 @@ const SelectCheckbox = ({
 								width={12}
 								height={12}
 								color={
-									isIconChevronLight ? '#fff' : GlobalUI.colors.neutrals['400']
+									isIconChevronLight
+										? '#fff'
+										: GlobalUI.colors.neutrals['400']
 								}
 							/>
 						</div>
@@ -101,14 +102,20 @@ const SelectCheckbox = ({
 					)}>
 					<Command
 						filter={(value, search) => {
-							return normalizeText(value).includes(normalizeText(search))
+							return normalizeText(value).includes(
+								normalizeText(search)
+							)
 								? 1
 								: 0;
 						}}>
 						<CommandList>
-							<ScrollArea className={cn('h-auto', props.classItemList)}>
-								<CommandEmpty>Không tìm thấy lựa chọn</CommandEmpty>
-								<CommandGroup className={'m-0 bg-other-white px-3 py-2'}>
+							<ScrollArea
+								className={cn('h-auto', props.classItemList)}>
+								<CommandEmpty>
+									Không tìm thấy lựa chọn
+								</CommandEmpty>
+								<CommandGroup
+									className={'m-0 bg-other-white px-3 py-2'}>
 									{props.data &&
 										props.data.length > 0 &&
 										props.data.map((item) => {
@@ -121,22 +128,42 @@ const SelectCheckbox = ({
 													value={item.value}
 													title={item.value}
 													onSelect={() => {
-														props.onChange?.(item.value);
+														props.onChange?.(
+															item.value
+														);
 													}}>
-													<div className={'flex w-full items-center gap-2'}>
+													<div
+														className={
+															'flex w-full items-center gap-2'
+														}>
 														<Checkbox
 															id={`checkbox_${item.value}`}
-															checked={item.checked}
-															onCheckedChange={(value) => {
-																const newList = props.data?.map((itemCheck) =>
-																	itemCheck.value === item.value
-																		? {
-																			...itemCheck,
-																			checked: Boolean(value),
-																		}
-																		: itemCheck
+															checked={
+																item.checked
+															}
+															onCheckedChange={(
+																value
+															) => {
+																const newList =
+																	props.data?.map(
+																		(
+																			itemCheck
+																		) =>
+																			itemCheck.value ===
+																			item.value
+																				? {
+																						...itemCheck,
+																						checked:
+																							Boolean(
+																								value
+																							),
+																					}
+																				: itemCheck
+																	);
+																props.handleChangeData?.(
+																	newList ||
+																		[]
 																);
-																props.handleChangeData?.(newList || []);
 															}}
 															className={
 																'duration-800 transition-all ease-in-out'

@@ -32,7 +32,10 @@ export default function Page() {
 			</button>
 			<Link
 				href={AuthRouters.signIn}
-				className={cn('text-neutral-400', TextVariants.caption_14px_500)}>
+				className={cn(
+					'text-neutral-400',
+					TextVariants.caption_14px_500
+				)}>
 				Bạn đã có tài khoản?{' '}
 				<span className={'text-secondary-500'}>Đăng nhập</span>
 			</Link>

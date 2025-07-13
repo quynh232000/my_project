@@ -17,13 +17,10 @@ export const updateRoomStatus = async (
 	try {
 		const hotel_id = getClientSideCookie('hotel_id');
 
-		const { data } = await CallAPI().post(
-			`${AppEndpoint.ROOM_STATUS}`,
-			{
-				hotel_id,
-				...body,
-			}
-		);
+		const { data } = await CallAPI().post(`${AppEndpoint.ROOM_STATUS}`, {
+			hotel_id,
+			...body,
+		});
 		if (!data) {
 			return {
 				status: false,

@@ -2,9 +2,9 @@ import { CallAPI } from '@/configs/axios/axios';
 import { API_URL, AppEndpoint } from '@/services/type';
 import { getClientSideCookie } from '@/utils/cookie';
 export interface IImage {
-	image: File,
-	label_id: string,
-	priority: string,
+	image: File;
+	label_id: string;
+	priority: string;
 }
 export interface CreateAlbumRequestBody {
 	slug: string;
@@ -17,7 +17,7 @@ export interface IResponse<T> {
 	status: boolean;
 	message: string;
 	finishAt: Date;
-	data: T
+	data: T;
 }
 
 export const createAlbum = async <T>(
@@ -34,12 +34,12 @@ export const createAlbum = async <T>(
 		body.images?.forEach((img: IImage, idx) => {
 			formData.append(`images[${idx}][image]`, img.image);
 			formData.append(`images[${idx}][label_id]`, img.label_id);
-			formData.append(`images[${idx}][priority]`, img.priority)
+			formData.append(`images[${idx}][priority]`, img.priority);
 		});
 
-		const res = await CallAPI(API_URL, true, "multipart/form-data").post(
+		const res = await CallAPI(API_URL, true, 'multipart/form-data').post(
 			`${AppEndpoint.ALBUM}`,
-			formData,
+			formData
 		);
 		if (!res.data) {
 			return null;

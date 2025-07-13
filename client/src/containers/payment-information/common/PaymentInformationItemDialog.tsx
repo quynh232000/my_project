@@ -83,7 +83,9 @@ export const PaymentInformationItemDialog = ({
 				.then(async (res) => {
 					if (res.status && res.id) {
 						await fetchPaymentInfo(true);
-						toast.success('Cập nhật thông tin thanh toán thành công!');
+						toast.success(
+							'Cập nhật thông tin thanh toán thành công!'
+						);
 						_onClose();
 					} else {
 						toast.error(res.message);
@@ -118,7 +120,9 @@ export const PaymentInformationItemDialog = ({
 				.then(async (res) => {
 					if (res.status && res.id) {
 						await fetchPaymentInfo(true);
-						toast.success('Cập nhật tài khoản mặc định thành công!');
+						toast.success(
+							'Cập nhật tài khoản mặc định thành công!'
+						);
 						_onClose();
 					} else {
 						toast.error(res.message);
@@ -172,7 +176,9 @@ export const PaymentInformationItemDialog = ({
 		<Dialog open={open} onOpenChange={(val) => !val && _onClose()}>
 			<DialogContent
 				hideButtonClose={true}
-				className={'max-h-[90vh] max-w-[888px] gap-4 overflow-auto p-6'}>
+				className={
+					'max-h-[90vh] max-w-[888px] gap-4 overflow-auto p-6'
+				}>
 				<DialogHeader className="flex-row items-center justify-between">
 					<DialogTitle
 						className={`${TextVariants.caption_18px_700} text-neutral-700`}>
@@ -191,9 +197,13 @@ export const PaymentInformationItemDialog = ({
 							<FormField
 								control={control}
 								name={'bank_id'}
-								render={({ field: { value, onChange, ...props } }) => (
+								render={({
+									field: { value, onChange, ...props },
+								}) => (
 									<FormItem>
-										<FormLabel required>Ngân hàng</FormLabel>
+										<FormLabel required>
+											Ngân hàng
+										</FormLabel>
 										<FormControl>
 											<SelectPopup
 												disabled={isVerified}
@@ -218,13 +228,17 @@ export const PaymentInformationItemDialog = ({
 								control={control}
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel>Chi nhánh ngân hàng</FormLabel>
+										<FormLabel>
+											Chi nhánh ngân hàng
+										</FormLabel>
 										<FormControl>
 											<Input
 												disabled={isVerified}
 												type="text"
 												placeholder="Nhập tên chi nhánh ngân hàng"
-												className={'h-[44px] py-2 leading-6'}
+												className={
+													'h-[44px] py-2 leading-6'
+												}
 												{...field}
 												value={field.value ?? ''}
 											/>
@@ -238,13 +252,17 @@ export const PaymentInformationItemDialog = ({
 								control={control}
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel required>Tên tài khoản</FormLabel>
+										<FormLabel required>
+											Tên tài khoản
+										</FormLabel>
 										<FormControl>
 											<Input
 												disabled={isVerified}
 												type="text"
 												placeholder="Nhập tên tài khoản"
-												className={'h-[44px] py-2 leading-6'}
+												className={
+													'h-[44px] py-2 leading-6'
+												}
 												{...field}
 											/>
 										</FormControl>
@@ -257,13 +275,17 @@ export const PaymentInformationItemDialog = ({
 								control={control}
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel required>Số tài khoản</FormLabel>
+										<FormLabel required>
+											Số tài khoản
+										</FormLabel>
 										<FormControl>
 											<Input
 												disabled={isVerified}
 												type="text"
 												placeholder="Nhập số tài khoản"
-												className={'h-[44px] py-2 leading-6'}
+												className={
+													'h-[44px] py-2 leading-6'
+												}
 												{...field}
 											/>
 										</FormControl>
@@ -274,9 +296,13 @@ export const PaymentInformationItemDialog = ({
 							<FormField
 								control={control}
 								name={'type'}
-								render={({ field: { value, onChange, ...props } }) => (
+								render={({
+									field: { value, onChange, ...props },
+								}) => (
 									<FormItem>
-										<FormLabel required>Loại tài khoản</FormLabel>
+										<FormLabel required>
+											Loại tài khoản
+										</FormLabel>
 										<FormControl>
 											<SelectPopup
 												disabled={isVerified}
@@ -304,7 +330,9 @@ export const PaymentInformationItemDialog = ({
 								)}
 							/>
 							<div className="space-y-2">
-								<Typography variant="caption_14px_500">Trạng thái</Typography>
+								<Typography variant="caption_14px_500">
+									Trạng thái
+								</Typography>
 								<div className="flex gap-2">
 									{isVerified ? (
 										<IconVerified className="size-6 shrink-0" />
@@ -320,7 +348,9 @@ export const PaymentInformationItemDialog = ({
 													: 'Tài khoản này chưa được xác thực'
 											}
 											className={`${
-												isVerified ? 'text-accent-02' : 'text-accent-03'
+												isVerified
+													? 'text-accent-02'
+													: 'text-accent-03'
 											}`}
 										/>
 										{!isVerified && (
@@ -343,20 +373,28 @@ export const PaymentInformationItemDialog = ({
 										<FormItem className="mt-2 flex flex-row items-center space-x-3 space-y-0">
 											<FormControl>
 												<Checkbox
-													disabled={!!data?.is_default}
+													disabled={
+														!!data?.is_default
+													}
 													id={`is_default`}
 													checked={!!field.value}
-													onCheckedChange={(checked) => {
-														field.onChange(+checked);
+													onCheckedChange={(
+														checked
+													) => {
+														field.onChange(
+															+checked
+														);
 													}}
 												/>
 											</FormControl>
 											<FormLabel
 												htmlFor={`is_default`}
 												className={`${TextVariants.caption_14px_400} ${
-													!data?.is_default && 'cursor-pointer'
+													!data?.is_default &&
+													'cursor-pointer'
 												} text-neutral-600`}>
-												Chọn tài khoản này làm tài khoản giao dịch chính
+												Chọn tài khoản này làm tài khoản
+												giao dịch chính
 											</FormLabel>
 										</FormItem>
 									)}
@@ -375,13 +413,17 @@ export const PaymentInformationItemDialog = ({
 									control={control}
 									render={({ field }) => (
 										<FormItem>
-											<FormLabel required>Tên công ty</FormLabel>
+											<FormLabel required>
+												Tên công ty
+											</FormLabel>
 											<FormControl>
 												<Input
 													disabled={isVerified}
 													type="text"
 													placeholder="Nhập tên công ty"
-													className={'h-[44px] py-2 leading-6'}
+													className={
+														'h-[44px] py-2 leading-6'
+													}
 													{...field}
 												/>
 											</FormControl>
@@ -394,13 +436,17 @@ export const PaymentInformationItemDialog = ({
 									control={control}
 									render={({ field }) => (
 										<FormItem>
-											<FormLabel required>Người đại diện</FormLabel>
+											<FormLabel required>
+												Người đại diện
+											</FormLabel>
 											<FormControl>
 												<Input
 													disabled={isVerified}
 													type="text"
 													placeholder="Nhập tên người đại diện"
-													className={'h-[44px] py-2 leading-6'}
+													className={
+														'h-[44px] py-2 leading-6'
+													}
 													{...field}
 												/>
 											</FormControl>
@@ -413,13 +459,17 @@ export const PaymentInformationItemDialog = ({
 									control={control}
 									render={({ field }) => (
 										<FormItem>
-											<FormLabel required>Địa chỉ</FormLabel>
+											<FormLabel required>
+												Địa chỉ
+											</FormLabel>
 											<FormControl>
 												<Input
 													disabled={isVerified}
 													type="text"
 													placeholder="Nhập địa chỉ"
-													className={'h-[44px] py-2 leading-6'}
+													className={
+														'h-[44px] py-2 leading-6'
+													}
 													{...field}
 												/>
 											</FormControl>
@@ -432,13 +482,17 @@ export const PaymentInformationItemDialog = ({
 									control={control}
 									render={({ field }) => (
 										<FormItem>
-											<FormLabel required>Mã số thuế</FormLabel>
+											<FormLabel required>
+												Mã số thuế
+											</FormLabel>
 											<FormControl>
 												<Input
 													disabled={isVerified}
 													type="text"
 													placeholder="Nhập mã số thuế"
-													className={'h-[44px] py-2 leading-6'}
+													className={
+														'h-[44px] py-2 leading-6'
+													}
 													{...field}
 												/>
 											</FormControl>
@@ -451,19 +505,25 @@ export const PaymentInformationItemDialog = ({
 									control={control}
 									render={({ field }) => (
 										<FormItem>
-											<FormLabel required>Email</FormLabel>
+											<FormLabel required>
+												Email
+											</FormLabel>
 											<FormControl>
 												<Input
 													disabled={isVerified}
 													type="text"
 													placeholder="Nhập email"
-													className={'h-[44px] py-2 leading-6'}
+													className={
+														'h-[44px] py-2 leading-6'
+													}
 													{...field}
 												/>
 											</FormControl>
 											<Typography
 												tag={'p'}
-												text={'Dùng để nhận hóa đơn điện tử'}
+												text={
+													'Dùng để nhận hóa đơn điện tử'
+												}
 												className={`${TextVariants.caption_12px_500} text-neutral-400`}
 											/>
 											<FormMessage />
@@ -475,7 +535,9 @@ export const PaymentInformationItemDialog = ({
 									control={control}
 									render={({ field }) => (
 										<FormItem>
-											<FormLabel required>Số điện thoại</FormLabel>
+											<FormLabel required>
+												Số điện thoại
+											</FormLabel>
 											<FormControl>
 												<PhoneInput
 													disabled={isVerified}
@@ -495,7 +557,8 @@ export const PaymentInformationItemDialog = ({
 							titleBtnCancel="Huỷ"
 							actionCancel={() => _onClose()}
 							{...(isVerified && {
-								disabledBtnConfirm: is_default === data?.is_default,
+								disabledBtnConfirm:
+									is_default === data?.is_default,
 								actionSubmit() {
 									onUpdateDefault();
 								},

@@ -9,9 +9,12 @@ const Page = async () => {
 	const { pathName } = await getFullURLServerComponent();
 	return (
 		<DashboardContainer>
-			<DashboardHeroTitle pathName={pathName} title={'Danh sách người dùng'} />
+			<DashboardHeroTitle
+				pathName={pathName}
+				title={'Danh sách người dùng'}
+			/>
 			<DashboardCard>
-				<UserTable/>
+				<UserTable />
 			</DashboardCard>
 		</DashboardContainer>
 	);

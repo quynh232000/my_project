@@ -124,7 +124,9 @@ const RoomAvailabilitySettings = ({
 					</Typography>
 					<span
 						onClick={_onClose}
-						className={'cursor-pointer rounded-full bg-neutral-50 p-2'}>
+						className={
+							'cursor-pointer rounded-full bg-neutral-50 p-2'
+						}>
 						<IconClose
 							className={'size-4'}
 							color={GlobalUI.colors.neutrals['5']}
@@ -156,7 +158,9 @@ const RoomAvailabilitySettings = ({
 													from: field?.value?.from,
 													to: field?.value?.to,
 												}}
-												onSelectDateRange={field.onChange}
+												onSelectDateRange={
+													field.onChange
+												}
 											/>
 										</FormControl>
 										{errors?.date?.message ? (
@@ -164,7 +168,11 @@ const RoomAvailabilitySettings = ({
 										) : (
 											<FieldErrorMessage
 												errors={errors}
-												name={errors?.date?.from ? 'date.from' : 'date.to'}
+												name={
+													errors?.date?.from
+														? 'date.from'
+														: 'date.to'
+												}
 											/>
 										)}
 									</FormItem>
@@ -188,35 +196,69 @@ const RoomAvailabilitySettings = ({
 								render={({ field }) => (
 									<FormItem className={'space-y-2'}>
 										<input
-											className={'absolute h-0 w-0 overflow-hidden'}
+											className={
+												'absolute h-0 w-0 overflow-hidden'
+											}
 											ref={field.ref}
 										/>
 										<FormMessage />
 										<FormControl>
-											<div className={'!mt-4 grid grid-cols-2 gap-4 !bg-white'}>
+											<div
+												className={
+													'!mt-4 grid grid-cols-2 gap-4 !bg-white'
+												}>
 												{roomList
-													?.filter((room) => room.status === ERoomStatus.active)
+													?.filter(
+														(room) =>
+															room.status ===
+															ERoomStatus.active
+													)
 													?.map((room, index) => (
 														<CheckBoxView
 															key={index}
 															id={String(room.id)}
-															value={!!field.value?.includes(room.id)}
-															onValueChange={(value) => {
-																const newArr = value
-																	? [...(field?.value || []), room.id]
-																	: (field.value || []).filter(
-																			(val) => val !== room.id
-																		);
-																field.onChange(newArr);
+															value={
+																!!field.value?.includes(
+																	room.id
+																)
+															}
+															onValueChange={(
+																value
+															) => {
+																const newArr =
+																	value
+																		? [
+																				...(field?.value ||
+																					[]),
+																				room.id,
+																			]
+																		: (
+																				field.value ||
+																				[]
+																			).filter(
+																				(
+																					val
+																				) =>
+																					val !==
+																					room.id
+																			);
+																field.onChange(
+																	newArr
+																);
 															}}>
 															<Typography
 																tag={'p'}
-																variant={'caption_14px_400'}
-																title={room.name}
+																variant={
+																	'caption_14px_400'
+																}
+																title={
+																	room.name
+																}
 																className={
 																	'truncate text-nowrap text-neutral-600'
 																}>
-																{room.name ?? 'N/A'}
+																{room.name ??
+																	'N/A'}
 															</Typography>
 														</CheckBoxView>
 													))}
@@ -234,7 +276,9 @@ const RoomAvailabilitySettings = ({
 								control={control}
 								render={({ field }) => (
 									<input
-										className={'absolute h-0 w-0 overflow-hidden'}
+										className={
+											'absolute h-0 w-0 overflow-hidden'
+										}
 										ref={field.ref}
 									/>
 								)}
@@ -269,14 +313,22 @@ const RoomAvailabilitySettings = ({
 													onValueChange={(val) => {
 														field.onChange(val);
 														form.clearErrors(
-															val ? 'day_of_week' : `day_of_week.${day}.count`
+															val
+																? 'day_of_week'
+																: `day_of_week.${day}.count`
 														);
 													}}>
 													<Typography
 														tag={'p'}
-														variant={'caption_14px_400'}
-														className={'text-neutral-600'}>
-														{day + 1 < 8 ? `Thứ ${day + 1}` : 'Chủ nhật'}
+														variant={
+															'caption_14px_400'
+														}
+														className={
+															'text-neutral-600'
+														}>
+														{day + 1 < 8
+															? `Thứ ${day + 1}`
+															: 'Chủ nhật'}
 													</Typography>
 												</CheckBoxView>
 											)}
@@ -285,12 +337,22 @@ const RoomAvailabilitySettings = ({
 										<FormField
 											control={form.control}
 											name={`day_of_week.${day}.count`}
-											render={({ field: { onChange, value, ...props } }) => (
+											render={({
+												field: {
+													onChange,
+													value,
+													...props
+												},
+											}) => (
 												<FormItem>
 													<div className={'relative'}>
 														<FormControl>
 															<NumberInput
-																disabled={!dayOfWeek?.[day]?.active}
+																disabled={
+																	!dayOfWeek?.[
+																		day
+																	]?.active
+																}
 																placeholder="2"
 																inputMode="numeric"
 																suffix=""
@@ -298,12 +360,22 @@ const RoomAvailabilitySettings = ({
 																className="h-[52px] rounded-xl py-2 leading-6"
 																{...props}
 																value={value}
-																onValueChange={(e) => {
+																onValueChange={(
+																	e
+																) => {
 																	onChange(
-																		e.value.length === 0 ? NaN : Number(e.value)
+																		e.value
+																			.length ===
+																			0
+																			? NaN
+																			: Number(
+																					e.value
+																				)
 																	);
 																}}
-																endAdornment={'phòng'}
+																endAdornment={
+																	'phòng'
+																}
 															/>
 														</FormControl>
 													</div>
