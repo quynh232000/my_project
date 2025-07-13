@@ -27,8 +27,8 @@ const rawPlaces = [
 export default function PopularPlaces() {
   
   return (
-    <div className="w-full max-w-7xl mx-auto px-4">
-      <div className="flex flex-col mt-10">
+    <div className="w-content mx-auto">
+      <div className="flex flex-col my-10">
        <div className="pb-10">
             <h2 className=" text-xl font-bold ">
             Điểm đến yêu thích

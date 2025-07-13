@@ -2,35 +2,24 @@ import Link from 'next/link';
 
 export default function NotFound() {
 	return (
-		<div className={'flex h-screen w-full flex-col bg-blue-100'}>
-			<div className={'flex flex-col items-center px-4 pb-32 pt-12'}>
-				<div className={'h-96 w-full'}></div>
-				<div
-					className={
-						'mx-auto flex w-full flex-col items-center justify-center'
-					}>
-					<h2
-						className={
-							'text-flight-500 mb-4 text-center text-2xl font-semibold'
-						}>
-						Oops! Trang bạn tìm kiếm <br className={'md:hidden'} />
-						không tồn tại.
-					</h2>
-					<p
-						className={
-							'mb-8 text-center text-md font-normal text-neutral-500'
-						}>
-						Có vẻ như đường dẫn không đúng hoặc trang này đã bị xóa.
-						Hãy kiểm tra lại hoặc trở về trang chủ để tiếp tục khám
-						phá.
-					</p>
-				</div>
+		<div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-purple-50 to-blue-100 px-4">
+			<div className="text-center">
+				<h1 className="text-9xl font-extrabold text-primary-600 drop-shadow-lg animate-bounce">
+				404
+				</h1>
+				<h2 className="text-3xl font-semibold text-gray-800 mt-4 animate-fadeIn">
+				Không tìm thấy nội dung 😓
+				</h2>
+				<p className="text-gray-600 mt-2 animate-fadeIn delay-100">
+				URL của nội dung này đã bị thay đổi hoặc không còn tồn tại.
+				<br />
+				Nếu bạn đang lưu URL này, hãy thử truy cập lại từ trang chủ thay vì dùng URL đã lưu.
+				</p>
 				<Link
-					href={'/'}
-					className={
-						'rounded-lg bg-secondary-500 px-6 py-3 leading-6 text-white'
-					}>
-					Trở về trang chủ
+				href="/"
+				className="mt-6 inline-block px-6 py-3 bg-primary-500 text-white text-lg rounded-full shadow hover:bg-primary-500 transition duration-300"
+				>
+				Về trang chủ
 				</Link>
 			</div>
 		</div>

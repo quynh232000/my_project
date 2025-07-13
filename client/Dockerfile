@@ -1,64 +1,29 @@
-# Base image
-FROM node:22-alpine AS base
-
-# Dependencies stage
-FROM base AS deps
-RUN apk add --no-cache libc6-compat
+# Stage 1: Build app
+FROM node:20-alpine AS builder
 
 WORKDIR /app
 
-# Enable Yarn 4
-RUN corepack enable && corepack prepare yarn@stable --activate
+# Copy package files
+COPY package.json package-lock.json ./
 
-# Copy lockfile and package manifest
-COPY package.json ./
+# Cài đặt dependencies, bỏ qua lỗi peer deps
+RUN npm install --legacy-peer-deps
 
-# Optional: Switch to PnP linker (saves RAM); comment if you rely on node_modules
-RUN yarn config set nodeLinker pnp
-
-# Install deps with low-RAM-friendly flags
-RUN yarn install --check-cache --inline-builds
-
-# Builder stage
-FROM base AS builder
-WORKDIR /app
-
-# Enable Yarn again
-RUN corepack enable && corepack prepare yarn@stable --activate
-
-# Copy deps
-COPY --from=deps /app /app
-
-# Copy source
+# Copy source code
 COPY . .
 
-# Disable Next.js telemetry
-ENV NEXT_TELEMETRY_DISABLED 1
-
 # Build app
-RUN yarn build
+RUN npm run build
 
-# Production image
-FROM base AS runner
+# Stage 2: Run app
+FROM node:20-alpine AS runner
+
 WORKDIR /app
 
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
+COPY --from=builder /app ./
 
-# Copy static assets and build output
-COPY --from=builder /app/public ./public
-RUN mkdir .next && chown nextjs:nodejs .next
-
-# Copy standalone output
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
-
-# Use non-root user
-USER nextjs
+ENV NODE_ENV=production
 
 EXPOSE 3000
-ENV PORT 3000
-ENV HOSTNAME "0.0.0.0"
 
-# Start server
-CMD ["node", "server.js"]
+CMD ["npm", "start"]

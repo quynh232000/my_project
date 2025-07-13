@@ -1,16 +1,15 @@
+'use client';
+
+import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { A11y, Autoplay } from "swiper/modules";
-import Image from "next/image";
-import TimeFlashSale from "@/components/shared/Time/TimeFlashSale";
-import {  LocateIcon, Star, Umbrella } from "lucide-react";
-import { FormatPrice } from "@/utils/common";
 import Link from "next/link";
-import { FaHeart } from "react-icons/fa6";
+import {  FaHeart } from "react-icons/fa6";
+import { FormatPrice } from "@/utils/common";
+import {  LocateIcon, Star, Umbrella } from "lucide-react";
 
-function Flashsale() {
-    const  i_flash = "/images/common/bg_flashsale.png";
-    const  i_flash_top = "/images/common/flash_top.png";
-    const data = [
+// Data input
+const data = [
         {
             id:1,
             image:'/images/common/hotel_1.jpg',
@@ -102,40 +101,62 @@ function Flashsale() {
             price:1500000,
         },
     ]
-  return (
-     <div className="relative">
-          <div className=" w-full h-[620px] relative">
-            <Image
-              src={i_flash}
-              fill
-              className="h-[620px] w-full object-cover"
-              alt="Giảm giá cực sốc"
-              title="Giảm giá cực sốc"
-            />
-          </div>
-          <div className="absolute bottom-0 left-0 right-0 top-0 m-auto flex w-100 flex-col gap-[20px] px-2 py-[20px] xl:w-content xl:px-0">
-            <div className="flex flex-col items-center justify-between gap-4  lg:flex-row">
-              <div className="relative animate-fadeInLeft h-[94px] w-[386px]">
-                <Image
-                  src={i_flash_top}
-                  fill
-                  alt="Giảm giá cực sốc"
-                  title="Giảm giá cực sốc"
-                  className="animate-pulse drop-shadow-[0_0_10px_rgba(255,255,0,0.8)] h-full w-full"
-                />
-              <div className="absolute left-[-10px] top-1/2 h-4 w-4 animate-ping rounded-full bg-yellow-400"></div>
-            </div>
 
-            {/* Thêm bộ đếm giờ nếu muốn */}
-            <TimeFlashSale />
-          </div>
-            <div>
-              <Swiper
+const dataFlight = [
+  {
+    id:1,
+    name:'Hồ Chí Minh',
+  },
+  {
+    id:2,
+    name:'Đà Nẵng',
+  },
+  {
+    id:12,
+    name:'Đà Lạt',
+  },
+  {
+    id:13,
+    name:'Phú Quốc',
+  },
+  {
+    id:14,
+    name:'Nha Trang',
+  },
+]
+
+
+export default function BestPriceHotel() {
+  return (
+    <div className=" px-4 bg-primary-50">
+      <div className="flex flex-col my-10 w-content m-auto">
+       <div className="pb-10 flex justify-center items-center w-full">
+           <div className="flex-1">
+              <div className="flex items-center gap-2">
+                <h2 className=" text-xl font-bold ">
+                Khách sạn giá sốc chỉ có trên Quin Booking
+
+                </h2>
+                
+              </div>
+              <div className="text-[14px] text-gray-600">Tiết kiệm chi phí với các khách sạn hợp tác chiến lược cùng Quin Booking, cam kết giá tốt nhất và chất lượng dịch vụ tốt nhất dành cho bạn.</div>
+              <div className="flex gap-3 items-center mt-4 flex-wrap">
+
+                {dataFlight.map(item=>{
+                  return <div className="border rounded-full py-2 px-4 bg-white hover:bg-primary-100 border-primary-400 cursor-pointer text-[14px]" key={"ok"+item.name}>{item.name}</div>
+                })}
+              </div>
+           </div>
+           
+       </div>
+
+        <div className=" w-full flex">
+          <Swiper
                 modules={[A11y, Autoplay]}
                 spaceBetween={8}
                 slidesPerView={4}
-                autoplay={{ delay: 3000, disableOnInteraction: false }}
-                // scrollbar={{ draggable: true }}
+                autoplay={{ delay: 3200, disableOnInteraction: false }}
+                // // scrollbar={{ draggable: true }}
                 // breakpoints={{
                 //   320: { slidesPerView: 2, spaceBetween: 5 }, // Small screens
                 //   480: { slidesPerView: 2, spaceBetween: 5 }, // Mobile devices
@@ -146,8 +167,8 @@ function Flashsale() {
               >
                 {data.map((item) => {
                   return (
-                    <SwiperSlide key={item.id}>
-                        <Link href={'/khach-san/'+item.slug}>
+                    <SwiperSlide key={item.name+'1'} >
+                         <Link href={'/khach-san/'+item.slug}>
                             <div  className="bg-white rounded-lg shadow-lg relative">
                                 <span className=" absolute top-0 left-0 z-[1] bg-yellow-500 px-4 py-1 text-sm text-white rounded-tl-lg rounded-br-lg">-{item.sale}</span>
                                 <span className=" absolute top-1 right-1 z-[1] text-yellow-500"><FaHeart  className=" text-xl"/></span>
@@ -190,21 +211,21 @@ function Flashsale() {
                                         {FormatPrice (item.price)}
                                         </div>
                                     </div>
+                                    
                                 </div>
+                                
                             </div>
                         </Link>
-                        
                     </SwiperSlide>
                   );
                 })}
               </Swiper>
-            </div>
-            <div className="flex justify-center mt-6">
+          
+        </div>
+         <div className="flex justify-center mt-8">
                 <div className="bg-yellow-500 text-white hover:bg-yellow-600 shadow-lg rounded-lg py-2 px-8 cursor-pointer">Xem thêm</div>
             </div>
-          </div>
+      </div>
     </div>
-  )
+  );
 }
-
-export default Flashsale

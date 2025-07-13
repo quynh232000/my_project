@@ -2,7 +2,8 @@ import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
 	/* config options here  'export'*/
-	output: process.env.DOMAIN === 'localhost' ? undefined : 'standalone',
+	// output: process.env.DOMAIN === 'localhost' ? undefined : 'standalone',
+	// output: 'export',
 	// trailingSlash: true,
 	images: {
 		// unoptimized: true,

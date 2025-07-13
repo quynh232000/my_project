@@ -87,7 +87,7 @@ function Header() {
                   <Bell className="text-sm text-gray-500" />
                 </button>
               </MenuHandler>
-              <MenuList  {...({} as any)} className='w-[390px] max-h-[80vh] p-0 outline-none border-transparent  flex flex-col hover:border-none hover:outline-none hover:ring-0 focus:outline-none focus:ring-0 focus:border-none'>
+              <MenuList  {...({} as any)} className='w-[390px] max-h-[80vh] z-[1] p-0 outline-none border-transparent  flex flex-col hover:border-none hover:outline-none hover:ring-0 focus:outline-none focus:ring-0 focus:border-none'>
                 {/* <MenuItem {...({} as any)}>Menu Item 1</MenuItem>
                 div */}
                 <div className='text-primary-500 text-[14px] border-b p-3'>Đọc tất cả</div>
