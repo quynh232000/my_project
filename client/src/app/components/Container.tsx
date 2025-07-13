@@ -5,6 +5,7 @@ import Banner from './Banner'
 import Image from 'next/image'
 import Flashsale from './Flashsale'
 import PopularPlaces from './PopularPlaces'
+import BestFlight from './BestFlight'
 
 function Container() {
     const [navActiveKey,setNavActiveKey] = useState('khach-san')
@@ -26,6 +27,7 @@ function Container() {
         </div>
         <Banner/>
         <Flashsale/>
+        <BestFlight/>
 		<PopularPlaces/>
 	</div>
   )

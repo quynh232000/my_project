@@ -24,16 +24,21 @@ const rawPlaces = [
 ];
 
 
-export default function PopularPlaces() {
+export default function BestFlight() {
   
   return (
     <div className="w-full max-w-7xl mx-auto px-4">
       <div className="flex flex-col mt-10">
-       <div className="pb-10">
-            <h2 className=" text-xl font-bold ">
-            Điểm đến yêu thích
-            </h2>
-            <div className="text-[14px] text-gray-600">Địa điểm hot nhất do Quin Booking đề xuất</div>
+       <div className="pb-10 flex justify-center items-center w-full">
+           <div className="flex-1">
+              <h2 className=" text-xl font-bold ">
+              Chuyến bay giá tốt từ
+              </h2>
+              <div className="text-[14px] text-gray-600">Những chuyến bay giá tốt nhất trong tháng khởi hành từ Hồ Chí Minh</div>
+           </div>
+           <div>
+              <div className="border border-primary-500 text-primary-500 bg-primary-50 py-2 px-4 rounded-lg hover:bg-primary-100 cursor-pointer">Khám phá ngay</div>
+           </div>
        </div>
 
         <div className=" w-full flex">
