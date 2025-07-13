@@ -11,13 +11,13 @@ WORKDIR /app
 RUN corepack enable && corepack prepare yarn@stable --activate
 
 # Copy lockfile and package manifest
-COPY package.json yarn.lock* ./
+COPY package.json ./
 
 # Optional: Switch to PnP linker (saves RAM); comment if you rely on node_modules
 RUN yarn config set nodeLinker pnp
 
 # Install deps with low-RAM-friendly flags
-RUN yarn install --immutable --check-cache --inline-builds
+RUN yarn install --check-cache --inline-builds
 
 # Builder stage
 FROM base AS builder
