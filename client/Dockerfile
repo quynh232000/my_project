@@ -17,7 +17,7 @@ COPY package.json yarn.lock* ./
 RUN yarn config set nodeLinker pnp
 
 # Install deps with low-RAM-friendly flags
-RUN yarn install --immutable --check-cache --inline-builds --no-optional
+RUN yarn install --immutable --check-cache --inline-builds
 
 # Builder stage
 FROM base AS builder
