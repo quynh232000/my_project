@@ -6,7 +6,21 @@ import {  LocateIcon, Star, Umbrella } from "lucide-react";
 import { FormatPrice } from "@/utils/common";
 import Link from "next/link";
 import { FaHeart } from "react-icons/fa6";
+import { CallAPI } from "@/configs/axios/axios";
+import { useEffect, useState } from "react";
 
+
+const GetHotel = async () => {
+    try {
+        const { data } = await CallAPI().get(`https://backend.190booking.com/api/v1/hotel/hotel/filter?type=country&slug=viet-nam`);
+        if (!data) {
+            return null;
+        }
+        return Promise.resolve(data.data ?? []);
+    } catch (error) {
+        return Promise.reject(error);
+    }
+};
 function Flashsale() {
     const  i_flash = "/images/common/bg_flashsale.png";
     const  i_flash_top = "/images/common/flash_top.png";
@@ -102,6 +116,14 @@ function Flashsale() {
             price:1500000,
         },
     ]
+    const [hotels,setHotels] = useState<any[]>([])
+    useEffect(()=>{
+            GetHotel().then(res=>{
+                if(res){
+                    setHotels(res)
+                }
+            })
+    },[])
   return (
      <div className="relative">
           <div className=" w-full h-[620px] relative">
@@ -144,9 +166,9 @@ function Flashsale() {
                 //   1280: { slidesPerView: 5, spaceBetween: 10 }, // Large screens
                 // }}
               >
-                {data.map((item) => {
+                {hotels.map((item) => {
                   return (
-                    <SwiperSlide key={item.id+"okok"}>
+                    <SwiperSlide key={item?.id+"okok"}>
                         <Link href={'/khach-san/'+item.slug}>
                             <div  className="bg-white rounded-lg shadow-lg relative">
                                 <span className=" absolute top-0 left-0 z-[1] bg-yellow-500 px-4 py-1 text-sm text-white rounded-tl-lg rounded-br-lg">-{item.sale}</span>
@@ -163,31 +185,31 @@ function Flashsale() {
                                 </div>
                                 <div className="p-3 flex flex-col justify-between">
                                     <div className="flex flex-col gap-2">
-                                        <h2 className="font-semibold line-clamp-2">{item.name}</h2>
-                                        <div className="flex gap-1">
-                                            {Array.from({ length: 3 }, (_, index) => <span key={index}><Star size={14} className="text-yellow-500"/></span> )}
+                                        <h2 className="font-semibold line-clamp-2 h-[46px]">{item.name}</h2>
+                                        <div className="flex gap-1 h-3">
+                                            {Array.from({ length: item.stars ? item.stars : 1 }, (_, index) => <span key={index}><Star size={14} className="text-yellow-500"/></span> )}
                                         </div>
                                         <div className="flex gap-2 items-center text-[14px] text-gray-600">
                                             <LocateIcon size={16} className="text-gray-600"/>
-                                            <span>{item.address}</span>
+                                            <span className=" line-clamp-1">{item?.location?.address ?? ''}</span>
                                         </div>
                                         <div className="flex gap-2 text-gray-600 text-[14px] ">
                                             <div className="flex gap-2 items-center  bg-primary-100 rounded-sm px-1">
                                                 <Umbrella size={16} className="text-primary-500"/>
-                                                <span className="text-primary-500 font-semibold" >{item.reviews.rating}</span>
+                                                <span className="text-primary-500 font-semibold" >{item.stars}</span>
                                             </div>
                                             <div>
-                                                <span>{item.reviews.type}</span>
-                                                <span className="text-gray-400"> ( {item.reviews.review_counts} đánh giá)</span>
+                                                <span>Tuyệt vời</span>
+                                                <span className="text-gray-400"> ( 50 đánh giá)</span>
                                             </div>
                                         </div>
                                     </div>
                                     <div className="text-right mt-5">
                                         <div>
-                                            <del className="text-gray-500 text-[14px]">{FormatPrice (item.price)}</del>
+                                            <del className="text-gray-500 text-[14px]">{FormatPrice (item.avg_price + 10000)}</del>
                                         </div>
                                         <div className="text-primary-500 font-semibold text-xl">
-                                        {FormatPrice (item.price)}
+                                        {FormatPrice (item.avg_price)}
                                         </div>
                                     </div>
                                 </div>
