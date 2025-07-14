@@ -1,3 +1,4 @@
+
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
@@ -20,6 +21,7 @@ export const metadata: Metadata = {
 };
 import 'swiper/css';
 import 'swiper/css/scrollbar';
+import ClientWrapper from '@/components/layouts/ClientWrapper';
 export default function RootLayout({
 	children,
 }: Readonly<{
@@ -29,12 +31,14 @@ export default function RootLayout({
 		<html lang="vi" className={'overflow-x-hidden !scroll-smooth'}>
 			<body className={`${geistSans.className} w-full antialiased`}>
 				<div>
-					<Header />
-					<HolyLoader />
-					{children}
-					<Toaster />
-					<LoadingView />
-					<Footer/>
+					<ClientWrapper>
+						<Header />
+						<HolyLoader />
+						{children}
+						<Toaster />
+						<LoadingView />
+						<Footer/>
+					</ClientWrapper>
 				</div>
 			</body>
 		</html>

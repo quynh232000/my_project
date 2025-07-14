@@ -158,8 +158,8 @@ input[type='number'] {
 .scrollbar_hover:hover .scrollbar_custom::-webkit-scrollbar {
 	display: block;
 }
-
-/* .backdrop-blur-sm,
+/* 
+.backdrop-blur-sm,
 .backdrop-saturate-150 {
 	-webkit-backdrop-filter: var(--tw-backdrop-blur)
 		var(--tw-backdrop-brightness) var(--tw-backdrop-contrast)
