@@ -9,7 +9,7 @@ import { IoMdClose } from "react-icons/io";
 
 
 function ModelService() {
-   const [open,setOpen] = useState(true)
+   const [open,setOpen] = useState(false)
   return (
     <div className=''>
         <div onClick={()=>(setOpen(true))} className='flex items-center gap-1 text-secondary-500 text-[14px] cursor-pointer hover:text-secondary-600'>
