@@ -251,10 +251,10 @@ function Header() {
             </Menu>
 
 
-						<Button {...({} as any)} className="rounded-lg normal-case font-normal min-w-[106px] text-center bg-primary-500 px-3 py-2 text-white transition-all hover:bg-primary-600 hover:shadow-md">
+						<Button {...({} as any)} className="rounded-lg text-[14px] normal-case font-normal min-w-[106px] text-center bg-primary-500 px-3 py-2 text-white transition-all hover:bg-primary-600 hover:shadow-md">
 							Đăng nhập
 						</Button>
-						<Button {...({} as any)} className="rounded-lg normal-case font-normal border min-w-[106px] text-center bg-white border-primary-500 px-3 py-2 text-primary-500 transition-all hover:bg-primary-50 hover:shadow-md">
+						<Button {...({} as any)} className="rounded-lg text-[14px] normal-case font-normal border min-w-[106px] text-center bg-white border-primary-500 px-3 py-2 text-primary-500 transition-all hover:bg-primary-50 hover:shadow-md">
 							Đăng ký
 						</Button>
 						<DrawerSidebar />

@@ -4,7 +4,7 @@ import { FormatPrice } from '@/utils/common';
 import Link from 'next/link'
 import React from 'react'
 import { CiCalendar, CiForkAndKnife, CiHeart } from "react-icons/ci";
-import { FaAngleRight, FaCar, FaCashRegister, FaCheck, FaCircleDot, FaClock, FaEye, FaFaceKissWinkHeart, FaLocationDot, FaMoneyBill, FaRegShareFromSquare, FaRestroom, FaStar, FaUmbrella, FaWifi } from 'react-icons/fa6';
+import { FaAngleRight, FaBuilding, FaCalendar, FaCar, FaCashRegister, FaCheck, FaCircleDot, FaClock, FaEye, FaFaceKissWinkHeart, FaJenkins, FaLocationDot, FaMoneyBill, FaPlane, FaRegShareFromSquare, FaRestroom, FaStar, FaUmbrella, FaWifi } from 'react-icons/fa6';
 import Images from './Images';
 import { Swiper, SwiperSlide } from "swiper/react";
 import { A11y, Autoplay } from "swiper/modules";
@@ -341,9 +341,9 @@ function Container() {
                                 <div className='font-semibold text-xl'>{FormatPrice(1970000)}</div>
                                 <div className='text-gray-600'>/ đêm</div>
                               </div>
-                              <div className='py-4'>
-                                <Button {...({} as any)} className=' normal-case text-md bg-primary-500 font-semibold px-8'>Đặt phòng</Button>
-                              </div>
+                              <Link href={'/khach-san/dat-phong?id=4068468469984'} className='py-4'>
+                                <Button {...({} as any)}  className=' normal-case text-md bg-primary-500 font-semibold px-8'>Đặt phòng</Button>
+                              </Link>
                               <div className=" cursor-pointer relative group">
                                 <div className='text-[14px] text-secondary-500 flex items-center gap-2'>Giá cuối cùng {FormatPrice(1240000)} <BsInfoCircle /></div>
                                 <div className='text-[14px]'>cho 2 đêm</div>
@@ -498,9 +498,9 @@ function Container() {
                                 <div className='font-semibold text-xl'>{FormatPrice(1970000)}</div>
                                 <div className='text-gray-600'>/ đêm</div>
                               </div>
-                              <div className='py-4'>
+                              <Link href={'/khach-san/dat-phong?id=4068468469984'} className='py-4'>
                                 <Button {...({} as any)} className=' normal-case text-md bg-primary-500 font-semibold px-8'>Đặt phòng</Button>
-                              </div>
+                              </Link>
                               <div className=" cursor-pointer relative group">
                                 <div className='text-[14px] text-secondary-500 flex items-center gap-2'>Giá cuối cùng {FormatPrice(1240000)} <BsInfoCircle /></div>
                                 <div className='text-[14px]'>cho 2 đêm</div>
@@ -721,9 +721,9 @@ function Container() {
                                 <div className='font-semibold text-xl'>{FormatPrice(1970000)}</div>
                                 <div className='text-gray-600'>/ đêm</div>
                               </div>
-                              <div className='py-4'>
+                              <Link href={'/khach-san/dat-phong?id=4068468469984'} className='py-4'>
                                 <Button {...({} as any)} className=' normal-case text-md bg-primary-500 font-semibold px-8'>Đặt phòng</Button>
-                              </div>
+                              </Link>
                               <div className=" cursor-pointer relative group">
                                 <div className='text-[14px] text-secondary-500 flex items-center gap-2'>Giá cuối cùng {FormatPrice(1240000)} <BsInfoCircle /></div>
                                 <div className='text-[14px]'>cho 2 đêm</div>
@@ -878,9 +878,9 @@ function Container() {
                                 <div className='font-semibold text-xl'>{FormatPrice(1970000)}</div>
                                 <div className='text-gray-600'>/ đêm</div>
                               </div>
-                              <div className='py-4'>
+                              <Link href={'/khach-san/dat-phong?id=4068468469984'} className='py-4'>
                                 <Button {...({} as any)} className=' normal-case text-md bg-primary-500 font-semibold px-8'>Đặt phòng</Button>
-                              </div>
+                              </Link>
                               <div className=" cursor-pointer relative group">
                                 <div className='text-[14px] text-secondary-500 flex items-center gap-2'>Giá cuối cùng {FormatPrice(1240000)} <BsInfoCircle /></div>
                                 <div className='text-[14px]'>cho 2 đêm</div>
@@ -1088,6 +1088,284 @@ function Container() {
               </div>
           </div>
        </div>
+       {/* policy */}
+        <div className='border-t-2 py-5 my-5 flex flex-col gap-3 '>
+          <div className='font-semibold text-xl'>Chính sách khách sạn</div>
+          <div className='flex'>
+            <div className=' border-r px-5'>
+              <div>Nhận phòng</div>
+              <div className=' font-semibold'>Từ 14:00</div>
+            </div>
+            <div className='px-5'>
+              <div>Trả phòng</div>
+              <div className=' font-semibold'>Trước 12:00</div>
+            </div>
+          </div>
+          <div>
+            <div className='text-[14px] font-semibold'>Chính sách chung</div>
+            <div className='text-[14px] mt-2'>
+              <div>Không cho phép hút thuốc</div>
+              <div>Không cho phép thú cưng</div>
+              <div>Cho phép tổ chức tiệc / sự kiện</div>
+            </div>
+          </div>
+          <div>
+            <div className='text-[14px] font-semibold'>Chính sách chung</div>
+            <div className='text-[14px] mt-2'>
+              <div>Không cho phép hút thuốc</div>
+              <div>Không cho phép thú cưng</div>
+              <div>Cho phép tổ chức tiệc / sự kiện</div>
+            </div>
+          </div>
+        </div>
+        {/* service */}
+        <div className='border-t-2 py-5 my-5 flex flex-col gap-3 '>
+          <div className='font-semibold text-xl'>Thông tin hữu ích</div>
+          <div className='grid grid-cols-3 gap-12'>
+                <div className='flex flex-col gap-4'>
+                  <div className='flex justify-between items-center text-[14px]'>
+                    <div className='flex items-center gap-2  text-[14px]'>
+                      <FaBuilding className='text-gray-600'/><span>Khoảng cách tới trung tâm</span>
+                    </div>
+                    <div>--:--km</div>
+                  </div>
+                  <div className='flex justify-between items-center text-[14px]'>
+                    <div className='flex items-center gap-2  text-[14px]'>
+                      <FaCalendar className='text-gray-600'/><span>Năm khách sạn xây dựng</span>
+                    </div>
+                    <div>--:--km</div>
+                  </div>
+                  <div className='flex justify-between items-center text-[14px]'>
+                    <div className='flex items-center gap-2  text-[14px]'>
+                      <FaJenkins className='text-gray-600'/><span>Số nhà hàng</span>
+                    </div>
+                    <div>--:--km</div>
+                  </div>
+                </div>
+                <div className='flex flex-col gap-4'>
+                  <div className='flex justify-between items-center text-[14px]'>
+                    <div className='flex items-center gap-2  text-[14px]'>
+                      <FaBuilding className='text-gray-600'/><span>Khoảng cách tới sân bay</span>
+                    </div>
+                    <div>--:--km</div>
+                  </div>
+                  <div className='flex justify-between items-center text-[14px]'>
+                    <div className='flex items-center gap-2  text-[14px]'>
+                      <FaCalendar className='text-gray-600'/><span>Số quán bar</span>
+                    </div>
+                    <div>--:--km</div>
+                  </div>
+                  <div className='flex justify-between items-center text-[14px]'>
+                    <div className='flex items-center gap-2  text-[14px]'>
+                      <FaJenkins className='text-gray-600'/><span>Số tầng khách sạn</span>
+                    </div>
+                    <div>--:--km</div>
+                  </div>
+                </div>
+                <div className='flex flex-col gap-4'>
+                  <div className='flex justify-between items-center text-[14px]'>
+                    <div className='flex items-center gap-2  text-[14px]'>
+                      <FaBuilding className='text-gray-600'/><span>Khoảng cách tới trung tâm thị trấn</span>
+                    </div>
+                    <div>--:--km</div>
+                  </div>
+                  <div className='flex justify-between items-center text-[14px]'>
+                    <div className='flex items-center gap-2  text-[14px]'>
+                      <FaCalendar className='text-gray-600'/><span>Số phòng khách sạn</span>
+                    </div>
+                    <div>--:--km</div>
+                  </div>
+                  <div className='flex justify-between items-center text-[14px]'>
+                    <div className='flex items-center gap-2  text-[14px]'>
+                      <FaJenkins className='text-gray-600'/><span>Số nhà hàng</span>
+                    </div>
+                    <div>--:--km</div>
+                  </div>
+                </div>
+          </div>
+        </div>
+        {/* description */}
+        <div className='border-t-2 py-5 my-5 flex flex-col gap-3 '>
+          <div className='font-semibold text-xl'>Bản tin khách sạn</div>
+          <h3 className='font-semibold'>Khách Sạn Vinpearl Resort Nha Trang</h3>
+          <div className='text-[14px]'>
+Địa chỉ: Đảo Hòn Tre, Thành Phố Nha Trang, Khánh Hòa, Việt Nam
+
+Mô tả về khách sạn
+Khách Sạn Vinpearl Resort và Spa nằm tại đảo Hòn Tre, nằm giữa vịnh Nha Trang với cảnh quan tuyệt đẹp của biển xanh, bãi cát trắng mịn và ánh nắng ấm áp. Với danh tiếng quốc tế và tiêu chuẩn 5 sao, resort này kết hợp hiện đại phương Tây với vẻ đẹp tự nhiên và quyến rũ của một hòn đảo xanh nước biển và rừng dừa xanh ngát.
+
+Khách Sạn Vinpearl Resort và Spa có tổng cộng 485 phòng đẹp, được thiết kế tinh tế để mang đến cho du khách sự thoải mái, riêng tư, và dịch vụ hoàn hảo. Resort cũng có một bãi biển tự nhiên dài 700m đẹp nhất Nha Trang và hệ thống bể bơi ngoài trời hiện đại rộng nhất Đông Nam Á với diện tích hơn 5.700 m2, được bao quanh bởi vườn dừa và cây xanh.
+
+Bạn có thể tận hưởng các dịch vụ chăm sóc sức khỏe và sắc đẹp tại Viet Spa của resort, tham gia vào các chương trình vui chơi, du lịch, và thể thao tại công viên giải trí, công viên nước và thủy cung Vinpearl. Ngoài ra, resort còn có phố mua sắm Vinpearl để bạn có thể mua sắm đồ lưu niệm.
+          </div>
+        </div>
+        {/* faqs */}
+        <div className='border-t-2 py-5 my-5 flex flex-col gap-3 '>
+          <div className='font-semibold text-xl'>Câu hỏi thường gặp về Vinpearl Resort Nha Trang</div>
+          <div className='flex flex-col gap-5'>
+            <div>
+              <div className=' font-semibold mb-1'>Tôi có thể tới Vinpearl Resort Nha Trang bằng cách nào?</div>
+              <p className='text-[14px]'>Khách sạn nằm trên Đảo hòn tre , để di chuyển ra đảo Quý khách có thể sử dụng 01 trong 02 phương tiện sau: + Tàu cao tốc (Cano): di chuyển khoảng 7-10p, khoảng 30p/chuyến + Cáp treo: di chuyển khoảng 20p, khoảng 20p/chuyến Khách sạn cũng gần biển, khoảng cách ra tới biển tùy thuộc vào vị trí của căn biệt thự.</p>
+            </div>
+            <div>
+              <div className=' font-semibold mb-1'>Tôi có thể tới Vinpearl Resort Nha Trang bằng cách nào?</div>
+              <p className='text-[14px]'>Khách sạn nằm trên Đảo hòn tre , để di chuyển ra đảo Quý khách có thể sử dụng 01 trong 02 phương tiện sau: + Tàu cao tốc (Cano): di chuyển khoảng 7-10p, khoảng 30p/chuyến + Cáp treo: di chuyển khoảng 20p, khoảng 20p/chuyến Khách sạn cũng gần biển, khoảng cách ra tới biển tùy thuộc vào vị trí của căn biệt thự.</p>
+            </div>
+            <div>
+              <div className=' font-semibold mb-1'>Tôi có thể tới Vinpearl Resort Nha Trang bằng cách nào?</div>
+              <p className='text-[14px]'>Khách sạn nằm trên Đảo hòn tre , để di chuyển ra đảo Quý khách có thể sử dụng 01 trong 02 phương tiện sau: + Tàu cao tốc (Cano): di chuyển khoảng 7-10p, khoảng 30p/chuyến + Cáp treo: di chuyển khoảng 20p, khoảng 20p/chuyến Khách sạn cũng gần biển, khoảng cách ra tới biển tùy thuộc vào vị trí của căn biệt thự.</p>
+            </div>
+            <div>
+              <div className=' font-semibold mb-1'>Tôi có thể tới Vinpearl Resort Nha Trang bằng cách nào?</div>
+              <p className='text-[14px]'>Khách sạn nằm trên Đảo hòn tre , để di chuyển ra đảo Quý khách có thể sử dụng 01 trong 02 phương tiện sau: + Tàu cao tốc (Cano): di chuyển khoảng 7-10p, khoảng 30p/chuyến + Cáp treo: di chuyển khoảng 20p, khoảng 20p/chuyến Khách sạn cũng gần biển, khoảng cách ra tới biển tùy thuộc vào vị trí của căn biệt thự.</p>
+            </div>
+          </div>
+          <div>
+            <div className='font-semibold'>Vinpearl Resort Nha Trang có các tiện ích nào nổi bật?</div>
+            <ul className='mt-4 flex flex-col gap-5'>
+              <li className='flex  gap-5'>
+                <span>Phương tiện đi lại:</span>
+                <div className='flex flex-wrap gap-5 flex-1'>
+                  <div className='items-center gap-2 flex text-gray-600 text-[14px]'><FaPlane/> Đưa/đón khách sân bay</div>
+                  <div className='items-center gap-2 flex text-gray-600 text-[14px]'><FaPlane/> Đưa/đón khách sân bay</div>
+                  <div className='items-center gap-2 flex text-gray-600 text-[14px]'><FaPlane/> Đưa/đón khách sân bay</div>
+                  <div className='items-center gap-2 flex text-gray-600 text-[14px]'><FaPlane/> Đưa/đón khách sân bay</div>
+                  <div className='items-center gap-2 flex text-gray-600 text-[14px]'><FaPlane/> Đưa/đón khách sân bay</div>
+                  <div className='items-center gap-2 flex text-gray-600 text-[14px]'><FaPlane/> Đưa/đón khách sân bay</div>
+                  <div className='items-center gap-2 flex text-gray-600 text-[14px]'><FaPlane/> Đưa/đón khách sân bay</div>
+                </div>
+              </li>
+              <li className='flex  gap-5'>
+                <span>Phương tiện đi lại:</span>
+                <div className='flex flex-wrap gap-5 flex-1'>
+                  <div className='items-center gap-2 flex text-gray-600 text-[14px]'><FaPlane/> Đưa/đón khách sân bay</div>
+                  <div className='items-center gap-2 flex text-gray-600 text-[14px]'><FaPlane/> Đưa/đón khách sân bay</div>
+                  <div className='items-center gap-2 flex text-gray-600 text-[14px]'><FaPlane/> Đưa/đón khách sân bay</div>
+                  <div className='items-center gap-2 flex text-gray-600 text-[14px]'><FaPlane/> Đưa/đón khách sân bay</div>
+                  <div className='items-center gap-2 flex text-gray-600 text-[14px]'><FaPlane/> Đưa/đón khách sân bay</div>
+                  <div className='items-center gap-2 flex text-gray-600 text-[14px]'><FaPlane/> Đưa/đón khách sân bay</div>
+                  <div className='items-center gap-2 flex text-gray-600 text-[14px]'><FaPlane/> Đưa/đón khách sân bay</div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+        {/* relative */}
+        <div className='border-t-2 py-5 my-5 flex flex-col gap-3 '>
+          <div className='font-semibold text-xl'>Khách sạn liên quan</div>
+          <div className='grid grid-cols-5 gap-5 mt-5'>
+              {/* item */}
+              <Link href={'/khach-san/'+123}>
+                <div className=' relative rounded-lg w-full h-[134px]'>
+                  <Image
+                    alt=''
+                    fill
+                    src={'/images/common/hotel_1.jpg'}
+                    className='w-full h-full object-cover rounded-lg'
+                  />
+                </div>
+                <div className='flex flex-col gap-2'>
+                  <div className='font-semibold  line-clamp-2 mt-2 text-[14px] h-[46px]'>Khách sạn Mường Thanh Luxury Sài Gòn</div>
+                  <div className='flex text-sm text-yellow-500 gap-1'>
+                    <FaStar/>
+                    <FaStar/>
+                    <FaStar/>
+                    <FaStar/>
+                    <FaStar/>
+                  </div>
+                  <div className='text-[14px]'>Bà Rịa - Vũng Tàu</div>
+                </div>
+              </Link>
+              {/* item */}
+              <Link href={'/khach-san/'+123}>
+                <div className=' relative rounded-lg w-full h-[134px]'>
+                  <Image
+                    alt=''
+                    fill
+                    src={'/images/common/hotel_1.jpg'}
+                    className='w-full h-full object-cover rounded-lg'
+                  />
+                </div>
+                <div className='flex flex-col gap-2'>
+                  <div className='font-semibold  line-clamp-2 mt-2 text-[14px] h-[46px]'>Khách sạn Mường Thanh Luxury Sài Gòn</div>
+                  <div className='flex text-sm text-yellow-500 gap-1'>
+                    <FaStar/>
+                    <FaStar/>
+                    <FaStar/>
+                    <FaStar/>
+                    <FaStar/>
+                  </div>
+                  <div className='text-[14px]'>Bà Rịa - Vũng Tàu</div>
+                </div>
+              </Link>
+              {/* item */}
+              <Link href={'/khach-san/'+123}>
+                <div className=' relative rounded-lg w-full h-[134px]'>
+                  <Image
+                    alt=''
+                    fill
+                    src={'/images/common/hotel_1.jpg'}
+                    className='w-full h-full object-cover rounded-lg'
+                  />
+                </div>
+                <div className='flex flex-col gap-2'>
+                  <div className='font-semibold  line-clamp-2 mt-2 text-[14px] h-[46px]'>Khách sạn Mường Thanh Luxury Sài Gòn</div>
+                  <div className='flex text-sm text-yellow-500 gap-1'>
+                    <FaStar/>
+                    <FaStar/>
+                    <FaStar/>
+                    <FaStar/>
+                    <FaStar/>
+                  </div>
+                  <div className='text-[14px]'>Bà Rịa - Vũng Tàu</div>
+                </div>
+              </Link>
+              {/* item */}
+              <Link href={'/khach-san/'+123}>
+                <div className=' relative rounded-lg w-full h-[134px]'>
+                  <Image
+                    alt=''
+                    fill
+                    src={'/images/common/hotel_1.jpg'}
+                    className='w-full h-full object-cover rounded-lg'
+                  />
+                </div>
+                <div className='flex flex-col gap-2'>
+                  <div className='font-semibold  line-clamp-2 mt-2 text-[14px] h-[46px]'>Khách sạn Mường Thanh Luxury Sài Gòn</div>
+                  <div className='flex text-sm text-yellow-500 gap-1'>
+                    <FaStar/>
+                    <FaStar/>
+                    <FaStar/>
+                    <FaStar/>
+                    <FaStar/>
+                  </div>
+                  <div className='text-[14px]'>Bà Rịa - Vũng Tàu</div>
+                </div>
+              </Link>
+              {/* item */}
+              <Link href={'/khach-san/'+123}>
+                <div className=' relative rounded-lg w-full h-[134px]'>
+                  <Image
+                    alt=''
+                    fill
+                    src={'/images/common/hotel_1.jpg'}
+                    className='w-full h-full object-cover rounded-lg'
+                  />
+                </div>
+                <div className='flex flex-col gap-2'>
+                  <div className='font-semibold  line-clamp-2 mt-2 text-[14px] h-[46px]'>Khách sạn Mường Thanh Luxury Sài Gòn</div>
+                  <div className='flex text-sm text-yellow-500 gap-1'>
+                    <FaStar/>
+                    <FaStar/>
+                    <FaStar/>
+                    <FaStar/>
+                    <FaStar/>
+                  </div>
+                  <div className='text-[14px]'>Bà Rịa - Vũng Tàu</div>
+                </div>
+              </Link>
+          </div>
+        </div>
       </div>
     </div>
   )
