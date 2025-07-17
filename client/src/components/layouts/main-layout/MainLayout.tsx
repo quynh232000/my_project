@@ -39,7 +39,10 @@ const MainLayout = ({ children }: ChildrenProp) => {
 							);
 						}
 					};
-					document.addEventListener('visibilitychange', handleVisibilityChange);
+					document.addEventListener(
+						'visibilitychange',
+						handleVisibilityChange
+					);
 					return () => {
 						document.removeEventListener(
 							'visibilitychange',

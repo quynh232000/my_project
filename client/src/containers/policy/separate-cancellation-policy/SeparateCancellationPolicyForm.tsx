@@ -57,7 +57,9 @@ export default function SeparateCancellationPolicyForm({
 			code: '',
 			name: '',
 			status: true,
-			rows: [{ day: ABSENT_VALUE, fee: 100, fee_type: ECancelFeeType.FEE }],
+			rows: [
+				{ day: ABSENT_VALUE, fee: 100, fee_type: ECancelFeeType.FEE },
+			],
 		},
 	});
 
@@ -123,7 +125,11 @@ export default function SeparateCancellationPolicyForm({
 									<FormMessage />
 								</FormLabel>
 								<FormControl>
-									<Input type="text" {...field} placeholder="CHS004" />
+									<Input
+										type="text"
+										{...field}
+										placeholder="CHS004"
+									/>
 								</FormControl>
 							</FormItem>
 						)}
@@ -139,7 +145,10 @@ export default function SeparateCancellationPolicyForm({
 									<FormMessage />
 								</FormLabel>
 								<FormControl>
-									<Input {...field} placeholder="Tên chính sách" />
+									<Input
+										{...field}
+										placeholder="Tên chính sách"
+									/>
 								</FormControl>
 							</FormItem>
 						)}
@@ -165,7 +174,8 @@ export default function SeparateCancellationPolicyForm({
 				<CancellationTableForm />
 				<div className="flex items-center gap-10">
 					<div className="flex items-center gap-2">
-						<div className={'h-2 w-6 rounded-xl bg-accent-02'}></div>
+						<div
+							className={'h-2 w-6 rounded-xl bg-accent-02'}></div>
 						<Typography
 							tag="p"
 							text={'Miễn phí hủy'}
@@ -173,7 +183,10 @@ export default function SeparateCancellationPolicyForm({
 						/>
 					</div>
 					<div className="flex items-center gap-2">
-						<div className={'h-2 w-6 rounded-xl bg-neutral-200'}></div>
+						<div
+							className={
+								'h-2 w-6 rounded-xl bg-neutral-200'
+							}></div>
 						<Typography
 							tag="p"
 							text={'No-show'}
@@ -183,7 +196,9 @@ export default function SeparateCancellationPolicyForm({
 				</div>
 				<ButtonActionGroup
 					actionCancel={() =>
-						isDialog ? onCancel?.() : router.push('/dashboard/policy/cancel')
+						isDialog
+							? onCancel?.()
+							: router.push('/dashboard/policy/cancel')
 					}
 				/>
 			</form>

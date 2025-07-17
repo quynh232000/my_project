@@ -42,8 +42,8 @@ export const useAccommodationProfileStore = create<
 						district_id: data.district_id || NaN,
 						ward_id: data.ward_id || NaN,
 						address: data.address ?? '',
-						latitude: data.latitude ?? 0,
-						longitude: data.longitude ?? 0,
+						latitude: data.latitude || 0,
+						longitude: data.longitude || 0,
 					},
 					introduction: {
 						construction_year: data.construction_year ?? NaN,

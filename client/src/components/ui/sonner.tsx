@@ -17,8 +17,7 @@ const Toaster = ({ position = 'top-right', ...props }: ToasterProps) => {
 				classNames: {
 					content: 'text-inherit',
 					title: `!text-[14px] !font-medium !leading-[24px] select-none first-letter:uppercase`,
-					toast:
-						'font-[inherit] group toast group-[.toaster]:bg-white group-[.toaster]:border-neutral-200 group-[.toaster]:shadow-lg',
+					toast: 'font-[inherit] group toast group-[.toaster]:bg-white group-[.toaster]:border-neutral-200 group-[.toaster]:shadow-lg',
 					description: `!text-neutral-500 !text-[12px] !font-bold !leading-[16px] select-none`,
 					actionButton:
 						'group-[.toast]:bg-neutral-900 group-[.toast]:text-neutral-500',

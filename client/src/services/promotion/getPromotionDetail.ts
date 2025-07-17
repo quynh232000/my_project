@@ -12,13 +12,13 @@ export const getPromotionDetail = async ({
 	try {
 		const { data } = await CallAPI().get(`${AppEndpoint.PROMOTION}/${id}`, {
 			params: {
-				hotel_id
-			}
+				hotel_id,
+			},
 		});
 		if (!data || !data?.data) {
 			return Promise.reject(null);
 		}
-		return Promise.resolve(data.data ?? null)
+		return Promise.resolve(data.data ?? null);
 	} catch (error) {
 		console.error('getPromotionDetail', error);
 		return Promise.reject(error);

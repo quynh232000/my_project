@@ -1,12 +1,5 @@
 export interface RoomAmenitiesType {
-	[key: string]: string[]
-}
-
-export interface FormValuesWithTitle {
-	[key: string]: {
-		title: string;
-		arr: string[];
-	};
+	[key: string]: string[];
 }
 
 export interface AmenityTypeItem {

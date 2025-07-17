@@ -70,10 +70,13 @@ const RoomExtraBeds = () => {
 
 	const getValidOption = (index: number) => {
 		const data = [...extraBedFees].slice(0, index);
-		const maxAge = Math.max(...data.map((item) => +(item.age_to as number)));
-		return [...ageRanges, { label: 'Trở lên', value: MAX_AGE_VALUE }].filter(
-			(item) => +item.value > maxAge
+		const maxAge = Math.max(
+			...data.map((item) => +(item.age_to as number))
 		);
+		return [
+			...ageRanges,
+			{ label: 'Trở lên', value: MAX_AGE_VALUE },
+		].filter((item) => +item.value > maxAge);
 	};
 
 	const onRemove = (index: number) => {
@@ -91,7 +94,8 @@ const RoomExtraBeds = () => {
 
 		if (isGapInvalid) {
 			const newRows = extraBedFees.map((row, index, arr) => {
-				const prevAgeTo = index === 0 ? 0 : (arr[index - 1]?.age_to ?? 0);
+				const prevAgeTo =
+					index === 0 ? 0 : (arr[index - 1]?.age_to ?? 0);
 				return {
 					...row,
 					age_from: prevAgeTo,
@@ -136,7 +140,9 @@ const RoomExtraBeds = () => {
 				name="extras.hasExtraBed"
 				render={({ field }) => (
 					<RadioGroup
-						onValueChange={(value) => field.onChange(value === 'true')}
+						onValueChange={(value) =>
+							field.onChange(value === 'true')
+						}
 						value={String(field.value)}
 						className="space-y-2">
 						<div className="flex items-center space-x-2">
@@ -198,24 +204,33 @@ const RoomExtraBeds = () => {
 									)}>
 									Phí
 								</TableHead>
-								<TableHead className={cn('px-4 py-3')}></TableHead>
+								<TableHead
+									className={cn('px-4 py-3')}></TableHead>
 							</TableRow>
 						</TableHeader>
 						<TableBody>
 							{extraBedFees?.map((_, index, array) => (
-								<TableRow className={'h-12 !bg-white'} key={index}>
+								<TableRow
+									className={'h-12 !bg-white'}
+									key={index}>
 									<TableCell
 										className={cn(
 											'grid w-full grid-cols-2 gap-4 border border-t-0 py-3',
-											index + 1 === array.length && 'rounded-bl-lg'
+											index + 1 === array.length &&
+												'rounded-bl-lg'
 										)}>
 										<div className={'space-y-2'}>
-											<div className={'flex items-center gap-2'}>
+											<div
+												className={
+													'flex items-center gap-2'
+												}>
 												<Typography
 													tag={'span'}
 													variant={'caption_14px_400'}
 													text={'Từ'}
-													className={'text-neutral-600'}
+													className={
+														'text-neutral-600'
+													}
 												/>
 
 												<Typography
@@ -226,7 +241,9 @@ const RoomExtraBeds = () => {
 															? '0'
 															: `${+(getValues(`extras.extra_beds.${index - 1}.age_to`) as number) === +MAX_AGE_VALUE ? '' : +(getValues(`extras.extra_beds.${index - 1}.age_to`) as number)}`
 													}
-													className={'text-neutral-600'}
+													className={
+														'text-neutral-600'
+													}
 												/>
 											</div>
 										</div>
@@ -237,30 +254,65 @@ const RoomExtraBeds = () => {
 											{...(index > 0
 												? {
 														rules: {
-															deps: [`extras.extra_beds.${index - 1}.age_to`],
+															deps: [
+																`extras.extra_beds.${index - 1}.age_to`,
+															],
 														},
 													}
 												: {})}
-											render={({ field: { value, onChange, ...props } }) => (
-												<FormItem className={'space-y-2'}>
-													<div className={'flex items-center gap-2'}>
+											render={({
+												field: {
+													value,
+													onChange,
+													...props
+												},
+											}) => (
+												<FormItem
+													className={'space-y-2'}>
+													<div
+														className={
+															'flex items-center gap-2'
+														}>
 														<Typography
 															tag={'span'}
-															variant={'caption_14px_400'}
+															variant={
+																'caption_14px_400'
+															}
 															text={'Đến'}
-															className={'text-neutral-600'}
+															className={
+																'text-neutral-600'
+															}
 														/>
 														<FormControl>
 															<SelectPopup
-																searchInput={false}
+																searchInput={
+																	false
+																}
 																className="h-6 overflow-hidden rounded-lg border-none bg-neutral-50 px-2 py-0"
 																labelClassName="hidden"
-																data={getValidOption(index)}
-																selectedValue={value ?? undefined}
-																onChange={(value) => onChange(Number(value))}
-																classItemList={'h-auto'}
+																data={getValidOption(
+																	index
+																)}
+																selectedValue={
+																	value ??
+																	undefined
+																}
+																onChange={(
+																	value
+																) =>
+																	onChange(
+																		Number(
+																			value
+																		)
+																	)
+																}
+																classItemList={
+																	'h-auto'
+																}
 																placeholder="Chọn độ tuổi"
-																controllerRenderProps={props}
+																controllerRenderProps={
+																	props
+																}
 															/>
 														</FormControl>
 													</div>
@@ -268,15 +320,29 @@ const RoomExtraBeds = () => {
 											)}
 										/>
 									</TableCell>
-									<TableCell className={'w-[190px] border-b border-t-0 py-3'}>
+									<TableCell
+										className={
+											'w-[190px] border-b border-t-0 py-3'
+										}>
 										<Controller
 											control={control}
 											name={`extras.extra_beds.${index}.type`}
 											rules={{
-												deps: [`extras.extra_beds.${index}.price`],
+												deps: [
+													`extras.extra_beds.${index}.price`,
+												],
 											}}
-											render={({ field: { value, onChange, name } }) => (
-												<div className={'flex-1 space-y-2'}>
+											render={({
+												field: {
+													value,
+													onChange,
+													name,
+												},
+											}) => (
+												<div
+													className={
+														'flex-1 space-y-2'
+													}>
 													<SelectPopup
 														searchInput={false}
 														className="h-6 rounded-lg border-none bg-neutral-50 px-2 py-0"
@@ -287,7 +353,9 @@ const RoomExtraBeds = () => {
 														classItemList={'h-auto'}
 													/>
 													<FieldErrorMessage
-														errors={formState.errors}
+														errors={
+															formState.errors
+														}
 														name={name}
 													/>
 												</div>
@@ -297,9 +365,12 @@ const RoomExtraBeds = () => {
 									<TableCell
 										className={cn(
 											'w-[175px] border border-t-0 py-3',
-											index + 1 === array.length && 'rounded-br-lg'
+											index + 1 === array.length &&
+												'rounded-br-lg'
 										)}>
-										{getValues(`extras.extra_beds.${index}.type`) === 'free' ? (
+										{getValues(
+											`extras.extra_beds.${index}.type`
+										) === 'free' ? (
 											<Typography
 												tag={'span'}
 												variant={'caption_14px_400'}
@@ -310,7 +381,13 @@ const RoomExtraBeds = () => {
 											<FormField
 												control={control}
 												name={`extras.extra_beds.${index}.price`}
-												render={({ field: { value, onChange, ...props } }) => (
+												render={({
+													field: {
+														value,
+														onChange,
+														...props
+													},
+												}) => (
 													<FormItem
 														className={
 															'flex items-center justify-between gap-2 space-y-0'
@@ -321,25 +398,37 @@ const RoomExtraBeds = () => {
 																	'h-6 rounded-none border-none px-0 py-2 leading-6 text-neutral-600 outline-none',
 																	TextVariants.caption_14px_400
 																)}
-																inputMode={'numeric'}
+																inputMode={
+																	'numeric'
+																}
 																placeholder="1,200,000đ"
 																suffix={''}
 																maxLength={11}
 																{...props}
 																value={value}
-																onValueChange={(e) => {
+																onValueChange={(
+																	e
+																) => {
 																	onChange(
-																		e.value.length === 0
+																		e.value
+																			.length ===
+																			0
 																			? null
-																			: Number(e.value)
+																			: Number(
+																					e.value
+																				)
 																	);
 																}}
 															/>
 														</FormControl>
 														<Typography
 															tag={'span'}
-															variant={'caption_14px_400'}
-															className={'text-neutral-600'}>
+															variant={
+																'caption_14px_400'
+															}
+															className={
+																'text-neutral-600'
+															}>
 															đ/người
 														</Typography>
 													</FormItem>
@@ -347,20 +436,32 @@ const RoomExtraBeds = () => {
 											/>
 										)}
 									</TableCell>
-									<TableCell className={'w-[50px] !bg-white py-3'}>
-										<div className={'flex flex-row items-center gap-3'}>
+									<TableCell
+										className={'w-[50px] !bg-white py-3'}>
+										<div
+											className={
+												'flex flex-row items-center gap-3'
+											}>
 											{index > 0 && (
 												<IconTrash
-													onClick={() => onRemove(index)}
+													onClick={() =>
+														onRemove(index)
+													}
 													className={'cursor-pointer'}
 												/>
 											)}
 											{index === array.length - 1 &&
-												extraBedFees[index].age_to !== null &&
-												getValidOption(index + 1).length > 0 && (
+												extraBedFees[index].age_to !==
+													null &&
+												getValidOption(index + 1)
+													.length > 0 && (
 													<IconPlus
-														onClick={() => onAdd(index)}
-														className={'cursor-pointer'}
+														onClick={() =>
+															onAdd(index)
+														}
+														className={
+															'cursor-pointer'
+														}
 													/>
 												)}
 										</div>

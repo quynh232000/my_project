@@ -10,17 +10,14 @@ export const updatePolicyOther = async <T>(
 ): Promise<IResponseStatus> => {
 	try {
 		const hotel_id = getClientSideCookie('hotel_id');
-		const res = await CallAPI().post(
-			`${AppEndpoint.POLICY_OTHER}`,
-			{
-				...body,
-				hotel_id
-			}
-		);
+		const res = await CallAPI().post(`${AppEndpoint.POLICY_OTHER}`, {
+			...body,
+			hotel_id,
+		});
 		if (!res.data) {
 			return {
 				status: false,
-				message: 'Có lỗi xảy ra, vui lòng thử lại!'
+				message: 'Có lỗi xảy ra, vui lòng thử lại!',
 			};
 		}
 		return parseErrorStatus(res.data);

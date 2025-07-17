@@ -5,7 +5,7 @@ import { FieldErrors } from 'react-hook-form';
 import { cn } from '@/lib/utils';
 
 const FieldErrorMessage = ({
-	className="",
+	className = '',
 	errors,
 	name,
 }: {
@@ -21,7 +21,7 @@ const FieldErrorMessage = ({
 				<Typography
 					tag="span"
 					variant="caption_12px_500"
-					className={cn("mt-2 text-red-500", className)}>
+					className={cn('mt-2 text-red-500', className)}>
 					{message}
 				</Typography>
 			)}

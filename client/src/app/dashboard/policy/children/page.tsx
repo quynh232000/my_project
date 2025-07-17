@@ -6,11 +6,16 @@ import ChildPolicy from '@/containers/policy/child-policy/ChildPolicy';
 
 //CHÍNH SÁCH CHO TRẺ EM
 export default async function Page() {
-	const { pathName } = await getFullURLServerComponent()
-	return <DashboardContainer>
-		<DashboardHeroTitle title={"Chính sách cho trẻ em"} pathName={pathName} />
-		<DashboardCard>
-			<ChildPolicy />
-		</DashboardCard>
-	</DashboardContainer>;
+	const { pathName } = await getFullURLServerComponent();
+	return (
+		<DashboardContainer>
+			<DashboardHeroTitle
+				title={'Chính sách cho trẻ em'}
+				pathName={pathName}
+			/>
+			<DashboardCard>
+				<ChildPolicy />
+			</DashboardCard>
+		</DashboardContainer>
+	);
 }

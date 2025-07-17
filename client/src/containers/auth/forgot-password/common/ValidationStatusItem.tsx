@@ -17,6 +17,7 @@ const ValidationStatusItem = ({
 	return (
 		<div className={'flex items-center gap-2'}>
 			<motion.div
+			{...({} as any)}
 				initial={{ opacity: 0 }}
 				animate={{ opacity: 1 }}
 				exit={{ opacity: 0 }}

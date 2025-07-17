@@ -1,13 +1,14 @@
 import { CallAPI } from '@/configs/axios/axios';
 import { AppEndpoint } from '@/services/type';
 import { getClientSideCookie } from '@/utils/cookie';
+import { TQueryParams } from '@/store/promotion/type';
 
 export interface IPromotionItem {
 	id: number;
 	hotel_id: number;
 	name: string;
 	type: string;
-	value: number | {day_of_week: number; value: number}[];
+	value: number | { day_of_week: number; value: number }[];
 	start_date: string;
 	end_date: string;
 	is_stackable: number;
@@ -19,15 +20,18 @@ export interface IPromotionItem {
 	rooms: {
 		id: number;
 		name_id: number;
-		name_custom: string;
 		name: string;
-	}[]
+	}[];
 }
-	
-export interface IPromotionList {
-	roomCount: number;
-	priceTypeCount: number;
-	items:IPromotionItem[];
+
+export interface IPromotionResponse {
+	status: boolean;
+	message: string;
+	data: {
+		roomCount: number;
+		priceTypeCount: number;
+		items: IPromotionItem[];
+	};
 	meta: {
 		per_page: number;
 		current_page: number;
@@ -36,19 +40,23 @@ export interface IPromotionList {
 	};
 }
 
-export const getPromotionList = async (): Promise<IPromotionList | null> => {
+export const getPromotionList = async ({
+	query,
+}: {
+	query?: TQueryParams;
+}): Promise<IPromotionResponse | null> => {
 	try {
 		const hotel_id = getClientSideCookie('hotel_id');
 		const { data } = await CallAPI().get(`${AppEndpoint.PROMOTION}`, {
 			params: {
 				hotel_id,
-				limit: 9999,
+				...query,
 			},
 		});
 		if (!data) {
 			return null;
 		}
-		return data.data ?? [];
+		return data ?? [];
 	} catch (error) {
 		console.error('getPromotionList', error);
 		return null;

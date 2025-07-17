@@ -39,19 +39,25 @@ export default function ServersBreakFastForm() {
 			fetchBreakFastTypeList: state.fetchBreakFastTypeList,
 		}))
 	);
-	const setLoading = useLoadingStore(state => state.setLoading);
+	const setLoading = useLoadingStore((state) => state.setLoading);
 
 	useEffect(() => {
-		(async ()=>{
+		(async () => {
 			setLoading(true);
-			await Promise.all([fetchServingTypeList(),
-			fetchBreakFastTypeList()]).finally(() => setLoading(false))
-		})()
+			await Promise.all([
+				fetchServingTypeList(),
+				fetchBreakFastTypeList(),
+			]).finally(() => setLoading(false));
+		})();
 	}, []);
 
 	useEffect(() => {
 		const extraBf = getValues('breakfast.extra_breakfast');
-		if (isUseBf === EUseBreakfastType.yes && extraBf && extraBf.length === 0) {
+		if (
+			isUseBf === EUseBreakfastType.yes &&
+			extraBf &&
+			extraBf.length === 0
+		) {
 			setValue('breakfast.extra_breakfast', [
 				{ age_from: 0, age_to: null, fee_type: 'free', fee: NaN },
 			]);
@@ -125,7 +131,13 @@ export default function ServersBreakFastForm() {
 										selectedValue={field.value}
 										onChange={field.onChange}
 										className="h-[44px] rounded-lg bg-white py-2"
-										data={servingTypeList ? mapToLabelValue(servingTypeList) : []}
+										data={
+											servingTypeList
+												? mapToLabelValue(
+														servingTypeList
+													)
+												: []
+										}
 									/>
 								</FormControl>
 								<FormMessage className={'pt-2'} />
@@ -148,7 +160,13 @@ export default function ServersBreakFastForm() {
 										selectedValue={field.value}
 										onChange={field.onChange}
 										className="h-[44px] rounded-lg bg-white py-2"
-										data={breakFastTypeList ? mapToLabelValue(breakFastTypeList) : []}
+										data={
+											breakFastTypeList
+												? mapToLabelValue(
+														breakFastTypeList
+													)
+												: []
+										}
 									/>
 								</FormControl>
 								<FormMessage className={'pt-2'} />
@@ -167,7 +185,9 @@ export default function ServersBreakFastForm() {
 							checked={field.value === EUseBreakfastType.yes}
 							onCheckedChange={(checked) => {
 								field.onChange(
-									checked ? EUseBreakfastType.yes : EUseBreakfastType.no
+									checked
+										? EUseBreakfastType.yes
+										: EUseBreakfastType.no
 								);
 							}}
 							className={

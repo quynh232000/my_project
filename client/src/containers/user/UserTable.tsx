@@ -1,6 +1,6 @@
 'use client';
 import DashboardTable, {
-	renderStatus
+	renderStatus,
 } from '@/components/shared/DashboardTable';
 import { filterData } from '@/containers/setting-room/data';
 import { TUser } from '@/containers/user/data';
@@ -52,7 +52,11 @@ const UserTable = () => {
 				handleAdd={() => setOpenDialog(true)}
 				filterData={filterData}
 				columns={[
-					{ label: 'Tên người dùng', field: 'full_name', sortable: true },
+					{
+						label: 'Tên người dùng',
+						field: 'full_name',
+						sortable: true,
+					},
 					{ label: 'Vai trò', field: 'role', sortable: true },
 					{ label: 'Email', field: 'email', sortable: true },
 					{
@@ -67,7 +71,10 @@ const UserTable = () => {
 						sortable: true,
 					},
 				]}
-				rows={(userList as Array<Omit<TUser, 'id'> & { id: number }>) ?? []}
+				rows={
+					(userList as Array<Omit<TUser, 'id'> & { id: number }>) ??
+					[]
+				}
 				action={{
 					name: 'Thiết lập',
 					type: 'edit',

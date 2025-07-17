@@ -22,7 +22,9 @@ const UserGroupPermissions = () => {
 	const [openItems, setOpenItems] = useState<string[]>([]);
 	const toggleItem = (value: string) => {
 		setOpenItems((prev) =>
-			prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value]
+			prev.includes(value)
+				? prev.filter((v) => v !== value)
+				: [...prev, value]
 		);
 	};
 
@@ -49,7 +51,8 @@ const UserGroupPermissions = () => {
 	return (
 		<>
 			<div className={'space-y-4'}>
-				<div className={'justify-space-between flex items-center gap-2'}>
+				<div
+					className={'justify-space-between flex items-center gap-2'}>
 					<Typography
 						tag={'h2'}
 						variant={'caption_18px_700'}
@@ -81,7 +84,9 @@ const UserGroupPermissions = () => {
 					value={openItems}
 					onValueChange={setOpenItems}>
 					{permissionList.map((permissionGroup, index) => {
-						const isOpen = openItems.includes(`group-${permissionGroup.id}`);
+						const isOpen = openItems.includes(
+							`group-${permissionGroup.id}`
+						);
 						return (
 							<Controller
 								key={index}
@@ -89,7 +94,9 @@ const UserGroupPermissions = () => {
 								control={control}
 								render={({ field }) => (
 									<AccordionItem
-										className={'border-other-divider-01 rounded-lg border'}
+										className={
+											'border-other-divider-01 rounded-lg border'
+										}
 										value={`group-${permissionGroup.id}`}>
 										<div
 											className={cn(
@@ -102,13 +109,19 @@ const UserGroupPermissions = () => {
 													id={`permission-${permissionGroup.id}`}
 													checked={
 														field.value?.length ===
-														permissionGroup.children.length
+														permissionGroup.children
+															.length
 													}
-													onCheckedChange={(checked) => {
+													onCheckedChange={(
+														checked
+													) => {
 														field.onChange(
 															checked
 																? (permissionGroup.children.map(
-																		(item) => item.id
+																		(
+																			item
+																		) =>
+																			item.id
 																	) ?? [])
 																: []
 														);
@@ -128,17 +141,30 @@ const UserGroupPermissions = () => {
 											</div>
 
 											<div
-												className={'flex flex-1 items-center gap-3'}
+												className={
+													'flex flex-1 items-center gap-3'
+												}
 												onClick={() =>
-													toggleItem(`group-${permissionGroup.id}`)
+													toggleItem(
+														`group-${permissionGroup.id}`
+													)
 												}>
 												<div
 													className={cn(
 														'ml-auto mr-3 w-[43px] rounded bg-neutral-300 px-3 py-[2px] text-other-white',
 														TextVariants.caption_14px_600
 													)}>
-													<span>{field.value?.length ?? 0}</span>
-													<span>/{permissionGroup.children.length}</span>
+													<span>
+														{field.value?.length ??
+															0}
+													</span>
+													<span>
+														/
+														{
+															permissionGroup
+																.children.length
+														}
+													</span>
 												</div>
 												<div
 													className={`transition-transform ${isOpen ? 'rotate-180' : 'rotate-0'}`}>
@@ -146,35 +172,64 @@ const UserGroupPermissions = () => {
 														direction={'down'}
 														width={16}
 														height={16}
-														color={GlobalUI.colors.neutrals['400']}
+														color={
+															GlobalUI.colors
+																.neutrals['400']
+														}
 													/>
 												</div>
 											</div>
 										</div>
-										<AccordionContent className={'space-y-3 px-4 py-3'}>
-											{permissionGroup.children.map((permission, index) => (
-												<CheckBoxView
-													key={`${index}`}
-													id={`permission-${permissionGroup.id}-${permission.id}`}
-													value={field.value?.includes(`${permission.id}`)}
-													onValueChange={(val) => {
-														const newArr = val
-															? [...(field?.value || []), `${permission.id}`]
-															: (field.value || []).filter(
-																	(val: string) => val !== `${permission.id}`
-																);
-														setValue(field.name, newArr, {
-															shouldValidate: true,
-														});
-													}}>
-													<Typography
-														tag={'p'}
-														variant={'caption_14px_400'}
-														className={'text-neutral-600'}>
-														{permission.name}
-													</Typography>
-												</CheckBoxView>
-											))}
+										<AccordionContent
+											className={'space-y-3 px-4 py-3'}>
+											{permissionGroup.children.map(
+												(permission, index) => (
+													<CheckBoxView
+														key={`${index}`}
+														id={`permission-${permissionGroup.id}-${permission.id}`}
+														value={field.value?.includes(
+															`${permission.id}`
+														)}
+														onValueChange={(
+															val
+														) => {
+															const newArr = val
+																? [
+																		...(field?.value ||
+																			[]),
+																		`${permission.id}`,
+																	]
+																: (
+																		field.value ||
+																		[]
+																	).filter(
+																		(
+																			val: string
+																		) =>
+																			val !==
+																			`${permission.id}`
+																	);
+															setValue(
+																field.name,
+																newArr,
+																{
+																	shouldValidate: true,
+																}
+															);
+														}}>
+														<Typography
+															tag={'p'}
+															variant={
+																'caption_14px_400'
+															}
+															className={
+																'text-neutral-600'
+															}>
+															{permission.name}
+														</Typography>
+													</CheckBoxView>
+												)
+											)}
 										</AccordionContent>
 									</AccordionItem>
 								)}

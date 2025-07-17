@@ -30,12 +30,17 @@ export default async function Page({
 		const hotel_id = cookieStore.get('hotel_id')?.value ?? 0;
 		if (!!hotel_id) {
 			try {
-				roomDetail = await getRoomDetail({ id: +id, hotel_id: +hotel_id });
+				roomDetail = await getRoomDetail({
+					id: +id,
+					hotel_id: +hotel_id,
+				});
 			} catch (error) {
 				const axiosError = error as AxiosError;
 				const msg = (axiosError?.response?.data as { message: string })
 					?.message;
-				if (axiosError?.response?.status === HttpStatusCode.Unauthorized) {
+				if (
+					axiosError?.response?.status === HttpStatusCode.Unauthorized
+				) {
 					if (msg === TOKEN_EXPIRED_MESSAGE) {
 						redirect(
 							`${RefreshRouters.index}?redirect=${DashboardRouter.room}/${id}`

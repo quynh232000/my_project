@@ -2,10 +2,10 @@ import { priceConvert } from '@/utils/string/priceConvert';
 import { z } from 'zod';
 
 export const createDialogPricingSettingSchema = (data: {
-	price_min: number,
-	price_max: number,
-	price_standard: number,
-	standard_capacity: number,
+	price_min: number;
+	price_max: number;
+	price_standard: number;
+	standard_capacity: number;
 }) => {
 	const { price_min, price_max, price_standard, standard_capacity } = data;
 	const roomCapacitySchema = z
@@ -18,14 +18,26 @@ export const createDialogPricingSettingSchema = (data: {
 			message: `Vui lòng nhập giá`,
 			path: ['price'],
 		})
-		.refine((val) => val.status === 'inactive' || val.capacity >= standard_capacity || price_standard - val.price >= price_min, {
-			message: `Giá không được lớn hơn ${priceConvert(price_standard - price_min)}`,
-			path: ['price'],
-		})
-		.refine((val) => val.status === 'inactive' || val.capacity <= standard_capacity || val.price + price_standard <= price_max, {
-			message: `Giá không được lớn hơn ${priceConvert(price_max - price_standard)}`,
-			path: ['price'],
-		});
+		.refine(
+			(val) =>
+				val.status === 'inactive' ||
+				val.capacity >= standard_capacity ||
+				price_standard - val.price >= price_min,
+			{
+				message: `Giá không được lớn hơn ${priceConvert(price_standard - price_min)}`,
+				path: ['price'],
+			}
+		)
+		.refine(
+			(val) =>
+				val.status === 'inactive' ||
+				val.capacity <= standard_capacity ||
+				val.price + price_standard <= price_max,
+			{
+				message: `Giá không được lớn hơn ${priceConvert(price_max - price_standard)}`,
+				path: ['price'],
+			}
+		);
 
 	const dialogPricingSettingSchema = z.object({
 		room_id: z.number(),
@@ -37,4 +49,5 @@ export const createDialogPricingSettingSchema = (data: {
 };
 
 export type DialogPricingSettingType = z.infer<
-	ReturnType<typeof createDialogPricingSettingSchema>>
+	ReturnType<typeof createDialogPricingSettingSchema>
+>;

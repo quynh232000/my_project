@@ -11,13 +11,10 @@ export const updateRoomOccupancyPrice = async (
 	try {
 		const hotel_id = getClientSideCookie('hotel_id');
 
-		const { data } = await CallAPI().post(
-			`${AppEndpoint.PRICE_SETTING}`,
-			{
-				hotel_id,
-				...body,
-			}
-		);
+		const { data } = await CallAPI().post(`${AppEndpoint.PRICE_SETTING}`, {
+			hotel_id,
+			...body,
+		});
 		if (!data) {
 			return {
 				status: false,

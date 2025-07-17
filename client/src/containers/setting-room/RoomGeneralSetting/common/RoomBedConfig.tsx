@@ -56,7 +56,11 @@ const RoomBedConfig = () => {
 									labelClassName="mb-2"
 									placeholder={'Chọn loại giường chính'}
 									controllerRenderProps={props}
-									data={bedTypeList ? mapToLabelValue(bedTypeList) : []}
+									data={
+										bedTypeList
+											? mapToLabelValue(bedTypeList)
+											: []
+									}
 									selectedValue={value}
 									onChange={(value) => {
 										onChange(Number(value));
@@ -71,7 +75,8 @@ const RoomBedConfig = () => {
 					name="bedInfo.bed_quantity"
 					control={control}
 					render={({ field: { value, onChange, ...props } }) => (
-						<FormItem className={'col-span-12 space-y-2 lg:col-span-1'}>
+						<FormItem
+							className={'col-span-12 space-y-2 lg:col-span-1'}>
 							<FormLabel required>Số lượng</FormLabel>
 							<FormControl>
 								<NumberInput
@@ -82,7 +87,11 @@ const RoomBedConfig = () => {
 									{...props}
 									value={value}
 									onValueChange={(e) => {
-										onChange(e.value.length === 0 ? '' : Number(e.value));
+										onChange(
+											e.value.length === 0
+												? ''
+												: Number(e.value)
+										);
 									}}
 								/>
 							</FormControl>
@@ -113,7 +122,10 @@ const RoomBedConfig = () => {
 								text={'Kiểu giường thay thế'}
 							/>
 						</div>
-						<FieldErrorMessage errors={formState.errors} name={name} />
+						<FieldErrorMessage
+							errors={formState.errors}
+							name={name}
+						/>
 					</div>
 				)}
 			/>
@@ -123,15 +135,26 @@ const RoomBedConfig = () => {
 						name="bedInfo.sub_bed_type_id"
 						control={control}
 						render={({ field: { value, onChange, ...props } }) => (
-							<FormItem className={'col-span-2 space-y-2 lg:col-span-1'}>
-								<FormLabel required>Kiểu giường thay thế</FormLabel>
+							<FormItem
+								className={
+									'col-span-2 space-y-2 lg:col-span-1'
+								}>
+								<FormLabel required>
+									Kiểu giường thay thế
+								</FormLabel>
 								<FormControl>
 									<SelectPopup
 										className="h-[44px] rounded-lg bg-white py-2"
 										labelClassName="mb-2"
-										placeholder={'Chọn kiểu giường thay thế'}
+										placeholder={
+											'Chọn kiểu giường thay thế'
+										}
 										controllerRenderProps={props}
-										data={bedTypeList ? mapToLabelValue(bedTypeList) : []}
+										data={
+											bedTypeList
+												? mapToLabelValue(bedTypeList)
+												: []
+										}
 										selectedValue={value ?? undefined}
 										onChange={(value) => {
 											onChange(Number(value));
@@ -147,7 +170,10 @@ const RoomBedConfig = () => {
 						name="bedInfo.sub_bed_quantity"
 						control={control}
 						render={({ field: { value, onChange, ...props } }) => (
-							<FormItem className={'col-span-2 space-y-2 lg:col-span-1'}>
+							<FormItem
+								className={
+									'col-span-2 space-y-2 lg:col-span-1'
+								}>
 								<FormLabel required>Số lượng</FormLabel>
 								<FormControl>
 									<NumberInput
@@ -158,7 +184,11 @@ const RoomBedConfig = () => {
 										{...props}
 										value={String(value)}
 										onValueChange={(e) => {
-											onChange(e.value.length === 0 ? '' : Number(e.value));
+											onChange(
+												e.value.length === 0
+													? ''
+													: Number(e.value)
+											);
 										}}
 									/>
 								</FormControl>

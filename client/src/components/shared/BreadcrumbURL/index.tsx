@@ -32,7 +32,7 @@ const Dictionary: { [key: string]: string } = {
 	'user-group': 'Nhóm người dùng',
 	create: 'Thêm mới',
 	'booking-orders': 'Đơn đặt phòng',
-	album: "Thư viện ảnh"
+	album: 'Thư viện ảnh',
 };
 
 export function BreadcrumbURL({
@@ -61,11 +61,16 @@ export function BreadcrumbURL({
 									href={`/${pathName.slice(0, i + 1).join('/')}`}
 									prefetch={false}
 									className={
-										isLast(text) ? 'text-secondary-500' : 'text-neutral-400'
+										isLast(text)
+											? 'text-secondary-500'
+											: 'text-neutral-400'
 									}>
-									<Typography tag="p" variant={'caption_12px_600'}>
+									<Typography
+										tag="p"
+										variant={'caption_12px_600'}>
 										{displayName?.[text] ??
-											title.slice(0, 1).toUpperCase() + title.slice(1)}
+											title.slice(0, 1).toUpperCase() +
+												title.slice(1)}
 									</Typography>
 								</BreadcrumbLink>
 							</BreadcrumbItem>

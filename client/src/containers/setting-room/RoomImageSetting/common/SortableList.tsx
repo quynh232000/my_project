@@ -9,21 +9,19 @@ import {
 	useSensor,
 	useSensors,
 } from '@dnd-kit/core';
-import {
-	arrayMove,
-	rectSortingStrategy,
-	SortableContext,
-} from '@dnd-kit/sortable';
-import SortableItem from '@/containers/setting-room/RoomImageSetting/common/SortableItem';
-import Item from '@/containers/setting-room/RoomImageSetting/common/Item';
+import { rectSortingStrategy, SortableContext } from '@dnd-kit/sortable';
 import React, { useState } from 'react';
 import { ImageType } from '@/containers/setting-room/RoomImageSetting/common/RoomImageList';
+import Item from '@/containers/album-manager/common/Item';
+import SortableItem from '@/containers/album-manager/common/SortableItem';
+import { reorderList } from '@/containers/album-manager/data';
 
 interface SortableListProps {
 	list: ImageType[];
 	onEdit: (id: number | string) => void;
 	onRemove: (id: number | string) => void;
 	onMove: (list: ImageType[]) => void;
+	showTag?: boolean;
 }
 
 export const SortableList = ({
@@ -31,6 +29,7 @@ export const SortableList = ({
 	onEdit,
 	onRemove,
 	onMove,
+	showTag = true,
 }: SortableListProps) => {
 	const [activeId, setActiveId] = useState<string | null>(null);
 
@@ -53,20 +52,11 @@ export const SortableList = ({
 	const handleDragEnd = (event: DragEndEvent) => {
 		const { active, over } = event;
 		const oldIndex = list.findIndex((item) => item?.id === active?.id);
-		const newIndex = over ? list.findIndex((item) => item?.id === over?.id) : -1;
+		const newIndex = over
+			? list.findIndex((item) => item?.id === over?.id)
+			: -1;
 		if (oldIndex >= 0 && newIndex >= 0 && oldIndex !== newIndex) {
-			const newList = arrayMove(list, oldIndex, newIndex);
-
-			const from = Math.min(oldIndex, newIndex);
-			const to = Math.max(newIndex, oldIndex);
-			const oldPriority = list.slice(from, to + 1).map((item) => item.priority);
-
-			for (let i = from; i <= to; i++) {
-				newList[i] = {
-					...newList[i],
-					priority: oldPriority[i - from],
-				};
-			}
+			const newList = reorderList(list, oldIndex, newIndex);
 			onMove(newList);
 		}
 		setActiveId(null);
@@ -100,11 +90,14 @@ export const SortableList = ({
 								item={item}
 								onEdit={onEdit}
 								onRemove={onRemove}
+								showTag={showTag}
 							/>
 						))}
 				</SortableContext>
 				<DragOverlay adjustScale style={{ transformOrigin: '0 0 ' }}>
-					{draggingItem && <Item item={draggingItem} isDragging />}
+					{draggingItem && (
+						<Item item={draggingItem} isDragging showTag={false} />
+					)}
 				</DragOverlay>
 			</DndContext>
 		</div>

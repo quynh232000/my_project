@@ -20,7 +20,10 @@ const StackablePromotionOption = () => {
 				render={({ field }) => (
 					<div className={'mt-4 flex items-start gap-3'}>
 						<label className="relative inline-block h-6 w-10 flex-shrink-0">
-							<Switch checked={field.value} onCheckedChange={field.onChange} />
+							<Switch
+								checked={field.value}
+								onCheckedChange={field.onChange}
+							/>
 						</label>
 						<div>
 							<Typography
@@ -33,11 +36,12 @@ const StackablePromotionOption = () => {
 								tag={'p'}
 								variant={'caption_14px_400'}
 								className={'text-neutral-400'}>
-								Khuyến mãi này sẽ được kết hợp với các chương trình ưu đãi hiện
-								có (ví dụ: bạn có ưu đãi 20% và thêm khuyến mãi kép 10%, tổng ưu
-								đãi sẽ là 30%). <br />
-								Không chỉ vậy, bạn cũng có thể kết hợp với các khuyến mãi kép
-								đang chạy khác.
+								Khuyến mãi này sẽ được kết hợp với các chương
+								trình ưu đãi hiện có (ví dụ: bạn có ưu đãi 20%
+								và thêm khuyến mãi kép 10%, tổng ưu đãi sẽ là
+								30%). <br />
+								Không chỉ vậy, bạn cũng có thể kết hợp với các
+								khuyến mãi kép đang chạy khác.
 							</Typography>
 						</div>
 					</div>

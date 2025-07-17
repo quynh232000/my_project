@@ -45,6 +45,9 @@ interface SelectPopupProps {
 	placeholder?: string;
 	controllerRenderProps?: Omit<ControllerRenderProps, 'onChange' | 'value'>;
 	showCheck?: boolean;
+	selectedPrefix?: string;
+	selectedSuffix?: string;
+	selectedClassName?: string;
 }
 
 const SelectPopup = ({
@@ -77,7 +80,8 @@ const SelectPopup = ({
 		setTimeout(() => {
 			if (open) {
 				listRef.current?.scrollIntoView({
-					behavior: (props.data?.length ?? 0) <= 50 ? 'smooth' : 'instant',
+					behavior:
+						(props.data?.length ?? 0) <= 50 ? 'smooth' : 'instant',
 				});
 			}
 		}, 0);
@@ -101,7 +105,9 @@ const SelectPopup = ({
 							variant={'caption_14px_500'}
 							className={'truncate text-nowrap text-neutral-600'}>
 							{props.label}{' '}
-							{props.required && <span className={'text-red-500'}>*</span>}
+							{props.required && (
+								<span className={'text-red-500'}>*</span>
+							)}
 						</Typography>
 					</div>
 				)}
@@ -112,16 +118,23 @@ const SelectPopup = ({
 							'box-border flex items-center gap-2 rounded-xl border-2 border-other-divider-02 p-3 text-center',
 							open && 'border-secondary-200',
 							props.className,
-							props.disabled && 'cursor-not-allowed !bg-neutral-50'
+							props.disabled &&
+								'cursor-not-allowed !bg-neutral-50'
 						)}>
 						<Typography
 							tag={'p'}
 							variant={'caption_14px_400'}
 							className={cn(
 								'items-center justify-start gap-2 truncate',
-								selectedName ? 'text-neutral-600' : 'text-neutral-300'
+								selectedName
+									? 'text-neutral-600'
+									: 'text-neutral-300'
 							)}>
-							{selectedName || props.placeholder}
+							{props.selectedPrefix}
+							<span className={props.selectedClassName}>
+								{selectedName || props.placeholder}{' '}
+								{props.selectedSuffix}
+							</span>
 						</Typography>
 						<div className="ml-auto flex items-center gap-3">
 							{clearable && !!selectedName && (
@@ -160,45 +173,72 @@ const SelectPopup = ({
 					}>
 					<Command
 						filter={(value, search) => {
-							return normalizeText(value).includes(normalizeText(search))
+							return normalizeText(value).includes(
+								normalizeText(search)
+							)
 								? 1
 								: 0;
 						}}>
-						{searchInput && <CommandInput placeholder="Tìm kiếm..." />}
+						{searchInput && (
+							<CommandInput placeholder="Tìm kiếm..." />
+						)}
 						<CommandList>
 							<ScrollArea
 								className={cn(
 									'shadow-md',
 									props.classItemList,
-									(props.data?.length ?? 0) >= 5 ? 'h-60' : 'h-auto'
+									(props.data?.length ?? 0) > 5
+										? 'h-60'
+										: 'h-auto'
 								)}>
-								<CommandEmpty>Không tìm thấy lựa chọn</CommandEmpty>
+								<CommandEmpty>
+									Không tìm thấy lựa chọn
+								</CommandEmpty>
 								<CommandGroup>
 									{props.data?.map((item) => {
 										const isSelected =
-											String(item.value) === String(props.selectedValue);
+											String(item.value) ===
+											String(props.selectedValue);
 										return (
 											<CommandItem
 												className={`${isSelected ? '!bg-neutral-100' : ''}`}
-												ref={isSelected ? listRef : null}
+												ref={
+													isSelected ? listRef : null
+												}
 												key={item.value}
-												value={item.label.toString()}
+												value={item.label?.toString()}
 												title={item.label}
 												onSelect={() => {
-													props.onChange?.(item.value);
+													props.onChange?.(
+														item.value
+													);
 													setOpen(false);
 												}}>
 												<div
-													className={'flex items-center justify-between gap-2'}>
-													<span className={'truncate whitespace-nowrap'}>
+													className={
+														'flex items-center justify-between gap-2'
+													}>
+													<span
+														className={
+															'truncate whitespace-nowrap'
+														}>
 														{item.label}
 													</span>
-													{isSelected && showCheck && (
-														<IconCheck
-															color={GlobalUI.colors.secondary['500']}
-															className={'size-5 shrink-0'}
-														/>
-													)}
+													{isSelected &&
+														showCheck && (
+															<IconCheck
+																color={
+																	GlobalUI
+																		.colors
+																		.secondary[
+																		'500'
+																	]
+																}
+																className={
+																	'size-5 shrink-0'
+																}
+															/>
+														)}
 												</div>
 											</CommandItem>
 										);
@@ -213,5 +253,5 @@ const SelectPopup = ({
 		</Popover>
 	);
 };
-SelectPopup.displayName = 'SelectVisaProduct';
+SelectPopup.displayName = 'SelectPopup';
 export default SelectPopup;

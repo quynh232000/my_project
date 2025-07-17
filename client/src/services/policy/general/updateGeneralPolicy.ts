@@ -8,13 +8,10 @@ export const updateGeneralPolicy = async (
 ): Promise<boolean> => {
 	try {
 		const hotel_id = getClientSideCookie('hotel_id');
-		const { data } = await CallAPI().post(
-			`${AppEndpoint.GENERAL_POLICY}`,
-			{
-				policies: body.map((policy) => policy.policy_general),
-				hotel_id,
-			}
-		);
+		const { data } = await CallAPI().post(`${AppEndpoint.GENERAL_POLICY}`, {
+			policies: body.map((policy) => policy.policy_general),
+			hotel_id,
+		});
 		if (!data) {
 			return false;
 		}

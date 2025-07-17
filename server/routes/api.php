@@ -9,3 +9,5 @@ Route::middleware([ApiMiddleware::class,CorsMiddleware::class])->group(function 
         require __DIR__ . '/api/v1.php';
     });
 });
+// require __DIR__ . '/api/v1/hms/_register.php';
+// require __DIR__ . '/api/v1/hotel/_register.php';

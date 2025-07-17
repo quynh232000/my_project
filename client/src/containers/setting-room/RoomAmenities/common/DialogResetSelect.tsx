@@ -51,10 +51,13 @@ const DialogResetSelect = ({ onClose, open, originalList }: Props) => {
 						tag={'p'}
 						variant={'content_16px_400'}
 						className={'mt-4 text-center text-neutral-600'}>
-						Thao tác này sẽ xóa toàn bộ tiện ích mà bạn đã chọn.Bạn có chắc chắn
-						muốn tiếp tục?
+						Thao tác này sẽ xóa toàn bộ tiện ích mà bạn đã chọn.Bạn
+						có chắc chắn muốn tiếp tục?
 					</Typography>
-					<div className={'mt-10 flex items-center justify-center gap-4'}>
+					<div
+						className={
+							'mt-10 flex items-center justify-center gap-4'
+						}>
 						<Button
 							onClick={onClose}
 							variant={'secondary'}

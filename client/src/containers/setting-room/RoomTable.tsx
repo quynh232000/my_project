@@ -1,5 +1,6 @@
 'use client';
 import DashboardTable, {
+	ColumnDef,
 	renderStatus,
 } from '@/components/shared/DashboardTable';
 import Typography from '@/components/shared/Typography';
@@ -8,7 +9,6 @@ import { filterData } from '@/containers/setting-room/data';
 import { toggleRoomStatus } from '@/services/room-config/toggleRoomStatus';
 import { ERoomStatus, IRoomItem } from '@/services/room/getRoomList';
 import { useLoadingStore } from '@/store/loading/store';
-import { initialState, useRoomDetailStore } from '@/store/room-detail/store';
 import { useRoomStore } from '@/store/room/store';
 import { startHolyLoader } from 'holy-loader';
 import { useRouter } from 'next/navigation';
@@ -20,18 +20,22 @@ export default function RoomTable() {
 	const router = useRouter();
 	const [room, setRoomList] = useState<IRoomItem[]>([]);
 	const setLoading = useLoadingStore((state) => state.setLoading);
-	const setRoomDetailState = useRoomDetailStore(
-		(state) => state.setRoomDetailState
-	);
+
 	const {
 		roomList,
 		setRoomList: setRoomListStore,
 		fetchRoomList,
+		allColumns,
+		setAllColumns,
+		visibleFields,
 	} = useRoomStore(
 		useShallow((state) => ({
 			roomList: state.roomList,
 			fetchRoomList: state.fetchRoomList,
 			setRoomList: state.setRoomList,
+			allColumns: state.allColumns,
+			setAllColumns: state.setAllColumns,
+			visibleFields: state.visibleFields,
 		}))
 	);
 	useEffect(() => {
@@ -52,6 +56,103 @@ export default function RoomTable() {
 			);
 		}
 	}, [roomList]);
+
+	useEffect(() => {
+		const columns: ColumnDef<IRoomItem>[] = [
+			{
+				label: 'Mã phòng',
+				field: 'id',
+				sortable: true,
+				style: { width: '127px' },
+			},
+			{
+				label: 'Tên phòng',
+				field: 'name',
+				sortable: true,
+			},
+			{
+				label: 'Sức chứa',
+				field: 'max_capacity',
+				sortable: true,
+				renderCell: (_, row) => (
+					<Typography
+						tag={'p'}
+						variant={'caption_14px_400'}
+						className={'text-neutral-600'}>
+						{row.max_extra_adults > 0
+							? `${String(row.max_extra_adults)} người lớn, `
+							: ''}
+						{row.max_extra_children > 0
+							? `${String(row.max_extra_children)} trẻ em`
+							: ''}
+					</Typography>
+				),
+			},
+			{
+				label: 'Kích thước',
+				field: 'area',
+				sortable: true,
+				renderCell: (cell) => (
+					<Typography
+						tag={'p'}
+						variant={'caption_14px_400'}
+						className={'text-neutral-600'}>
+						{String(cell)}m<sup>2</sup>
+					</Typography>
+				),
+			},
+			{
+				label: 'Số lượng',
+				field: 'quantity',
+				sortable: true,
+			},
+			{
+				label: 'Trạng thái',
+				field: 'status',
+				renderCell: (status, row) =>
+					renderStatus(status, row, {
+						onToggleStatus: () => onToggleStatus(row),
+					}),
+				sortable: true,
+			},
+		];
+
+		const filteredColumns = columns.filter(
+			(col): col is ColumnDef<IRoomItem> & { field: keyof IRoomItem } =>
+				!!col.field && visibleFields.includes(col.field)
+		);
+
+		setAllColumns(filteredColumns);
+	}, [visibleFields, room]);
+
+	// const handleChangeStatus = (status: ERoomStatus, room_ids: number[]) => {
+	// 	if(room_ids.length === roomList?.length && roomList.every(room => room.status === status)) {
+	// 		toast.success('Cập nhật trạng thái phòng thành công');
+	// 	}else{
+	// 		setLoading(true);
+	// 		toggleRoomStatus({
+	// 			status,
+	// 			room_ids,
+	// 		})
+	// 			.then((res) => {
+	// 				if (res.status) {
+	// 					toast.success('Cập nhật trạng thái phòng thành công');
+	// 					setRoomListStore(
+	// 						roomList?.map((r) => (room_ids.includes(r.id) ?{
+	// 							...r,
+	// 							status,
+	// 						} : r)) ?? []
+	// 					);
+	// 				} else {
+	// 					toast.error('Có lỗi xảy ra, vui lòng thử lại!');
+	// 				}
+	// 			})
+	// 			.catch(() => {
+	// 				toast.error('Có lỗi xảy ra, vui lòng thử lại!');
+	// 			})
+	// 			.finally(() => setLoading(false));
+	// 	}
+	// }
 
 	const onToggleStatus = (room: IRoomItem) => {
 		setLoading(true);
@@ -86,63 +187,11 @@ export default function RoomTable() {
 		<DashboardTable<IRoomItem>
 			searchPlaceholder={'Tìm kiếm theo tên/mã phòng'}
 			filterPlaceholder={'Trạng thái'}
-			addButtonText={'Thêm phòng mới'}
-			handleAdd={() => {
-				router.push(DashboardRouter.roomCreate);
-				setRoomDetailState(initialState.roomDetail);
-			}}
 			filterData={filterData}
 			checkboxSelection={true}
+			// handleChangeStatus={handleChangeStatus}
 			fieldSearch={['id', 'name']}
-			columns={[
-				{
-					label: 'Mã phòng',
-					field: 'id',
-					sortable: true,
-					style: { width: '127px' },
-				},
-				{ label: 'Tên phòng', field: 'name', sortable: true },
-				{
-					label: 'Sức chứa',
-					field: 'max_capacity',
-					sortable: true,
-					renderCell: (cell) => {
-						return (
-							<Typography
-								tag={'p'}
-								variant={'caption_14px_400'}
-								className={'text-neutral-600'}>
-								{String(cell)} người
-							</Typography>
-						);
-					},
-				},
-				{
-					label: 'Kích thước',
-					field: 'area',
-					sortable: true,
-					renderCell: (cell) => {
-						return (
-							<Typography
-								tag={'p'}
-								variant={'caption_14px_400'}
-								className={'text-neutral-600'}>
-								{String(cell)}m<sup>2</sup>
-							</Typography>
-						);
-					},
-				},
-				{ label: 'Số lượng', field: 'quantity', sortable: true },
-				{
-					label: 'Trạng thái',
-					field: 'status',
-					renderCell: (status, row) =>
-						renderStatus(status, row, {
-							onToggleStatus: () => onToggleStatus(row),
-						}),
-					sortable: true,
-				},
-			]}
+			columns={allColumns}
 			rows={room}
 			action={{
 				name: 'Thiết lập',
@@ -151,7 +200,9 @@ export default function RoomTable() {
 					(room) => {
 						startHolyLoader();
 						setLoading(true);
-						router.push(`${DashboardRouter.room}/${room.id}?tab=general`);
+						router.push(
+							`${DashboardRouter.room}/${room.id}?tab=general`
+						);
 					},
 				],
 			}}

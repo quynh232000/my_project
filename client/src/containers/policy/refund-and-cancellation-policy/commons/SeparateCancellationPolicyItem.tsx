@@ -41,14 +41,15 @@ export default function SeparateCancellationPolicyItem({
 					/>
 				</div>
 				<div className="flex items-center gap-4">
-					{(policy?.price_types?.length ?? 0) > 0 && policy.status === CancelPolicyStatus.ACTIVE && (
-						<Typography
-							tag="p"
-							text={`${policy?.price_types?.length} loại giá đang áp dụng`}
-							variant="caption_12px_600"
-							className="rounded-lg bg-green-50 px-4 py-1 text-accent-02"
-						/>
-					)}
+					{(policy?.price_types?.length ?? 0) > 0 &&
+						policy.status === CancelPolicyStatus.ACTIVE && (
+							<Typography
+								tag="p"
+								text={`${policy?.price_types?.length} loại giá đang áp dụng`}
+								variant="caption_12px_600"
+								className="rounded-lg bg-green-50 px-4 py-1 text-accent-02"
+							/>
+						)}
 					<button
 						className="flex items-center gap-1 text-sm font-semibold text-neutral-400"
 						onClick={() => onEdit(policy.id)}>
@@ -68,7 +69,9 @@ export default function SeparateCancellationPolicyItem({
 					<Switch
 						id={`policy-${policy.name}-status`}
 						checked={policy.status === CancelPolicyStatus.ACTIVE}
-						onCheckedChange={(checked) => onChangeActive(policy.id, checked)}
+						onCheckedChange={(checked) =>
+							onChangeActive(policy.id, checked)
+						}
 					/>
 					<Label
 						htmlFor={`policy-${policy.name}-status`}

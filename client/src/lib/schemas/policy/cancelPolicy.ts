@@ -43,7 +43,8 @@ const cancelPolicyRowSchema = z
 				if (row.day >= val[index - 1].day) {
 					return ctx.addIssue({
 						code: z.ZodIssueCode.custom,
-						message: 'Vui lòng nhập giảm dần ngày trước ngày check-in',
+						message:
+							'Vui lòng nhập giảm dần ngày trước ngày check-in',
 						path: [`${index}.day`],
 					});
 				}

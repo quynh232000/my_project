@@ -1,6 +1,4 @@
-import {
-	OtherPolicyFormValue
-} from '@/lib/schemas/policy/otherPolicy';
+import { OtherPolicyFormValue } from '@/lib/schemas/policy/otherPolicy';
 import { IPolicyOtherItem } from '@/services/policy/other/getPolicyOther';
 
 export type DepositMethod = 'cash' | 'credit_card' | 'banking';
@@ -20,7 +18,7 @@ export type TPolicyDeposit = {
 };
 export type TDocumentRequire = 'cccd' | 'passport' | 'driver_license';
 export type TAdultRequire = 'parent' | 'legal_guardian' | 'relative_over_18';
-export type TFeeType = 'free' | 'charged'
+export type TFeeType = 'free' | 'charged';
 export type TExtraBreakfast = {
 	age_from: number;
 	age_to: number | null;

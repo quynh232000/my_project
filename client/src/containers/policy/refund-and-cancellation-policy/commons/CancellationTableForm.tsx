@@ -54,7 +54,8 @@ export default function CancellationTableForm({ className }: Props) {
 		append({
 			fee: NaN,
 			day: NaN,
-			fee_type: fields.length === 1 ? ECancelFeeType.FREE : ECancelFeeType.FEE,
+			fee_type:
+				fields.length === 1 ? ECancelFeeType.FREE : ECancelFeeType.FEE,
 		});
 	};
 
@@ -77,28 +78,31 @@ export default function CancellationTableForm({ className }: Props) {
 		<>
 			<div className={cn('flex flex-col', className)}>
 				<div>
-					<Table className={'w-full border-separate border-spacing-0'}>
+					<Table
+						className={'w-full border-separate border-spacing-0'}>
 						<TableHeader className="bg-[#FCFCFD]">
 							<TableRow>
 								<TableHead
-									className={`w-1/4 min-w-[200px] rounded-tl-xl border-b border-l border-t px-2 md:px-4 py-3 ${TextVariants.caption_14px_700}`}>
+									className={`w-1/4 min-w-[200px] rounded-tl-xl border-b border-l border-t px-2 py-3 md:px-4 ${TextVariants.caption_14px_700}`}>
 									Hủy trước
 								</TableHead>
 								<TableHead
-									className={`w-1/5 border-b border-l border-r border-t px-2 md:px-4 py-3 ${TextVariants.caption_14px_700}`}>
+									className={`w-1/5 border-b border-l border-r border-t px-2 py-3 md:px-4 ${TextVariants.caption_14px_700}`}>
 									Phí hủy
 								</TableHead>
 								<TableHead
-									className={`rounded-tr-xl min-w-[80px] border-b border-r border-t px-2 md:px-4 py-3 ${TextVariants.caption_14px_700}`}>
+									className={`min-w-[80px] rounded-tr-xl border-b border-r border-t px-2 py-3 md:px-4 ${TextVariants.caption_14px_700}`}>
 									Phí
 								</TableHead>
 							</TableRow>
 						</TableHeader>
 						<TableBody>
 							{fields.map((row, index) => (
-								<TableRow key={row.id} className="hover:bg-transparent">
+								<TableRow
+									key={row.id}
+									className="hover:bg-transparent">
 									<TableCell
-										className={`w-1/4 border-b border-l px-2 md:px-4 py-3 font-medium ${index === fields.length - 1 ? 'rounded-bl-xl' : ''}`}>
+										className={`w-1/4 border-b border-l px-2 py-3 font-medium md:px-4 ${index === fields.length - 1 ? 'rounded-bl-xl' : ''}`}>
 										{index === 0 ? (
 											<Typography
 												tag="p"
@@ -110,24 +114,42 @@ export default function CancellationTableForm({ className }: Props) {
 											<Controller
 												control={control}
 												name={`rows.${index}.day`}
-												render={({ field: { value, onChange, ...props } }) => (
+												render={({
+													field: {
+														value,
+														onChange,
+														...props
+													},
+												}) => (
 													<div className={'relative'}>
 														<NumberInput
 															placeholder="30"
 															maxLength={2}
 															suffix={''}
-															inputMode={'numeric'}
+															inputMode={
+																'numeric'
+															}
 															value={value}
 															{...props}
 															className={cn(
 																'h-6 rounded-none border-none p-0 leading-6 text-neutral-600 outline-none',
 																TextVariants.caption_14px_400
 															)}
-															endAdornment={'Ngày trước check-in'}
+															endAdornment={
+																'Ngày trước check-in'
+															}
 															endAdornmentClassname={`${TextVariants.caption_14px_400} text-neutral-600`}
-															onValueChange={(e) => {
+															onValueChange={(
+																e
+															) => {
 																onChange(
-																	e.value.length === 0 ? NaN : Number(e.value)
+																	e.value
+																		.length ===
+																		0
+																		? NaN
+																		: Number(
+																				e.value
+																			)
 																);
 															}}
 														/>
@@ -138,11 +160,15 @@ export default function CancellationTableForm({ className }: Props) {
 									</TableCell>
 
 									<TableCell
-										className={'w-1/4 border-b border-l border-r px-2 md:px-4 py-3'}>
+										className={
+											'w-1/4 border-b border-l border-r px-2 py-3 md:px-4'
+										}>
 										<Controller
 											control={control}
 											name={`rows.${index}.fee_type`}
-											rules={{ deps: `rows.${index}.fee` }}
+											rules={{
+												deps: `rows.${index}.fee`,
+											}}
 											render={({ field }) => (
 												<SelectPopup
 													placeholder={'Loại phí'}
@@ -150,7 +176,9 @@ export default function CancellationTableForm({ className }: Props) {
 													data={cancelType}
 													selectedValue={field.value}
 													onChange={field.onChange}
-													classItemList={'w-full h-auto'}
+													classItemList={
+														'w-full h-auto'
+													}
 													className="h-6 w-full rounded-lg border-none bg-neutral-50 px-2 py-0"
 												/>
 											)}
@@ -158,15 +186,24 @@ export default function CancellationTableForm({ className }: Props) {
 									</TableCell>
 
 									<TableCell
-										className={`px-2 md:px-4 py-3 ${index === fields.length - 1 ? 'rounded-br-xl border-b border-r' : 'border-b border-r'}`}>
+										className={`px-2 py-3 md:px-4 ${index === fields.length - 1 ? 'rounded-br-xl border-b border-r' : 'border-b border-r'}`}>
 										<Controller
 											control={control}
 											name={`rows.${index}.fee`}
-											render={({ field: { value, onChange, ...props } }) =>
-												rows?.[index]?.fee_type === ECancelFeeType.FREE ? (
+											render={({
+												field: {
+													value,
+													onChange,
+													...props
+												},
+											}) =>
+												rows?.[index]?.fee_type ===
+												ECancelFeeType.FREE ? (
 													<Typography
 														tag="p"
-														variant={'caption_14px_400'}
+														variant={
+															'caption_14px_400'
+														}
 														className="text-green-500">
 														Miễn phí
 													</Typography>
@@ -174,7 +211,9 @@ export default function CancellationTableForm({ className }: Props) {
 													<div className="relative w-full">
 														<NumberInput
 															placeholder="20"
-															inputMode={'numeric'}
+															inputMode={
+																'numeric'
+															}
 															suffix={''}
 															maxLength={3}
 															value={value}
@@ -183,9 +222,17 @@ export default function CancellationTableForm({ className }: Props) {
 																'h-6 rounded-none border-none p-0 leading-6 text-neutral-600 outline-none',
 																TextVariants.caption_14px_400
 															)}
-															onValueChange={(e) => {
+															onValueChange={(
+																e
+															) => {
 																onChange(
-																	e.value.length === 0 ? NaN : Number(e.value)
+																	e.value
+																		.length ===
+																		0
+																		? NaN
+																		: Number(
+																				e.value
+																			)
 																);
 															}}
 															endAdornment={'%'}
@@ -211,19 +258,21 @@ export default function CancellationTableForm({ className }: Props) {
 						{errorMessage && (
 							<TableFooter>
 								<TableRow className={'!bg-white'}>
-									<TableCell colSpan={9999} className='pl-0'>
-									<div className="flex flex-row items-center gap-2 rounded-lg bg-red-50 px-4 py-3">
-										<IconExclamationCircle
-											color={GlobalUI.colors.red['500']}
-											className={'h-4 w-4'}
-										/>
-										<Typography
-											tag="span"
-											variant="caption_12px_500"
-											className={'text-red-500'}>
-											{errorMessage}
-										</Typography>
-									</div>
+									<TableCell colSpan={9999} className="pl-0">
+										<div className="flex flex-row items-center gap-2 rounded-lg bg-red-50 px-4 py-3">
+											<IconExclamationCircle
+												color={
+													GlobalUI.colors.red['500']
+												}
+												className={'h-4 w-4'}
+											/>
+											<Typography
+												tag="span"
+												variant="caption_12px_500"
+												className={'text-red-500'}>
+												{errorMessage}
+											</Typography>
+										</div>
 									</TableCell>
 								</TableRow>
 							</TableFooter>

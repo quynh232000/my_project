@@ -69,7 +69,9 @@ const Editor = ({ content, onChange }: EditorProps) => {
 				hideBubble={true}
 				output="html"
 				content={content}
-				onChangeContent={(val: string) => isContentParsed && onChange(val)}
+				onChangeContent={(val: string) =>
+					isContentParsed && onChange(val)
+				}
 				extensions={extensions}
 				dark={false}
 				contentClass={'p-0'}

@@ -1,4 +1,7 @@
-import { IAttributeItem, IChainItem } from '@/services/attributes/getAttributes';
+import {
+	IAttributeItem,
+	IChainItem,
+} from '@/services/attributes/getAttributes';
 import { IRoomType } from '@/services/room-config/getRoomType';
 import { TImageTagList } from '@/services/attributes/getAttributeImageType';
 

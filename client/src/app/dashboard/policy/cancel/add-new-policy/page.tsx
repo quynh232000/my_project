@@ -5,11 +5,16 @@ import { DashboardCard } from '@/components/shared/Dashboard/DashboardCard';
 import SeparateCancellationPolicyForm from '@/containers/policy/separate-cancellation-policy/SeparateCancellationPolicyForm';
 
 export default async function Page() {
-	const { pathName } = await getFullURLServerComponent()
-	return <DashboardContainer>
-		<DashboardHeroTitle title={"Chính sách hoàn hủy riêng"} pathName={pathName} />
-		<DashboardCard>
-			<SeparateCancellationPolicyForm />
-		</DashboardCard>
-	</DashboardContainer>
+	const { pathName } = await getFullURLServerComponent();
+	return (
+		<DashboardContainer>
+			<DashboardHeroTitle
+				title={'Chính sách hoàn hủy riêng'}
+				pathName={pathName}
+			/>
+			<DashboardCard>
+				<SeparateCancellationPolicyForm />
+			</DashboardCard>
+		</DashboardContainer>
+	);
 }

@@ -14,14 +14,11 @@ export interface IGeneralPolicy {
 export const getGeneralPolicy = async (): Promise<IGeneralPolicy[] | null> => {
 	try {
 		const hotel_id = getClientSideCookie('hotel_id');
-		const { data } = await CallAPI().get(
-			`${AppEndpoint.GENERAL_POLICY}`,
-			{
-				params: {
-					hotel_id,
-				},
-			}
-		);
+		const { data } = await CallAPI().get(`${AppEndpoint.GENERAL_POLICY}`, {
+			params: {
+				hotel_id,
+			},
+		});
 		if (!data) {
 			return null;
 		}

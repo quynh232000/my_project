@@ -12,14 +12,11 @@ export interface IPolicyOtherItem {
 export const getPolicyOther = async (): Promise<IPolicyOtherItem[] | null> => {
 	try {
 		const hotel_id = getClientSideCookie('hotel_id');
-		const { data } = await CallAPI().get(
-			`${AppEndpoint.POLICY_OTHER}`,
-			{
-				params: {
-					hotel_id,
-				},
-			}
-		);
+		const { data } = await CallAPI().get(`${AppEndpoint.POLICY_OTHER}`, {
+			params: {
+				hotel_id,
+			},
+		});
 		if (!data) {
 			return null;
 		}

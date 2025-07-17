@@ -9,21 +9,22 @@ import {
 	useSensor,
 	useSensors,
 } from '@dnd-kit/core';
-import {
-	arrayMove,
-	rectSortingStrategy,
-	SortableContext,
-} from '@dnd-kit/sortable';
+import { rectSortingStrategy, SortableContext } from '@dnd-kit/sortable';
 import React, { useState } from 'react';
 import { cn } from '@/lib/utils';
 import UploadImageZone from '@/containers/album-manager/common/UploadImageZone';
 import SortableItem from '@/containers/album-manager/common/SortableItem';
 import { ImageType } from '@/containers/album-manager/common/ImageGalleryList';
-import { updateAlbum } from '@/services/album/updateAlbum';
 import { useLoadingStore } from '@/store/loading/store';
 import Item from '@/containers/album-manager/common/Item';
 import { HotelRoomsResponse } from '@/services/album/getAlbumHotel';
 import { useAlbumHotelStore } from '@/store/album/store';
+import { toast } from 'sonner';
+import { reorderList } from '@/containers/album-manager/data';
+import {
+	UpdateAlbumRequestBody,
+	updateAlbum,
+} from '@/services/album/updateAlbum';
 
 interface SortableListProps extends React.HTMLAttributes<HTMLDivElement> {
 	list: ImageType[];
@@ -31,6 +32,7 @@ interface SortableListProps extends React.HTMLAttributes<HTMLDivElement> {
 	onMove: (list: ImageType[]) => void;
 	onEdit: (id: number | string) => void;
 	onRemove: (id: number | string) => void;
+	showTag?: boolean;
 	roomId?: number;
 }
 
@@ -41,6 +43,7 @@ export const SortableList = ({
 	onRemove,
 	onEdit,
 	roomId,
+	showTag = false,
 	...props
 }: SortableListProps) => {
 	const [activeId, setActiveId] = useState<string | null>(null);
@@ -65,36 +68,30 @@ export const SortableList = ({
 	const handleDragEnd = async (event: DragEndEvent) => {
 		const { active, over } = event;
 		const oldIndex = list.findIndex((item) => item.id === active.id);
-		const newIndex = over ? list.findIndex((item) => item.id === over.id) : -1;
+		const newIndex = over
+			? list.findIndex((item) => item.id === over.id)
+			: -1;
 		if (oldIndex >= 0 && newIndex >= 0 && oldIndex !== newIndex) {
 			setLoading(true);
-			const newList = arrayMove(list, oldIndex, newIndex);
-			const from = Math.min(oldIndex, newIndex);
-			const to = Math.max(newIndex, oldIndex);
-			const oldPriority = list.slice(from, to + 1).map((item) => item.priority);
-
-			for (let i = from; i <= to; i++) {
-				newList[i] = {
-					...newList[i],
-					priority: oldPriority[i - from],
-				};
-			}
+			const newList = reorderList(list, oldIndex, newIndex);
 			onMove(newList);
 
-			const formData = new FormData();
-			formData.append('id', String(roomId));
-			formData.append('type', roomId ? 'room_type' : 'hotel');
-			formData.append('list-all', 'true');
-			newList.forEach((item) => {
-				formData.append(
-					`update[${item.image_id}][priority]`,
-					String(item.priority)
-				);
-			});
-			const res = await updateAlbum<HotelRoomsResponse>(formData).finally(() => setLoading(false));
+			const bodyUpdateAlbum: UpdateAlbumRequestBody = {
+				...(roomId && { id: String(roomId) }),
+				list_all: true,
+				images: newList.map((item) => ({
+					image_id: String(item.image_id),
+					priority: String(item.priority),
+				})),
+			};
+
+			const res = await updateAlbum<HotelRoomsResponse>(
+				bodyUpdateAlbum
+			).finally(() => setLoading(false));
 			if (!res) {
 				onMove(list);
-			}else{
+				toast.error('Thay đổi vị trí ảnh thất bại');
+			} else {
 				setAlbumHotel(res.data);
 			}
 		}
@@ -109,7 +106,7 @@ export const SortableList = ({
 		<div
 			{...props}
 			className={cn(
-				`grid gap-4 rounded-lg border md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 ${activeId ? 'border-dashed border-secondary-500 bg-secondary-50' : 'border-transparent bg-white'}`,
+				`grid gap-4 border md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 ${activeId ? 'border-dashed border-secondary-500 bg-secondary-50' : 'border-transparent bg-white'}`,
 				props.className
 			)}>
 			<DndContext
@@ -129,11 +126,18 @@ export const SortableList = ({
 								onCheck={onCheck}
 								onEdit={onEdit}
 								onRemove={onRemove}
+								showTag={showTag}
 							/>
 						))}
 				</SortableContext>
 				<DragOverlay adjustScale style={{ transformOrigin: '0 0 ' }}>
-					{draggingItem && <Item item={draggingItem} isDragging />}
+					{draggingItem && (
+						<Item
+							item={draggingItem}
+							isDragging
+							showTag={showTag}
+						/>
+					)}
 				</DragOverlay>
 			</DndContext>
 			<UploadImageZone />

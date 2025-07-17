@@ -41,7 +41,10 @@ export const createRoomAvailabilitySettingSchema = (maxQuantity: number) => {
 							validate
 								.number()
 								.min(0, 'Vui lòng nhập số phòng hợp lệ')
-								.max(maxQuantity, `Số phòng không lớn hơn ${maxQuantity}`),
+								.max(
+									maxQuantity,
+									`Số phòng không lớn hơn ${maxQuantity}`
+								),
 						]),
 						active: validate.boolean().default(false),
 					})
@@ -54,7 +57,7 @@ export const createRoomAvailabilitySettingSchema = (maxQuantity: number) => {
 				message: 'Vui lòng thiết lập phòng ít nhất 1 ngày',
 			}),
 	});
-}
+};
 
 export type RoomAvailabilitySettingType = validate.infer<
 	ReturnType<typeof createRoomAvailabilitySettingSchema>

@@ -66,12 +66,15 @@ const TimePicker = ({
 		const [hourStr, minuteStr] = triggerLabel?.split?.(':') ?? [];
 		const hour = type === 'hour' ? val : Number(hourStr) || 0;
 		const minute = type === 'minute' ? val : Number(minuteStr) || 0;
-		onChange(`${hour}`.padStart(2, '0') + ':' + `${minute}`.padStart(2, '0'));
+		onChange(
+			`${hour}`.padStart(2, '0') + ':' + `${minute}`.padStart(2, '0')
+		);
 	};
 
 	return (
 		<Popover onOpenChange={setOpen} open={open}>
-			<PopoverTrigger className={cn('w-full text-start', triggerClassName)}>
+			<PopoverTrigger
+				className={cn('w-full text-start', triggerClassName)}>
 				{label && <Label required={required}>{label}</Label>}
 				<div
 					className={cn(
@@ -80,9 +83,13 @@ const TimePicker = ({
 						className
 					)}>
 					{triggerLabel ? (
-						<span className={'text-neutral-600'}>{triggerLabel}</span>
+						<span className={'text-neutral-600'}>
+							{triggerLabel}
+						</span>
 					) : (
-						<span className={'text-neutral-300'}>{placeholder}</span>
+						<span className={'text-neutral-300'}>
+							{placeholder}
+						</span>
 					)}
 					<div
 						className={`transition-transform ${open ? 'rotate-180' : 'rotate-0'}`}>
@@ -109,7 +116,8 @@ const TimePicker = ({
 					<ScrollArea ref={hourRef} className={'h-60 min-w-14'}>
 						{hours.map((hour) => (
 							<div key={hour} className={'flex flex-col'}>
-								<button onClick={() => onSelectTime(hour, 'hour')}>
+								<button
+									onClick={() => onSelectTime(hour, 'hour')}>
 									<Typography
 										variant={`${Number(selectedHour) === hour ? 'caption_14px_600' : 'caption_14px_400'}`}
 										className={`text-center ${Number(selectedHour) === hour && 'text-secondary-500'}`}>
@@ -129,7 +137,10 @@ const TimePicker = ({
 					<ScrollArea ref={minuteRef} className={'h-60 min-w-14'}>
 						{minutes.map((minute) => (
 							<div key={minute} className={'flex flex-col'}>
-								<button onClick={() => onSelectTime(minute, 'minute')}>
+								<button
+									onClick={() =>
+										onSelectTime(minute, 'minute')
+									}>
 									<Typography
 										variant={`${Number(selectedMinute) === minute ? 'caption_14px_600' : 'caption_14px_400'}`}
 										className={`text-center ${Number(selectedMinute) === minute && 'text-secondary-500'}`}>

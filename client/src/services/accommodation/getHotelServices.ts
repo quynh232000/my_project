@@ -14,16 +14,13 @@ export const getHotelServices = async ({
 }: props): Promise<IService[] | undefined> => {
 	try {
 		const hotel_id = getClientSideCookie('hotel_id');
-		const { data } = await CallAPI().get(
-			`${AppEndpoint.HOTEL_SERVICES}`,
-			{
-				params: {
-					type,
-					point_id,
-					hotel_id
-				},
-			}
-		);
+		const { data } = await CallAPI().get(`${AppEndpoint.HOTEL_SERVICES}`, {
+			params: {
+				type,
+				point_id,
+				hotel_id,
+			},
+		});
 		if (!data) {
 			return undefined;
 		}

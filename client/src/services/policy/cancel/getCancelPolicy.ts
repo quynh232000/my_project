@@ -35,14 +35,11 @@ export const getCancelPolicy = async (): Promise<{
 } | null> => {
 	try {
 		const hotel_id = getClientSideCookie('hotel_id');
-		const { data } = await CallAPI().get(
-			`${AppEndpoint.CANCEL_POLICY}`,
-			{
-				params: {
-					hotel_id,
-				},
-			}
-		);
+		const { data } = await CallAPI().get(`${AppEndpoint.CANCEL_POLICY}`, {
+			params: {
+				hotel_id,
+			},
+		});
 		if (!data) {
 			return null;
 		}

@@ -23,9 +23,8 @@ export type TPriceHistoryAPI = {
 	} | null;
 	room: {
 		id: number;
-		name_custom: string | null;
-		name_id: number;
 		name: string;
+		name_id: number;
 	};
 };
 

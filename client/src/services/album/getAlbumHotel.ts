@@ -19,7 +19,6 @@ export interface RoomImageLabel {
 export interface RoomInfo {
 	id: number;
 	name_id: number;
-	name_custom: string | null;
 	name: string;
 }
 
@@ -53,10 +52,10 @@ export interface HotelRoomsResponse {
 export const getAlbumHotel = async (): Promise<HotelRoomsResponse> => {
 	try {
 		const hotel_id = getClientSideCookie('hotel_id');
-		
+
 		const { data } = await CallAPI().get(`${AppEndpoint.ALBUM}/list`, {
 			params: {
-				hotel_id
+				hotel_id,
 			},
 		});
 		return data.data;

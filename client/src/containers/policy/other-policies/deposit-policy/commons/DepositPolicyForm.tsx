@@ -110,13 +110,23 @@ export default function DepositPolicyForm() {
 										TextVariants.caption_14px_400
 									)}
 									value={value}
-									maxLength={depositType === EDepositAmountType.fixed ? 11 : 3}
+									maxLength={
+										depositType === EDepositAmountType.fixed
+											? 11
+											: 3
+									}
 									{...props}
 									onValueChange={(e) => {
-										onChange(e.value.length === 0 ? NaN : Number(e.value));
+										onChange(
+											e.value.length === 0
+												? NaN
+												: Number(e.value)
+										);
 									}}
 									endAdornment={
-										depositType === EDepositAmountType.fixed ? 'VND' : '%'
+										depositType === EDepositAmountType.fixed
+											? 'VND'
+											: '%'
 									}
 								/>
 							</FormControl>
@@ -134,45 +144,57 @@ export default function DepositPolicyForm() {
 				/>
 
 				<div className="mt-4 flex flex-col gap-2">
-					{methodDepositList && methodDepositList.map((item, index) => {
-						const isChecked = selectedMethods?.includes(
-							item.slug as DepositMethod
-						);
-						return (
-							<div key={index} className="flex items-center space-x-2">
-								<Checkbox
-									id={item.slug}
-									checked={isChecked}
-									onCheckedChange={(checked) => {
-										if (checked) {
-											setValue(
-												'deposit.method_deposit',
-												selectedMethods
-													? ([...selectedMethods, item.slug] as DepositMethod[])
-													: ([item.slug] as DepositMethod[]),
-												{ shouldValidate: true }
-											);
-										} else {
-											setValue(
-												'deposit.method_deposit',
-												selectedMethods.filter(
-													(method: string) => method !== item.slug
-												),
-												{ shouldValidate: true }
-											);
-										}
-									}}
-								/>
-								<Label
-									htmlFor={item.slug}
-									containerClassName={'m-0 ml-2'}
-									className="cursor-pointer text-base font-normal leading-6">
-									{item.name}
-								</Label>
-							</div>
-						);
-					})}
-					<FieldErrorMessage errors={errors} name={'deposit.method_deposit'} />
+					{methodDepositList &&
+						methodDepositList.map((item, index) => {
+							const isChecked = selectedMethods?.includes(
+								item.slug as DepositMethod
+							);
+							return (
+								<div
+									key={index}
+									className="flex items-center space-x-2">
+									<Checkbox
+										id={item.slug}
+										checked={isChecked}
+										onCheckedChange={(checked) => {
+											if (checked) {
+												setValue(
+													'deposit.method_deposit',
+													selectedMethods
+														? ([
+																...selectedMethods,
+																item.slug,
+															] as DepositMethod[])
+														: ([
+																item.slug,
+															] as DepositMethod[]),
+													{ shouldValidate: true }
+												);
+											} else {
+												setValue(
+													'deposit.method_deposit',
+													selectedMethods.filter(
+														(method: string) =>
+															method !== item.slug
+													),
+													{ shouldValidate: true }
+												);
+											}
+										}}
+									/>
+									<Label
+										htmlFor={item.slug}
+										containerClassName={'m-0 ml-2'}
+										className="cursor-pointer text-base font-normal leading-6">
+										{item.name}
+									</Label>
+								</div>
+							);
+						})}
+					<FieldErrorMessage
+						errors={errors}
+						name={'deposit.method_deposit'}
+					/>
 				</div>
 			</div>
 		</div>

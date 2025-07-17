@@ -7,6 +7,7 @@ use Exception;
 class FileService
 {
     protected $cloudinary;
+    protected static $file_default = 'https://res.cloudinary.com/dhglwzgm3/image/upload/v1752071350/red-exclamation-mark-symbol-attention-caution-sign-icon-alert-danger-problem_40876-3505_tdohub.avif';
 
     public function __construct()
     {
@@ -79,6 +80,41 @@ class FileService
                 'status'    => false,
                 'message'   => "File deletion failed: " . $e->getMessage(),
             ];
+        }
+    }
+    public static function file_upload($params,$file,$name=null) {
+        try {
+            $type_file = $file->getClientMimeType();
+            $size_file = $file->getSize();
+
+            if (str_contains($type_file, 'image')) {
+                $res    = Cloudinary::upload($file->getRealPath());
+
+            } else if (str_contains($type_file, 'video')) {
+                $res    = Cloudinary::uploadVideo($file->getRealPath());
+            } else {
+                $res    = Cloudinary::uploadFile($file->getRealPath());
+            }
+            $link       = $res->getSecurePath();
+            if (!$link) {
+                return 'https://res.cloudinary.com/dhglwzgm3/image/upload/v1752071350/red-exclamation-mark-symbol-attention-caution-sign-icon-alert-danger-problem_40876-3505_tdohub.avif';
+            }
+            $public_id  = $res->getPublicId();
+            FileUploadModel::create([
+                'type'      => $type_file,
+                'url'       => $link,
+                'size'      => $size_file,
+                'from'      => $params['prefix'].'.'.$params['controller'].'.'.$params['action'].'.'.($name ?? 'unknown'),
+                'public_id' => $public_id,
+                'user_id'   => auth()->id()
+            ]);
+
+            return $link ?? 'https://res.cloudinary.com/dhglwzgm3/image/upload/v1752071350/red-exclamation-mark-symbol-attention-caution-sign-icon-alert-danger-problem_40876-3505_tdohub.avif';
+        }catch (\Cloudinary\Api\Exception\ApiError $e) {
+            // Handle Cloudinary-specific API errors
+            return 'https://res.cloudinary.com/dhglwzgm3/image/upload/v1752071350/red-exclamation-mark-symbol-attention-caution-sign-icon-alert-danger-problem_40876-3505_tdohub.avif';
+        } catch (Exception $e) {
+            return 'https://res.cloudinary.com/dhglwzgm3/image/upload/v1752071350/red-exclamation-mark-symbol-attention-caution-sign-icon-alert-danger-problem_40876-3505_tdohub.avif';
         }
     }
 }

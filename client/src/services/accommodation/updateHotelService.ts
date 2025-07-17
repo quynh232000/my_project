@@ -12,23 +12,20 @@ interface props {
 export const updateHotelServices = async ({
 	type,
 	ids,
-	point_id
+	point_id,
 }: props): Promise<IResponseStatus> => {
 	try {
 		const hotel_id = getClientSideCookie('hotel_id');
-		const res = await CallAPI().post(
-			`${AppEndpoint.HOTEL_SERVICES}`,
-			{
-				type,
-				ids,
-				point_id,
-				hotel_id
-			}
-		);
+		const res = await CallAPI().post(`${AppEndpoint.HOTEL_SERVICES}`, {
+			type,
+			ids,
+			point_id,
+			hotel_id,
+		});
 		if (!res.data) {
 			return {
 				status: false,
-				message: 'Có lỗi xảy ra, vui lòng thử lại!'
+				message: 'Có lỗi xảy ra, vui lòng thử lại!',
 			};
 		}
 		return res.data ?? [];
@@ -36,7 +33,7 @@ export const updateHotelServices = async ({
 		console.error('updateHotelServices', error);
 		return {
 			status: false,
-			message: 'Có lỗi xảy ra, vui lòng thử lại!'
+			message: 'Có lỗi xảy ra, vui lòng thử lại!',
 		};
 	}
 };

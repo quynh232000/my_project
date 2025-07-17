@@ -66,7 +66,10 @@ export default function MinimumCheckInAge() {
 	useEffect(() => {
 		(async () => {
 			setLoading(true);
-			await Promise.all([fetchAdultRequireList(), fetchDuccumentRequireList()]);
+			await Promise.all([
+				fetchAdultRequireList(),
+				fetchDuccumentRequireList(),
+			]);
 			setLoading(false);
 		})();
 	}, []);
@@ -95,12 +98,14 @@ export default function MinimumCheckInAge() {
 				slug: 'minimum-check-in-age',
 				settings: {
 					...data,
-					doccument_require: data.duccument_require as TDocumentRequire[],
+					doccument_require:
+						data.duccument_require as TDocumentRequire[],
 					adult_require: data.adult_require as TAdultRequire[],
 				},
 			};
 			setLoading(true);
-			const res = await updatePolicyOther<TPolicyMinimumCheckInAge>(updateData);
+			const res =
+				await updatePolicyOther<TPolicyMinimumCheckInAge>(updateData);
 			if (res?.status) {
 				toast.success(
 					'Cập nhật chính sách độ tuổi tối thiểu nhận phòng thành công'
@@ -121,7 +126,9 @@ export default function MinimumCheckInAge() {
 					control={form.control}
 					render={({ field: { onChange, value, ...props } }) => (
 						<FormItem>
-							<FormLabel required>Độ tuổi tối thiểu nhận phòng</FormLabel>
+							<FormLabel required>
+								Độ tuổi tối thiểu nhận phòng
+							</FormLabel>
 							<FormControl>
 								<NumberInput
 									inputMode={'numeric'}
@@ -135,7 +142,11 @@ export default function MinimumCheckInAge() {
 									)}
 									{...props}
 									onValueChange={(e) => {
-										onChange(e.value.length === 0 ? NaN : Number(e.value));
+										onChange(
+											e.value.length === 0
+												? NaN
+												: Number(e.value)
+										);
 									}}
 								/>
 							</FormControl>
@@ -169,13 +180,24 @@ export default function MinimumCheckInAge() {
 												<FormControl>
 													<Checkbox
 														id={`document-${item.id}`}
-														checked={field.value.includes(item.slug)}
-														onCheckedChange={(checked) => {
+														checked={field.value.includes(
+															item.slug
+														)}
+														onCheckedChange={(
+															checked
+														) => {
 															field.onChange(
 																checked
-																	? [...field.value, item.slug]
+																	? [
+																			...field.value,
+																			item.slug,
+																		]
 																	: field.value.filter(
-																			(val) => val !== item.slug
+																			(
+																				val
+																			) =>
+																				val !==
+																				item.slug
 																		)
 															);
 														}}
@@ -222,12 +244,23 @@ export default function MinimumCheckInAge() {
 											<FormControl>
 												<Checkbox
 													id={`accompany-${item.id}`}
-													checked={field.value?.includes(item.slug)}
-													onCheckedChange={(checked) => {
+													checked={field.value?.includes(
+														item.slug
+													)}
+													onCheckedChange={(
+														checked
+													) => {
 														field.onChange(
 															checked
-																? [...field.value, item.slug]
-																: field.value.filter((val) => val !== item.slug)
+																? [
+																		...field.value,
+																		item.slug,
+																	]
+																: field.value.filter(
+																		(val) =>
+																			val !==
+																			item.slug
+																	)
 														);
 													}}
 												/>
@@ -266,8 +299,8 @@ export default function MinimumCheckInAge() {
 						className={
 							'm-0 cursor-pointer text-base font-normal leading-6 text-neutral-600'
 						}>
-						Người lớn đi kèm phải xuất trình giấy tờ chứng minh mối quan hệ với
-						trẻ
+						Người lớn đi kèm phải xuất trình giấy tờ chứng minh mối
+						quan hệ với trẻ
 					</Label>
 				</div>
 				<ButtonActionGroup actionCancel={() => router.back()} />

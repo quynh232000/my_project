@@ -8,7 +8,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 		<div className={'flex min-h-screen flex-wrap lg:flex-nowrap'}>
 			<WelcomeBanner />
 			<div className={'flex flex-1 flex-col'}>
-				<div className={'flex flex-1 flex-col items-center justify-center'}>
+				<div
+					className={
+						'flex flex-1 flex-col items-center justify-center'
+					}>
 					<StoreLayout>{children}</StoreLayout>
 				</div>
 				<WelcomeFooter />

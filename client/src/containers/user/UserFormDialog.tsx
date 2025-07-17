@@ -70,7 +70,8 @@ const UserFormDialog = ({
 						email: customer.email,
 						role: String(
 							customer.hotel_customers.find(
-								(role) => role.hotel_id === +(hotel_id as string)
+								(role) =>
+									role.hotel_id === +(hotel_id as string)
 							)?.id as number
 						),
 						status: customer.status,
@@ -90,8 +91,8 @@ const UserFormDialog = ({
 			...values,
 			...(userIdEdit && userIdEdit > 0 && { id: userIdEdit }),
 			role:
-				roleList.find((role) => String(role.value) === values.role)?.label ||
-				'staff',
+				roleList.find((role) => String(role.value) === values.role)
+					?.label || 'staff',
 		});
 		setLoading(false);
 		if (res && res.status) {
@@ -111,12 +112,17 @@ const UserFormDialog = ({
 					<DialogDescription></DialogDescription>
 				</DialogHeader>
 				<Form {...form}>
-					<form onSubmit={form.handleSubmit(onSubmit)} autoComplete="off">
+					<form
+						onSubmit={form.handleSubmit(onSubmit)}
+						autoComplete="off">
 						<div className={'space-y-4'}>
-							<div className={'flex items-center justify-between'}>
+							<div
+								className={'flex items-center justify-between'}>
 								<h2
 									className={`${TextVariants.headline_18px_700} text-neutral-700`}>
-									{userIdEdit ? 'Chỉnh sửa người dùng' : 'Thêm người dùng mới'}
+									{userIdEdit
+										? 'Chỉnh sửa người dùng'
+										: 'Thêm người dùng mới'}
 								</h2>
 								<button
 									type={'button'}
@@ -137,7 +143,9 @@ const UserFormDialog = ({
 									name={'full_name'}
 									render={({ field }) => (
 										<FormItem className={'space-y-2'}>
-											<FormLabel required={true}>Tên người dùng</FormLabel>
+											<FormLabel required={true}>
+												Tên người dùng
+											</FormLabel>
 											<FormControl>
 												<Input
 													{...field}
@@ -154,12 +162,16 @@ const UserFormDialog = ({
 									name={'email'}
 									render={({ field }) => (
 										<FormItem className={'space-y-2'}>
-											<FormLabel required>Email</FormLabel>
+											<FormLabel required>
+												Email
+											</FormLabel>
 											<FormControl>
 												<Input
 													{...field}
 													autoComplete="new-email"
-													placeholder={'joshpham@gmail.com'}
+													placeholder={
+														'joshpham@gmail.com'
+													}
 													className={cn('h-10 py-2')}
 												/>
 											</FormControl>
@@ -175,13 +187,17 @@ const UserFormDialog = ({
 									rules={{
 										deps: ['password_confirmation'],
 									}}
-									render={({ field: { value, onChange } }) => (
+									render={({
+										field: { value, onChange },
+									}) => (
 										<FormItem className={'space-y-2'}>
 											<FormLabel>Mật khẩu</FormLabel>
 											<FormControl>
 												<InputPassword
 													autoComplete="new-password"
-													placeholder={'Nhập mật khẩu'}
+													placeholder={
+														'Nhập mật khẩu'
+													}
 													password={value ?? ''}
 													setPassword={onChange}
 													className={'h-10'}
@@ -194,13 +210,19 @@ const UserFormDialog = ({
 								<FormField
 									control={form.control}
 									name={'password_confirmation'}
-									render={({ field: { value, onChange } }) => (
+									render={({
+										field: { value, onChange },
+									}) => (
 										<FormItem className={'space-y-2'}>
-											<FormLabel>Nhập lại mật khẩu</FormLabel>
+											<FormLabel>
+												Nhập lại mật khẩu
+											</FormLabel>
 											<FormControl>
 												<InputPassword
 													autoComplete="new-password"
-													placeholder={'Nhập lại mật khẩu'}
+													placeholder={
+														'Nhập lại mật khẩu'
+													}
 													password={value ?? ''}
 													setPassword={onChange}
 													className={'h-10'}
@@ -215,7 +237,13 @@ const UserFormDialog = ({
 								<FormField
 									control={form.control}
 									name={'role'}
-									render={({ field: { value, onChange, ...fieldProps } }) => (
+									render={({
+										field: {
+											value,
+											onChange,
+											...fieldProps
+										},
+									}) => (
 										<FormItem className={'space-y-2'}>
 											<FormControl>
 												<SelectPopup
@@ -224,10 +252,14 @@ const UserFormDialog = ({
 													placeholder="Chọn vai trò"
 													labelClassName="mb-2"
 													className="h-10 rounded-lg bg-white py-2"
-													controllerRenderProps={fieldProps}
+													controllerRenderProps={
+														fieldProps
+													}
 													data={roleList}
 													selectedValue={value}
-													onChange={(val) => onChange(String(val))}
+													onChange={(val) =>
+														onChange(String(val))
+													}
 												/>
 											</FormControl>
 											<FormMessage />
@@ -237,14 +269,30 @@ const UserFormDialog = ({
 								<FormField
 									control={form.control}
 									name={'status'}
-									render={({ field: { value, onChange, ...fieldProps } }) => (
+									render={({
+										field: {
+											value,
+											onChange,
+											...fieldProps
+										},
+									}) => (
 										<FormItem className={'space-y-2'}>
-											<FormLabel required={true}>Trạng thái</FormLabel>
+											<FormLabel required={true}>
+												Trạng thái
+											</FormLabel>
 											<FormControl>
-												<div className={'flex h-10 items-center gap-3'}>
+												<div
+													className={
+														'flex h-10 items-center gap-3'
+													}>
 													<Switch
-														checked={value === ECustomerStatus.active}
-														onCheckedChange={(checked) =>
+														checked={
+															value ===
+															ECustomerStatus.active
+														}
+														onCheckedChange={(
+															checked
+														) =>
 															onChange(
 																checked
 																	? ECustomerStatus.active
@@ -255,8 +303,12 @@ const UserFormDialog = ({
 													/>
 													<Typography
 														tag={'span'}
-														variant={'caption_14px_400'}
-														className={'text-neutral-600'}>
+														variant={
+															'caption_14px_400'
+														}
+														className={
+															'text-neutral-600'
+														}>
 														Hoạt động
 													</Typography>
 												</div>

@@ -1,9 +1,20 @@
 <?php
+$base = basename(__FILE__, '.php');
 return [
     'title'     => 'General',
     'icon'      => 'ki-outline ki-credit-cart',
-    'name_route' => basename(__FILE__, '.php'),
+    'name_route' => $base,
     'sub'       => [
+         [
+            'title'         => 'Addresses',
+            'icon'          => 'ki-outline ki-map text-success',
+            'name_route'    => $base . '.address',
+            'sub'           => [
+                                ['title' => 'Provinces', 'route' => $base.'.province.index'],
+                                ['title' => 'Wards', 'route' => $base.'.ward.index'],
+                            ],
+        ],
+
         [
             'title' => 'Account',
              'name_route' => basename(__FILE__, '.php').'.user',

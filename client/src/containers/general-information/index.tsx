@@ -1,3 +1,4 @@
+'use client';
 import ButtonActionGroup from '@/components/shared/Button/ButtonActionGroup';
 import { Form } from '@/components/ui/form';
 import AddressInfo from '@/containers/general-information/common/AddressInfo';
@@ -62,7 +63,9 @@ export default function GeneralInformation({
 				const res = await updateAccommodationProfile(value);
 				if (res) {
 					if (value.generalInfo.image instanceof File) {
-						const url = URL.createObjectURL(value.generalInfo.image);
+						const url = URL.createObjectURL(
+							value.generalInfo.image
+						);
 						value.generalInfo.image = url;
 					}
 					setProfile(value);

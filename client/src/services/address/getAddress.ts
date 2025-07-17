@@ -1,5 +1,5 @@
 import { CallAPI } from '@/configs/axios/axios';
-import { AppEndpoint, PROVINCE_API_URL,  } from '@/services/type';
+import { AppEndpoint, PROVINCE_API_URL } from '@/services/type';
 
 export const addressTypes = [
 	'country_id',
@@ -22,16 +22,14 @@ export interface IAddressItem {
 
 export const getAddress = async ({
 	type,
-	id
+	id,
 }: props): Promise<IAddressItem[] | null> => {
 	try {
-		const { data } = await CallAPI(PROVINCE_API_URL).get(
+		const { data } = await CallAPI(PROVINCE_API_URL).post(
 			`${AppEndpoint.GET_ADDRESS}`,
 			{
-				params: {
-					type,
-					id
-				},
+				type,
+				id,
 			}
 		);
 		if (!data) {

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Middleware\IsLoginMiddleware;
+
 $base = basename(__FILE__, '.php');
 return  [
 
@@ -61,7 +62,7 @@ return  [
             'uri'           => 'permission',
             'controller'    =>  \App\Http\Controllers\Admin\Admin\PermissionController::class,
             'name_prefix'   => 'admin.permission',
-            'only'          => ['index', 'edit','create', 'store', 'destroy', 'update'], // 👈 Chỉ dùng các action này
+            'only'          => ['index', 'edit', 'create', 'store', 'destroy', 'update'], // 👈 Chỉ dùng các action này
             'labels'        => [
                 'index'         => 'Listing',
                 'edit'          => 'Chỉnh sửa',
@@ -90,7 +91,7 @@ return  [
             'methods'       => ['get'],
             'action'        => 'new',
         ],
-         [
+        [
             'controller'    =>   \App\Http\Controllers\Admin\Admin\PermissionController::class,
             'uri'           => $base . '/permission/bulkStore',
             'name'          => $base . '.permission.bulkStore',
@@ -105,7 +106,50 @@ return  [
             'name_prefix'   => 'admin.file-upload',
             'only'          => ['index', 'destroy'], // 👈 Chỉ dùng các action này
         ],
-
+        // province_route
+        [
+            'type'          => 'resource',
+            'uri'           => 'province',
+            'controller'    =>  \App\Http\Controllers\Admin\Admin\ProvinceController::class,
+            'name_prefix'   => $base . '.province',
+            'only'          => ['index', 'edit', 'store', 'create', 'update', 'destroy'],
+        ],
+        [
+            'controller'    =>   \App\Http\Controllers\Admin\Admin\ProvinceController::class,
+            'uri'           => $base . '/province/status/{status}/{id}',
+            'name'          => $base . '.province.status',
+            'methods'       => ['get'],
+            'action'        => 'status',
+        ],
+        [
+            'controller'    =>   \App\Http\Controllers\Admin\Admin\ProvinceController::class,
+            'uri'           => $base . '/province/confirm-delete',
+            'name'          => $base . '.province.confirm-delete',
+            'methods'       => ['post'],
+            'action'        => 'confirmDelete',
+        ],
+        // ward_route
+        [
+            'type'          => 'resource',
+            'uri'           => 'ward',
+            'controller'    =>  \App\Http\Controllers\Admin\Admin\WardController::class,
+            'name_prefix'   => $base . '.ward',
+            'only'          => ['index', 'edit', 'store', 'create', 'update', 'destroy'],
+        ],
+        [
+            'controller'    =>   \App\Http\Controllers\Admin\Admin\WardController::class,
+            'uri'           => $base . '/ward/status/{status}/{id}',
+            'name'          => $base . '.ward.status',
+            'methods'       => ['get'],
+            'action'        => 'status',
+        ],
+        [
+            'controller'    =>   \App\Http\Controllers\Admin\Admin\WardController::class,
+            'uri'           => $base . '/ward/confirm-delete',
+            'name'          => $base . '.ward.confirm-delete',
+            'methods'       => ['post'],
+            'action'        => 'confirmDelete',
+        ],
 
 
 

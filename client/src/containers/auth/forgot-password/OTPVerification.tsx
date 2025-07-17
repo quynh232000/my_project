@@ -21,7 +21,7 @@ const OTPVerification = () => {
 	const [otp, setOTP] = useState('');
 	const { email } = useForgotPasswordContext();
 	const { incrementCount, decrementCount } = useCounterContext();
-	const setLoading = useLoadingStore(state => state.setLoading);
+	const setLoading = useLoadingStore((state) => state.setLoading);
 	const handleSubmit = async () => {
 		setLoading(true);
 		if (otp.length === 4) {
@@ -55,7 +55,9 @@ const OTPVerification = () => {
 			<AppLogo />
 			<Typography variant={'headline_32px_700'}>Nhập mã OTP</Typography>
 			<div>
-				<Typography variant={'content_16px_400'} className={'text-neutral-600'}>
+				<Typography
+					variant={'content_16px_400'}
+					className={'text-neutral-600'}>
 					Chúng tôi đã gửi mã xác minh đến địa chỉ email{' '}
 					<span className={'text-nowrap font-semibold'}>{email}</span>
 					<br />

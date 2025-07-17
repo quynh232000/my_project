@@ -130,7 +130,9 @@ const PhoneInput = ({
 							</Typography>
 						}
 						onChange={(e) =>
-							onChange(`${selectedCountry?.dialCode ?? ''}${e.target.value}`)
+							onChange(
+								`${selectedCountry?.dialCode ?? ''}${e.target.value}`
+							)
 						}
 					/>
 				</div>
@@ -148,39 +150,61 @@ const PhoneInput = ({
 						<ScrollArea className={'h-60 shadow-md'}>
 							<CommandEmpty>Không tìm thấy lựa chọn</CommandEmpty>
 							<CommandGroup>
-								{Object.entries(ListCountry)?.map(([key, item]) => {
-									const isSelected = selectedCountry?.dialCode === key;
-									return (
-										<CommandItem
-											className={`${isSelected ? '!bg-neutral-100' : ''}`}
-											ref={isSelected ? listRef : null}
-											key={item.code}
-											value={`${item.name} (+${key})`}
-											title={item.name}
-											onSelect={() => {
-												onChange(`${key}${barePhoneNumber}`);
-											}}>
-											<div className={'flex items-center gap-2'}>
-												<Image
-													src={`https://flagcdn.com/w40/${item.code.toLocaleLowerCase()}.png`}
-													alt={item.name}
-													className={'h-[18px] w-[24px] object-contain'}
-													width={24}
-													height={18}
-												/>
-												<span className={'truncate whitespace-nowrap'}>
-													{`${item.name} (${key})`}
-												</span>
-												{isSelected && (
-													<IconCheck
-														color={GlobalUI.colors.secondary['500']}
-														className={'ml-auto size-5 shrink-0'}
+								{Object.entries(ListCountry)?.map(
+									([key, item]) => {
+										const isSelected =
+											selectedCountry?.dialCode === key;
+										return (
+											<CommandItem
+												className={`${isSelected ? '!bg-neutral-100' : ''}`}
+												ref={
+													isSelected ? listRef : null
+												}
+												key={item.code}
+												value={`${item.name} (+${key})`}
+												title={item.name}
+												onSelect={() => {
+													onChange(
+														`${key}${barePhoneNumber}`
+													);
+												}}>
+												<div
+													className={
+														'flex items-center gap-2'
+													}>
+													<Image
+														src={`https://flagcdn.com/w40/${item.code.toLocaleLowerCase()}.png`}
+														alt={item.name}
+														className={
+															'h-[18px] w-[24px] object-contain'
+														}
+														width={24}
+														height={18}
 													/>
-												)}
-											</div>
-										</CommandItem>
-									);
-								})}
+													<span
+														className={
+															'truncate whitespace-nowrap'
+														}>
+														{`${item.name} (${key})`}
+													</span>
+													{isSelected && (
+														<IconCheck
+															color={
+																GlobalUI.colors
+																	.secondary[
+																	'500'
+																]
+															}
+															className={
+																'ml-auto size-5 shrink-0'
+															}
+														/>
+													)}
+												</div>
+											</CommandItem>
+										);
+									}
+								)}
 							</CommandGroup>
 							<ScrollBar />
 						</ScrollArea>

@@ -21,7 +21,8 @@
                 <div class=" mx-lg-5 my-7">
                     <!--begin::Form-->
                     <form id="" class="form"
-                        action="{{ route($params['prefix'] . '.' . $params['controller'] . '.store') }}" method="POST" enctype="multipart/form-data" >
+                        action="{{ route($params['prefix'] . '.' . $params['controller'] . '.store') }}" method="POST"
+                        enctype="multipart/form-data">
                         @csrf
                         <!--begin::Scroll-->
 
@@ -58,7 +59,7 @@
                                 <label class="fs-5 fw-bold form-label mb-2">
                                     <span class="required">Status</span>
                                 </label>
-                                 {!!\App\Models\Ecommerce\CategoryModel::slbStatus($params['status'] ?? '')!!}
+                                {!! \App\Models\Ecommerce\CategoryModel::slbStatus($params['status'] ?? '') !!}
                                 @error('status')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
@@ -78,11 +79,11 @@
                                     <!--begin::Image input placeholder-->
                                     <style>
                                         .image-input-placeholder {
-                                            background-image: url('{{asset("assets/media/svg/files/blank-image.svg")}}');
+                                            background-image: url('{{ asset('assets/media/svg/files/blank-image.svg') }}');
                                         }
 
                                         [data-bs-theme="dark"] .image-input-placeholder {
-                                            background-image: url('{{asset("assets/media/svg/files/blank-image-dark.svg")}}');
+                                            background-image: url('{{ asset('assets/media/svg/files/blank-image-dark.svg') }}');
                                         }
                                     </style>
                                     <!--end::Image input placeholder-->

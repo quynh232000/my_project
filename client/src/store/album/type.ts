@@ -3,10 +3,10 @@ import { HotelRoomsResponse } from '@/services/album/getAlbumHotel';
 export type TDeletedAlbumIds = {
 	id: string;
 	room_id: string | undefined;
-}[]
+}[];
 export interface AlbumHotelState {
 	albumHotel: HotelRoomsResponse | undefined;
-	deletedAlbumIds:TDeletedAlbumIds;
+	deletedAlbumIds: TDeletedAlbumIds;
 	needFetch: boolean;
 	selectedTab: string;
 }

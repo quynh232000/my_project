@@ -48,7 +48,6 @@ export class APIValidationError extends HttpError<ValidationErrorPayload> {
 	}
 }
 
-
 export function handleAPIError(err: unknown) {
 	const error = err as AxiosError;
 	const status = error?.response?.status;

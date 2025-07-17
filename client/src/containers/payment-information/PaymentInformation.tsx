@@ -63,7 +63,9 @@ export default function PaymentInformation() {
 		const bankId = bank as number;
 		const bankObj = bankList?.find((bank) => bank.id === bankId);
 		return (
-			<Typography variant={'caption_14px_400'} className={'text-neutral-600'}>
+			<Typography
+				variant={'caption_14px_400'}
+				className={'text-neutral-600'}>
 				{bankObj?.name ?? ''}
 			</Typography>
 		);
@@ -71,8 +73,11 @@ export default function PaymentInformation() {
 
 	const renderType = (type: TCellType) => {
 		return (
-			<Typography variant={'caption_14px_400'} className={'text-neutral-600'}>
-				{(type as EPaymentInformationType) === EPaymentInformationType.BUSINESS
+			<Typography
+				variant={'caption_14px_400'}
+				className={'text-neutral-600'}>
+				{(type as EPaymentInformationType) ===
+				EPaymentInformationType.BUSINESS
 					? 'Doanh nghiệp'
 					: 'Cá nhân'}
 			</Typography>
@@ -146,7 +151,9 @@ export default function PaymentInformation() {
 				rows={
 					paymentInfo
 						? (paymentInfo as Array<
-								Omit<PaymentInformationForm, 'id'> & { id: number }
+								Omit<PaymentInformationForm, 'id'> & {
+									id: number;
+								}
 							>)
 						: []
 				}

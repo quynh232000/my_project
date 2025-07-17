@@ -9,7 +9,7 @@ export type TUser = {
 	email: string;
 	add_by: string;
 	status: string;
-}
+};
 
 export type TGroupUser = {
 	id: string | number;
@@ -17,68 +17,68 @@ export type TGroupUser = {
 	email: string;
 	add_by: string;
 	status: string;
-}
+};
 
 export const roleList: OptionType[] = [
 	{
-		label:"staff",
-		value: 1
+		label: 'staff',
+		value: 1,
 	},
 	{
-		label: "manager",
-		value: 2
-	}
-]
+		label: 'manager',
+		value: 2,
+	},
+];
 
-export const userGroupList: TGroupUser [] = [
+export const userGroupList: TGroupUser[] = [
 	{
-		id: "1",
-		name: "Admin",
-		email: "jos-pham@gmail.com",
-		add_by: "Nội bộ 190 Booking",
-		status: "inactive"
+		id: '1',
+		name: 'Admin',
+		email: 'jos-pham@gmail.com',
+		add_by: 'Nội bộ 190 Booking',
+		status: 'inactive',
 	},
 	{
-		id: "2",
-		name: "Lễ Tân",
-		email: "khoale@gmail.com",
-		add_by: "Nội bộ 190 Booking",
-		status: "active"
+		id: '2',
+		name: 'Lễ Tân',
+		email: 'khoale@gmail.com',
+		add_by: 'Nội bộ 190 Booking',
+		status: 'active',
 	},
-]
+];
 
 export const permissionList = [
 	{
-		id: "1",
-		name: "Dashboard",
+		id: '1',
+		name: 'Dashboard',
 		children: [
 			{
-				id: "2",
-				name: "Xem Dashboard",
-			}
-		]
+				id: '2',
+				name: 'Xem Dashboard',
+			},
+		],
 	},
 	{
-		id: "3",
-		name: "Hồ sơ chỗ nghỉ",
+		id: '3',
+		name: 'Hồ sơ chỗ nghỉ',
 		children: [
 			{
-				id: "4",
-				name: "Xem hồ sơ chỗ nghỉ"
+				id: '4',
+				name: 'Xem hồ sơ chỗ nghỉ',
 			},
 			{
-				id: "5",
-				name: "Cập nhật hồ sơ chỗ nghỉ"
-			}
-		]
-	}
-]
+				id: '5',
+				name: 'Cập nhật hồ sơ chỗ nghỉ',
+			},
+		],
+	},
+];
 
 export const userFormDefaultValues: UserInformationType = {
-	role: "",
+	role: '',
 	password_confirmation: '',
 	email: '',
 	status: ECustomerStatus.inactive,
 	full_name: '',
 	password: '',
-}
+};

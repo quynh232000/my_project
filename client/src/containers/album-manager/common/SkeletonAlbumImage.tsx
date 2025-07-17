@@ -14,8 +14,16 @@ const SkeletonAlbumImage = () => {
 								.fill(null)
 								.map((_, i) => (
 									<div key={i}>
-										<Skeleton className={'h-[159px] w-[240px] rounded-xl'} />
-										<Skeleton className={'mt-2 h-6 w-24 rounded-xl'} />
+										<Skeleton
+											className={
+												'h-[159px] w-[240px] rounded-xl'
+											}
+										/>
+										<Skeleton
+											className={
+												'mt-2 h-6 w-24 rounded-xl'
+											}
+										/>
 									</div>
 								))}
 						</div>

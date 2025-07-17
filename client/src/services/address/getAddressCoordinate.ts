@@ -8,10 +8,13 @@ export const getAddressCoordinate = async (
 	longitude: number;
 } | null> => {
 	try {
-		const { data } = await CallAPI(OPEN_STREET_MAP_API_URL + '/search', false).get('', {
+		const { data } = await CallAPI(
+			OPEN_STREET_MAP_API_URL + '/search',
+			false
+		).get('', {
 			params: {
 				q: address,
-				format: 'json'
+				format: 'json',
 			},
 		});
 		if (!data) {

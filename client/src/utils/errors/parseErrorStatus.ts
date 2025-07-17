@@ -1,13 +1,13 @@
-import { IResponseStatus } from "@/services/type";
+import { IResponseStatus } from '@/services/type';
 
 export interface IStatusType {
 	status: boolean;
 	message: string;
 	data?:
-	| number
-	| {
-		id: number;
-	};
+		| number
+		| {
+				id: number;
+		  };
 	error?: {
 		code: number;
 		details: {
@@ -27,7 +27,10 @@ export const parseErrorStatus = (statusData: IStatusType): IResponseStatus => {
 			: undefined,
 		message: statusData?.status
 			? statusData.message
-			: (statusData && statusData?.error?.details)
-				? (Array.isArray(errorData) && errorData?.[0]) ? errorData?.[0] : statusData?.message : 'Có lỗi xảy ra, vui lòng thử lại!'
+			: statusData && statusData?.error?.details
+				? Array.isArray(errorData) && errorData?.[0]
+					? errorData?.[0]
+					: statusData?.message
+				: 'Có lỗi xảy ra, vui lòng thử lại!',
 	};
 };

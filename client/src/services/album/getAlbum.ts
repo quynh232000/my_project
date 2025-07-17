@@ -22,12 +22,12 @@ export const getAlbumList = async ({
 }: props): Promise<IAlbumItem[] | null> => {
 	try {
 		const hotel_id = getClientSideCookie('hotel_id');
-		
+
 		const { data } = await CallAPI().get(`${AppEndpoint.ALBUM}`, {
 			params: {
 				type,
 				point_id,
-				hotel_id
+				hotel_id,
 			},
 		});
 		if (!data) {

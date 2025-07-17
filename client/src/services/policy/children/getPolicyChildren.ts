@@ -14,17 +14,16 @@ export interface IPolicyChildren {
 	meal_type: ROBB;
 }
 
-export const getPolicyChildren = async (): Promise<IPolicyChildren[] | null> => {
+export const getPolicyChildren = async (): Promise<
+	IPolicyChildren[] | null
+> => {
 	try {
 		const hotel_id = getClientSideCookie('hotel_id');
-		const { data } = await CallAPI().get(
-			`${AppEndpoint.POLICY_CHILDREN}`,
-			{
-				params: {
-					hotel_id
-				}
-			}
-		);
+		const { data } = await CallAPI().get(`${AppEndpoint.POLICY_CHILDREN}`, {
+			params: {
+				hotel_id,
+			},
+		});
 		if (!data) {
 			return null;
 		}

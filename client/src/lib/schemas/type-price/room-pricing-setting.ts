@@ -27,10 +27,13 @@ export const roomPricingSettingSchema = validate.object({
 					]),
 					active: validate.boolean().default(false),
 				})
-				.refine((val) => !val.active || !isNaN(val.price) || val.price <= 0, {
-					message: 'Vui lòng nhập giá',
-					path: ['price'],
-				})
+				.refine(
+					(val) => !val.active || !isNaN(val.price) || val.price <= 0,
+					{
+						message: 'Vui lòng nhập giá',
+						path: ['price'],
+					}
+				)
 		)
 		.refine((val) => Object.values(val).some((item) => item.active), {
 			message: 'Vui lòng thiết lập giá ít nhất 1 ngày',
@@ -38,8 +41,8 @@ export const roomPricingSettingSchema = validate.object({
 });
 
 export const createRoomPricingSettingSchema = (data: {
-	price_min: number,
-	price_max: number,
+	price_min: number;
+	price_max: number;
 }) => {
 	const { price_min, price_max } = data;
 
@@ -59,21 +62,31 @@ export const createRoomPricingSettingSchema = (data: {
 							validate.nan(),
 							validate
 								.number()
-								.min(price_min, `Giá phải từ ${priceConvert(price_min)} trở lên`)
-								.max(price_max, `Giá không được vượt quá ${priceConvert(price_max)}`),
+								.min(
+									price_min,
+									`Giá phải từ ${priceConvert(price_min)} trở lên`
+								)
+								.max(
+									price_max,
+									`Giá không được vượt quá ${priceConvert(price_max)}`
+								),
 						]),
 						active: validate.boolean().default(false),
 					})
-					.refine((val) => !val.active || !isNaN(val.price) || val.price <= 0, {
-						message: 'Vui lòng nhập giá',
-						path: ['price'],
-					})
+					.refine(
+						(val) =>
+							!val.active || !isNaN(val.price) || val.price <= 0,
+						{
+							message: 'Vui lòng nhập giá',
+							path: ['price'],
+						}
+					)
 			)
 			.refine((val) => Object.values(val).some((item) => item.active), {
 				message: 'Vui lòng thiết lập giá ít nhất 1 ngày',
 			}),
 	});
-}
+};
 
 export type RoomPricingSettingType = validate.infer<
 	typeof roomPricingSettingSchema

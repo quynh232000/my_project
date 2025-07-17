@@ -45,7 +45,9 @@ export default function ExtraBed() {
 				is_active: enable,
 			});
 			if (res?.status) {
-				toast.success('Cập nhật chính sách nôi/cũi và giường phụ thành công');
+				toast.success(
+					'Cập nhật chính sách nôi/cũi và giường phụ thành công'
+				);
 				setOtherPolicy([]);
 			}
 			setLoading(false);
@@ -58,7 +60,9 @@ export default function ExtraBed() {
 		<>
 			<Typography
 				tag={'p'}
-				text={'Chỗ nghĩ của bạn có chính sách nôi/cũi và giường phụ không?'}
+				text={
+					'Chỗ nghĩ của bạn có chính sách nôi/cũi và giường phụ không?'
+				}
 				variant={'content_16px_600'}
 			/>
 			<RadioGroup
@@ -76,7 +80,9 @@ export default function ExtraBed() {
 					<Label
 						htmlFor="r2"
 						containerClassName={'m-0 ml-2'}
-						className={'cursor-pointer text-base font-normal leading-6'}>
+						className={
+							'cursor-pointer text-base font-normal leading-6'
+						}>
 						Không cho phép
 					</Label>
 				</div>
@@ -91,7 +97,9 @@ export default function ExtraBed() {
 					<Label
 						htmlFor="r3"
 						containerClassName={'m-0 ml-2'}
-						className={'cursor-pointer text-base font-normal leading-6'}>
+						className={
+							'cursor-pointer text-base font-normal leading-6'
+						}>
 						Linh hoạt tùy loại phòng
 					</Label>
 				</div>
@@ -100,12 +108,12 @@ export default function ExtraBed() {
 			{enable && (
 				<ul className="mt-2 list-disc px-10 text-base font-normal leading-6 text-neutral-400">
 					<li>
-						Chính sách nôi/cũi và giường phụ tùy thuộc vào loại phòng đã được
-						thiết lập ở từng loại phòng đó.
+						Chính sách nôi/cũi và giường phụ tùy thuộc vào loại
+						phòng đã được thiết lập ở từng loại phòng đó.
 					</li>
 					<li>
-						Phí giường phụ thuộc và cũi chưa được bao gồm trong số tổng giá và
-						khách phải thanh toán tạ khách sạn.
+						Phí giường phụ thuộc và cũi chưa được bao gồm trong số
+						tổng giá và khách phải thanh toán tạ khách sạn.
 					</li>
 				</ul>
 			)}

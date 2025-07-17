@@ -13,7 +13,7 @@ type TPolicyOtherDetail<T> = {
 		name: string;
 		slug: string;
 	};
-}
+};
 
 export const getPolicyOtherDetail = async <T>({
 	slug,
@@ -26,7 +26,7 @@ export const getPolicyOtherDetail = async <T>({
 			`${AppEndpoint.POLICY_OTHER}/${slug}`,
 			{
 				params: {
-					hotel_id
+					hotel_id,
 				},
 			}
 		);

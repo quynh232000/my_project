@@ -94,7 +94,10 @@ export default function RoomCapacity() {
 									Số khách tiêu chuẩn
 								</span>
 								<span className="text-red-500">*</span>
-								<AppTooltip icon={<IconQuestion />} content="Tooltip" />
+								<AppTooltip
+									icon={<IconQuestion />}
+									content="Tooltip"
+								/>
 							</FormLabel>
 							<FormControl>
 								<NumberInput
@@ -105,7 +108,11 @@ export default function RoomCapacity() {
 									{...props}
 									value={value}
 									onValueChange={(e) => {
-										onChange(e.value.length === 0 ? '' : Number(e.value));
+										onChange(
+											e.value.length === 0
+												? ''
+												: Number(e.value)
+										);
 									}}
 								/>
 							</FormControl>
@@ -124,7 +131,10 @@ export default function RoomCapacity() {
 									Số người lớn phụ thu tối đa
 								</span>
 								<span className="text-red-500">*</span>
-								<AppTooltip icon={<IconQuestion />} content="Tooltip" />
+								<AppTooltip
+									icon={<IconQuestion />}
+									content="Tooltip"
+								/>
 							</FormLabel>
 							<FormControl>
 								<NumberInput
@@ -135,7 +145,11 @@ export default function RoomCapacity() {
 									{...props}
 									value={value}
 									onValueChange={(e) => {
-										onChange(e.value.length === 0 ? '' : Number(e.value));
+										onChange(
+											e.value.length === 0
+												? ''
+												: Number(e.value)
+										);
 									}}
 								/>
 							</FormControl>
@@ -154,7 +168,10 @@ export default function RoomCapacity() {
 									Số trẻ em phụ thu tối đa
 								</span>
 								<span className="text-red-500">*</span>
-								<AppTooltip icon={<IconQuestion />} content="Tooltip" />
+								<AppTooltip
+									icon={<IconQuestion />}
+									content="Tooltip"
+								/>
 							</FormLabel>
 							<FormControl>
 								<NumberInput
@@ -165,7 +182,11 @@ export default function RoomCapacity() {
 									{...props}
 									value={value}
 									onValueChange={(e) => {
-										onChange(e.value.length === 0 ? '' : Number(e.value));
+										onChange(
+											e.value.length === 0
+												? ''
+												: Number(e.value)
+										);
 									}}
 								/>
 							</FormControl>
@@ -181,9 +202,14 @@ export default function RoomCapacity() {
 						render={({ field: { value, onChange, ...props } }) => (
 							<FormItem className="col-span-2 space-y-2 lg:col-span-1">
 								<FormLabel>
-									<span className="truncate text-nowrap">Sức chứa tối đa</span>
+									<span className="truncate text-nowrap">
+										Sức chứa tối đa
+									</span>
 									<span className="text-red-500">*</span>
-									<AppTooltip icon={<IconQuestion />} content="Tooltip" />
+									<AppTooltip
+										icon={<IconQuestion />}
+										content="Tooltip"
+									/>
 								</FormLabel>
 								<FormControl>
 									<NumberInput
@@ -194,7 +220,11 @@ export default function RoomCapacity() {
 										{...props}
 										value={value}
 										onValueChange={(e) => {
-											onChange(e.value.length === 0 ? '' : Number(e.value));
+											onChange(
+												e.value.length === 0
+													? ''
+													: Number(e.value)
+											);
 										}}
 									/>
 								</FormControl>
@@ -206,7 +236,9 @@ export default function RoomCapacity() {
 			</div>
 			{allowGuestType === 'both' && (
 				<div
-					className={'flex items-start gap-2 rounded-xl bg-secondary-00 p-3'}>
+					className={
+						'flex items-start gap-2 rounded-xl bg-secondary-00 p-3'
+					}>
 					<div className={'mt-[3px]'}>
 						<IconQuestion color={'#2A85FF'} />
 					</div>
@@ -223,11 +255,13 @@ export default function RoomCapacity() {
 								TextVariants.caption_12px_400
 							)}>
 							<li>
-								Sức chứa tối đa không được phép lớn hơn tổng của số khách tiêu
-								chuẩn + số người lớn phụ thu tối đa + Số trẻ em phụ thu tối đa.
+								Sức chứa tối đa không được phép lớn hơn tổng của
+								số khách tiêu chuẩn + số người lớn phụ thu tối
+								đa + Số trẻ em phụ thu tối đa.
 							</li>
 							<li>
-								Sức chứa tối đa không được phép nhỏ hơn số khách tiêu chuẩn.
+								Sức chứa tối đa không được phép nhỏ hơn số khách
+								tiêu chuẩn.
 							</li>
 						</ul>
 					</div>

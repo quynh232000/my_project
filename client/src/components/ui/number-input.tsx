@@ -11,7 +11,13 @@ interface NumberInputProps extends NumericFormatProps {
 
 const NumberInput = React.forwardRef<NumericFormatProps, NumberInputProps>(
 	(
-		{ endAdornment, endAdornmentClassname, className, suffix = 'đ', ...props },
+		{
+			endAdornment,
+			endAdornmentClassname,
+			className,
+			suffix = 'đ',
+			...props
+		},
 		ref
 	) => {
 		return (

@@ -1,5 +1,5 @@
 @extends('layout.app')
-@section('title', 'Manage Ecommerce Product')
+@section('title', 'Manage Ecommerce '.$params['controller'])
 @php
     $model = $params['model'];
 @endphp

@@ -17,7 +17,7 @@ import { APIValidationError, HttpError } from '@/utils/errors/apiError';
 const EmailCheck = () => {
 	const { setEmail, email } = useForgotPasswordContext();
 	const { incrementCount } = useCounterContext();
-	const setLoading = useLoadingStore(state => state.setLoading);
+	const setLoading = useLoadingStore((state) => state.setLoading);
 
 	const handleSubmit = async () => {
 		if (isEmail(email)) {
@@ -32,7 +32,9 @@ const EmailCheck = () => {
 					if (emailErrors && emailErrors.length > 0) {
 						toast.error(emailErrors[0]);
 					} else {
-						toast.error(error.payload.message || 'Dữ liệu không hợp lệ!');
+						toast.error(
+							error.payload.message || 'Dữ liệu không hợp lệ!'
+						);
 					}
 				} else if (error instanceof HttpError) {
 					toast.error(error.payload?.message || error.message);
@@ -59,8 +61,8 @@ const EmailCheck = () => {
 				Đặt lại mật khẩu của bạn
 			</Typography>
 			<Typography variant={'content_16px_400'}>
-				Nhập địa chỉ email đã đăng ký và chúng tôi sẽ gửi cho bạn hướng dẫn để
-				đặt lại mật khẩu.
+				Nhập địa chỉ email đã đăng ký và chúng tôi sẽ gửi cho bạn hướng
+				dẫn để đặt lại mật khẩu.
 			</Typography>
 			<div className={'w-full'}>
 				<Label required={true}>Email</Label>

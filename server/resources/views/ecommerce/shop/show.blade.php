@@ -3106,7 +3106,7 @@
                 $('.input-error').html('');
                 $('.form-group row p-0 m-0 mb-2 input').removeClass('is-invalid');
                 e.preventDefault();
-                var formData = new FormData(this);
+                var formData = new FormData(this);const formEl = $(this)
                 $.ajax({
                     type: 'POST',
                     url: "{{ route($params['prefix'] . '.' . $params['controller'] . '.update', $params['item']->id) }}",

@@ -17,7 +17,13 @@ const FadeAnimationView = ({ children, className, config }: Props) => {
 			className={className}
 			initial={{ opacity: 0, y: config?.start }}
 			animate={{ opacity: 1, y: config?.end }}
-			transition={{ duration: 0.3, delay: config?.delay, ease: 'easeOut' }}>
+			transition={{
+				duration: 0.3,
+				delay: config?.delay,
+				ease: 'easeOut',
+			}}
+			{...({} as any)}
+			>
 			{children}
 		</motion.div>
 	);

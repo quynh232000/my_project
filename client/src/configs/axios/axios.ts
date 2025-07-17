@@ -4,7 +4,7 @@ import { API_URL } from '@/services/type';
 import {
 	clearAllCookies,
 	getClientSideCookie,
-	setClientSideCookie
+	setClientSideCookie,
 } from '@/utils/cookie';
 import axios, {
 	AxiosError,
@@ -105,7 +105,8 @@ export const CallAPI = (
 								failedQueue.push({ resolve, reject });
 							})
 								.then((token) => {
-									originalRequest.headers = originalRequest.headers || {};
+									originalRequest.headers =
+										originalRequest.headers || {};
 									originalRequest.headers.Authorization = `Bearer ${token}`;
 									return axiosInstance(originalRequest);
 								})
@@ -136,7 +137,8 @@ export const CallAPI = (
 							isRefreshing = false;
 							processQueue(null, newAccessToken);
 
-							originalRequest.headers = originalRequest.headers || {};
+							originalRequest.headers =
+								originalRequest.headers || {};
 							originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
 							return axiosInstance(originalRequest);
 						} catch (refreshError) {

@@ -93,7 +93,10 @@ export const ImageListDropZone: React.FC<ImageDropzoneProps> = (props) => {
 
 	const dimensionValidate = (file: ImageFile) => {
 		if (file.width && file.height && dimension) {
-			if (file.width < dimension.width || file.height < dimension.height) {
+			if (
+				file.width < dimension.width ||
+				file.height < dimension.height
+			) {
 				return {
 					code: 'dimension-wrong',
 					message: `Ảnh không đạt kích thước tối thiểu: ${dimension.width}x${dimension.height}px`,
@@ -120,27 +123,28 @@ export const ImageListDropZone: React.FC<ImageDropzoneProps> = (props) => {
 						const files =
 							'dataTransfer' in event
 								? event.dataTransfer?.files
-								: 'target' in event && event.target instanceof HTMLInputElement
+								: 'target' in event &&
+									  event.target instanceof HTMLInputElement
 									? event.target?.files
 									: null;
 						const promises: Promise<File | DataTransferItem>[] = [];
 						if (files) {
 							for (let index = 0; index < files.length; index++) {
 								const file: ImageFile = files[index];
-								const promise: Promise<File | DataTransferItem> = new Promise(
-									(resolve) => {
-										const image = new Image();
-										image.onload = function () {
-											file.width = image.width;
-											file.height = image.height;
-											resolve(file);
-										};
-										image.onerror = function () {
-											resolve(file);
-										};
-										image.src = URL.createObjectURL(file);
-									}
-								);
+								const promise: Promise<
+									File | DataTransferItem
+								> = new Promise((resolve) => {
+									const image = new Image();
+									image.onload = function () {
+										file.width = image.width;
+										file.height = image.height;
+										resolve(file);
+									};
+									image.onerror = function () {
+										resolve(file);
+									};
+									image.src = URL.createObjectURL(file);
+								});
 								promises.push(promise);
 							}
 						}
@@ -170,7 +174,8 @@ export const ImageListDropZone: React.FC<ImageDropzoneProps> = (props) => {
 				) : placeholder ? (
 					placeholder
 				) : (
-					<div className={'flex flex-col items-center justify-center'}>
+					<div
+						className={'flex flex-col items-center justify-center'}>
 						<span className={'rounded-full bg-secondary-50 p-2'}>
 							<IconImage />
 						</span>

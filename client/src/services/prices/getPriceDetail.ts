@@ -46,25 +46,37 @@ export const getPriceDetail = async (
 		const detailData: IPriceDetailAPI = data?.data;
 		const { policy_cancel_id, policy_children, room_type, ...rest } =
 			detailData;
-		return Promise.resolve(detailData
-			? {
-				...rest,
-				priceSetting: EPriceSetting.new,
-				cancellationPolicy: {
-					type: !!policy_cancel_id
-						? ECancellationPolicy.custom
-						: ECancellationPolicy.general,
-					policy_cancel_id: !!policy_cancel_id ? policy_cancel_id : undefined,
-				},
-				extraChildFeeType:
-					policy_children?.length > 0 ? EExtraFee.charged : EExtraFee.free,
-				policy: policy_children?.length > 0 ? {
-					ageLimit: policy_children?.[policy_children?.length - 1]?.age_to,
-					rows: policy_children,
-				} : undefined,
-				room_ids: room_type.map((type) => type.room_id),
-			}
-			: null);
+		return Promise.resolve(
+			detailData
+				? {
+						...rest,
+						priceSetting: EPriceSetting.new,
+						cancellationPolicy: {
+							type: !!policy_cancel_id
+								? ECancellationPolicy.custom
+								: ECancellationPolicy.general,
+							policy_cancel_id: !!policy_cancel_id
+								? policy_cancel_id
+								: undefined,
+						},
+						extraChildFeeType:
+							policy_children?.length > 0
+								? EExtraFee.charged
+								: EExtraFee.free,
+						policy:
+							policy_children?.length > 0
+								? {
+										ageLimit:
+											policy_children?.[
+												policy_children?.length - 1
+											]?.age_to,
+										rows: policy_children,
+									}
+								: undefined,
+						room_ids: room_type.map((type) => type.room_id),
+					}
+				: null
+		);
 	} catch (error) {
 		console.error('getPriceDetail', error);
 		return Promise.reject(error);

@@ -16,7 +16,7 @@ import { TextVariants } from '@/components/shared/Typography/TextVariants';
 import { ControllerRenderProps } from 'react-hook-form';
 import { IconCheck } from '@/assets/Icons/outline';
 import { TImageTagList } from '@/services/attributes/getAttributeImageType';
-import { debounce } from 'lodash';
+import debounce from 'lodash/debounce';
 
 interface SelectPopupProps {
 	selectedValue?: string | number;
@@ -68,7 +68,8 @@ const SelectImageGalleryPopup = ({
 		setTimeout(() => {
 			if (open) {
 				listRef.current?.scrollIntoView({
-					behavior: (props.data?.length ?? 0) <= 50 ? 'smooth' : 'instant',
+					behavior:
+						(props.data?.length ?? 0) <= 50 ? 'smooth' : 'instant',
 				});
 			}
 		}, 0);
@@ -112,7 +113,9 @@ const SelectImageGalleryPopup = ({
 							variant={'caption_14px_400'}
 							className={cn(
 								'items-center justify-start gap-2 truncate',
-								selectedName ? 'text-neutral-600' : 'text-neutral-300'
+								selectedName
+									? 'text-neutral-600'
+									: 'text-neutral-300'
 							)}>
 							{selectedName || props.placeholder}
 						</Typography>
@@ -150,7 +153,9 @@ const SelectImageGalleryPopup = ({
 								className={`reset-input w-full flex-1 !border-0 p-3 leading-5 ${TextVariants.caption_14px_400}`}
 								onChange={(value) => {
 									setSearch(value.target.value);
-									handleSearch(normalizeText(value.target.value));
+									handleSearch(
+										normalizeText(value.target.value)
+									);
 								}}
 							/>
 							<button
@@ -168,7 +173,10 @@ const SelectImageGalleryPopup = ({
 						ref={listContainerRef}
 						className={cn(
 							'shadow-md',
-							list.reduce((acc, cur) => acc + cur.children.length, 0) >= 5
+							list.reduce(
+								(acc, cur) => acc + cur.children.length,
+								0
+							) >= 5
 								? 'h-52'
 								: 'h-auto'
 						)}>
@@ -180,38 +188,56 @@ const SelectImageGalleryPopup = ({
 											<Typography
 												tag={'p'}
 												variant={'content_16px_600'}
-												className={'mt-1 px-3 text-neutral-600'}>
+												className={
+													'mt-1 px-3 text-neutral-600'
+												}>
 												{group.name}
 											</Typography>
 											{group.children.map((item) => (
 												<button
 													key={item.id}
 													title={item.name}
-													{...(item.id === props.selectedValue
+													{...(item.id ===
+													props.selectedValue
 														? { ref: listRef }
 														: {})}
 													onClick={() => {
-														props.onChange?.(item.id);
+														props.onChange?.(
+															item.id
+														);
 														setOpen(false);
 													}}
 													className={`line-clamp-1 h-8 w-full px-4 text-left hover:bg-neutral-00 ${
-														item.id === props.selectedValue
+														item.id ===
+														props.selectedValue
 															? 'bg-neutral-00 text-secondary-500'
 															: 'text-neutral-600'
 													}`}>
 													<Typography
 														tag={'p'}
-														variant={'caption_14px_400'}
+														variant={
+															'caption_14px_400'
+														}
 														className={cn(
 															'flex items-center justify-between truncate text-nowrap',
-															item.id === props.selectedValue &&
+															item.id ===
+																props.selectedValue &&
 																'text-secondary-500'
 														)}>
 														{item.name}
-														{item.id === props.selectedValue && (
+														{item.id ===
+															props.selectedValue && (
 															<IconCheck
-																color={GlobalUI.colors.secondary['500']}
-																className={'size-5'}
+																color={
+																	GlobalUI
+																		.colors
+																		.secondary[
+																		'500'
+																	]
+																}
+																className={
+																	'size-5'
+																}
 															/>
 														)}
 													</Typography>

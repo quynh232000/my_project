@@ -13,16 +13,14 @@ const UserGroupForm = () => {
 		mode: 'onChange',
 		resolver: zodResolver(userGroupSchema),
 		defaultValues: {
-			name: "",
-			permissions: {}
-		}
+			name: '',
+			permissions: {},
+		},
 	});
-	
-	console.log(form.formState.errors);
- 
+
 	const onSubmit = (values: UserGroupType) => {
 		console.log(values);
-	}
+	};
 	return (
 		<Form {...form}>
 			<form onSubmit={form.handleSubmit(onSubmit)}>

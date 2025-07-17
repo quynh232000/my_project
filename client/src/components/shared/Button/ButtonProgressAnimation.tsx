@@ -8,6 +8,7 @@ interface ButtonProgressAnimationProps
 	extends Omit<HTMLMotionProps<'button'>, 'ref' | 'onClick' | 'children'> {
 	onButtonClick?: () => void;
 	children?: React.ReactNode;
+	className?:string
 }
 
 export const ButtonProgressAnimation = forwardRef<
@@ -17,6 +18,7 @@ export const ButtonProgressAnimation = forwardRef<
 	const [clicked, setClicked] = useState(false);
 	return (
 		<motion.button
+		{...({} as any)}
 			ref={ref}
 			{...props}
 			disabled={clicked}
@@ -37,6 +39,7 @@ export const ButtonProgressAnimation = forwardRef<
 				<motion.p>{children}</motion.p>
 			) : (
 				<motion.div
+				{...({} as any)}
 					initial={{ opacity: 0 }}
 					animate={{ opacity: 1 }}
 					transition={{ duration: 0.3, delay: 0.4 }}>

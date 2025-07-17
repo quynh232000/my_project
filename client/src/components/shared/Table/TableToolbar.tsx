@@ -1,7 +1,9 @@
 import React from 'react';
 import { IconSearchBar } from '@/assets/Icons/outline';
 import { Input } from '@/components/ui/input';
-import SelectPopup, { OptionType } from '@/components/shared/Select/SelectPopup';
+import SelectPopup, {
+	OptionType,
+} from '@/components/shared/Select/SelectPopup';
 import { GlobalUI } from '@/themes/type';
 import { cn } from '@/lib/utils';
 import { TextVariants } from '@/components/shared/Typography/TextVariants';
@@ -14,8 +16,12 @@ interface PromotionTableToolbarProps {
 	searchPlaceholder: string;
 }
 
-
-const TableToolbar = ({searchPlaceholder, selectOptions, title, href}: PromotionTableToolbarProps) => {
+const TableToolbar = ({
+	searchPlaceholder,
+	selectOptions,
+	title,
+	href,
+}: PromotionTableToolbarProps) => {
 	return (
 		<div className={'flex items-center justify-between'}>
 			<div className={'flex items-center gap-4'}>

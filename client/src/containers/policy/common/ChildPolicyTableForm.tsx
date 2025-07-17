@@ -87,7 +87,9 @@ export default function ChildPolicyTableForm({
 		? `${prefix}.ageLimit`
 		: 'ageLimit';
 
-	const rowsField: 'policy.rows' | 'rows' = prefix ? `${prefix}.rows` : 'rows';
+	const rowsField: 'policy.rows' | 'rows' = prefix
+		? `${prefix}.rows`
+		: 'rows';
 
 	const { fields, append, remove } = useFieldArray({
 		control,
@@ -150,13 +152,17 @@ export default function ChildPolicyTableForm({
 			setValue(rowsField, rows as [(typeof rows)[0], ...typeof rows]);
 		} else if (isGapInvalid) {
 			const newRows = rowsWatch.map((row, index, arr) => {
-				const prevAgeTo = index === 0 ? 0 : (arr[index - 1]?.age_to ?? 0);
+				const prevAgeTo =
+					index === 0 ? 0 : (arr[index - 1]?.age_to ?? 0);
 				return {
 					...row,
 					age_from: prevAgeTo,
 				};
 			});
-			setValue(rowsField, newRows as [(typeof newRows)[0], ...typeof newRows]);
+			setValue(
+				rowsField,
+				newRows as [(typeof newRows)[0], ...typeof newRows]
+			);
 		}
 	}, [rowsWatch]);
 
@@ -215,13 +221,21 @@ export default function ChildPolicyTableForm({
 								Phí phụ thu thêm
 							</TableHead>
 							<TableHead className="w-1/4 rounded-tr-lg border px-4 py-3">
-								<div className={'flex items-center justify-between'}>
+								<div
+									className={
+										'flex items-center justify-between'
+									}>
 									<Typography
 										tag={'p'}
 										text={'RO/BB'}
-										className={'text-base font-bold leading-6'}
+										className={
+											'text-base font-bold leading-6'
+										}
 									/>
-									<AppTooltip icon={<IconQuestion />} content={'Tooltip'} />
+									<AppTooltip
+										icon={<IconQuestion />}
+										content={'Tooltip'}
+									/>
 								</div>
 							</TableHead>
 						</TableRow>
@@ -230,27 +244,36 @@ export default function ChildPolicyTableForm({
 						{fields.map((row, index) => {
 							const options = getValidOption(index);
 							const fromAge =
-								index <= 0 ? 0 : getValues(`${rowsField}.${index - 1}.age_to`);
+								index <= 0
+									? 0
+									: getValues(
+											`${rowsField}.${index - 1}.age_to`
+										);
 							return (
 								<TableRow key={row.id} className={'!bg-white'}>
 									<TableCell
 										className={cn(
 											'w-1/4 border border-t-0 px-4 py-3 font-medium',
-											index + 1 === fields.length && 'rounded-bl-lg'
+											index + 1 === fields.length &&
+												'rounded-bl-lg'
 										)}>
 										<div className="flex flex-1 justify-items-start">
 											<div className="flex items-center justify-center gap-4">
 												<Typography
 													tag="p"
 													variant={'caption_14px_400'}
-													className={'text-neutral-600'}
+													className={
+														'text-neutral-600'
+													}
 													text={'Từ'}
 												/>
 												<Typography
 													tag={'span'}
 													variant={'caption_14px_400'}
 													text={`${isNaN(fromAge) ? '-' : fromAge}`}
-													className={'min-w-[15px] text-neutral-600'}
+													className={
+														'min-w-[15px] text-neutral-600'
+													}
 												/>
 											</div>
 
@@ -258,7 +281,9 @@ export default function ChildPolicyTableForm({
 												<Typography
 													tag="p"
 													variant={'caption_14px_400'}
-													className={'text-neutral-600'}
+													className={
+														'text-neutral-600'
+													}
 													text={'Đến'}
 												/>
 												<Controller
@@ -267,7 +292,9 @@ export default function ChildPolicyTableForm({
 													{...(index > 0
 														? {
 																rules: {
-																	deps: [`${rowsField}.${index - 1}.age_to`],
+																	deps: [
+																		`${rowsField}.${index - 1}.age_to`,
+																	],
 																},
 															}
 														: {})}
@@ -277,10 +304,18 @@ export default function ChildPolicyTableForm({
 															className="h-6 flex-1 overflow-hidden rounded-lg border-none bg-neutral-50 px-2 py-0"
 															labelClassName="hidden"
 															label=""
-															placeholder={'Chọn tuổi'}
+															placeholder={
+																'Chọn tuổi'
+															}
 															data={options}
-															selectedValue={String(field.value)}
-															onChange={(val) => field.onChange(Number(val))}
+															selectedValue={String(
+																field.value
+															)}
+															onChange={(val) =>
+																field.onChange(
+																	Number(val)
+																)
+															}
 															classItemList={`${options.length <= 4 ? 'h-auto' : ''}`}
 														/>
 													)}
@@ -294,7 +329,9 @@ export default function ChildPolicyTableForm({
 											name={`${rowsField}.${index}.fee_type`}
 											control={control}
 											rules={{
-												deps: [`${rowsField}.${index}.quantity_child`],
+												deps: [
+													`${rowsField}.${index}.quantity_child`,
+												],
 											}}
 											render={({ field }) => (
 												<SelectPopup
@@ -303,11 +340,16 @@ export default function ChildPolicyTableForm({
 													labelClassName="hidden"
 													placeholder={'Loại phí'}
 													data={childFeeTypes}
-													selectedValue={String(field.value)}
+													selectedValue={String(
+														field.value
+													)}
 													onChange={(value) => {
 														field.onChange(value);
 														if (value === 'free') {
-															setValue(`${rowsField}.${index}.fee`, NaN);
+															setValue(
+																`${rowsField}.${index}.fee`,
+																NaN
+															);
 														}
 														if (value !== 'limit') {
 															setValue(
@@ -321,38 +363,60 @@ export default function ChildPolicyTableForm({
 											)}
 										/>
 
-										{rowsWatch?.[index]?.fee_type === 'limit' && (
+										{rowsWatch?.[index]?.fee_type ===
+											'limit' && (
 											<div
 												className={
 													'flex flex-row items-center justify-center px-2 pt-3'
 												}>
 												<Typography
 													tag="p"
-													className={'w-full text-neutral-600'}
-													variant={'caption_14px_400'}>
+													className={
+														'w-full text-neutral-600'
+													}
+													variant={
+														'caption_14px_400'
+													}>
 													Trẻ miễn phí
 												</Typography>
 												<Controller
 													name={`${rowsField}.${index}.quantity_child`}
 													control={control}
 													render={({
-														field: { onChange, value, ...props },
+														field: {
+															onChange,
+															value,
+															...props
+														},
 													}) => (
-														<div className={'relative'}>
+														<div
+															className={
+																'relative'
+															}>
 															<NumberInput
 																className={cn(
 																	'h-6 rounded-none border-none p-0 text-right leading-6 text-neutral-600 outline-none',
 																	TextVariants.caption_14px_400
 																)}
-																inputMode={'numeric'}
+																inputMode={
+																	'numeric'
+																}
 																placeholder="Nhập số trẻ"
 																suffix={''}
 																maxLength={3}
 																{...props}
 																value={value}
-																onValueChange={(e) => {
+																onValueChange={(
+																	e
+																) => {
 																	onChange(
-																		e.value.length === 0 ? NaN : Number(e.value)
+																		e.value
+																			.length ===
+																			0
+																			? NaN
+																			: Number(
+																					e.value
+																				)
 																	);
 																}}
 															/>
@@ -364,7 +428,8 @@ export default function ChildPolicyTableForm({
 									</TableCell>
 
 									<TableCell className="w-1/4 border-b border-t-0 px-4 py-3 align-top">
-										{rowsWatch?.[index]?.fee_type === 'free' ? (
+										{rowsWatch?.[index]?.fee_type ===
+										'free' ? (
 											<Typography
 												variant={'caption_14px_400'}
 												className="text-green-600">
@@ -374,25 +439,43 @@ export default function ChildPolicyTableForm({
 											<Controller
 												name={`${rowsField}.${index}.fee`}
 												control={control}
-												render={({ field: { onChange, value, ...props } }) => (
+												render={({
+													field: {
+														onChange,
+														value,
+														...props
+													},
+												}) => (
 													<div className={'relative'}>
 														<NumberInput
 															className={cn(
 																'h-6 rounded-none border-none p-0 leading-6 text-neutral-600 outline-none',
 																TextVariants.caption_14px_400
 															)}
-															inputMode={'numeric'}
+															inputMode={
+																'numeric'
+															}
 															placeholder="300,000"
 															suffix={''}
 															maxLength={11}
 															{...props}
 															value={value}
-															onValueChange={(e) => {
+															onValueChange={(
+																e
+															) => {
 																onChange(
-																	e.value.length === 0 ? NaN : Number(e.value)
+																	e.value
+																		.length ===
+																		0
+																		? NaN
+																		: Number(
+																				e.value
+																			)
 																);
 															}}
-															endAdornment={'đ/người'}
+															endAdornment={
+																'đ/người'
+															}
 															endAdornmentClassname={`${TextVariants.caption_14px_400} text-neutral-600`}
 														/>
 													</div>
@@ -404,7 +487,8 @@ export default function ChildPolicyTableForm({
 									<TableCell
 										className={cn(
 											'w-1/4 border border-t-0 px-4 py-3',
-											index + 1 === fields.length && 'rounded-br-lg'
+											index + 1 === fields.length &&
+												'rounded-br-lg'
 										)}>
 										<Controller
 											name={`${rowsField}.${index}.meal_type`}
@@ -412,7 +496,9 @@ export default function ChildPolicyTableForm({
 											render={({ field }) => (
 												<RadioGroup
 													className="flex items-center gap-4"
-													onValueChange={field.onChange}
+													onValueChange={
+														field.onChange
+													}
 													value={field.value}>
 													<div className="flex items-center space-x-2">
 														<RadioGroupItem
@@ -422,7 +508,9 @@ export default function ChildPolicyTableForm({
 														/>
 														<Label
 															htmlFor={`fee-${index}-ro`}
-															containerClassName={'mb-0'}
+															containerClassName={
+																'mb-0'
+															}
 															className="text-base font-normal leading-6">
 															RO
 														</Label>
@@ -435,7 +523,9 @@ export default function ChildPolicyTableForm({
 														/>
 														<Label
 															htmlFor={`fee-${index}-bb`}
-															containerClassName={'mb-0'}
+															containerClassName={
+																'mb-0'
+															}
 															className="text-base font-normal leading-6">
 															BB
 														</Label>

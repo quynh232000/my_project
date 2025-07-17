@@ -5,5 +5,6 @@ export type TCountryAndDialOrPhoneCodes = {
 	code: string;
 };
 
-const ListCountry: { [key: string]: TCountryAndDialOrPhoneCodes } = CountryAndDialOrPhoneCodes;
+const ListCountry: { [key: string]: TCountryAndDialOrPhoneCodes } =
+	CountryAndDialOrPhoneCodes;
 export { ListCountry };

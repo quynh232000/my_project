@@ -5,12 +5,12 @@ export const AuthRouters = {
 } as const;
 
 export const RefreshRouters = {
-	index: '/refresh'
-}
+	index: '/refresh',
+};
 
 export const PropertySelectRouters = {
-	index: '/property'
-}
+	index: '/property',
+};
 export const DashboardRouter = {
 	profile: '/dashboard/profile',
 	room: '/dashboard/room',
@@ -36,5 +36,5 @@ export const DashboardRouter = {
 	customer: '/dashboard/customer',
 	review: '/dashboard/review',
 	cms: '/dashboard/cms',
-	album: "/dashboard/album",
+	album: '/dashboard/album',
 } as const;

@@ -6,11 +6,16 @@ import Establish from '@/containers/policy/refund-and-cancellation-policy/common
 
 // CHÍNH SÁCH HOÀN HỦY
 export default async function Page() {
-	const { pathName } = await getFullURLServerComponent()
-	return <DashboardContainer>
-		<DashboardHeroTitle title={"Chính sách hoàn hủy"} pathName={pathName} />
-		<DashboardCard>
-			<Establish />
-		</DashboardCard>
-	</DashboardContainer>
+	const { pathName } = await getFullURLServerComponent();
+	return (
+		<DashboardContainer>
+			<DashboardHeroTitle
+				title={'Chính sách hoàn hủy'}
+				pathName={pathName}
+			/>
+			<DashboardCard>
+				<Establish />
+			</DashboardCard>
+		</DashboardContainer>
+	);
 }

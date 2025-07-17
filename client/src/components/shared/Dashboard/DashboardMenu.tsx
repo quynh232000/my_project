@@ -106,7 +106,10 @@ const DashboardMenu = () => {
 				</div>
 				<Popover open={open} onOpenChange={setOpen}>
 					<PopoverTrigger asChild>
-						<button className={'flex cursor-pointer items-center gap-2'}>
+						<button
+							className={
+								'flex cursor-pointer items-center gap-2'
+							}>
 							<AppImage
 								alt={'avatar'}
 								src={userInformation.image}
@@ -129,14 +132,18 @@ const DashboardMenu = () => {
 					<PopoverContent className="mr-2 flex w-40 min-w-[200px] flex-col gap-2 rounded-lg bg-white px-4 py-4 shadow-md">
 						<div
 							className={'cursor-pointer'}
-							onClick={() => router.push(PropertySelectRouters.index)}>
+							onClick={() =>
+								router.push(PropertySelectRouters.index)
+							}>
 							<Typography
 								tag={'p'}
 								variant={'caption_14px_500'}
 								text={'Danh sách chỗ nghỉ'}
 							/>
 						</div>
-						<div className={'cursor-pointer'} onClick={handleLogout}>
+						<div
+							className={'cursor-pointer'}
+							onClick={handleLogout}>
 							<Typography
 								tag={'p'}
 								variant={'caption_14px_500'}

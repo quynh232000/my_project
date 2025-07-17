@@ -11,7 +11,6 @@ export interface IRoomItem {
 	id: number;
 	area: number;
 	name_id: number;
-	name_custom: string;
 	name: string;
 	max_extra_adults: number;
 	max_extra_children: number;

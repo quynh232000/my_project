@@ -8,11 +8,12 @@ export const deletePrice = async (id: number): Promise<IResponseStatus> => {
 	try {
 		const hotel_id = getClientSideCookie('hotel_id');
 		const { data } = await CallAPI().delete(
-			`${AppEndpoint.PRICE_TYPE}/${id}`, {
-			params: {
-				hotel_id
+			`${AppEndpoint.PRICE_TYPE}/${id}`,
+			{
+				params: {
+					hotel_id,
+				},
 			}
-		}
 		);
 		if (!data) {
 			return {

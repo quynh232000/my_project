@@ -40,18 +40,21 @@ export const useAvailabilityCenterStore = create<
 						return {
 							...rate,
 							room_price_types: standardRate
-								? rate.room_price_types?.sort((a, b) => a.price_type_id - b.price_type_id)
+								? rate.room_price_types?.sort(
+										(a, b) =>
+											a.price_type_id - b.price_type_id
+									)
 								: [
-									{
-										id: 0,
-										room_id: rate.id,
-										price: NaN,
-										price_type_name: 'Giá tiêu chuẩn',
-										price_type_id: 0,
-										price_type: { id: 0 }
-									},
-									...rate.room_price_types,
-								],
+										{
+											id: 0,
+											room_id: rate.id,
+											price: NaN,
+											price_type_name: 'Giá tiêu chuẩn',
+											price_type_id: 0,
+											price_type: { id: 0 },
+										},
+										...rate.room_price_types,
+									],
 						};
 					}),
 				});

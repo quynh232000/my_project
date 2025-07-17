@@ -25,25 +25,51 @@ export const useAddressStore = create<AddressState & AddressActions>(
 				}
 			}
 			if (type === 'listProvince') {
-				if (get().listProvince.list.length <= 0 || get().listProvince.upperId !== upperId) {
-					const data = await getAddress({ type: 'country_id', id: upperId });
+				if (
+					get().listProvince.list.length <= 0 ||
+					get().listProvince.upperId !== upperId
+				) {
+					const data = await getAddress({
+						type: 'country_id',
+						id: upperId,
+					});
 					set({
-						listProvince: { upperId: upperId ?? NaN, list: data ?? [] },
+						listProvince: {
+							upperId: upperId ?? NaN,
+							list: data ?? [],
+						},
 					});
 				}
 			}
 			if (type === 'listDistrict') {
-				if (get().listDistrict.list.length <= 0 || get().listDistrict.upperId !== upperId) {
-					const data = await getAddress({ type: 'city_id', id: upperId });
+				if (
+					get().listDistrict.list.length <= 0 ||
+					get().listDistrict.upperId !== upperId
+				) {
+					const data = await getAddress({
+						type: 'city_id',
+						id: upperId,
+					});
 					set({
-						listDistrict: { upperId: upperId ?? NaN, list: data ?? [] },
+						listDistrict: {
+							upperId: upperId ?? NaN,
+							list: data ?? [],
+						},
 					});
 				}
 			}
 			if (type === 'listWard') {
-				if (get().listWard.list.length <= 0 || get().listWard.upperId !== upperId) {
-					const data = await getAddress({ type: 'district_id', id: upperId });
-					set({ listWard: { upperId: upperId ?? NaN, list: data ?? [] } });
+				if (
+					get().listWard.list.length <= 0 ||
+					get().listWard.upperId !== upperId
+				) {
+					const data = await getAddress({
+						type: 'district_id',
+						id: upperId,
+					});
+					set({
+						listWard: { upperId: upperId ?? NaN, list: data ?? [] },
+					});
 				}
 			}
 		},

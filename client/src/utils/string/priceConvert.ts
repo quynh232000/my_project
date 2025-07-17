@@ -21,7 +21,9 @@
  * // Returns: "1.500,5 đ"
  */
 export const priceConvert = (value: number | string): string => {
-	const numValue = Math.abs(typeof value === 'string' ? parseFloat(value) : value);
+	const numValue = Math.abs(
+		typeof value === 'string' ? parseFloat(value) : value
+	);
 
 	if (isNaN(numValue)) {
 		return '0 đ';
@@ -30,5 +32,8 @@ export const priceConvert = (value: number | string): string => {
 		.toLocaleString('vi-VN', {
 			style: 'currency',
 			currency: 'VND',
-		}).replace(/[.\s]|₫/g, match => match === '.' ? ',' : match === '₫' ? 'đ' : '')
+		})
+		.replace(/[.\s]|₫/g, (match) =>
+			match === '.' ? ',' : match === '₫' ? 'đ' : ''
+		);
 };

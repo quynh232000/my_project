@@ -23,6 +23,5 @@ export const getUser = async (): Promise<UserInformation | null> => {
 		};
 	} catch (err) {
 		throw handleAPIError(err as AxiosError);
-
 	}
 };

@@ -337,7 +337,7 @@ class ProductModel  extends ApiModel
     }
     // public function user()
     // {
-    //     return $this->belongsTo(User::class);
+    //     return $this->belongsTo(UserModel::class);
     // }
     public function images()
     {

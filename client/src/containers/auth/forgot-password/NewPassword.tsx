@@ -28,7 +28,7 @@ const NewPassword = () => {
 
 	const checkPassword = password === nPassword;
 	const { email } = useForgotPasswordContext();
-	const setLoading = useLoadingStore(state => state.setLoading);
+	const setLoading = useLoadingStore((state) => state.setLoading);
 
 	const handleSubmit = async () => {
 		if (!checkRegex) {
@@ -73,8 +73,8 @@ const NewPassword = () => {
 					Mật khẩu mới
 				</Typography>
 				<Typography variant={'content_16px_400'}>
-					Đặt mật khẩu mới cho của bạn với tối thiểu 8 ký tự, bao gồm sự kết hợp
-					giữa chữ cái và số.
+					Đặt mật khẩu mới cho của bạn với tối thiểu 8 ký tự, bao gồm
+					sự kết hợp giữa chữ cái và số.
 				</Typography>
 			</div>
 			<div className={'w-full'}>
@@ -85,6 +85,7 @@ const NewPassword = () => {
 					password={password}
 				/>
 				<motion.div
+				{...({} as any)}
 					initial={{ opacity: 0, height: 0, marginTop: 0 }}
 					animate={
 						!checkRegex
