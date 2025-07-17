@@ -6,6 +6,7 @@ import {
 	Ellipsis,
 	Gift,
 	MoveRight,
+	Newspaper,
 	NotepadText,
   Trash,
 } from 'lucide-react';
@@ -13,7 +14,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import DrawerSidebar from '@/components/shared/Drawer/DrawerSidebar';
-import { Button, Menu, MenuHandler, MenuList } from '@material-tailwind/react';
+import {  Menu, MenuHandler, MenuList } from '@material-tailwind/react';
+import ModelAuth from '@/app/components/ModelAuth';
 function Header() {
 	return (
 		<div className="w-full shadow-sm fixed top-0 right-0 left-0 z-10">
@@ -37,6 +39,14 @@ function Header() {
 						</div>
 					</Link>
 					<div className="flex items-center gap-4">
+            <Link
+							href={'/blog'}
+							className="flex items-center gap-2 rounded-full p-2 px-3 transition-all hover:bg-primary-50">
+							<Newspaper className="text-primary-500" />
+							<span className="text-[14px]">
+								Tin tức
+							</span>
+						</Link>
 						<Link
 							href={'#'}
 							className="flex items-center gap-2 rounded-full p-2 px-3 transition-all hover:bg-primary-50">
@@ -251,12 +261,8 @@ function Header() {
             </Menu>
 
 
-						<Button {...({} as any)} className="rounded-lg text-[14px] normal-case font-normal min-w-[106px] text-center bg-primary-500 px-3 py-2 text-white transition-all hover:bg-primary-600 hover:shadow-md">
-							Đăng nhập
-						</Button>
-						<Button {...({} as any)} className="rounded-lg text-[14px] normal-case font-normal border min-w-[106px] text-center bg-white border-primary-500 px-3 py-2 text-primary-500 transition-all hover:bg-primary-50 hover:shadow-md">
-							Đăng ký
-						</Button>
+						<ModelAuth/>
+						
 						<DrawerSidebar />
 					</div>
 				</div>
