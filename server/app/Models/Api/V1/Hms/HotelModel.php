@@ -17,20 +17,22 @@ class HotelModel extends HmsModel
     }
     protected $casts = [
         'faqs' => 'array'
-    ]; 
+    ];
     protected $hidden = [
-        'pivot','contract_file'
+        'pivot',
+        'contract_file'
     ];
     protected $guarded = [];
 
-    public $crudNotAccepted = ['country_id','city_id','district_id','ward_id','address','longitude','latitude'];
+    public $crudNotAccepted = ['country_id', 'city_id', 'district_id', 'ward_id', 'address', 'longitude', 'latitude'];
 
     public function getItem($params = null, $options = null)
     {
         $results = null;
-        
+
         if ($options['task'] == 'detail') {
             $results = self::with('location')->find(auth('hms')->user()->current_hotel_id);
+            // dd(auth('hms')->user()->current_hotel_id);
             if ($results) {
 
                 $locationFields = ['address', 'longitude', 'latitude', 'country_id', 'city_id', 'district_id', 'ward_id'];
@@ -42,7 +44,7 @@ class HotelModel extends HmsModel
                 unset($results->location);
             }
         }
-       
+
         return $results;
     }
     public function listItem($params = null, $options = null)
@@ -57,8 +59,8 @@ class HotelModel extends HmsModel
 
             $is_same        = empty(array_diff($hotel_ids, $result_ids)) && empty(array_diff($result_ids, $hotel_ids));
 
-            if($is_same){
-                $results    = $results->map(function($item) {
+            if ($is_same) {
+                $results    = $results->map(function ($item) {
                     $item->address = optional($item->location)->address ?? '';
                     // unset($item->location);
                     return $item;
@@ -67,14 +69,14 @@ class HotelModel extends HmsModel
                     'status'    => true,
                     'data'      => $results
                 ];
-            }else{
+            } else {
                 return [
                     'status'    => false
                 ];
             }
         }
     }
-  
+
     public function saveItem($params = null, $options = null)
     {
         $results    = null;
@@ -85,41 +87,41 @@ class HotelModel extends HmsModel
             $params['updated_by']   = auth('hms')->id();
             $params['updated_at']   = date('Y-m-d H:i:s');
 
-            if(request()->hasFile('image')){
+            if (request()->hasFile('image')) {
                 $imageFile              = $params['image'];
-                $params['image']        = $hotel->slug .'-'.time(). '.' . $imageFile->extension();
-                Storage::disk($this->bucket)->put('hotel/images/'.$hotel_id.'/' . $params['image'], file_get_contents($imageFile));
+                $params['image']        = $hotel->slug . '-' . time() . '.' . $imageFile->extension();
+                Storage::disk($this->bucket)->put('hotel/images/' . $hotel_id . '/' . $params['image'], file_get_contents($imageFile));
             }
             $LocationModel = new LocationModel();
-            $LocationModel->saveItem($params,['task' => 'add-item', 'insert_id' => $hotel_id]);
+            $LocationModel->saveItem($params, ['task' => 'add-item', 'insert_id' => $hotel_id]);
 
             unset($params['hotel_id']);
             // dd($this->prepareParams($params));
             $hotel->update($this->prepareParams($params));
         }
-        
+
         return $results;
     }
-   
-    public function getImageAttribute()
-    {        
-        return $this->attributes['image'] ? URL_DATA_IMAGE.'hotel/hotel/images/'. $this->id . "/" . $this->attributes['image'] : null;
-    }
+
+
     public function location()
     {
-        return $this->hasOne(LocationModel::class, 'hotel_id','id');
+        return $this->hasOne(LocationModel::class, 'hotel_id', 'id');
     }
-     public function policy_cancellations(){
-        return $this->hasMany(PolicyCancellationModel::class,'hotel_id','id')->where('status','active');
+    public function policy_cancellations()
+    {
+        return $this->hasMany(PolicyCancellationModel::class, 'hotel_id', 'id')->where('status', 'active');
     }
-    public function policy_others(){
-        return $this->hasMany(PolicyOtherModel::class,'hotel_id','id');
+    public function policy_others()
+    {
+        return $this->hasMany(PolicyOtherModel::class, 'hotel_id', 'id');
     }
-    public function policy_generals(){
-        return $this->hasMany(PolicyGeneralModel::class,'hotel_id','id');
+    public function policy_generals()
+    {
+        return $this->hasMany(PolicyGeneralModel::class, 'hotel_id', 'id');
     }
-    public function policy_children(){
-        return $this->hasMany(PolicyChildrenModel::class,'hotel_id','id')->orderBy('age_from','asc');
+    public function policy_children()
+    {
+        return $this->hasMany(PolicyChildrenModel::class, 'hotel_id', 'id')->orderBy('age_from', 'asc');
     }
-
 }

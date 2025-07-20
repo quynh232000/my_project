@@ -48,6 +48,10 @@ return [
             'driver'    => 'jwt',
             'provider'  => 'ecommerce',
         ],
+        'hms' => [
+            'driver'    => 'jwt',
+            'provider'  => 'hms',
+        ],
     ],
 
     /*
@@ -72,9 +76,13 @@ return [
             'driver' => 'eloquent',
             'model' => env('AUTH_MODEL', App\Models\Admin\UserModel::class),
         ],
-         'ecommerce' => [
+        'ecommerce' => [
             'driver'    => 'eloquent',
             'model'     => env('AUTH_MODEL', App\Models\Api\V1\Ecommerce\UserModel::class),
+        ],
+        'hms' => [
+            'driver'    => 'eloquent',
+            'model'     => env('AUTH_MODEL', App\Models\Customer::class),
         ],
 
         // 'users' => [

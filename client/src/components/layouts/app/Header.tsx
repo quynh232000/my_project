@@ -15,7 +15,7 @@ import Link from 'next/link';
 
 import DrawerSidebar from '@/components/shared/Drawer/DrawerSidebar';
 import {  Menu, MenuHandler, MenuList } from '@material-tailwind/react';
-import ModelAuth from '@/app/components/ModelAuth';
+import ModelAuth from '@/app/(app)/components/ModelAuth';
 function Header() {
 	return (
 		<div className="w-full shadow-sm fixed top-0 right-0 left-0 z-10">

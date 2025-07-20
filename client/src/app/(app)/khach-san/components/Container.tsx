@@ -1,12 +1,12 @@
 'use client';
-import Flashsale from "@/app/components/Flashsale";
-import NavHead from "@/app/components/NavHead"
-import SearchHead from "@/app/components/SearchHead"
+import Flashsale from "@/app/components1/Flashsale";
+import NavHead from "@/app/components1/NavHead"
+import SearchHead from "@/app/components1/SearchHead"
 import Image from "next/image"
 import { useState } from "react"
 import Voucher from "./Voucher";
-import PopularPlaces from "@/app/components/PopularPlaces";
-import BestPriceHotel from "@/app/components/BestPriceHotel";
+import PopularPlaces from "@/app/components1/PopularPlaces";
+import BestPriceHotel from "@/app/components1/BestPriceHotel";
 
 
 function Container() {

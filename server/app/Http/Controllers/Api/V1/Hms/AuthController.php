@@ -9,12 +9,14 @@ use App\Http\Requests\Api\V1\Hms\Auth\ResetPasswordRequest;
 use App\Http\Requests\Api\V1\Hms\Auth\VerifyResetCodeRequest;
 use App\Http\Resources\CustomerResource;
 use App\Models\Customer;
+use App\Traits\ApiRes;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 
 class AuthController extends HmsController
 {
+    use ApiRes;
     protected $data = [];
     public $model;
 
@@ -27,35 +29,35 @@ class AuthController extends HmsController
     {
         try {
             if (!$token = auth('hms')->attempt($request->validated())) {
-                return $this->error('Sai thông tin',['password' =>[ 'Sai mật khẩu!']]);
+                return $this->error('Sai thông tin', ['password' => ['Sai mật khẩu!']]);
             }
-            return $this->success('Đăng nhập thành công!',  new CustomerResource(auth('hms')->user()),200,$this->respondWithToken($token , $request->remember ?? false));
+            return $this->success('Đăng nhập thành công!',  auth('hms')->user(), 200, $this->respondWithToken($token, $request->remember ?? false));
         } catch (\Exception $e) {
-            return $this->internalServerError('Đã xảy ra lỗi:'. $e->getMessage());
+            return $this->internalServerError('Đã xảy ra lỗi:' . $e->getMessage());
         }
     }
     public function refresh(Request $request)
     {
-       try {
+        try {
             $refreshToken = $request->input('refresh_token');
 
             if (!$refreshToken) {
-                return $this->error('Lỗi dữ liệu',[
+                return $this->error('Lỗi dữ liệu', [
                     'refresh_token' => ['refresh_token là bắt buộc']
-                ],401);
+                ], 401);
             }
 
             $decoded = JWTAuth::getJWTProvider()->decode($refreshToken);
 
             // Kiểm tra thời hạn
             if ($decoded['exp'] < time()) {
-                return $this->error('Token đã hết hạn',null,401);
+                return $this->error('Token đã hết hạn', null, 401);
             }
 
             // Tìm lại user
             $user = Customer::find($decoded['user_id']);
             if (!$user) {
-                return $this->error('Không tìm thấy tài khoản',null,401);
+                return $this->error('Không tìm thấy tài khoản', null, 401);
             }
 
             // Đăng nhập lại user → cấp access_token mới
@@ -68,8 +70,7 @@ class AuthController extends HmsController
                 'refresh_token' => $this->createRefreshToken()
             ];
 
-            return $this->success('Làm mới token thành công!', new CustomerResource($user), 200, $meta);
-
+            return $this->success('Làm mới token thành công!', $user, 200, $meta);
         } catch (\Exception $e) {
             return $this->internalServerError('Đã xảy ra lỗi: ' . $e->getMessage());
         }
@@ -81,7 +82,7 @@ class AuthController extends HmsController
             'token_type'        => 'bearer',
             'expires_in'        => config('jwt.ttl') * 60
         ];
-        if($remember){
+        if ($remember) {
             $data['refresh_token'] = $this->createRefreshToken();
         }
         return $data;
@@ -97,26 +98,28 @@ class AuthController extends HmsController
         return $refreshToken;
     }
 
-    public function forgotPassword(ForgotPasswordRequest $request){
+    public function forgotPassword(ForgotPasswordRequest $request)
+    {
         try {
-            $result = $this->model->saveItem($this->_params,['task'=>'forgot-password']);
-            if($result['status']){
+            $result = $this->model->saveItem($this->_params, ['task' => 'forgot-password']);
+            if ($result['status']) {
                 return $this->success($result['message']);
             }
             return $this->error($result['message']);
         } catch (\Exception $e) {
-            return $this->internalServerError('Đã xảy ra lỗi:'. $e->getMessage());
+            return $this->internalServerError('Đã xảy ra lỗi:' . $e->getMessage());
         }
     }
-    public function resetPassword(ResetPasswordRequest $request){
+    public function resetPassword(ResetPasswordRequest $request)
+    {
         try {
-            $result = $this->model->saveItem($this->_params,['task'=>'reset-password']);
-            if($result['status']){
+            $result = $this->model->saveItem($this->_params, ['task' => 'reset-password']);
+            if ($result['status']) {
                 return $this->success($result['message']);
             }
             return $this->error($result['message']);
         } catch (\Exception $e) {
-            return $this->internalServerError('Đã xảy ra lỗi:'. $e->getMessage());
+            return $this->internalServerError('Đã xảy ra lỗi:' . $e->getMessage());
         }
     }
     public function logout(Request $request)
@@ -133,7 +136,7 @@ class AuthController extends HmsController
         try {
             $data = auth('hms')->user();
 
-            return $this->success('Lấy thông tin thành công!',new CustomerResource($data));
+            return $this->success('Lấy thông tin thành công!', ($data));
         } catch (\Exception $e) {
             return $this->internalServerError('Đã xảy ra lỗi', $e->getMessage());
         }
@@ -142,7 +145,7 @@ class AuthController extends HmsController
     {
         try {
             $result = $this->model->verifyResetCode($this->_params);
-            if($result['status']){
+            if ($result['status']) {
                 return $this->success($result['message']);
             }
             return $this->error($result['message']);

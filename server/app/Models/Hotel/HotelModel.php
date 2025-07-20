@@ -612,14 +612,7 @@ class HotelModel extends AdminModel
             </select>
         ';
     }
-    public function getContractFileAttribute()
-    {
-        return $this->attributes['contract_file'] ? URL_DATA_IMAGE . 'hotel/hotel/images/' . $this->id . "/" . $this->attributes['contract_file'] : null;
-    }
-    public function getImageAttribute()
-    {
-        return $this->attributes['image'] ? URL_DATA_IMAGE . 'hotel/hotel/images/' . $this->id . "/" . $this->attributes['image'] : null;
-    }
+
     public function customers()
     {
         return $this->belongsToMany(CustomerModel::class, TABLE_HOTEL_HOTEL_CUSTOMER, 'hotel_id', 'customer_id')->withPivot('role', 'status', 'id');
