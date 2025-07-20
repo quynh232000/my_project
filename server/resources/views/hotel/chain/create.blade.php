@@ -21,11 +21,18 @@
         name="admin-{{ $params['prefix'] }}-form" enctype="multipart/form-data" method="POST"
         action="{{ route($params['prefix'] . '.' . $params['controller'] . '.store') }}">
         <input type="hidden" name="_method" value="POST">
-        <div class="pb-5 d-flex justify-content-end" style="gap: 10px">
-            @include('include.btn.cancel', [
-                'href' => route($params['prefix'] . '.' . $params['controller'] . '.index'),
-            ])
-            @include('include.btn.save')
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mt-2">
+                    <div class="col-6 text-left"></div>
+                    <div class="col-6 text-right">
+                        @include('include.btn.cancel', [
+                            'href' => route($params['prefix'] . '.' . $params['controller'] . '.index'),
+                        ])
+                        @include('include.btn.save')
+                    </div>
+                </div><!-- /.row -->
+            </div><!-- /.container-fluid -->
         </div>
         <div class="row">
             <div class="col-md-7">

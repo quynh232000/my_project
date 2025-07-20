@@ -26,9 +26,7 @@ class CountryModel  extends AdminModel
                 'u2.full_name AS updated_by'        => 'Modifior',
                 $this->table . '.updated_at'        => 'Updated At'
             ],
-            'fieldSearch' => [
-                $this->table . '.name' => 'Tên',
-            ],
+
             'button' => ['edit', 'delete'],
         ];
         parent::__construct();
@@ -104,6 +102,7 @@ class CountryModel  extends AdminModel
         $this->_data['status'] = false;
 
         if ($options['task'] == "admin-index") {
+
             $this->checkall   = true;
             $TABLE_USER = config('constants.table.general.TABLE_USER');
             $query                          = self::select(array_keys($this->_data['listField']))
@@ -123,6 +122,41 @@ class CountryModel  extends AdminModel
 
             unset($this->_data['headTable']);
         }
+        if ($options['task'] == 'list-items') {
+
+            return  self::select('id', 'name')->where('status', 'active')
+                ->orderBy('name', 'asc')->get()->toArray();
+        }
+        if ($options['task'] == "address") {
+            $dataModel = [
+                'country_id'    => [
+                    'model'         => ProvinceModel::class,
+                    'controller'    => 'province',
+                    'action'        => 'listItem',
+                ],
+                'province_id'       => [
+                    'model'         => WardModel::class,
+                    'controller'    => 'ward',
+                    'action'        => 'listItem',
+                ],
+            ];
+
+            $class = $dataModel[$params['type'] ?? '']['model'] ?? null;
+
+            if ($class && !empty($params['id'])) {
+
+                $model                     = new $class();
+                $params['controller']      = $dataModel[$params['type'] ?? '']['controller'];
+                $params[$params['type']]   = $params['id'];
+
+                $results    =  $model->listItem($params, ['task' => 'list-items']);
+            } else {
+
+                $results    = $this->listItem($params, ['task' => 'list-items']);
+            }
+
+            $this->_data    = $results ?? [];
+        }
         return $this->_data;
     }
     public function saveItem($params = null, $options = null)
@@ -131,7 +165,7 @@ class CountryModel  extends AdminModel
             $params['created_by']   = Auth::user()->id;
             $params['created_at']   = date('Y-m-d H:i:s');
             $params['slug']         = Str::slug($params['name']);
-            if ($params['icon']??false) {
+            if ($params['icon'] ?? false) {
                 $FileService = new FileService();
                 $params['icon_url'] = $FileService->uploadFile($params['icon'], 'ecommerce.category', auth()->id())['url'] ?? '';
                 unset($params['icon']);

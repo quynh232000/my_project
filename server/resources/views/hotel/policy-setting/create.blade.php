@@ -1,56 +1,62 @@
 @extends('layout.app')
 @section('title', 'Thêm mới chính sách')
 @section('main')
-<style>
-    .is-invalid ~ .select2 .select2-selection {
-        border: 1px solid red;
-    }
-</style>
+    <style>
+        .is-invalid~.select2 .select2-selection {
+            border: 1px solid red;
+        }
+    </style>
     <!-- Content Header (Page header) -->
 
-    <form class="form-horizontal app-container" id="admin-{{ $params['prefix'] }}-form" name="admin-{{ $params['prefix'] }}-form"
-        enctype="multipart/form-data" method="POST"
+    <form class="form-horizontal app-container" id="admin-{{ $params['prefix'] }}-form"
+        name="admin-{{ $params['prefix'] }}-form" enctype="multipart/form-data" method="POST"
         action="{{ route($params['prefix'] . '.' . $params['controller'] . '.store') }}">
         <input type="hidden" name="_method" value="POST">
 
         <div class="row">
             <div class="col-12">
                 <div class="card">
-                     <div class="card-header d-flex justify-content-between align-items-center">
+                    <div class="card-header d-flex justify-content-between align-items-center">
                         Infomation
                         <div class="">
                             @include('include.btn.cancel', [
                                 'href' => route($params['prefix'] . '.' . $params['controller'] . '.index'),
                             ])
                             @include('include.btn.save')
-                        </div> <h3>Thông tin cài đặt chính sách</h3>
+                        </div>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
                         <div class="row m-0 pt-2">
                             <div class="form-group col-12 col-md-6 p-2 mb-0">
-                                <label class="col-form-label text-right" for="name">Tên chính sách<span style="color: red">(*)</span></label>
-                                <input type="text" class="form-control generate-slug" id="name" name="name" placeholder="Nhập tiêu đề" value="">
+                                <label class="col-form-label text-right" for="name">Tên chính sách<span
+                                        style="color: red">(*)</span></label>
+                                <input type="text" class="form-control generate-slug" id="name" name="name"
+                                    placeholder="Nhập tiêu đề" value="">
                                 <div class="input-error"></div>
                             </div>
                             <div class="form-group col-12 col-md-6 p-2 mb-0">
-                                <label class="col-form-label text-right" for="slug">Slug<span style="color: red">(*)</span></label>
-                                <input type="text" class="form-control" id="slug" name="slug" placeholder="Nhập slug" value="">
+                                <label class="col-form-label text-right" for="slug">Slug<span
+                                        style="color: red">(*)</span></label>
+                                <input type="text" class="form-control" id="slug" name="slug"
+                                    placeholder="Nhập slug" value="">
                                 <div class="input-error"></div>
                             </div>
                             <div class="form-group col-12 col-md-6 p-2 mb-0">
-                                <label class="col-form-label text-right" for="status">Loại chính sách<span  style="color: red">(*)</span></label>
+                                <label class="col-form-label text-right" for="status">Loại chính sách<span
+                                        style="color: red">(*)</span></label>
                                 {!! \App\Models\Hotel\PolicySettingModel::slbType() !!}
                                 <div class="input-error"></div>
                             </div>
                             <div class="form-group col-12 col-md-6 p-2 mb-0">
-                                <label class="col-form-label text-right" for="status">Trạng Thái <span style="color: red">(*)</span></label>
+                                <label class="col-form-label text-right" for="status">Trạng Thái <span
+                                        style="color: red">(*)</span></label>
                                 {!! \App\Models\Hotel\PolicySettingModel::slbStatus('active') !!}
                                 <div class="input-error"></div>
                             </div>
                             <div class="form-group col-12 col-md-6 p-2 mb-0">
                                 <label class="col-form-label text-right" for="description">Mô tả</label>
-                                <textarea id="description" name="description" class="form-control" rows="3" ></textarea>
+                                <textarea id="description" name="description" class="form-control" rows="3"></textarea>
                                 <div class="input-error"></div>
                             </div>
                         </div>

@@ -4,8 +4,8 @@
 
     <!-- Content Header (Page header) -->
 
-    <form class="form-horizontal app-container" id="admin-{{ $params['prefix'] }}-form" name="admin-{{ $params['prefix'] }}-form"
-        enctype="multipart/form-data" method="POST"
+    <form class="form-horizontal app-container" id="admin-{{ $params['prefix'] }}-form"
+        name="admin-{{ $params['prefix'] }}-form" enctype="multipart/form-data" method="POST"
         action="{{ route($params['prefix'] . '.' . $params['controller'] . '.store') }}">
         <input type="hidden" name="_method" value="POST">
         <div class="content-header">
@@ -24,14 +24,14 @@
         <div class="row">
             <div class="col-12 col-md-12 col-sm-12 ">
                 <div class="card">
-                     <div class="card-header d-flex justify-content-between align-items-center">
+                    <div class="card-header d-flex justify-content-between align-items-center">
                         Infomation
                         <div class="">
                             @include('include.btn.cancel', [
                                 'href' => route($params['prefix'] . '.' . $params['controller'] . '.index'),
                             ])
                             @include('include.btn.save')
-                        </div> <h3>Thông tin phòng</h3>
+                        </div>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
@@ -45,8 +45,10 @@
                                 <div class="input-error"></div>
                             </div>
                             <div class="form-group col-6 p-2 mb-0">
-                                <label class="col-form-label text-right" for="slug">Slug<span style="color: red">(*)</span></label>
-                                <input type="text" class="form-control" id="slug" name="slug" placeholder="Nhập slug.." value="">
+                                <label class="col-form-label text-right" for="slug">Slug<span
+                                        style="color: red">(*)</span></label>
+                                <input type="text" class="form-control" id="slug" name="slug"
+                                    placeholder="Nhập slug.." value="">
                                 <div class="input-error"></div>
                             </div>
                             <div class="form-group col-md-6 p-2 mb-0">
@@ -69,7 +71,7 @@
             </div>
             <div class="card-body row m-0  p-2 name_body">
                 <div class="form-group col-12 p-2 mb-0 ">
-                    <button  class="btn btn-primary name_add float-right">
+                    <button class="btn btn-primary name_add float-right">
                         <i class="fa-sharp fa-solid fa-plus"></i>
                         Thêm
                     </button>
@@ -78,8 +80,10 @@
                     <div class="name_item border-bottom pb-1 mb-2">
                         <div class="mb-2 form-group ">
                             <div class="d-flex ">
-                                <input type="text" class="form-control" name="room_name[]" placeholder="Tên phòng.."></input>
-                                <button class="btn btn-danger btn-sm name_delete ml-2"><i class="fa-regular fa-trash-can"></i></button>
+                                <input type="text" class="form-control" name="room_name[]"
+                                    placeholder="Tên phòng.."></input>
+                                <button class="btn btn-danger btn-sm name_delete ml-2"><i
+                                        class="fa-regular fa-trash-can"></i></button>
                             </div>
                             <div class="input-error"></div>
                         </div>
@@ -101,7 +105,8 @@
                 $('.input-error').html('');
                 $('.form-group row p-0 m-0 mb-2 input').removeClass('is-invalid');
                 e.preventDefault();
-                var formData = new FormData(this);const formEl = $(this)
+                var formData = new FormData(this);
+                const formEl = $(this)
                 $.ajax({
                     type: 'POST',
                     url: "{{ route($params['prefix'] . '.' . $params['controller'] . '.store') }}",
@@ -113,7 +118,7 @@
                     contentType: false,
                     processData: false,
                     success: (res) => {
-$(formEl).find('.indicator-label').show()
+                        $(formEl).find('.indicator-label').show()
                         $(formEl).find('.indicator-progress').hide()
                         $(formEl).find(`button[type='submit']`).prop('disabled', false);
                         Swal.fire({
@@ -166,16 +171,16 @@ $(formEl).find('.indicator-label').show()
             });
 
             // add room name
-            $('.name_add').on('click',function(e){//add faqs
+            $('.name_add').on('click', function(e) { //add faqs
                 e.preventDefault();
-                const itemClone       = $('.name_body').find('.name_item').first().clone()
+                const itemClone = $('.name_body').find('.name_item').first().clone()
                 $(itemClone).find('input').val('');
 
                 $('.name_list').prepend(itemClone)
             })
-            $('.name_body').on('click','.name_delete',function(e){//delete faqs
+            $('.name_body').on('click', '.name_delete', function(e) { //delete faqs
                 e.preventDefault();
-                if($('.name_body').find('.name_item').length >1){
+                if ($('.name_body').find('.name_item').length > 1) {
                     $(this).closest('.name_item')?.remove()
                 }
             })

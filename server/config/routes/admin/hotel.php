@@ -1,5 +1,7 @@
 <?php
+
 use App\Http\Middleware\IsLoginMiddleware;
+
 $base = basename(__FILE__, '.php');
 return  [
 
@@ -14,9 +16,9 @@ return  [
             'uri'           => 'attribute',
             'controller'    =>  \App\Http\Controllers\Hotel\AttributeController::class,
             'name_prefix'   => $base . '.attribute',
-            'only'          => ['index', 'edit', 'store', 'create','show', 'update', 'destroy'],
+            'only'          => ['index', 'edit', 'store', 'create', 'show', 'update', 'destroy'],
         ],
-         [
+        [
             'controller'    =>   \App\Http\Controllers\Hotel\AttributeController::class,
             'uri'           => $base . '/attribute/status/{status}/{id}',
             'name'          => $base . '.attribute.status',
@@ -38,14 +40,14 @@ return  [
             'action'        => 'move',
         ],
         // bank_route
-         [
+        [
             'type'          => 'resource',
             'uri'           => 'bank',
             'controller'    =>  \App\Http\Controllers\Hotel\BankController::class,
             'name_prefix'   => $base . '.bank',
-            'only'          => ['index', 'edit', 'store', 'create','show', 'update', 'destroy'],
+            'only'          => ['index', 'edit', 'store', 'create', 'show', 'update', 'destroy'],
         ],
-         [
+        [
             'controller'    =>   \App\Http\Controllers\Hotel\BankController::class,
             'uri'           => $base . '/bank/status/{status}/{id}',
             'name'          => $base . '.bank.status',
@@ -60,14 +62,14 @@ return  [
             'action'        => 'confirmDelete',
         ],
         // chain_route
-         [
+        [
             'type'          => 'resource',
             'uri'           => 'chain',
             'controller'    =>  \App\Http\Controllers\Hotel\ChainController::class,
             'name_prefix'   => $base . '.chain',
-            'only'          => ['index', 'edit', 'store', 'create','show', 'update', 'destroy'],
+            'only'          => ['index', 'edit', 'store', 'create', 'show', 'update', 'destroy'],
         ],
-         [
+        [
             'controller'    =>   \App\Http\Controllers\Hotel\ChainController::class,
             'uri'           => $base . '/chain/status/{status}/{id}',
             'name'          => $base . '.chain.status',
@@ -82,14 +84,14 @@ return  [
             'action'        => 'confirmDelete',
         ],
         // customer_route
-         [
+        [
             'type'          => 'resource',
             'uri'           => 'customer',
             'controller'    =>  \App\Http\Controllers\Hotel\CustomerController::class,
             'name_prefix'   => $base . '.customer',
-            'only'          => ['index', 'edit', 'store', 'create','show', 'update', 'destroy'],
+            'only'          => ['index', 'edit', 'store', 'create', 'show', 'update', 'destroy'],
         ],
-         [
+        [
             'controller'    =>   \App\Http\Controllers\Hotel\CustomerController::class,
             'uri'           => $base . '/customer/status/{status}/{id}',
             'name'          => $base . '.customer.status',
@@ -104,14 +106,14 @@ return  [
             'action'        => 'confirmDelete',
         ],
         // hotel_route
-         [
+        [
             'type'          => 'resource',
             'uri'           => 'hotel',
             'controller'    =>  \App\Http\Controllers\Hotel\HotelController::class,
             'name_prefix'   => $base . '.hotel',
-            'only'          => ['index', 'edit', 'store', 'create','show', 'update', 'destroy'],
+            'only'          => ['index', 'edit', 'store', 'create', 'show', 'update', 'destroy'],
         ],
-         [
+        [
             'controller'    =>   \App\Http\Controllers\Hotel\HotelController::class,
             'uri'           => $base . '/hotel/status/{status}/{id}',
             'name'          => $base . '.hotel.status',
@@ -126,14 +128,14 @@ return  [
             'action'        => 'confirmDelete',
         ],
         // policy-setting_route
-         [
+        [
             'type'          => 'resource',
             'uri'           => 'policy-setting',
             'controller'    =>  \App\Http\Controllers\Hotel\PolicySettingController::class,
             'name_prefix'   => $base . '.policy-setting',
-            'only'          => ['index', 'edit', 'store', 'create','show', 'update', 'destroy'],
+            'only'          => ['index', 'edit', 'store', 'create', 'show', 'update', 'destroy'],
         ],
-         [
+        [
             'controller'    =>   \App\Http\Controllers\Hotel\PolicySettingController::class,
             'uri'           => $base . '/policy-setting/status/{status}/{id}',
             'name'          => $base . '.policy-setting.status',
@@ -148,14 +150,14 @@ return  [
             'action'        => 'confirmDelete',
         ],
         // room-type_route
-         [
+        [
             'type'          => 'resource',
             'uri'           => 'room-type',
             'controller'    =>  \App\Http\Controllers\Hotel\RoomTypeController::class,
             'name_prefix'   => $base . '.room-type',
-            'only'          => ['index', 'edit', 'store', 'create','show', 'update', 'destroy'],
+            'only'          => ['index', 'edit', 'store', 'create', 'show', 'update', 'destroy'],
         ],
-         [
+        [
             'controller'    =>   \App\Http\Controllers\Hotel\RoomTypeController::class,
             'uri'           => $base . '/room-type/status/{status}/{id}',
             'name'          => $base . '.room-type.status',
@@ -170,14 +172,14 @@ return  [
             'action'        => 'confirmDelete',
         ],
         // service_route
-         [
+        [
             'type'          => 'resource',
             'uri'           => 'service',
             'controller'    =>  \App\Http\Controllers\Hotel\ServiceController::class,
             'name_prefix'   => $base . '.service',
-            'only'          => ['index', 'edit', 'store', 'create','show', 'update', 'destroy'],
+            'only'          => ['index', 'edit', 'store', 'create', 'show', 'update', 'destroy'],
         ],
-         [
+        [
             'controller'    =>   \App\Http\Controllers\Hotel\ServiceController::class,
             'uri'           => $base . '/service/status/{status}/{id}',
             'name'          => $base . '.service.status',
@@ -191,15 +193,22 @@ return  [
             'methods'       => ['post'],
             'action'        => 'confirmDelete',
         ],
-         // review_route
-         [
+        [
+            'controller'    =>   \App\Http\Controllers\Hotel\ServiceController::class,
+            'uri'           => $base . '/service/move/{act}/{id}',
+            'name'          => $base . '.service.move',
+            'methods'       => ['get'],
+            'action'        => 'move',
+        ],
+        // review_route
+        [
             'type'          => 'resource',
             'uri'           => 'review',
             'controller'    =>  \App\Http\Controllers\Hotel\ReviewController::class,
             'name_prefix'   => $base . '.review',
-            'only'          => ['index', 'edit', 'store', 'create','show', 'update', 'destroy'],
+            'only'          => ['index', 'edit', 'store', 'create', 'show', 'update', 'destroy'],
         ],
-         [
+        [
             'controller'    =>   \App\Http\Controllers\Hotel\ReviewController::class,
             'uri'           => $base . '/review/status/{status}/{id}',
             'name'          => $base . '.review.status',
@@ -213,15 +222,15 @@ return  [
             'methods'       => ['post'],
             'action'        => 'confirmDelete',
         ],
-         // partner-register_route
-         [
+        // partner-register_route
+        [
             'type'          => 'resource',
             'uri'           => 'partner-register',
             'controller'    =>  \App\Http\Controllers\Hotel\PartnerRegisterController::class,
             'name_prefix'   => $base . '.partner-register',
-            'only'          => ['index', 'edit', 'store', 'create','show', 'update', 'destroy'],
+            'only'          => ['index', 'edit', 'store', 'create', 'show', 'update', 'destroy'],
         ],
-         [
+        [
             'controller'    =>   \App\Http\Controllers\Hotel\PartnerRegisterController::class,
             'uri'           => $base . '/partner-register/status/{status}/{id}',
             'name'          => $base . '.partner-register.status',
@@ -235,15 +244,29 @@ return  [
             'methods'       => ['post'],
             'action'        => 'confirmDelete',
         ],
-         // payment-info_route
-         [
+        [
+            'controller'    =>   \App\Http\Controllers\Hotel\PartnerRegisterController::class,
+            'uri'           => $base . '/partner-register/confirm-choose',
+            'name'          => $base . '.partner-register.confirm-choose',
+            'methods'       => ['post'],
+            'action'        => 'confirmChoose',
+        ],
+        [
+            'controller'    =>   \App\Http\Controllers\Hotel\PartnerRegisterController::class,
+            'uri'           => $base . '/partner-register/choose',
+            'name'          => $base . '.partner-register.choose',
+            'methods'       => ['post'],
+            'action'        => 'choose',
+        ],
+        // payment-info_route
+        [
             'type'          => 'resource',
             'uri'           => 'payment-info',
             'controller'    =>  \App\Http\Controllers\Hotel\PaymentInfoController::class,
             'name_prefix'   => $base . '.payment-info',
-            'only'          => ['index', 'edit', 'store', 'create','show', 'update', 'destroy'],
+            'only'          => ['index', 'edit', 'store', 'create', 'show', 'update', 'destroy'],
         ],
-         [
+        [
             'controller'    =>   \App\Http\Controllers\Hotel\PaymentInfoController::class,
             'uri'           => $base . '/payment-info/status/{status}/{id}',
             'name'          => $base . '.payment-info.status',
@@ -256,6 +279,20 @@ return  [
             'name'          => $base . '.payment-info.confirm-delete',
             'methods'       => ['post'],
             'action'        => 'confirmDelete',
+        ],
+        [
+            'controller'    =>   \App\Http\Controllers\Hotel\PaymentInfoController::class,
+            'uri'           => $base . '/payment-info/confirm-choose',
+            'name'          => $base . '.payment-info.confirm-choose',
+            'methods'       => ['post'],
+            'action'        => 'confirmChoose',
+        ],
+        [
+            'controller'    =>   \App\Http\Controllers\Hotel\PaymentInfoController::class,
+            'uri'           => $base . '/payment-info/choose',
+            'name'          => $base . '.payment-info.choose',
+            'methods'       => ['post'],
+            'action'        => 'choose',
         ],
 
 

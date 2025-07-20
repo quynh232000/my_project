@@ -37,21 +37,20 @@
             margin: auto
         }
     </style>
-    <div class="content-header">
-        <div class="container-fluid">
-            <div class="row mt-2">
-                <div class="col-6 text-left"></div>
-                <div class="col-6 text-right">
-                    @include('include.btn.delete')
-                    @include('include.btn.create')
-                </div>
-            </div><!-- /.row -->
-        </div><!-- /.container-fluid -->
-    </div>
+
     <div class="row app-container">
         <div class="col-12 p-2">
             <div class="card card-default">
                 <div class="card-body p-2">
+                    <div class="row p-5">
+                        <div class="card-toolbar col-12 d-flex justify-content-end">
+                            <!--begin::Toolbar-->
+                            <div class="d-flex justify-content-end" style="gap: 10px" data-kt-user-table-toolbar="base">
+                                @include('include.btn.delete')
+                                @include('include.btn.create')
+                            </div>
+                        </div>
+                    </div>
 
                     <form class="form-horizontal" method="GET" enctype="multipart/form-data"
                         id="admin-form-{{ $params['prefix'] }}-{{ $params['controller'] }}"
@@ -69,10 +68,7 @@
                                     isset($params['accommodation_id']) && !empty($params['accommodation_id']) ? $params['accommodation_id'] : '',
                                 ) !!}
                             </div>
-                            <div class="form-group col-3 p-2 mb-0">
-                                <label for="category_id" class="font-weight-normal">Danh mục</label>
-                                {!! \App\Models\Hotel\HotelModel::selectCategory([$params['category_id'] ?? ''], false) !!}
-                            </div>
+
                             <div class="form-group col-3 p-2 mb-0">
                                 <label for="status" class="font-weight-normal">{{ trans('field.status_label') }}</label>
                                 {!! \App\Models\Hotel\HotelModel::slbStatus(@$params['status'], ['action' => @$params['action']]) !!}
@@ -144,15 +140,7 @@
     </div>
     <script>
         $(document).ready(function() {
-            adminIndex("{{ $params['prefix'] }}", "{{ $params['controller'] }}", "{{ $params['action'] }}",
-                '{{ route($params['prefix'] . '.' . $params['controller'] . '.index') }}');
-            $(document).ready(function() {
-                dateFromTo('#created_at', null, null, 'YYYY/MM/DD')
-                dateFromTo('#updated_at', null, null, 'YYYY/MM/DD')
-                adminIndex("{{ $params['prefix'] }}", "{{ $params['controller'] }}",
-                    "{{ $params['action'] }}",
-                    '{{ route($params['prefix'] . '.' . $params['controller'] . '.index') }}');
-            });
+
         });
     </script>
 @endsection

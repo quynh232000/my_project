@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Collection;
 use Kalnoy\Nestedset\NodeTrait;
+
 class ServiceModel extends AdminModel
 {
     use NodeTrait;
@@ -90,7 +91,7 @@ class ServiceModel extends AdminModel
             $query = self::select($this->table . '.*', 'u.full_name AS created_by', 'u2.full_name AS updated_by')->withDepth();
 
             $query = $query->leftJoin(TABLE_USER . ' AS u', 'u.id', '=', $this->table . '.created_by')
-                           ->leftJoin(TABLE_USER . ' AS u2', 'u2.id', '=', $this->table . '.updated_by');
+                ->leftJoin(TABLE_USER . ' AS u2', 'u2.id', '=', $this->table . '.updated_by');
 
             $query = self::adminQuery($query, $params);
 
@@ -158,33 +159,29 @@ class ServiceModel extends AdminModel
 
                 $result          = $result->toArray();
                 $params['item']  = $result;
-                if ($result['image'] != null ) {
-
-                    $result['image'] = $this->getImageUrlS3($result['image'], $params);
-                }
             }
         }
         if ($options['task'] == "get-service") {
 
             $result = self::select($this->table . '.*')
-                            ->withDepth()->defaultOrder()->get();
+                ->withDepth()->defaultOrder()->get();
         }
         if ($options['task'] == 'get-room-service') {
 
             $result = null;
             //CAN FIX SHOW PARENT CHILD
             $result = self::select($this->table . '.*')
-                            ->where(['parent_id' => null, 'type' => 'room'])
-                            ->with(['children' => function( $query ){
-                                $query->where($this->table . '.type' , 'room');
-                            }])->defaultOrder()->get();
+                ->where(['parent_id' => null, 'type' => 'room'])
+                ->with(['children' => function ($query) {
+                    $query->where($this->table . '.type', 'room');
+                }])->defaultOrder()->get();
         }
         if ($options['task'] == 'get-hotel-service') {
             $result = self::select($this->table . '.*')
-                            ->where(['parent_id' => null, 'type' => 'hotel'])
-                            ->with(['children' => function( $query ){
-                                $query->where($this->table . '.type' , 'hotel');
-                            }])->defaultOrder()->get()->toArray();
+                ->where(['parent_id' => null, 'type' => 'hotel'])
+                ->with(['children' => function ($query) {
+                    $query->where($this->table . '.type', 'hotel');
+                }])->defaultOrder()->get()->toArray();
         }
         return $result;
     }
@@ -192,7 +189,6 @@ class ServiceModel extends AdminModel
     {
         if ($options['task'] == 'delete-item') {
             if ($params['id'] === '0') {
-
             } else {
                 self::whereIn($this->primaryKey, $params['id'])->delete();
             }
@@ -278,7 +274,7 @@ class ServiceModel extends AdminModel
             '<tbody id="tbl_results">' .
             '</table>';
     }
-    public static function slbStatus($default = 'inactive',$params = [])
+    public static function slbStatus($default = 'inactive', $params = [])
     {
         $showDefaultOption = isset($params['action']) && $params['action'] == 'index';
         $default = isset($params['item']['status']) ? $params['item']['status'] : '';
@@ -291,8 +287,8 @@ class ServiceModel extends AdminModel
     }
     public function getImageUrlS3($fileName, $params)
     {
-        $filePath = $params['controller'] .'/images/'. $params['item']['id'] .'/'. $fileName;
-        return Storage::disk('s3_' . $params['prefix'])->url($params['prefix'] .'/'. $filePath);
+        $filePath = $params['controller'] . '/images/' . $params['item']['id'] . '/' . $fileName;
+        return Storage::disk('s3_' . $params['prefix'])->url($params['prefix'] . '/' . $filePath);
     }
     public function children()
     {
@@ -306,7 +302,7 @@ class ServiceModel extends AdminModel
             $folderPath             =  $params['controller'] . '/images/' . $params['inserted_id'] . '/';
             $image                  = $params['image'];
             $imageName              = $params['slug'] . '.' . $image->extension();
-            Storage::disk( $params['bucket'])->put($folderPath . $imageName, file_get_contents($image));
+            Storage::disk($params['bucket'])->put($folderPath . $imageName, file_get_contents($image));
             $params['image']        = $imageName;
             $this->reSizeImageThumb($params, ['task' => 'add-item-id']);
             unset($params['bucket'], $params['inserted_id']);
@@ -315,10 +311,10 @@ class ServiceModel extends AdminModel
         }
         if ($options['task'] == 'edit-item') {
             $oldImage               = $params['image_id'];
-            $folderPath             = $params['controller'] .'/images/'. $oldImage . '/';
+            $folderPath             = $params['controller'] . '/images/' . $oldImage . '/';
             if ($oldImage) {
-                Storage::disk(  $params['bucket'])->delete($folderPath . $oldImage);
-                Storage::disk(  $params['bucket'])->delete($folderPath . '/thumb1/'   . $oldImage);
+                Storage::disk($params['bucket'])->delete($folderPath . $oldImage);
+                Storage::disk($params['bucket'])->delete($folderPath . '/thumb1/'   . $oldImage);
             }
             $image                  = $params['image'];
             $imageName              = $params['slug'] . '.' . $image->extension();

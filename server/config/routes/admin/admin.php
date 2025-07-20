@@ -106,6 +106,36 @@ return  [
             'name_prefix'   => 'admin.file-upload',
             'only'          => ['index', 'destroy'], // 👈 Chỉ dùng các action này
         ],
+        // country_route
+
+        [
+            'type'          => 'resource',
+            'uri'           => 'country',
+            'controller'    =>  \App\Http\Controllers\Admin\Admin\CountryController::class,
+            'name_prefix'   => $base . '.country',
+            'only'          => ['index', 'edit', 'store', 'create', 'update', 'destroy'],
+        ],
+        [
+            'controller'    =>   \App\Http\Controllers\Admin\Admin\CountryController::class,
+            'uri'           => $base . '/country/status/{status}/{id}',
+            'name'          => $base . '.country.status',
+            'methods'       => ['get'],
+            'action'        => 'status',
+        ],
+        [
+            'controller'    =>   \App\Http\Controllers\Admin\Admin\CountryController::class,
+            'uri'           => $base . '/country/confirm-delete',
+            'name'          => $base . '.country.confirm-delete',
+            'methods'       => ['post'],
+            'action'        => 'confirmDelete',
+        ],
+        [
+            'controller'    =>   \App\Http\Controllers\Admin\Admin\CountryController::class,
+            'uri'           => $base . '/country/address',
+            'name'          => $base . '.country.address',
+            'methods'       => ['get'],
+            'action'        => 'address',
+        ],
         // province_route
         [
             'type'          => 'resource',
@@ -128,6 +158,8 @@ return  [
             'methods'       => ['post'],
             'action'        => 'confirmDelete',
         ],
+
+
         // ward_route
         [
             'type'          => 'resource',
@@ -150,6 +182,7 @@ return  [
             'methods'       => ['post'],
             'action'        => 'confirmDelete',
         ],
+
 
 
 
