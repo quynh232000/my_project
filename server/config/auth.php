@@ -52,6 +52,10 @@ return [
             'driver'    => 'jwt',
             'provider'  => 'hms',
         ],
+        'travel' => [
+            'driver'    => 'jwt',
+            'provider'  => 'travel',
+        ],
     ],
 
     /*
@@ -83,6 +87,10 @@ return [
         'hms' => [
             'driver'    => 'eloquent',
             'model'     => env('AUTH_MODEL', App\Models\Customer::class),
+        ],
+        'travel' => [
+            'driver'    => 'eloquent',
+            'model'     => env('AUTH_MODEL', App\Models\Api\V1\Travel\User::class),
         ],
 
         // 'users' => [
