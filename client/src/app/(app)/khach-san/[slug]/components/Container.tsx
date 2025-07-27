@@ -1,5 +1,5 @@
 'use client'
-import SearchHead from '@/app/components1/SearchHead'
+import SearchHead from '@/app/(app)/components/SearchHead'
 import { FormatPrice } from '@/utils/common';
 import Link from 'next/link'
 import React from 'react'

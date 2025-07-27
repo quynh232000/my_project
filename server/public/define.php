@@ -28,5 +28,4 @@ if (!defined('FILE_SIZE_NAME'))      define('FILE_SIZE_NAME', '300X200');
 if (!defined('COMPONENT_FLIGHT'))      define('COMPONENT_FLIGHT', 'flight');
 if (!defined('COMPONENT_TOUR'))      define('COMPONENT_TOUR', 'tour');
 
-@require_once(__DIR__ .'/define-hotel.php');
-
+@require_once(__DIR__ . '/define-hotel.php');

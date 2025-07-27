@@ -29,22 +29,21 @@ class HotelController extends AdminController
     {
         $this->_params['info']    = $this->model->getItem($this->_params, ['task' => 'get-info']);
         $this->_params['data']    = $this->model->getListService();
-        return view($this->_viewAction,['params' => $this->_params]);
+        return view($this->_viewAction, ['params' => $this->_params]);
     }
-    public function store(Request $request)
+    public function store(HotelRequest $request)
     {
         // HotelRequest/
-       return  $this->model->saveItem($this->_params, ['task' => 'add-item']);
+        return  $this->model->saveItem($this->_params, ['task' => 'add-item']);
     }
     public function edit($id)
     {
         $this->_params[$this->model->columnPrimaryKey()] = $id;
-        $this->_params['info']                           = $this->model->getItem($this->_params, ['task' => 'get-info']);
+        // $this->_params['info']                           = $this->model->getItem($this->_params, ['task' => 'get-info']);
         $this->_params['item']                           = $this->model->getItem($this->_params, ['task' => 'get-item-info']);
-        $this->_params['data']                           = $this->model->getListService();
         return view($this->_viewAction, ['params' => $this->_params]);
     }
-    public function update(HotelRequest $request,$id)
+    public function update(HotelRequest $request, $id)
     {
         $this->_params[$this->model->columnPrimaryKey()] = $id;
         if (isset($this->_params['_method']) && $this->_params['_method'] == 'PUT') {
@@ -77,5 +76,4 @@ class HotelController extends AdminController
         $this->model->deleteItem($this->_params, ['task' => 'delete-item']);
         return response()->json(array('success' => true, 'message' => 'Cập nhật thành công'));
     }
-   
 }

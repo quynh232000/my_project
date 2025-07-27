@@ -8,6 +8,7 @@ use App\Models\AdminModel;
 // use App\Models\General\DistrictModel;
 // use App\Models\General\WardModel;
 // use App\Services\ElasticService;
+use App\Services\FileService;
 use DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -41,7 +42,6 @@ class HotelModel extends AdminModel
         'address',
         'index',
         'category_ids',
-        'image'
     ];
     public function __construct($attributes = [])
     {
@@ -184,15 +184,6 @@ class HotelModel extends AdminModel
         }
         return $this->_data;
     }
-    public function uploadImageFile(&$params, $options)
-    {
-        $image_name            = $options['image_name'] ?? 'image';
-        $folderPath            =  $params['controller'] . '/images/' . $options['insert_id'] . '/';
-        $image                 = $params[$image_name];
-        $imageName             = $params['slug'] . '_' . $image_name . '_' . time() . '.' . $image->extension();
-        Storage::disk($this->bucket)->put($folderPath . $imageName, file_get_contents($image));
-        $params[$image_name]   = $imageName;
-    }
     public function saveItem($params = null, $options = null)
     {
         if ($options['task'] == 'add-item') {
@@ -217,48 +208,24 @@ class HotelModel extends AdminModel
             $fileInsert             = [];
             // add thumbnail
             if (request()->file('image')) {
-                self::uploadImageFile($params, [...$options, 'image_name' => 'image']);
-                $fileInsert['image'] = $params['image'];
+                $params['image'] = FileService::file_upload($params, $params['image'], 'image');
             }
 
             // add contract_file
             if (request()->file('contract_file')) {
-                self::uploadImageFile($params, [...$options, 'image_name' => 'contract_file']);
-                $fileInsert['contract_file'] = $params['contract_file'];
+                $params['contract_file'] = FileService::file_upload($params, $params['contract_file'], 'contract_file');
             }
             // add customer
             if (count($params['customer_ids'] ?? []) > 0) {
                 $HotelCustomerModel = new HotelCustomerModel();
                 $HotelCustomerModel->saveItem($params['customer_ids'], [...$options, 'role' => $params['role'] ?? null]);
             }
-            // add category
-            if (count($params['category_ids'] ?? []) > 0) {
-                $HotelCateIdModel = new HotelCategoryIdModel();
-                $HotelCateIdModel->saveItem($params['category_ids'], $options);
-            }
+
             // add location
             $LocationModel = new LocationModel();
             $LocationModel->saveItem($params, $options);
 
-            //add album
-            // if(count($params['abumn'] ?? []) > 0){
-            //     $HotelAbumnModel       = new HotelAbumnModel();
-            //     $options['folderPath'] = $params['controller'] . '/images/' . $options['insert_id'] . '/';
-            //     $options['image_name'] = $params['image_name'] ?? [];
-            //     $options['slug']       = $params['slug'] ?? '';
-            //     $HotelAbumnModel->saveItem($params['abumn'],$options);
-            // }
-            // //add service and facilities
-            // if(count($params['facility'] ?? []) > 0){
-            //     $HotelServiceModel     = new HotelServiceModel();
-            //     $HotelServiceModel->saveItem($params['facility'],$options);
-            // }
 
-            // // add question
-            // if(count($params['faqs'] ?? []) > 0){
-            //     $HotelFaqsModel        = new HotelFaqsModel();
-            //     $HotelFaqsModel->saveItem($params['faqs'],$options);
-            // }
 
             // add nearby location
             if (count($params['location'] ?? []) > 0 && ($params['latitude'] && $params['longitude'])) {
@@ -287,16 +254,13 @@ class HotelModel extends AdminModel
             if ($params['position'] ?? false) {
                 $params['position'] = json_encode($params['position']);
             }
-            // add thumbnail
             if (request()->file('image')) {
-                self::uploadImageFile($params, [...$options, 'image_name' => 'image']);
-                $fileInsert['image']        = $params['image'];
+                $params['image'] = FileService::file_upload($params, $params['image'], 'image');
             }
 
             // add contract_file
             if (request()->file('contract_file')) {
-                self::uploadImageFile($params, [...$options, 'image_name' => 'contract_file']);
-                $fileInsert['contract_file'] = $params['contract_file'];
+                $params['contract_file'] = FileService::file_upload($params, $params['contract_file'], 'contract_file');
             }
 
             $HotelCustomerModel = new HotelCustomerModel();
@@ -321,43 +285,9 @@ class HotelModel extends AdminModel
             }
             $params['language']         = json_encode($languages);
 
-
-            // $HotelAbumnModel       = new HotelAbumnModel();
-            // //  delete image in album
-            //  $HotelAbumnModel->deleteItem($params['abumn_current'] ?? null,[ ...$options , 'task' => 'delete-item']);
-            // //  update type album;
-            //  $HotelAbumnModel->saveItem($params['abumn_type'] ?? null,$options);
-            //  //  update name image;
-            //  $HotelAbumnModel->saveItem($params['image_current_name'] ?? null,['task'=>'update-name-image']);
-            // add new album
-            // if(count($params['abumn'] ?? []) > 0){
-            //     $options['image_name'] = $params['image_name'] ?? [];
-            //     $options['slug']       = $params['slug'] ?? '';
-            //     $HotelAbumnModel->saveItem($params['abumn'],[...$options,'task' => 'add-item']);
-            // }
-
             // add location
             $LocationModel = new LocationModel();
             $LocationModel->saveItem($params, $options);
-
-            // update category
-            $HotelCateIdModel = new HotelCategoryIdModel();
-            $HotelCateIdModel->saveItem($params['category_ids'] ?? [], $options);
-
-            // $HotelServiceModel     = new HotelServiceModel();
-            // // update service & facilities
-            // $HotelServiceModel->saveItem($params['facility'] ?? [],$options);
-
-            // $HotelFaqsModel        = new HotelFaqsModel();
-            // // delete faqs
-            // $HotelFaqsModel->deleteItem($params['faqs_item'] ?? [],[...$options,'task'=>'delete-item']);
-            // // add faqs
-            // if(count($params['faqs'] ?? []) > 0){
-            //     $HotelFaqsModel    = new HotelFaqsModel();
-            //     $HotelFaqsModel->saveItem($params['faqs'],[...$options,'task' => 'add-item']);
-            // }
-            // // update faqs
-            // $HotelFaqsModel->saveItem($params['faqs_current'] ?? [],$options);
 
             if ($options['lat'] && $options['lng']) {
 
@@ -373,7 +303,7 @@ class HotelModel extends AdminModel
                 }
             }
 
-
+            // dd([...$this->prepareParams($params), ...$fileInsert]);
             self::findOrFail($params['id'])->update([...$this->prepareParams($params), ...$fileInsert]);
             return response()->json(array('success' => true, 'message' => 'Cập nhật yêu cầu thành công!'));
         }
@@ -396,24 +326,13 @@ class HotelModel extends AdminModel
             $result = self::select($this->table . '.*')
                 ->with('customers', 'location', 'categories:id,name')
                 ->where($this->table . '.' . $this->columnPrimaryKey(), $params[$this->columnPrimaryKey()])->first();
-            if ($result != null) {
-                $HotelAbumnModel        = new HotelAbumnModel();
-                $ServiceModel           = new HotelServiceModel();
-                // $RoomTypeModel          = new RoomModel();
-                $HotelFaqsModel         = new HotelFaqsModel();
-                $NearbyLocationModel    = new NearbyLocationModel();
 
+            if ($result != null) {
+                $NearbyLocationModel    = new NearbyLocationModel();
                 $result                     = $result->toArray();
                 $params['item']             = $result;
-                $result['images']           = $HotelAbumnModel->listItem($params, ['task' => 'list-by-hotel']);
-                $result['abumns']           = $HotelAbumnModel->listItem($params, ['task' => 'list-abumn']);
-                $result['facilities']       = []; //$ServiceModel->listItem( $params,['task'=>'list-facility-hotel']);
-                $result['services']         = []; //$ServiceModel->listItem( $params,['task'=>'list-service-hotel']);
-                $result['room_types']       = []; //$RoomTypeModel->listItem( $params,['task'=>'list-by-hotel']);
-
-                $result['faqs']             = []; //$HotelFaqsModel->listItem( $params,['task'=>'list-by-hotel']);
+                // dd($params['item']);
                 $result['near_locations']   = $NearbyLocationModel->listItem($params, ['task' => 'list-by-hotel']);
-
                 // get location
                 $fields                 = ['country_id', 'city_id', 'district_id', 'ward_id', 'longitude', 'latitude', 'address'];
                 foreach ($fields as $field) {
@@ -471,7 +390,7 @@ class HotelModel extends AdminModel
     }
     public static function slbStatus($default = null, $params = [])
     {
-        return '<select id="status" name="status" class="form-control select2 select2-danger" data-dropdown-css-class="select2-danger" style="width: 100%;">
+        return '<select id="status" name="status" class="form-control" data-control="select2" style="width: 100%;">
                    ' . (!$default ? '<option value="" selected>Chọn trạng thái</option>' : '') . '
                     <option value="active" ' . ($default == "active" ? "selected" : "") . '>Hiện</option>
                     <option value="inactive" ' . ($default == "inactive" ? "selected" : "") . '>Ẩn</option>
@@ -489,7 +408,7 @@ class HotelModel extends AdminModel
             $opts .= '<option value="' . $item['id'] . '" ' . ($default == $item['id'] ? 'selected' : '') . '>' . $item['name'] . '</option>';
         }
         return '
-            <select class="form-control select2 select2-primary" data-dropdown-css-class="select2-primary" id="accommodation_id" name="accommodation_id">
+            <select class="form-control " data-control="select2" id="accommodation_id" name="accommodation_id">
                 <option value="">-- Chọn --</option>
                 ' . $opts . '
             </select>
@@ -526,7 +445,7 @@ class HotelModel extends AdminModel
         foreach ($dataType as $key => $value) {
             $html .= '<option ' . ($key == $selected ? 'selected' : '') . ' value="' . $key . '">' . $value . '</option>';
         }
-        return '<select  onchange="selectTypeImg(this)" class="form-control select2 select2-primary select_type_img "  data-dropdown-css-class="select2-primary">
+        return '<select  onchange="selectTypeImg(this)" class="form-control  select_type_img "  data-control="select2">
                     ' . $html . '
                 </select>';
     }
@@ -546,11 +465,13 @@ class HotelModel extends AdminModel
             $opts       .= '<option ' . $selected . ' value="' . ($item['id'] . '|' . $item['name']) . '">' . $item['name'] . '</option>';
         }
         $multi =  'name="language[]"';
-        return  '<select  class="form-control  select2" ' . $multi . ' multiple data-placeholder="--- Chọn ---">
+        return  '<select  class="form-control  " ' . $multi . ' data-control="select2"
+                                    data-placeholder="Select an option" data-allow-clear="true" multiple="multiple">
                     <option value="">--Chọn--</option>
                     ' . $opts . '
                 </select>';
     }
+
     public static function selectImageLabel($default = null, $name = 'image_name[other][]', $dataOld = null)
     {
         $parent     = AttributeModel::select('id')->where('slug', 'image_type')->first();
@@ -563,7 +484,7 @@ class HotelModel extends AdminModel
             $opts   .= '<option value="' . $item['id'] . '" ' . ($default == $item['id'] ? 'selected' : '') . '>' . $item['name'] . '</option>';
         }
         return '
-            <select class="form-control select2 select2-primary image_name" data-old="' . $dataOld . '" data-dropdown-css-class="select2-primary"  name="' . $name . '">
+            <select class="form-control  image_name" data-old="' . $dataOld . '" data-control="select2"  name="' . $name . '">
                 <option value="">-- Chọn --</option>
                 ' . $opts . '
             </select>
@@ -589,8 +510,8 @@ class HotelModel extends AdminModel
         foreach ($data as $key => $value) {
             $html .= '<option ' . ($key == $selected ? 'selected' : '') . ' value="' . $value->id . '">' . $value->full_name . ' (' . $value->email . ')</option>';
         }
-        return '<select id="customer_ids" name="customer_ids[]" class="form-control select2 select2-blue"
-                data-dropdown-css-class="select2-blue" style="width: 100%;" multiple data-placeholder="-- Chọn --">
+        return '<select id="customer_ids" name="customer_ids[]" class="form-control"
+                data-control="select2" style="width: 100%;" data-allow-clear="true" multiple="multiple" data-placeholder="-- Chọn --">
                     ' . $html . '
                 </select>';
     }
@@ -606,7 +527,7 @@ class HotelModel extends AdminModel
             $opts   .= '<option value="' . $key . '" ' . ($default == $key ? 'selected' : '') . '>' . $item . '</option>';
         }
         return '
-            <select class="form-control form-control-' . $size . ' select2 select2-primary image_name"  data-dropdown-css-class="select2-primary"  name="' . $name . '">
+            <select class="form-control form-control-' . $size . '  image_name"  data-control="select2"  name="' . $name . '">
 
                 ' . $opts . '
             </select>
@@ -636,7 +557,7 @@ class HotelModel extends AdminModel
     public static function selectPosition($selecteds = [], $is_muti = true)
     {
         $data           = [
-            'trending'      => 'Khách sạn thịnh hành',
+            'trending'      => 'Khách sạn Sale',
             'best_price'    => 'Khách sạn giá tốt',
         ];
 
@@ -651,7 +572,8 @@ class HotelModel extends AdminModel
 
         $muti           = $is_muti ? ' name="position[]" multiple ' : ' name="position"';
 
-        return  '<select  class="form-control select2" ' . $muti . ' data-placeholder="--- Chọn ---">
+        return  '<select  class="form-control " ' . $muti . ' data-control="select2"
+                                    data-placeholder="Select an option" data-allow-clear="true" multiple="multiple">
                     ' . ($is_muti ? '' : '<option value="">--Chọn--</option>') . '
                     ' . $opts . '
                 </select>';

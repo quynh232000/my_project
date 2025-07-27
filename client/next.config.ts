@@ -48,6 +48,10 @@ const nextConfig: NextConfig = {
                 protocol: 'https',
                 hostname: 'assets.minorhotels.com'
             },
+            {
+                protocol: 'https',
+                hostname: 'res.cloudinary.com'
+            },
         ],
         contentSecurityPolicy:
             "default-src 'self'; script-src 'none'; sandbox;",

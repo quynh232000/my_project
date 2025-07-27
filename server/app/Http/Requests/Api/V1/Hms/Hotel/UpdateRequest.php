@@ -21,16 +21,16 @@ class UpdateRequest extends FormRequest
         $validate = [
             'name'              => 'required|string|min:3|max:50',
             'avg_price'         => 'required|numeric|min:0',
-            'accommodation_id'  => "required|numeric|exists:".TABLE_HOTEL_ATTRIBUTE.",id",
+            'accommodation_id'  => "required|numeric|exists:" . TABLE_HOTEL_ATTRIBUTE . ",id",
             'stars'             => "required|numeric|in:0,1,2,3,4,5",
-            'chain_id'          => 'sometimes|numeric|exists:'.TABLE_HOTEL_CHAIN.',id',
+            'chain_id'          => 'sometimes|numeric|exists:' . TABLE_HOTEL_CHAIN . ',id',
             'room_number'       => 'required|numeric|min:1',
             'time_checkin'      => 'required|date_format:H:i',
             'time_checkout'     => 'required|date_format:H:i',
-            'country_id'        => 'required|numeric|exists:'.TABLE_GENERAL_COUNTRY.',id',
-            'city_id'           => 'required|numeric|exists:'.TABLE_GENERAL_CITY.',id',
-            'district_id'       => 'required|exists:'.TABLE_GENERAL_DISTRICT.',id',
-            'ward_id'           => 'required|exists:'.TABLE_GENERAL_WARD.',id',
+            'country_id'        => 'required|numeric|exists:' . TABLE_GENERAL_COUNTRY . ',id',
+            // 'city_id'           => 'required|numeric|exists:'.TABLE_GENERAL_CITY.',id',
+            // 'district_id'       => 'required|exists:'.TABLE_GENERAL_DISTRICT.',id',
+            // 'ward_id'           => 'required|exists:'.TABLE_GENERAL_WARD.',id',
             'address'           => 'required|string|max:100',
             'latitude'          => 'required',
             'longitude'         => 'required',
@@ -38,10 +38,10 @@ class UpdateRequest extends FormRequest
             'bar_count'         => 'required|numeric|min:0',
             'floor_count'       => 'required|numeric|min:0',
             'restaurant_count'  => 'required|nullable|min:0',
-            'language'          => 'required|exists:'.TABLE_GENERAL_COUNTRY.',id',
+            'language'          => 'required|exists:' . TABLE_GENERAL_COUNTRY . ',id',
             'image'             => '',
         ];
-        if(request()->hasFile('image')){
+        if (request()->hasFile('image')) {
             $validate['image'] = 'required|image|mimes:jpeg,png,jpg,gif|max:2048';
         }
 
@@ -81,7 +81,7 @@ class UpdateRequest extends FormRequest
             'faqs.*.reply'      => 'nullable|string|max:100',
         ];
     }
-    protected function failedValidation($validator) 
+    protected function failedValidation($validator)
     {
         throw new HttpResponseException($this->errorInvalidate('Dữ liệu không hợp lệ!', $validator->errors()));
     }

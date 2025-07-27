@@ -133,7 +133,7 @@ class WardModel  extends AdminModel
         if ($options['task'] == 'list-items') {
 
             $this->_data      = self::select('id', 'name')
-                ->where('city_id', $params['city_id'])
+                ->where('province_id', $params['province_id'])
                 ->where('status', 'active')
                 ->orderBy('name', 'asc')->get()->toArray();
         }

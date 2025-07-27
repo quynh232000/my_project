@@ -70,4 +70,5 @@ if (!defined('TABLE_HOTEL_BOOKING_DAILY_PRICE'))     define('TABLE_HOTEL_BOOKING
 
 if (!defined('TABLE_HMS_CUSTOMER'))     define('TABLE_HMS_CUSTOMER', 'hms_customers');
 if (!defined('TABLE_GENERAL_COUNTRY')) define('TABLE_GENERAL_COUNTRY', 'general_country');
-
+if (!defined('TABLE_GENERAL_PROVINCE')) define('TABLE_GENERAL_PROVINCE', 'general_provinces');
+if (!defined('TABLE_GENERAL_WARD')) define('TABLE_GENERAL_WARD', 'general_wards');

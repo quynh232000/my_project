@@ -13,27 +13,27 @@
     </div>
     <!-- /.card-header -->
     <div class="card-body hotel_address row px-0 px-0 m-0  pt-2">
-            {!! \App\Helpers\Template::address([
-                                    'country_id'    => $params['country_id'] ?? '',
-                                    'city_id'       => $params['city_id'] ?? '',
-                                    'district_id'   => $params['district_id'] ?? '',
-                                    'ward_id'       => $params['ward_id'] ?? ''
-            ],[
-                'class_label'   => '',
-                'class_group'   => 'col-12 col-lg-6 form-group p-2 mb-0',
-                'required'      => true
-            ]) !!}
+        {!! \App\Helpers\Template::address(
+            [
+                'country_id' => $params['country_id'] ?? '245',
+                'province_id' => $params['province_id'] ?? '',
+                'ward_id' => $params['ward_id'] ?? '',
+            ],
+            [
+                'class_label' => '',
+                'class_group' => 'col-12 col-lg-6 form-group p-2 mb-0',
+                'required' => true,
+            ],
+        ) !!}
         <div class="form-group col-12  p-2 mb-0">
             <label for="address">Địa chỉ <span style="color: red">(*)</span></label>
-            <input type="text" class="form-control" id="address" name="address"
-                placeholder="42 Phan Bội Châu..">
+            <input type="text" class="form-control" id="address" name="address" placeholder="42 Phan Bội Châu..">
             <div class="input-error"></div>
         </div>
         <div class=" col-12  p-2 mb-0 parent_location">
             <div class="d-flex">
                 <div class=" pr-4 cursor-pointer">
-                    <input type="radio" name="location_type" value="location_coordinate" checked
-                        id="location_type1">
+                    <input type="radio" name="location_type" value="location_coordinate" checked id="location_type1">
                     <label for="location_type1" class="m-0">Tọa độ</label>
                 </div>
                 <div class="cursor-pointer">
@@ -49,12 +49,14 @@
             <div class="row ">
                 <div class="form-group col-12 col-lg-6  p-2 mb-0">
                     <label for="longitude" class="font-weight-normal">Kinh độ </label>
-                    <input type="text" class="form-control longitude" id="longitude" name="longitude" placeholder="Nhập..">
+                    <input type="text" class="form-control longitude" id="longitude" name="longitude"
+                        placeholder="Nhập..">
                     <div class="input-error"></div>
                 </div>
                 <div class="form-group col-12 col-lg-6  p-2 mb-0">
                     <label for="latitude" class="font-weight-normal">Vĩ độ </label>
-                    <input type="text" class="form-control latitude" id="latitude" name="latitude" placeholder="Nhập..">
+                    <input type="text" class="form-control latitude" id="latitude" name="latitude"
+                        placeholder="Nhập..">
                     <div class="input-error"></div>
                 </div>
             </div>
@@ -64,48 +66,50 @@
 <script>
     $(document).ready(function() {
         const addressEl = '.hotel_address'
-        
+
         // select location
-        $(`input[name='location_type']`).on('change',function(){// select location address
+        $(`input[name='location_type']`).on('change', function() { // select location address
             const type = $(this).val()
             const parentEl = $(this).closest('.parent_location')
-            if(type == 'location_coordinate'){
+            if (type == 'location_coordinate') {
                 $(parentEl).find('.location_link').hide()
-            }else{
+            } else {
                 $(parentEl).find('.location_link').show()
             }
             $(parentEl).find('.location_link input').val('')
         })
-        $(document).on('change','.input_location_link' ,function() {//show latitude and longitude from input link google map
-            const parent = $(this).closest('.parent_location')
-            const error = $(this).parents('.form-group').find('.input-error')
-            error.text('')
-            error.html('');
-            error.hide();
-            $(this).removeClass('is-invalid');
-            const url = $(this).val()
-            if (!url) return false
-            
-            const regex = /@(-?\d+\.\d+),(-?\d+\.\d+)/;
-            const matches = url.match(regex);
-            if (matches) {
-                const latitude = parseFloat(matches[1]);
-                const longitude = parseFloat(matches[2]);
-                $(parent).find('input.latitude').val(latitude)
-                $(parent).find('input.longitude').val(longitude)
-            } else {
-                $(parent).find('input.latitude').val('')
-                $(parent).find('input.longitude').val('')
-                error.html('Link không đúng định dạng');
-                error.show();
-                $(this).addClass('is-invalid');
-            }
-            // add name location 
-            const nameLocation = extractPlaceNameFromUrl(url)
-            if(nameLocation){
-                $(parent).find('input.name')?.val(nameLocation)
-            }
-        })
+        $(document).on('change', '.input_location_link',
+            function() { //show latitude and longitude from input link google map
+                const parent = $(this).closest('.parent_location')
+                const error = $(this).parents('.form-group').find('.input-error')
+                error.text('')
+                error.html('');
+                error.hide();
+                $(this).removeClass('is-invalid');
+                const url = $(this).val()
+                if (!url) return false
+
+                const regex = /@(-?\d+\.\d+),(-?\d+\.\d+)/;
+                const matches = url.match(regex);
+                if (matches) {
+                    const latitude = parseFloat(matches[1]);
+                    const longitude = parseFloat(matches[2]);
+                    $(parent).find('input.latitude').val(latitude)
+                    $(parent).find('input.longitude').val(longitude)
+                } else {
+                    $(parent).find('input.latitude').val('')
+                    $(parent).find('input.longitude').val('')
+                    error.html('Link không đúng định dạng');
+                    error.show();
+                    $(this).addClass('is-invalid');
+                }
+                // add name location
+                const nameLocation = extractPlaceNameFromUrl(url)
+                if (nameLocation) {
+                    $(parent).find('input.name')?.val(nameLocation)
+                }
+            })
+
         function extractPlaceNameFromUrl(url) {
             const pattern = /\/place\/([^\/?]+)/;
             const match = url.match(pattern);

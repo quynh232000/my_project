@@ -38,7 +38,7 @@
                 <!--begin::Row-->
 
                 <div class="container">
-                    <h1 class="mb-4">List Project ({{$params['items']->total()}})</h1>
+                    <h1 class="mb-4">List Project ({{ $params['items']->total() }})</h1>
 
                     @if (session('success'))
                         <div class="alert alert-success">{{ session('success') }}</div>
@@ -65,8 +65,8 @@
                                     <td>
                                         <div class="d-flex align-items-center">
                                             <span class="icon-wrapper cursor-pointer symbol symbol-40px">
-                                                  <img src="{{ $item->thumbnail ?? asset('assets/media/auth/505-error.png') }}"
-                                                        alt="">
+                                                <img src="{{ $item->thumbnail ?? asset('assets/media/auth/505-error.png') }}"
+                                                    alt="">
                                             </span>
 
                                         </div>
@@ -74,7 +74,7 @@
                                     <td>{{ $item->title }}</td>
                                     <td>
                                         @foreach ($item->category ?? [] as $i)
-                                            <div>{{$i}}</div>
+                                            <div>{{ $i }}</div>
                                         @endforeach
                                     </td>
                                     <td class="text-warning">{{ $item->email }}</td>
@@ -82,18 +82,20 @@
                                     <td>{{ $item->created_at }}</td>
                                     <td>{{ $item->creator->full_name }}</td>
                                     <td>
-                                        <a href="
+                                        <div class="d-flex">
+                                            <a href="
                                         {{ route($params['prefix'] . '.' . $params['controller'] . '.edit', $item->id) }}
                                          "
-                                            class="btn btn-sm btn-warning">Edit</a>
-                                        <form
-                                            action="{{ route($params['prefix'] . '.' . $params['controller'] . '.destroy', $item->id) }}"
-                                            method="POST" style="display:inline;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button class="btn btn-sm btn-danger"
-                                                onclick="return confirm('Do you want to delete?')">Delete</button>
-                                        </form>
+                                                class="btn btn-sm btn-warning mr-2">Edit</a>
+                                            <form
+                                                action="{{ route($params['prefix'] . '.' . $params['controller'] . '.destroy', $item->id) }}"
+                                                method="POST" style="display:inline;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button class="btn btn-sm btn-danger"
+                                                    onclick="return confirm('Do you want to delete?')">Delete</button>
+                                            </form>
+                                        </div>
                                     </td>
                                 </tr>
                             @endforeach

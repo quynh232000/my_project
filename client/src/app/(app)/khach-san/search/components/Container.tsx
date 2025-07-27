@@ -1,5 +1,5 @@
 'use client';
-import SearchHead from '@/app/components1/SearchHead'
+import SearchHead from '@/app/(app)/components/SearchHead'
 import Link from 'next/link';
 import React from 'react'
 import SideBar from './SideBar';

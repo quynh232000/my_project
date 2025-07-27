@@ -29,7 +29,7 @@ class IsLoginMiddleware
         $route_name     = $request->route()->getName();
         $method         = $request->getMethod();
 
-        if(!auth()->user()->hasPermission($route_name,$method)){
+        if (!auth()->user()->hasPermission($route_name, $method)) {
             return redirect()->back()->with('error', 'You dont have permission to access this page');
         }
         return $next($request);

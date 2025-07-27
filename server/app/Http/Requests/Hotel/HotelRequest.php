@@ -30,45 +30,46 @@ class HotelRequest extends FormRequest
             // 'image'                 => "bail|".($id?'sometimes':'required')."|image|mimes:jpeg,png,jpg,gif,webp|max:2560",
             'slug'                  => "bail|required|unique:{$this->table},slug" . ($id ? ",{$id}" : ''),
             'status'                => "bail|required|in:active,inactive",
-            'stars'                 => "bail|required|in:0,0.5,1,1.5,2,2.5,3,3.5,4,4.5,5",
+            // 'stars'                 => "bail|required|in:0,0.5,1,1.5,2,2.5,3,3.5,4,4.5,5",
             // 'description'           => "bail|required|string",
-            'commission_rate'       => "bail|nullable|numeric|min:0",
+            // 'commission_rate'       => "bail|nullable|numeric|min:0",
             'address'               => "bail|required|string",
-            'images'                => 'bail|sometimes|array',
-            'images.*'              => 'bail|image|mimes:jpeg,png,jpg,gif,webp|max:2560', 
+            // 'images'                => 'bail|sometimes|array',
+            // 'images.*'              => 'bail|image|mimes:jpeg,png,jpg,gif,webp|max:2560',
 
-            'abumn'                 => 'sometimes|array', 
+            // 'abumn'                 => 'sometimes|array',
             // 'abumn.thumbnail'       => 'required|array',  // Ensure 'thumbnail' is an array
             // 'abumn.thumbnail.*'     => 'required|image|mimes:jpg,jpeg,png,gif|max:2048',
-            'abumn.*.name'          => 'sometimes|string|max:255', 
-            'abumn.*.images.*'      => 'sometimes|image|mimes:jpeg,png,jpg,gif,webp|max:2560',
-            'abumn.*.images'        => 'required_with:abumn.*.name|array',
+            // 'abumn.*.name'          => 'sometimes|string|max:255',
+            // 'abumn.*.images.*'      => 'sometimes|image|mimes:jpeg,png,jpg,gif,webp|max:2560',
+            // 'abumn.*.images'        => 'required_with:abumn.*.name|array',
             'accommodation_id'      => 'bail|required',
             'country_id'            => 'bail|required',
-            'city_id'               => 'bail|required',
-            'district_id'           => 'bail|required',
+            'province_id'               => 'bail|required',
+            // 'district_id'           => 'bail|required',
             'ward_id'               => 'bail|required',
             // 'latitude'              => 'required|numeric|between:-90,90',
             // 'longitude'             => 'required|numeric|between:-180,180',
 
-            'location'              => 'nullable|array',
-            'location.*.latitude'   => 'required_with:location.*.longitude|numeric',
-            'location.*.longitude'  => 'required_with:location.*.latitude|numeric',
-            'location.*.name'       => 'required',
-            'location.*.address'    => 'required',
+            // 'location'              => 'nullable|array',
+            // 'location.*.latitude'   => 'required_with:location.*.longitude|numeric',
+            // 'location.*.longitude'  => 'required_with:location.*.latitude|numeric',
+            // 'location.*.name'       => 'required',
+            // 'location.*.address'    => 'required',
         ];
-        
 
-        if(!empty(request()->input('')))
 
-        if($id){
-            $validate = [   ...$validate ,
-                            'abumn'           => '', 
-                            'abumn.*.name'    => '', 
-                            'abumn.*.images.*'=> '',
-                            'abumn.*.images'  => '',
-                        ];
-        }
+        if (!empty(request()->input('')))
+
+            if ($id) {
+                $validate = [
+                    ...$validate,
+                    'abumn'           => '',
+                    'abumn.*.name'    => '',
+                    'abumn.*.images.*' => '',
+                    'abumn.*.images'  => '',
+                ];
+            }
         return $validate;
     }
     public function messages()
@@ -119,8 +120,6 @@ class HotelRequest extends FormRequest
     }
     public function attributes()
     {
-        return [
-
-        ];
+        return [];
     }
 }

@@ -3,8 +3,7 @@ import { AppEndpoint, PROVINCE_API_URL } from '@/services/type';
 
 export const addressTypes = [
 	'country_id',
-	'city_id',
-	'district_id',
+	'province_id',
 	'ward_id',
 ] as const;
 

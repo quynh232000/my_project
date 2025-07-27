@@ -133,7 +133,7 @@ return  [
             'controller'    =>   \App\Http\Controllers\Admin\Admin\CountryController::class,
             'uri'           => $base . '/country/address',
             'name'          => $base . '.country.address',
-            'methods'       => ['get'],
+            'methods'       => ['post'],
             'action'        => 'address',
         ],
         // province_route

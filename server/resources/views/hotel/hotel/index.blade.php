@@ -74,12 +74,11 @@
                                 {!! \App\Models\Hotel\HotelModel::slbStatus(@$params['status'], ['action' => @$params['action']]) !!}
                             </div>
                             <div class="row col-12">
-                                {{-- {!! \App\Helpers\Template::address([
-                                    'country_id'    => $params['country_id'] ?? '',
-                                    'city_id'       => $params['city_id'] ?? '',
-                                    'district_id'   => $params['district_id'] ?? '',
-                                    'ward_id'       => $params['ward_id'] ?? ''
-                                ]) !!} --}}
+                                {!! \App\Helpers\Template::address([
+                                    'country_id' => $params['country_id'] ?? '245',
+                                    'province_id' => $params['province_id'] ?? '',
+                                    'ward_id' => $params['ward_id'] ?? '',
+                                ]) !!}
                             </div>
                             <div class="col-12 row">
                                 <div class="form-group col-3 p-2 mb-0">

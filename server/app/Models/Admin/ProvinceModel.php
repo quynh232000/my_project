@@ -128,7 +128,7 @@ class ProvinceModel  extends AdminModel
         if ($options['task'] == 'list-items') {
 
             $this->_data      = self::select('id', 'name')
-                ->where('city_id', $params['city_id'])
+                ->where('country_id', $params['country_id'])
                 ->where('status', 'active')
                 ->orderBy('name', 'asc')->get()->toArray();
         }

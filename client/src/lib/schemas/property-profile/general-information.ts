@@ -48,12 +48,10 @@ const propertyAddressInformationSchema = validate.object({
 	country_id: validate.number({
 		message: 'Bạn phải chọn quốc gia',
 	}),
-	city_id: validate.number({
+	province_id: validate.number({
 		message: 'Bạn phải chọn thành phố',
 	}),
-	district_id: validate.number({
-		message: 'Bạn phải chọn quận/huyện',
-	}),
+
 	ward_id: validate.number({
 		message: 'Bạn phải chọn phường/xã',
 	}),

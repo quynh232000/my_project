@@ -19,6 +19,28 @@ class Template
         );
         return $xhtml;
     }
+    public static function InputText($params, $name, $value = null)
+    {
+        return '
+                <div>
+                    <div id="kt_ecommerce_add_product_meta_description" name="' . $name . '"
+                                    class=" mb-2" style="min-height: 500px">
+                                    ' . ($value ?? '') . '
+                                    </div>
+                                <input type="text" name="' . $name . '" id="hidden_description" class="hidden" hidden>
+                                <script>
+
+                                    $("form").on("submit", function(e) {
+                                        const html = $("#kt_ecommerce_add_product_meta_description .ql-editor").html();
+
+                                        $("#hidden_description").val(html);
+                                    });
+                                </script>
+                                <div class="text-muted fs-7">Set a description to the project
+                                    ranking.</div>
+                </div>
+                            ';
+    }
 
     public static function adminButtonAction($params, $button, $id, $options = null)
     {
@@ -114,8 +136,9 @@ class Template
                 </label>
                 <select
                     %s
-                    class="form-control select2 select2-primary helper_select_address"
+                    class="form-control helper_select_address"
                     data-next="%s"
+                    data-control="select2"
                     data-dropdown-css-class="select2-primary"
                     id="%s"
                     name="%s"
@@ -150,16 +173,14 @@ class Template
 
         $labels         = [
             'country_id'    => 'Quốc gia',
-            'city_id'       => 'Tỉnh/ Thành phố',
-            'district_id'   => 'Quận/ Huyện',
+            'province_id'   => 'Tỉnh/ Thành phố',
             'ward_id'       => 'Phường/ Xã'
         ];
 
         if (!$params) {
             $params     = [
                 'country_id'    => null,
-                'city_id'       => null,
-                'district_id'   => null,
+                'province_id'       => null,
                 'ward_id'       => null
             ];
         }
