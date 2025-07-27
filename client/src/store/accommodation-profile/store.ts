@@ -38,8 +38,7 @@ export const useAccommodationProfileStore = create<
 					},
 					address: {
 						country_id: data.country_id || NaN,
-						city_id: data.city_id || NaN,
-						district_id: data.district_id || NaN,
+						province_id: data.province_id || NaN,
 						ward_id: data.ward_id || NaN,
 						address: data.address ?? '',
 						latitude: data.latitude || 0,
