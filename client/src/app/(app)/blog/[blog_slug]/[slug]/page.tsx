@@ -9,7 +9,7 @@ interface PageProps {
     slug:string;
   };
 }
-export default async function page({params}:PageProps) {
+export default async function Page({params}:PageProps) {
    
   return (
     <div className='mt-[148px]'>
