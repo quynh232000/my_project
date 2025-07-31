@@ -3,6 +3,7 @@
 namespace App\Models\Api\V1\Hms;
 
 use App\Models\HmsModel;
+use App\Services\FileService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
@@ -45,14 +46,9 @@ class AlbumModel extends HmsModel
             $params['controller']   = 'hotel';
             $typeId                 = $type == 'thumbnail' ? 'hotel_id' : 'point_id';
 
-            $image_url              = self::getImageColumn($params, [
-                "'/images/'",
-                $this->table . "." . $typeId,
-                "'/'",
-                $this->table . ".image",
-            ], 'image_url');
 
-            $item = self::select($this->table . '.id', $this->table . '.hotel_id', $this->table . '.label_id', $this->table . '.point_id', $image_url, $this->table . '.priority', 'a.name')
+
+            $item = self::select($this->table . '.id', $this->table . '.hotel_id', $this->table . '.label_id', $this->table . '.point_id', $this->table . '.image', $this->table . '.priority', 'a.name')
                 // ->with('attribure:id,name')
                 ->leftJoin(TABLE_HOTEL_ATTRIBUTE . ' as a', 'a.id', '=', $this->table . '.label_id')
                 ->where('type', $type)
@@ -130,17 +126,14 @@ class AlbumModel extends HmsModel
             $hotel                  = HotelModel::select('id', 'slug')->where('id', $hotel_id)->first();
 
             $params['controller']   = 'hotel';
-            $params['bucket']       = $this->bucket;
 
             $typeId                 = $params['type'] == 'room_type' ? $params['room_id'] : $hotel_id;
-            $folderPath             = $params['controller'] . '/images/' . $typeId . '/';
 
             foreach ($params['images'] as $index => $item) {
                 $extension          = $item['image']->getClientOriginalExtension();
                 $imageName          = ($params['slug'] ?? $hotel->slug) . '-' . $index . '-' . time() . '.' . $extension;
-                $params['image']    = $imageName;
 
-                Storage::disk($params['bucket'])->put($folderPath . $imageName, file_get_contents($item['image']));
+                $imageName = FileService::file_upload($params, $item['image'], 'image');
                 $items[] = [
                     'label_id'      => $item['label_id'],
                     'priority'      => $item['priority'] ?? null,
@@ -186,15 +179,10 @@ class AlbumModel extends HmsModel
 
             $params['id']           = $params['type'] == 'room_type' ?  $params['id'] : $hotel_id;
 
-            $folderPath             = $params['controller'] . '/images/' . $params['id'] . '/';
 
             foreach (($params['update'] ?? []) as $index => $item) {
                 if ($item['image'] ?? false) {
-
-                    $extension          = $item['image']->getClientOriginalExtension();
-                    $imageName          = $params['slug'] . '-' . $index . '-' . time() . '.' . $extension;
-                    Storage::disk($params['bucket'])->put($folderPath . $imageName, file_get_contents($item['image']));
-                    $item['image']      = $imageName;
+                    $item['image']      = FileService::file_upload($params, $item['image'], 'image');
                 }
 
                 self::where('id', $index)->update($this->prepareParams($item));

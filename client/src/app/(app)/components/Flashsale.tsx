@@ -12,7 +12,10 @@ import { useEffect, useState } from "react";
 
 const GetHotel = async () => {
     try {
-        const { data } = await CallAPI().get(`https://backend.190booking.com/api/v1/hotel/hotel/filter?type=country&slug=viet-nam`);
+        const { data } = await CallAPI().post(`https://backend.190booking.com/api/v1/hotel/hotel/filter`,{
+          type:'country',
+          slug:'viet-nam'
+        });
         if (!data) {
             return null;
         }
@@ -130,7 +133,7 @@ function Flashsale() {
                 })}
               </Swiper>
             </div>
-            <div className="flex justify-center mt-6">
+            <div className="flex justify-center mt-2">
                 <div className="bg-yellow-500 text-white hover:bg-yellow-600 shadow-lg rounded-lg py-2 px-8 cursor-pointer">Xem thêm</div>
             </div>
           </div>

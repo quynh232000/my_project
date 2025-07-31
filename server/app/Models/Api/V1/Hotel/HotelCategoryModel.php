@@ -14,40 +14,41 @@ class HotelCategoryModel extends ApiModel
 {
     public function __construct()
     {
+
         $this->table        = TABLE_HOTEL_HOTEL_CATEGORY;
-        $this->hidden       = [];
-        $this->appends      = [];
+        $this->hidden       = ['created_by', 'updated_at', 'updated_by', 'status', '_lft', '_rgt'];
+        $this->appends      = ['product_counts'];
         parent::__construct();
     }
     protected $casts        = [
-        'type' => 'array'
+        'position' => 'array'
     ];
     protected $hidden       = ['pivot'];
     public function listItem($params = null, $options = null)
     {
-        $results    = null;
+        $results        = null;
 
         if ($options['task'] == 'list') {
-
-            $results    = self::select('id', 'name', 'slug', 'image', 'type')
-                ->withCount(['hotels as hotels_count' => function ($q) {
-                    $q->where('status', 'active');
-                }])
+            $results            = self::select('id', 'name', 'slug', 'image', 'priority', 'created_at', 'country_id', 'province_id', 'ward_id', 'type_location', 'position')
                 ->where('status', 'active')
+                ->whereNotNull('position')
                 ->orderBy('created_at', 'desc')
                 ->orderBy('priority', 'asc')
                 ->limit($params['limit'] ?? 999)
                 ->get();
 
             //  group by type item
-            $data_group     = collect();
+            $data_group         = collect();
             foreach ($results as $item) {
-                $types      = is_array($item->type) ? $item->type : json_decode($item->type, true);
-                if (is_array($types)) {
-                    foreach ($types as $type) {
+                $positions      = is_array($item->position) ? $item->position : json_decode($item->position, true);
+                if (is_array($positions)) {
+                    foreach ($positions as $position) {
                         // create if not exist
-                        $data_group[$type] ??= collect();
-                        $data_group[$type]->push($item);
+                        if ($position != 'trending' && $position != 'best_price') {
+                            $data_group[$position] ??= collect();
+                            unset($item->position);
+                            $data_group[$position]->push($item);
+                        }
                     }
                 }
             }
@@ -101,14 +102,82 @@ class HotelCategoryModel extends ApiModel
     }
     public function getItem($params = null, $options = null)
     {
-
+        $result = null;
         if ($options['task'] == 'item-info') {
-            $key            = "{$params['prefix']}.{$params['controller']}.{$params['action']}.{$params['type']}.{$params['id']}";
+            if ($params['type'] == 'chain') {
+                $result['info']     = ChainModel::where(['slug' => $params['slug'], 'status' => 'active'])->first();
+            } else {
+                $result['info']     = self::where(['slug' => $params['slug'], 'status' => 'active', 'type_location' => $params['type']])->first();
+            }
 
-            $results        = $this->rememberCacheJson($key, function () use ($params) {
-                return self::item_info($params);
-            }, 3600);
-            return $results;
+            if (!$result['info']) {
+                $data_point     = [
+                    'country'  => CountryModel::class,
+                    'city'     => CityModel::class,
+                    'district' => DistrictModel::class,
+                    'ward'     => WardModel::class,
+                ];
+                $result['info']                     = $data_point[$params['type']]::select('id', 'name', 'slug')->where(['slug' => $params['slug'], 'status' => 'active'])
+                    ->first()
+                    ->makeHidden('image_url')
+                    ->toArray();
+
+                $result['info']['type_location']    = 'location';
+                $result['info']['origin']           = 'location';
+            } else {
+                $result['info']                    = $result['info']->toArray();
+                if ($params['type'] == 'chain') {
+                    $result['info']['origin']           = 'chain';
+                } else {
+                    $result['info']['origin']           = 'category';
+                }
+            }
+
+            $result['accommodation']    = AttributeModel::select('id', 'name', 'slug')
+                ->where('status', 'active')
+                ->whereHas('parents', fn($q) => $q->where('slug', 'accommodation_type'))
+                ->whereHas('hotels', function ($query) use ($result, $params) {
+                    $query->filterByCategory($result['info'], $params);
+                })
+                ->get()->toArray();
+
+            $result['facilities']       = HotelServiceModel::with('hotel', 'facility:id,name')
+                ->where('type', 'hotel')
+                ->whereHas('hotel', function ($query) use ($result, $params) {
+                    $query->filterByCategory($result['info'], $params);
+                })
+                ->get()
+                ->unique('service_id')
+                ->values()
+                ->makeHidden(['hotel', 'point_id', 'type']);
+
+            $result['amenities']        = HotelServiceModel::with('amenity:id,name')
+                ->where('type', 'room')
+                ->whereHas('room', function ($q) use ($result, $params) {
+                    $q->where('status', 'active')
+                        ->whereHas('hotel', function ($query) use ($result, $params) {
+                            $query->filterByCategory($result['info'], $params);
+                        });
+                })
+                ->get()
+                ->unique('service_id')
+                ->values()
+                ->makeHidden(['room', 'point_id', 'type']);
+
+            // $result['info']             = [
+            //                                 'id'                => $result['info']['id'],
+            //                                 'name'              => $result['info']['name'],
+            //                                 'slug'              => $result['info']['slug'] ?? '',
+            //                                 'type_location'     => $result['info']['type_location'],
+            //                                 'origin'            => $result['info']['origin'],
+            //                                 'description'       => $result['info']['description'] ?? '',
+            //                                 'image'             => $result['info']['image'] ?? '',
+            //                                 'meta_title'        => $result['info']['meta_title'] ?? '',
+            //                                 'meta_keyword'      => $result['info']['meta_keyword'] ?? '',
+            //                                 'meta_description'  => $result['info']['meta_description'] ?? '',
+            //                             ];
+
+            return $result;
         }
     }
     public function item_info($params)
@@ -202,25 +271,30 @@ class HotelCategoryModel extends ApiModel
     }
     public function rememberCacheJson($key, $callback,  $ttl = 3600): array
     {
-        if (!RedisHelper::checkRedis()) {
-            return $callback();
-        }
-
-        $cached = $this->getJson($key);
-        if ($cached !== null) {
-            return $cached;
-        }
-        $data   = $callback();
-        $this->setJson($key, $data, $ttl);
-        return $data;
+        return $callback();
     }
 
-    // public function getImageAttribute()
-    // {
-    //     return $this->attributes['image'] ? URL_DATA_IMAGE.'hotel/hotel-category/images/'.$this->id.'/'. $this->attributes['image'] : null;
-    // }
-    public function hotels()
+
+
+    public function getProductCountsAttribute()
     {
-        return $this->belongsToMany(HotelModel::class, TABLE_HOTEL_HOTEL_CATEGORY_ID, 'category_id', 'hotel_id');
+        $query          = LocationModel::whereHas('hotel', function ($q) {
+            $q->where('status', 'active');
+        });
+
+        switch ($this->type_location) {
+            case 'province':
+                $query->where('province_id', $this->province_id);
+                break;
+            case 'country':
+                $query->where('country_id', $this->country_id);
+                break;
+
+            case 'ward':
+                $query->where('ward_id', $this->ward_id);
+                break;
+        }
+
+        return $query->count();
     }
 }

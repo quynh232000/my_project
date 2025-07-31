@@ -1,7 +1,19 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { A11y, Autoplay } from "swiper/modules";
 import Image from "next/image";
+import { useEffect, useState } from "react";
+import { getPostList, IPostItem } from './../../../../services/app/blog/getBlogFeature';
+import { formatDate } from "@/utils/common";
 function Slider() {
+    const [data,setData] = useState<IPostItem[]>([])
+     useEffect(()=>{
+            getPostList({limit:10,slug:'news',type:'featured'}).then(res=>{
+                if(res){
+                    setData(res?.list)
+                }
+            })
+     },[])
+    console.log(data)
   return (
     <div>
         <Swiper
@@ -18,36 +30,37 @@ function Slider() {
             //   1280: { slidesPerView: 5, spaceBetween: 10 }, // Large screens
             // }}
             >
-            <SwiperSlide >
+                {data && data.map(item=>{
+                    return  <SwiperSlide key={item.id}>
                 <div className=" relative w-full">
                         <div className=" relative w-full h-[470px]">
                             <Image
                             fill
                             alt=""
-                            src={'/images/common/hotel_1.jpg'}
+                            src={item.image??'/images/common/hotel_1.jpg'}
                             className=" w-full h-full object-cover"
                             />
                         </div>  
-                        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-50 rounded-lg backdrop-blur-lg" />
+                        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-70 rounded-lg backdrop-blur-lg" />
                         <div className=" absolute top-0 left-0 right-0 bottom-0  text-white flex justify-center items-center">
                                 <div className="w-content m-auto flex flex-col justify-center items-center ">
                                     <h2 className="font-bold text-5xl px-12 text-center ">
-                                        Top 9 Điểm Bán Dâu Tây Sạch Uy Tín <br /> Tại Phường Xuân Hương - Đà Lạt, Lâm Đồng
+                                        {item.name}
                                     </h2>
                                     <div className="flex items-center gap-5 mt-5">
                                         <div>
-                                        18/07/2025 
+                                        {formatDate(item.created_at)} 
                                         </div>
                                         <div className=" flex items-center gap-2">
                                             <div className=" relative w-[36px] h-[36px]">
                                                 <Image
-                                                alt=""
+                                                alt={item.name}
                                                 className=" rounded-full object-cover"
                                                 fill
-                                                src={'/images/common/hotel_1.jpg'}
+                                                src={item.author.avatar ??'/images/common/hotel_1.jpg'}
                                                 />
                                             </div>
-                                            <span>Nguyễn Hồng Hạnh</span>
+                                            <span>{item.author.full_name}</span>
 
                                         </div>
                                     </div>
@@ -55,43 +68,9 @@ function Slider() {
                         </div>
                 </div>
             </SwiperSlide>
-                        <SwiperSlide >
-                <div className=" relative w-full">
-                        <div className=" relative w-full h-[470px]">
-                            <Image
-                            fill
-                            alt=""
-                            src={'/images/common/hotel_1.jpg'}
-                            className=" w-full h-full object-cover"
-                            />
-                        </div>  
-                        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-50 rounded-lg backdrop-blur-lg" />
-                        <div className=" absolute top-0 left-0 right-0 bottom-0  text-white flex justify-center items-center">
-                                <div className="w-content m-auto flex flex-col justify-center items-center ">
-                                    <h2 className="font-bold text-5xl px-12 text-center ">
-                                        Top 9 Điểm Bán Dâu Tây Sạch Uy Tín <br /> Tại Phường Xuân Hương - Đà Lạt, Lâm Đồng
-                                    </h2>
-                                    <div className="flex items-center gap-5 mt-5">
-                                        <div>
-                                        18/07/2025 
-                                        </div>
-                                        <div className=" flex items-center gap-2">
-                                            <div className=" relative w-[36px] h-[36px]">
-                                                <Image
-                                                alt=""
-                                                className=" rounded-full object-cover"
-                                                fill
-                                                src={'/images/common/hotel_1.jpg'}
-                                                />
-                                            </div>
-                                            <span>Nguyễn Hồng Hạnh</span>
-
-                                        </div>
-                                    </div>
-                                </div>
-                        </div>
-                </div>
-            </SwiperSlide>
+                })}
+           
+                       
         
         </Swiper>
     </div>

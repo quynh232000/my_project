@@ -2,6 +2,9 @@
 
 namespace App\Models\Api\V1\Hms;
 
+use App\Models\Admin\CountryModel;
+use App\Models\Admin\ProvinceModel;
+use App\Models\Admin\WardModel;
 use App\Models\HmsModel;
 
 class LocationModel extends HmsModel
@@ -49,8 +52,7 @@ class LocationModel extends HmsModel
 
         $models     = [
             'country'  => CountryModel::class,
-            'city'     => CityModel::class,
-            'district' => DistrictModel::class,
+            'province'     => ProvinceModel::class,
             'ward'     => WardModel::class,
         ];
 

@@ -3,6 +3,7 @@
 namespace App\Models\Api\V1\Hms;
 
 use App\Models\HmsModel;
+use App\Services\FileService;
 use Illuminate\Support\Facades\Storage;
 
 class HotelModel extends HmsModel
@@ -24,7 +25,7 @@ class HotelModel extends HmsModel
     ];
     protected $guarded = [];
 
-    public $crudNotAccepted = ['country_id', 'city_id', 'district_id', 'ward_id', 'address', 'longitude', 'latitude'];
+    public $crudNotAccepted = ['country_id', 'province_id', 'district_id', 'ward_id', 'address', 'longitude', 'latitude'];
 
     public function getItem($params = null, $options = null)
     {
@@ -88,9 +89,7 @@ class HotelModel extends HmsModel
             $params['updated_at']   = date('Y-m-d H:i:s');
 
             if (request()->hasFile('image')) {
-                $imageFile              = $params['image'];
-                $params['image']        = $hotel->slug . '-' . time() . '.' . $imageFile->extension();
-                Storage::disk($this->bucket)->put('hotel/images/' . $hotel_id . '/' . $params['image'], file_get_contents($imageFile));
+                $params['image']        = FileService::file_upload($params, $params['image'], 'thumbnail');
             }
             $LocationModel = new LocationModel();
             $LocationModel->saveItem($params, ['task' => 'add-item', 'insert_id' => $hotel_id]);

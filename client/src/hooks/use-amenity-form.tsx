@@ -85,8 +85,9 @@ const useAmenityForm = ({
 		try {
 			setLoading(true);
 			const ids = Object.values(data)
-				.flat()
-				.map((id) => Number(id));
+			.flat()
+			.filter((id) => id != null) // Lọc bỏ null và undefined
+			.map((id) => Number(id));
 
 			const res = await updateHotelServices({
 				type,

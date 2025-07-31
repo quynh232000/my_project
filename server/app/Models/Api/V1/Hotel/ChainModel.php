@@ -21,19 +21,11 @@ class ChainModel extends ApiModel
         if ($options['task'] == 'list') {
             $results    = self::select('id', 'name', 'slug', 'logo', 'image', 'price')
                 ->where(['status' => 'active'])
-                ->orderBy('created_at', 'desc')
+                // ->orderBy('type', 'asc')
                 ->orderBy('priority', $params['direction'] ?? 'asc')
-                ->limit($params['limit'] ?? 8)
+                ->limit($params['limit'] ?? 99)
                 ->get() ?? [];
         }
         return $results;
     }
-    // public function getImageAttribute()
-    // {
-    //     return $this->attributes['image'] ? URL_DATA_IMAGE."hotel/chain/images/".$this->id.'/'. $this->attributes['image'] : null;
-    // }
-    // public function getLogoAttribute()
-    // {
-    //     return $this->attributes['logo'] ? URL_DATA_IMAGE."hotel/chain/images/".$this->id.'/'. $this->attributes['logo'] : null;
-    // }
 }

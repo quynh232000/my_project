@@ -3,104 +3,30 @@
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { A11y, Autoplay } from "swiper/modules";
+import { useEffect, useState } from "react";
+import { IChainItem, SGetChainList } from "@/services/app/home/SGetChainList";
+import { FormatPrice } from "@/utils/common";
 
 // Data input
-const data = [
-        {
-            id:1,
-            image:'/images/common/hotel_1.jpg',
-            name:'Côn Đảo Resort',
-            slug:'con-dao-resort',
-            sale:23,
-            start:4,
-            address:'Huyện Côn Đảo',
-            reviews:{
-                rating:8.4,
-                review_counts:12,
-                type:'Rất Tốt'
-            },
-            price:1500000,
-        },
-        {
-            id:13,
-            image:'/images/common/hotel_2.jpg',
-            name:'Côn Đảo Resort',
-            slug:'con-dao-resort',
-            sale:23,
-            start:4,
-            address:'Huyện Côn Đảo',
-            reviews:{
-                rating:8.4,
-                review_counts:12,
-                type:'Rất Tốt'
-            },
-            price:1500000,
-        },
-        {
-            id:12,
-            image:'/images/common/hotel_3.jpg',
-            name:'Côn Đảo Resort',
-            slug:'con-dao-resort',
-            sale:23,
-            start:4,
-            address:'Huyện Côn Đảo',
-            reviews:{
-                rating:8.4,
-                review_counts:12,
-                type:'Rất Tốt'
-            },
-            price:1500000,
-        },
-        {
-            id:4,
-            image:'/images/common/hotel_4.jpg',
-            name:'Côn Đảo Resort',
-            slug:'con-dao-resort',
-            sale:23,
-            start:4,
-            address:'Huyện Côn Đảo',
-            reviews:{
-                rating:8.4,
-                review_counts:12,
-                type:'Rất Tốt'
-            },
-            price:1500000,
-        },
-        {
-            id:5,
-            image:'/images/common/hotel_5.png',
-            name:'Côn Đảo Resort',
-            slug:'con-dao-resort',
-            sale:23,
-            start:4,
-            address:'Huyện Côn Đảo',
-            reviews:{
-                rating:8.4,
-                review_counts:12,
-                type:'Rất Tốt'
-            },
-            price:1500000,
-        },
-         {
-            id:0,
-            image:'/images/common/hotel_4.jpg',
-            name:'Côn Đảo Resort',
-            slug:'con-dao-resort',
-            sale:23,
-            start:4,
-            address:'Huyện Côn Đảo',
-            reviews:{
-                rating:8.4,
-                review_counts:12,
-                type:'Rất Tốt'
-            },
-            price:1500000,
-        },
-    ]
+
 
 
 
 export default function ChainHotel() {
+  const [chains,setChains] = useState<IChainItem[][]>([])
+  useEffect(() => {
+  SGetChainList().then(res => {
+    if (res) {
+      const grouped = res.reduce<IChainItem[][]>((acc, item, index) => {
+        const groupIndex = Math.floor(index / 3);
+        if (!acc[groupIndex]) acc[groupIndex] = [];
+        acc[groupIndex].push(item);
+        return acc;
+      }, []);
+      setChains(grouped);
+    }
+  });
+}, []);
   return (
     <div className=" px-4 bg-white">
       <div className="flex flex-col my-10 w-content m-auto">
@@ -133,42 +59,48 @@ export default function ChainHotel() {
                 //   1280: { slidesPerView: 5, spaceBetween: 10 }, // Large screens
                 // }}
               >
-                {data.map((item) => {
+                {chains.map((item,index) => {
                   return (
-                    <SwiperSlide key={item.id+'okok111'} >
+                    <SwiperSlide key={index} >
                         <div className="grid grid-cols-2 gap-3">
-                          <div className=" relative rounded-lg ">
-                              <div className=" relative h-[390px] w-full rounded-lg overflow-hidden">
-                                <Image 
-                                  fill
-                                  alt=""
-                                  className=" object-cover w-full h-full"
-                                  src={'/images/common/chain_1.jpg'}
-                                />
-                              </div>
-                              <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-50 rounded-lg" />
-                              <div className=" absolute top-0 left-0 right-0 bottom-0 flex flex-col justify-between p-4">
-                                <div className="w-[64px] h-[64px] object-cover relative rounded-lg shadow-lg ">
-                                  <Image 
+                           {item[0] && 
+                            <div className=" relative rounded-lg ">
+                            
+                                <div className=" relative h-[390px] w-full rounded-lg overflow-hidden">
+                                    <Image 
                                     fill
                                     alt=""
-                                    className=" object-cover w-full h-full  rounded-lg"
-                                    src={'/images/common/muong-thanhlogo.gif'}
-                                  />
+                                    className=" object-cover w-full h-full"
+                                    src={item[0]?.image ??'/images/common/chain_1.jpg'}
+                                    />
                                 </div>
-                                <div className="text-white ">
-                                  <div> Chỉ từ 215k/người</div>
+                                <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-50 rounded-lg" />
+                                <div className=" absolute top-0 left-0 right-0 bottom-0 flex flex-col justify-between p-4">
+                                    <div className="w-[64px] h-[64px] object-cover relative rounded-lg shadow-lg ">
+                                    <Image 
+                                        fill
+                                        alt=""
+                                        className="  w-full h-full  rounded-lg"
+                                        src={item[0].logo ??'/images/common/muong-thanhlogo.gif'}
+                                    />
+                                    </div>
+                                    <div className="text-white ">
+                                    <div className="font-semibold text-xl mb-2">{item[0].name}</div>
+                                    <div> Chỉ từ {FormatPrice(item[0].price ?? 0)}/đêm</div>
+                                    </div>
                                 </div>
-                              </div>
-                          </div>
+                            </div>
+                            }
+                            {item[1] && item[2] &&
                           <div className="flex flex-col gap-3">
+                            {item[1] &&
                             <div className=" relative rounded-lg flex-1">
                               <div className=" relative h-full w-full rounded-lg overflow-hidden">
                                 <Image 
                                   fill
                                   alt=""
                                   className=" object-cover w-full h-full"
-                                  src={'/images/common/chain_1.jpg'}
+                                  src={item[1]?.image ??'/images/common/chain_1.jpg'}
                                 />
                               </div>
                               <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-50 rounded-lg" />
@@ -177,40 +109,43 @@ export default function ChainHotel() {
                                   <Image 
                                     fill
                                     alt=""
-                                    className=" object-cover w-full h-full  rounded-lg"
-                                    src={'/images/common/muong-thanhlogo.gif'}
+                                    className="  w-full h-full  rounded-lg"
+                                    src={item[1].logo ??'/images/common/muong-thanhlogo.gif'}
                                   />
                                 </div>
                                 <div className="text-white ">
-                                  <div> Chỉ từ 215k/người</div>
+                                  <div className="font-semibold text-xl mb-2">{item[1]?.name}</div>
+                                  <div> Chỉ từ {FormatPrice(item[1]?.price ?? 0)}/đêm</div>
                                 </div>
                               </div>
-                          </div>
-                          <div className=" relative rounded-lg flex-1">
-                              <div className=" relative h-full w-full rounded-lg overflow-hidden">
-                                <Image 
-                                  fill
-                                  alt=""
-                                  className=" object-cover w-full h-full"
-                                  src={'/images/common/chain_1.jpg'}
-                                />
-                              </div>
-                              <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-50 rounded-lg" />
-                              <div className=" absolute top-0 left-0 right-0 bottom-0 flex flex-col justify-between p-4">
-                                <div className="w-[64px] h-[64px] object-cover relative rounded-lg shadow-lg ">
-                                  <Image 
+                            </div>}
+                             {item[2] &&
+                            <div className=" relative rounded-lg flex-1">
+                                <div className=" relative h-full w-full rounded-lg overflow-hidden">
+                                    <Image 
                                     fill
                                     alt=""
-                                    className=" object-cover w-full h-full  rounded-lg"
-                                    src={'/images/common/muong-thanhlogo.gif'}
-                                  />
+                                    className=" object-cover w-full h-full"
+                                    src={item[2]?.image ??'/images/common/chain_1.jpg'}
+                                    />
                                 </div>
-                                <div className="text-white ">
-                                  <div> Chỉ từ 215k/người</div>
+                                <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-50 rounded-lg" />
+                                <div className=" absolute top-0 left-0 right-0 bottom-0 flex flex-col justify-between p-4">
+                                    <div className="w-[64px] h-[64px] object-cover relative rounded-lg shadow-lg ">
+                                    <Image 
+                                        fill
+                                        alt=""
+                                        className="  w-full h-full  rounded-lg"
+                                        src={item[2].logo ??'/images/common/muong-thanhlogo.gif'}
+                                    />
+                                    </div>
+                                    <div className="text-white ">
+                                    <div className="font-semibold text-xl mb-2">{item[2]?.name}</div>
+                                    <div> Chỉ từ {FormatPrice(item[2]?.price ?? 0)}/đêm</div>
+                                    </div>
                                 </div>
-                              </div>
-                          </div>
-                          </div>
+                            </div>}
+                          </div>}
                         </div>
                     </SwiperSlide>
                   );

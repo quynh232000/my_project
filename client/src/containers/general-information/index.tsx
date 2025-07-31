@@ -60,8 +60,11 @@ export default function GeneralInformation({
 		async (value: AccommodationInfo) => {
 			setLoading(true);
 			try {
+
 				const res = await updateAccommodationProfile(value);
+				
 				if (res) {
+					toast.success('Cập nhật chỗ nghỉ thành công!');
 					if (value.generalInfo.image instanceof File) {
 						const url = URL.createObjectURL(
 							value.generalInfo.image
@@ -72,7 +75,7 @@ export default function GeneralInformation({
 					window.scrollTo({
 						top: 0,
 					});
-					toast.success('Cập nhật chỗ nghỉ thành công!');
+					
 				} else {
 					toast.error('Có lỗi xãy ra, vui lòng thử lại');
 				}

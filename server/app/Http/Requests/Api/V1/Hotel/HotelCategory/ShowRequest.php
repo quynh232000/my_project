@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Api\V1\Hotel\HotelCategory;
 
 use App\Traits\ApiResponse;
+use DB;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Validation\Rule;
@@ -18,22 +19,37 @@ class ShowRequest extends FormRequest
 
     public function rules(): array
     {
-        $dataTable = [
-            'category'      => TABLE_HOTEL_HOTEL_CATEGORY,
+        $dataTable  = [
             'country'       => TABLE_GENERAL_COUNTRY,
             'city'          => TABLE_GENERAL_CITY,
             'district'      => TABLE_GENERAL_DISTRICT,
-            'ward'          => TABLE_GENERAL_WARD
+            'ward'          => TABLE_GENERAL_WARD,
+            'chain'         => TABLE_HOTEL_CHAIN
         ];
+        $type       = request()->input('type');
+        $validate   = [
+            'slug'          => [
+                'required',
+                function ($attribute, $value, $fail) use ($type, $dataTable) {
+                    // 1. Kiểm tra trong bảng hotel_category
+                    $existsInCategory = DB::table(TABLE_HOTEL_HOTEL_CATEGORY)
+                        ->where('slug', $value)
+                        ->where('type_location', $type)
+                        ->exists();
 
+                    // 2. Kiểm tra trong bảng địa lý tương ứng (nếu có)
+                    $table          = $dataTable[$type] ?? null;
+                    $existsInGeo    = $table
+                        ? DB::table($table)->where('slug', $value)->exists()
+                        : false;
 
-        $validate = [
-            'type'          => ["required","in:" . implode(',', array_keys($dataTable))]
+                    if (!$existsInCategory && !$existsInGeo) {
+                        $fail("Slug không tồn tại trong danh mục, chain hoặc địa chỉ hành chính tương ứng.");
+                    }
+                }
+            ],
+            'type'          => ["required", "in:country,city,district,ward,chain"],
         ];
-
-        if(request()->type ?? false){
-            $validate['id'] = ['required','exists:'.$dataTable[request()->type].',id'];
-        }
 
         return $validate;
     }
@@ -41,15 +57,14 @@ class ShowRequest extends FormRequest
     {
         return [];
     }
-    protected function failedValidation($validator) 
+    protected function failedValidation($validator)
     {
         throw new HttpResponseException($this->errorInvalidate('Dữ liệu không hợp lệ! ', $validator->errors()));
     }
     public function validationData(): array
     {
         return array_merge($this->all(), [
-            'id'          => $this->route('hotel_category'),
+            'slug'          => $this->route('hotel_category'),
         ]);
     }
-
 }

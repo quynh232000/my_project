@@ -3,12 +3,14 @@
 namespace App\Models\Hotel;
 
 use App\Models\AdminModel;
+use App\Services\FileService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Hotel\PostCategoryIdModel;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+
 class PostModel extends AdminModel
 {
     protected $path;
@@ -34,7 +36,7 @@ class PostModel extends AdminModel
                 $this->table . '.name'          => 'Tiêu đề',
                 $this->table . '.slug'          => 'Slug',
             ],
-            'button'                => ['show', 'edit', 'delete'] // các button cho mỗi row hiển thị( xem danh sách button trong BackenModel)
+            'button'                => ['edit', 'delete'] // các button cho mỗi row hiển thị( xem danh sách button trong BackenModel)
         ];
         parent::__construct();
     }
@@ -75,7 +77,6 @@ class PostModel extends AdminModel
             $start  = date("Y-m-d H:i:s", strtotime($start));
             $end    = date("Y-m-d 23:59:59", strtotime($end));
             $query->whereBetween($this->table . '.updated_at', array($start, $end));
-
         }
         if (isset($params['status']) && $params['status'] != "") {
             $query->where($this->table . '.status', '=', $params['status']);
@@ -92,8 +93,7 @@ class PostModel extends AdminModel
             $query                          = self::select(array_keys($this->_data['listField']))
                 ->leftJoin(TABLE_USER . ' AS u', 'u.id', '=', $this->table . '.created_by')
                 // ->leftJoin(TABLE_HOTEL_POST_CATEGORY . ' AS c', 'c.category_id', '=', $this->table . '.id')
-                ->leftJoin(TABLE_USER . ' AS u2', 'u2.id', '=', $this->table . '.updated_by')
-                ;
+                ->leftJoin(TABLE_USER . ' AS u2', 'u2.id', '=', $this->table . '.updated_by');
 
             $query                          = self::adminQuery($query, $params);
 
@@ -112,24 +112,16 @@ class PostModel extends AdminModel
     }
     public function saveItem($params = null, $options = null)
     {
-        if ($options['task'] == 'add-item') { //thêm mới
+        if ($options['task'] == 'add-item') {
             $params['created_by']       = Auth::user()->id;
             $params['created_at']       = date('Y-m-d H:i:s');
-            $category_ids               = $params['category_id'] ?? [];
-            unset($params['category_id']);
-            $insertedId = self::insertGetId($this->prepareParams($params));
-
-            if (!empty($category_ids)) {
-                $params['id']           = $insertedId;
-                $params['category_id']  = $category_ids;
-                $postCategoryIdModel    = new PostCategoryIdModel();
-                $postCategoryIdModel->saveItem($params,['task'=>'add-item']);
-            }
 
             if (request()->hasFile('image')) {
-                $params['inserted_id']  = $params[$this->primaryKey];
-                $params                 = $this->saveImageS3($params, $options);
+                $params['image'] = FileService::file_upload($params, $params['image'], 'image');
             }
+            self::insertGetId($this->prepareParams($params));
+
+
             return response()->json(['success' => true, 'msg' => 'Tạo yêu cầu thành công!']);
         }
 
@@ -137,17 +129,11 @@ class PostModel extends AdminModel
 
             $params['updated_by']       = Auth::user()->id;
             $params['updated_at']       = date('Y-m-d H:i:s');
-            $category_ids               = $params['category_id'] ?? [];
+
             if (request()->hasFile('image')) {
-                $params['inserted_id']  = $params[$this->primaryKey];
-                $params                 = $this->saveImageS3($params, $options);
+                $params['image'] = FileService::file_upload($params, $params['image'], 'image');
             }
-            if (!empty($params['category_id'])) {
-                $PostCategoryIdModel = new PostCategoryIdModel();
-                $PostCategoryIdModel->saveItem($params,['task'=>'edit-item']);
-            }
-            unset( $params['category_id']);
-            $this->where($this->primaryKey, $params[$this->primaryKey])
+            $this->where('id', $params['id'])
                 ->update(
                     $this->prepareParams($params)
                 );
@@ -162,7 +148,6 @@ class PostModel extends AdminModel
                     'updated_at' => date('Y-m-d H:i:s'),
                     'updated_by' => Auth::user()->id
                 ]);
-
         }
     }
     public function getItem($params = null, $options = null)
@@ -175,24 +160,22 @@ class PostModel extends AdminModel
                 $result                 = $result->toArray();
                 $params['item']         = $result;
                 $result['imageName']    = $result['image'];
-                $result['image']        = $this->getImageUrlS3($result['image'], $params);
                 $result['status']       = trim($result['status']);
             }
         }
         if ($options['task'] == 'get-category-info') {
             $result = self::select($this->table . '.*')->with('categories:id')
-            ->where($this->table . '.' . $this->columnPrimaryKey(), $params[$this->columnPrimaryKey()])->first();
-
+                ->where($this->table . '.' . $this->columnPrimaryKey(), $params[$this->columnPrimaryKey()])->first();
         }
         return $result;
     }
 
-    public static function slbStatus($default = 'inactive', $params = [] )
+    public static function slbStatus($default = 'inactive', $params = [])
     {
         $showDefaultOption = isset($params['action']) && $params['action'] == 'index';
         // $default = isset($params['item']['status']) ? $params['item']['status'] : 'inactive';
 
-        return '<select id="status" name="status" class="form-control select2 select2-danger" data-dropdown-css-class="select2-danger" style="width: 100%;">
+        return '<select id="status" name="status" class="form-control " data-control="select2" style="width: 100%;">
                    ' . ($showDefaultOption ? '<option value="" selected>Chọn trạng thái</option>' : '') . '
 
         <option value="inactive" ' . ($default == "inactive" ? "selected" : "") . '>Ẩn</option>
@@ -203,15 +186,15 @@ class PostModel extends AdminModel
     {
         if ($options['task'] == 'delete-item') {
             if ($params['id'] === '0') {
-
             } elseif (is_array($params['id'])) {
                 $PostCategoryIdModel = new PostCategoryIdModel();
-                $PostCategoryIdModel->deleteItem($params,['task'=>'delete-item']);
+                $PostCategoryIdModel->deleteItem($params, ['task' => 'delete-item']);
                 self::whereIn($this->primaryKey, $params['id'])->whereNotIn('status', ['finish', 'pending-print', 'signed'])->delete();
             }
         }
     }
-    public function categories(){
+    public function categories()
+    {
 
         return $this->belongsToMany(PostCategoryModel::class, TABLE_HOTEL_POST_CATEGORY_ID, 'post_id', 'category_id');
     }
@@ -223,7 +206,7 @@ class PostModel extends AdminModel
             $folderPath             =  $params['controller'] . '/images/' . $params['inserted_id'] . '/';
             $image                  = $params['image'];
             $imageName              = $params['slug'] . '.' . $image->extension();
-            Storage::disk( $params['bucket'])->put($folderPath . $imageName, file_get_contents($image));
+            Storage::disk($params['bucket'])->put($folderPath . $imageName, file_get_contents($image));
             $params['image']        = $imageName;
             $this->reSizeImageThumb($params, ['task' => 'add-item-id']);
             unset($params['bucket'], $params['inserted_id'], $params['category_id']);
@@ -234,8 +217,8 @@ class PostModel extends AdminModel
             $oldImage               = $params[$this->primaryKey];
             $folderPath             = $params['controller'] . '/images/' . $oldImage . '/';
             if ($oldImage) {
-                Storage::disk(  $params['bucket'])->delete($folderPath . $params['image_name']);
-                Storage::disk(  $params['bucket'])->delete($folderPath . '/thumb1/'   . $params['image_name']);
+                Storage::disk($params['bucket'])->delete($folderPath . $params['image_name']);
+                Storage::disk($params['bucket'])->delete($folderPath . '/thumb1/'   . $params['image_name']);
             }
             $image                  = $params['image'];
             $imageName              = $params['slug'] . '.' . $image->extension();
@@ -245,16 +228,14 @@ class PostModel extends AdminModel
             unset($params['bucket'], $params['inserted_id']);
             return $params;
         }
-
     }
     public static function treeSelectCategory($categories, $selected_id = null)
     {
         $xhtml = '';
         foreach ($categories as $category) {
-            if ($categories instanceof Collection ) {
+            if ($categories instanceof Collection) {
                 $selected = $selected_id && $selected_id->contains($category->id) == true ? 'selected' : '';
-            }
-            else{
+            } else {
                 $selected = $selected_id && $selected_id == $category['id'] ? 'selected' : '';
             }
             $xhtml .= '<option ' . $selected . ' value="' . $category['id'] . '">' . str_repeat('--', $category['depth']) . $category['name'] . '</option>';

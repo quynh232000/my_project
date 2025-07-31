@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+'use client'
+import React, {  useState } from 'react'
 import NavHead from './NavHead'
 import SearchHead from './SearchHead'
 import Banner from './Banner'
@@ -10,8 +11,12 @@ import BestPriceHotel from './BestPriceHotel'
 import ChainHotel from './ChainHotel'
 import BannerBottom from './BannerBottom'
 
+
 function Container() {
     const [navActiveKey,setNavActiveKey] = useState('khach-san')
+
+    
+
   return (
     <div className=' flex flex-col gap-8'>
         <div className='relative flex flex-col gap-8'>

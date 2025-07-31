@@ -13,7 +13,7 @@ const data = [
         {
             id:1,
             image:'/images/common/hotel_1.jpg',
-            name:'Côn Đảo Resort',
+            name:'Côn Đảo Resort1',
             slug:'con-dao-resort',
             sale:23,
             start:4,
@@ -28,7 +28,7 @@ const data = [
         {
             id:13,
             image:'/images/common/hotel_2.jpg',
-            name:'Côn Đảo Resort',
+            name:'Côn Đảo Resort2',
             slug:'con-dao-resort',
             sale:23,
             start:4,
@@ -43,7 +43,7 @@ const data = [
         {
             id:12,
             image:'/images/common/hotel_3.jpg',
-            name:'Côn Đảo Resort',
+            name:'Côn Đảo 3',
             slug:'con-dao-resort',
             sale:23,
             start:4,
@@ -58,7 +58,7 @@ const data = [
         {
             id:4,
             image:'/images/common/hotel_4.jpg',
-            name:'Côn Đảo Resort',
+            name:'Côn Đảo Resort4',
             slug:'con-dao-resort',
             sale:23,
             start:4,
@@ -73,7 +73,7 @@ const data = [
         {
             id:5,
             image:'/images/common/hotel_5.png',
-            name:'Côn Đảo Resort',
+            name:'Côn Đảo Resort5',
             slug:'con-dao-resort',
             sale:23,
             start:4,
@@ -88,7 +88,7 @@ const data = [
          {
             id:0,
             image:'/images/common/hotel_4.jpg',
-            name:'Côn Đảo Resort',
+            name:'Côn Đảo Resort6',
             slug:'con-dao-resort',
             sale:23,
             start:4,

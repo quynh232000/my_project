@@ -83,6 +83,35 @@ return  [
             'methods'       => ['post'],
             'action'        => 'confirmDelete',
         ],
+        // hotel-category_route
+        [
+            'type'          => 'resource',
+            'uri'           => 'hotel-category',
+            'controller'    =>  \App\Http\Controllers\Hotel\HotelCategoryController::class,
+            'name_prefix'   => $base . '.hotel-category',
+            'only'          => ['index', 'edit', 'store', 'create', 'show', 'update', 'destroy'],
+        ],
+        [
+            'controller'    =>   \App\Http\Controllers\Hotel\HotelCategoryController::class,
+            'uri'           => $base . '/hotel-category/status/{status}/{id}',
+            'name'          => $base . '.hotel-category.status',
+            'methods'       => ['get'],
+            'action'        => 'status',
+        ],
+        [
+            'controller'    =>   \App\Http\Controllers\Hotel\HotelCategoryController::class,
+            'uri'           => $base . '/hotel-category/confirm-delete',
+            'name'          => $base . '.hotel-category.confirm-delete',
+            'methods'       => ['post'],
+            'action'        => 'confirmDelete',
+        ],
+        [
+            'controller'    =>   \App\Http\Controllers\Hotel\HotelCategoryController::class,
+            'uri'           => $base . '/hotel-category/move/{act}/{id}',
+            'name'          => $base . '.hotel-category.move',
+            'methods'       => ['get'],
+            'action'        => 'move',
+        ],
         // customer_route
         [
             'type'          => 'resource',
@@ -293,6 +322,57 @@ return  [
             'name'          => $base . '.payment-info.choose',
             'methods'       => ['post'],
             'action'        => 'choose',
+        ],
+        // post_route
+        [
+            'type'          => 'resource',
+            'uri'           => 'post',
+            'controller'    =>  \App\Http\Controllers\Hotel\PostController::class,
+            'name_prefix'   => $base . '.post',
+            'only'          => ['index', 'edit', 'store', 'create', 'show', 'update', 'destroy'],
+        ],
+        [
+            'controller'    =>   \App\Http\Controllers\Hotel\PostController::class,
+            'uri'           => $base . '/post/status/{status}/{id}',
+            'name'          => $base . '.post.status',
+            'methods'       => ['get'],
+            'action'        => 'status',
+        ],
+        [
+            'controller'    =>   \App\Http\Controllers\Hotel\PostController::class,
+            'uri'           => $base . '/post/confirm-delete',
+            'name'          => $base . '.post.confirm-delete',
+            'methods'       => ['post'],
+            'action'        => 'confirmDelete',
+        ],
+        // post-category_route
+        [
+            'type'          => 'resource',
+            'uri'           => 'post-category',
+            'controller'    =>  \App\Http\Controllers\Hotel\PostCategoryController::class,
+            'name_prefix'   => $base . '.post-category',
+            'only'          => ['index', 'edit', 'store', 'create', 'show', 'update', 'destroy'],
+        ],
+        [
+            'controller'    =>   \App\Http\Controllers\Hotel\PostCategoryController::class,
+            'uri'           => $base . '/post-category/status/{status}/{id}',
+            'name'          => $base . '.post-category.status',
+            'methods'       => ['get'],
+            'action'        => 'status',
+        ],
+        [
+            'controller'    =>   \App\Http\Controllers\Hotel\PostCategoryController::class,
+            'uri'           => $base . '/post-category/confirm-delete',
+            'name'          => $base . '.post-category.confirm-delete',
+            'methods'       => ['post'],
+            'action'        => 'confirmDelete',
+        ],
+        [
+            'controller'    =>   \App\Http\Controllers\Hotel\PostCategoryController::class,
+            'uri'           => $base . '/post-category/move/{act}/{id}',
+            'name'          => $base . '.post-category.move',
+            'methods'       => ['get'],
+            'action'        => 'move',
         ],
 
 

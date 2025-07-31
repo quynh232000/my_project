@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models\Hotel;
+
 use App\Models\AdminModel;
 use App\Services\FileService;
 use Auth;
@@ -36,14 +37,15 @@ class ChainModel extends AdminModel
         parent::__construct();
     }
     public $arrData = [
-        'type'=>[
+        'type' => [
             'international'         => 'Quốc tế',
             'domestic'              => 'Nội địa',
         ]
     ];
 
     public $crudNotAccepted = [
-        'image','thumbnail'
+        'image',
+        'thumbnail'
     ];
 
     public function adminQuery(&$query, $params)
@@ -74,7 +76,6 @@ class ChainModel extends AdminModel
             $end    = date("Y-m-d 23:59:59", strtotime($end));
 
             $query->whereBetween($this->table . '.created_at', array($start, $end));
-
         }
         if (isset($params['updated_at']) && !empty($params['updated_at'])) {
             $date   = explode('-', $params['updated_at']);
@@ -84,7 +85,6 @@ class ChainModel extends AdminModel
             $end    = date("Y-m-d 23:59:59", strtotime($end));
 
             $query->whereBetween($this->table . '.updated_at', array($start, $end));
-
         }
         if (isset($params['status']) && $params['status'] != "") {
             $query->where($this->table . '.status', '=', $params['status']);
@@ -92,7 +92,8 @@ class ChainModel extends AdminModel
 
         return $query;
     }
-    public function listItem($params = null, $options = null){
+    public function listItem($params = null, $options = null)
+    {
         $this->_data['status'] = false;
 
         if ($options['task'] == "admin-index") {
@@ -116,11 +117,12 @@ class ChainModel extends AdminModel
         }
         return $this->_data;
     }
-    public function getItem($params = null, $options = null){
+    public function getItem($params = null, $options = null)
+    {
 
         $result = null;
         if ($options['task'] == 'get-item-info') {
-           $result = self::find($params['id']);
+            $result = self::find($params['id']);
         }
         return $result;
     }
@@ -136,39 +138,39 @@ class ChainModel extends AdminModel
 
             // upload file
             $hasFile                = false;
-            if($params['image'] ?? false){
-                $params['image'] = FileService::file_upload($params,$params['image'],'image');
+            if ($params['image'] ?? false) {
+                $params['image'] = FileService::file_upload($params, $params['image'], 'image');
                 $hasFile            = true;
             }
-            if($params['logo'] ?? false){
-               $params['logo'] = FileService::file_upload($params,$params['logo'],'logo');
+            if ($params['logo'] ?? false) {
+                $params['logo'] = FileService::file_upload($params, $params['logo'], 'logo');
                 $hasFile            = true;
             }
 
             // check if has file then update
-            if($hasFile){
-                self::where('id',$params['insert_id'])->update([
+            if ($hasFile) {
+                self::where('id', $params['insert_id'])->update([
                     'image'         => $params['image'] ?? '',
                     'logo'          => $params['logo'] ?? ''
                 ]);
             }
 
-            return response()->json(['success' => true, 'message' => 'Tạo yêu mới cầu thành công!','id' => $params['insert_id']]);
+            return response()->json(['success' => true, 'message' => 'Tạo yêu mới cầu thành công!', 'id' => $params['insert_id']]);
         }
-        if ($options['task'] == 'edit-item'){
+        if ($options['task'] == 'edit-item') {
 
             $params['updated_by']           = Auth::user()->id;
             $params['updated_at']           = date('Y-m-d H:i:s');
 
             // upload file
             $fileUpload                     = [];
-             $hasFile                = false;
+            $hasFile                = false;
             $params['insert_id']            = $params['id'];
-             if($params['image'] ?? false){
-                $fileUpload['image'] = FileService::file_upload($params,$params['image'],'image');
+            if ($params['image'] ?? false) {
+                $fileUpload['image'] = FileService::file_upload($params, $params['image'], 'image');
             }
-            if($params['logo'] ?? false){
-               $fileUpload['logo'] = FileService::file_upload($params,$params['logo'],'logo');
+            if ($params['logo'] ?? false) {
+                $fileUpload['logo'] = FileService::file_upload($params, $params['logo'], 'logo');
             }
             // update data
             $item = self::where('id', $params['id'])->firstOrFail();
@@ -194,7 +196,7 @@ class ChainModel extends AdminModel
             }
         }
     }
-     public static function slbStatus($default = null, $params = [])
+    public static function slbStatus($default = null, $params = [])
     {
         return '<select class="form-select mb-2" id="status" data-control="select2" name="status"
                         data-placeholder="Select an option" data-allow-clear="true">
@@ -219,5 +221,4 @@ class ChainModel extends AdminModel
     {
         $this->attributes['price'] = (float) str_replace('.', '', $value);
     }
-
 }

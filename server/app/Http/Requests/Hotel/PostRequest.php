@@ -7,7 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 class PostRequest extends FormRequest
 {
     private $table            = TABLE_HOTEL_POST;
-     /**
+    /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
@@ -24,15 +24,13 @@ class PostRequest extends FormRequest
      */
     public function rules(): array
     {
-       
+
         $id = $this->id;
         $condThumb              = "bail" . (!$id ? "|required" : "|nullable") . "|image|mimes:jpeg,png,jpg,gif,webp|max:2000";
         $condName               = "bail|required|between:2,255";
         $condSlug               = "bail|required|unique:{$this->table},slug" . ($id ? ",{$id}" : '');
         $condStatus             = "bail|required|in:active,inactive";
         $condContent            = "bail|nullable|min:10";
-        $condDescription        = "bail|nullable|string|between:3,255";
-        $condCategory           = "bail|required|exists:".TABLE_HOTEL_CATEGORY.",id";
         $condMetaTitle          = "bail|nullable|between:3,255";
         $condMetaDescription    = "bail|nullable|string|between:3,255";
         $condMetaKeyword        = "bail|nullable|string|between:3,255";
@@ -42,8 +40,6 @@ class PostRequest extends FormRequest
             'status'                => $condStatus,
             'image'                 => $condThumb,
             'content'               => $condContent,
-            'description'           => $condDescription,
-            'category_id'           => $condCategory,
             'meta_title'            => $condMetaTitle,
             'meta_description'      => $condMetaDescription,
             'meta_keyword'          => $condMetaKeyword,

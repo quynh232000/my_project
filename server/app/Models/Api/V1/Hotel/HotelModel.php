@@ -2,6 +2,9 @@
 
 namespace App\Models\Api\V1\Hotel;
 
+use App\Models\Api\V1\General\CityModel;
+use App\Models\Api\V1\General\DistrictModel;
+use App\Models\Api\V1\General\WardModel;
 use Elastic\Elasticsearch\ClientBuilder;
 use App\Helpers\RedisHelper;
 use App\Models\Api\V1\General\CountryModel;
@@ -22,7 +25,9 @@ class HotelModel extends ApiModel
     }
 
     protected $casts    =  [
-        'faqs' => 'array'
+        'faqs'      => 'array',
+        'position'  => 'array',
+        'language'  => 'array'
     ];
     protected $hidden   = [
         'pivot',
@@ -44,6 +49,7 @@ class HotelModel extends ApiModel
     }
     public function rememberCacheJson($key, $callback,  $ttl = 3600): array
     {
+        return $callback();
         if (!RedisHelper::checkRedis()) {
             return $callback();
         }
@@ -59,6 +65,7 @@ class HotelModel extends ApiModel
     public function getItem($params = null, $options = null)
     {
         if ($options['task'] == 'item-info') {
+            $result             = null;
 
             $params['adt']      = (int)($params['adt'] ?? 1);
             $params['chd']      = (int)($params['chd'] ?? 0);
@@ -67,8 +74,12 @@ class HotelModel extends ApiModel
             $params['end']      =  Carbon::parse($params['date_end'])->subDay()->format('Y-m-d'); // trừ đi 1 ngày
 
             $roomRelations              = [
-                'rooms.amenities:id,name,image',
-                'rooms.images:id,hotel_id,label_id,type,point_id,priority,image',
+                'rooms.amenities:id,name,image,parent_id',
+                'rooms.amenities.parents:id,name',
+                'rooms.images' => function ($q) {
+                    $q->select('id', 'hotel_id', 'label_id', 'type', 'point_id', 'priority', 'image')->orderBy('priority', 'asc');
+                },
+                'rooms.images.label:id,name',
                 'rooms.price_details' => fn($q) => $q->whereBetween('date', [$params['date_start'], $params['end']]),
                 'rooms.price_details.price_detail_price_types',
                 'rooms.price_details.price_detail_price_types.price_type',
@@ -78,20 +89,20 @@ class HotelModel extends ApiModel
                 'rooms.room_extra_beds',
                 'rooms.bed_type:id,name',
                 'rooms.sub_bed_type:id,name',
+                'rooms.direction:id,name',
             ];
 
             $withRelations              = [
-                'language:id,name',
                 'location',
-                'categories:id,name,slug',
                 'chain:id,name,slug',
                 'hotelImage:id,hotel_id,label_id,type,point_id,priority,image',
                 'hotelImage.label:id,name',
                 'accommodation:id,name,slug',
-                'facilities:id,name,image',
+                'facilities:id,name,image,parent_id',
+                'facilities.parents:id,name',
                 'near_locations:id,hotel_id,name,address,longitude,latitude,distance',
-                'policy_others.policy_name:id,name',
-                'policy_generals.policy_name:id,name',
+                'policy_others.policy_name:id,name,slug',
+                'policy_generals.policy_name:id,name,image',
                 'policy_children',
                 'policy_cancellations.policy_cancel_rules',
                 'policy_cancellations.price_types:id,name,policy_cancel_id',
@@ -105,15 +116,16 @@ class HotelModel extends ApiModel
 
             $hotel                      = $query->first();
 
-            $hotel->recommended_rooms   = self::getRecommendedRoom([...$params, 'hotel' => $hotel]);
+            $hotel->recommended_rooms   = self::getRecommendedRoom([...$params, 'hotel' => $hotel]) ?? [];
+            $hotel->breadcrumb          = self::getBreadcrumb($hotel->location);
 
             // cache relative hotel ===================
             $cacheKeyRelative           = "{$params['prefix']}.{$params['controller']}.{$params['action']}.relative_hotel.{$params['slug']}";
             $paramsReative              = [
-                'category_ids'  => $hotel->categories->pluck('id')->toArray() ?? [],
                 'hotel_id'      => $hotel->id,
                 'city_id'       => $hotel->location->city_id ?? null,
-                'district_id'   => $hotel->location->district_id ?? null
+                'district_id'   => $hotel->location->district_id ?? null,
+                'ward_id'       => $hotel->location->ward_id ?? null,
             ];
             $cachedRelativeHotel        = $this->rememberCacheJson($cacheKeyRelative, function () use ($paramsReative) {
                 return self::listItem($paramsReative, ['task' => 'relative-hotel']);
@@ -121,24 +133,50 @@ class HotelModel extends ApiModel
 
             // cache reviews ===================
             $cacheKeyReviews            = "{$params['prefix']}.{$params['controller']}.{$params['action']}.reviews.{$params['slug']}";
-            $cachedReviewsHotel         = $this->rememberCacheJson($cacheKeyReviews, function () use ($hotel) {
+            $cachedReviewsHotel         = $this->rememberCacheJson($cacheKeyReviews, function () use ($hotel, $params) {
                 return self::getReviews($hotel->id);
             }, 3600);
 
-            unset($hotel->rooms);
+            if (isset($hotel->rooms)) unset($hotel->rooms);
             $hotel->relative_hotels     = $cachedRelativeHotel ?? [];
             $hotel->reviews             = $cachedReviewsHotel ?? null;
-            return $hotel;
+
+            $result                     = $hotel->toArray();
+            //xử lý policy other
+            $result['policy_others']    = collect($result['policy_others'])
+                ->keyBy(fn($item) => $item['policy_name']['slug']);
+            $result['keymaps']          = AttributeModel::select('id', 'name', 'parent_id', 'slug')
+                ->with('parents:id,name,slug')
+                ->whereHas('parents', function ($q) {
+                    $q->whereIn('slug', ['method_deposit', 'adult_require', 'duccument_require', 'serving_type', 'breakfast_type']);
+                })
+                ->get()
+                ->map(function ($item) {
+                    return $item;
+                });
+
+            return $result;
+        }
+
+        if ($options['task'] == 'meta') {
+            $result         = self::select('id', 'name', 'slug', 'meta_title', 'meta_description', 'meta_keyword')
+                ->where('slug', $params['slug'] ?? '')
+                ->where('status', 'active')
+                ->first();
+
+            return $result;
         }
     }
+
+
 
     // ================ detail start ======================
 
     private function getReviews($hotel_id)
     {
-
         $reviews            = ReviewModel::with('images')
             ->where('hotel_id', $hotel_id)
+            ->orderBy('point', 'desc')
             ->orderBy('created_at', 'desc')
             ->get();
 
@@ -154,27 +192,96 @@ class HotelModel extends ApiModel
             });
         });
 
-
         $grouped            = $reviews->flatMap->qualities->groupBy('quality');
 
-        $rating             = $grouped->mapWithKeys(function ($group, $quality) {
+        $dataReview         = [
+            0 =>  ['name' => 'Sạch sẽ', 'key' => 'clean'],
+            1 =>  ['name' => 'Thoải mái', 'key' => 'comfortable'],
+            2 =>  ['name' => 'Đồ ăn', 'key' => 'food'],
+            3 =>  ['name' => 'Vị trí', 'key' => 'location'],
+            4 =>  ['name' => 'Giá cả', 'key' => 'price'],
+        ];
+        $mapping             = collect($dataReview)->pluck('key', 'name');
+
+        // Xử lý dữ liệu grouped
+        $rating             = $grouped->mapWithKeys(function ($group, $quality) use ($mapping) {
+            $key            = $mapping[$quality] ?? $quality;
             return [
-                $quality => [
-                    'avg'   => round($group->avg('quality_point'), 2),
-                    'count' => $group->count(),
-                ],
+                $key        => [
+                    'avg'       => round($group->avg('quality_point'), 2),
+                    'count'     => $group->count(),
+                    'name'      => $quality,
+                ]
             ];
         })->all();
+
+        $avg                = ReviewModel::where('status', 'active')->where('hotel_id', $hotel_id)->avg('point') ?? 0;
         return [
+            'avg'           => $avg,
             'list'          => $reviews,
             'rating'        => $rating,
             'list_images'   => $list_images
         ];
     }
+    private function getBreadcrumb($location)
+    {
+        $categories = HotelCategoryModel::select('id', 'name', 'slug', 'type_location')
+            ->where('status', 'active')
+            ->where('is_default', true)
+            ->where(function ($q) use ($location) {
+                $q->where(function ($sub) use ($location) {
+                    $sub->where('type_location', 'country')
+                        ->where('country_id', $location->country_id);
+                })
+                    ->orWhere(function ($sub) use ($location) {
+                        $sub->where('type_location', 'city')
+                            ->where('city_id', $location->city_id);
+                    })
+                    ->orWhere(function ($sub) use ($location) {
+                        $sub->where('type_location', 'district')
+                            ->where('district_id', $location->district_id);
+                    })
+                    ->orWhere(function ($sub) use ($location) {
+                        $sub->where('type_location', 'ward')
+                            ->where('ward_id', $location->ward_id);
+                    });
+            })
+            ->get()->makeHidden('product_counts');
+
+        $requiredLevels     = ['country', 'city', 'district', 'ward'];
+        $location           = $location->toArray();
+        $categoriesMap      = collect($categories->toArray())->keyBy('type_location');
+
+        // Chuẩn bị mảng mới theo đúng thứ tự
+        $finalCategories    = [];
+
+        foreach ($requiredLevels as $level) {
+            if ($categoriesMap->has($level)) {
+                $finalCategories[] = $categoriesMap[$level];
+            } else {
+                $idKey      = $level . '_id';
+                $nameKey    = $level . '_name';
+                $slugKey =   $level . '_slug';
+
+                if (empty($location[$idKey])) {
+                    continue;
+                }
+                $finalCategories[] = [
+                    'id'             => $location[$idKey],
+                    'name'           => $location[$nameKey] ?? '',
+                    'slug'           => $location[$slugKey] ?? '',
+                    'type_location'  => $level,
+                ];
+            }
+        }
+        return $finalCategories;
+    }
+
     private function getRecommendedRoom($params)
     {
         // làm sạch phòng hợp lệ
-        $rooms                              = $params['hotel']->rooms;
+        $rooms                              = $params['hotel']->rooms ?? [];
+        if (count($rooms) == 0) return [];
         $params['policy_cancellations']     = $params['hotel']->policy_cancellations ?? [];
 
         $params['dateStart']                = Carbon::parse($params['date_start']);
@@ -243,7 +350,7 @@ class HotelModel extends ApiModel
                         'price_type_id'         => 0,
                         'price'                 => $room->price_standard,
                         'date'                  => Carbon::parse($date)->format('Y-m-d'),
-                        'promosions'            => [],
+                        'promotions'            => [],
                         'num_remaining_rooms'   => $room['quantity']
                     ];
                 }
@@ -536,15 +643,17 @@ class HotelModel extends ApiModel
     public function listItem($params = null, $options = null)
     {
         $results = null;
-        if ($options['task'] == 'list') {
+        if ($options['task'] == 'list1') {
             // dd($params);
 
             $limit      = $params['limit'] ?? '8';
             $image_url  = $this->getImageUrl($params, $this->table);
 
             $items = self::select('id', 'name', 'avg_price', 'stars', $image_url)
-                ->with(['hotelImage:id,hotel_id,point_id,type,image'])
-                ->paginate($limit);
+                ->with(['hotelImage:id,hotel_id,point_id,type,image', 'priorities:id,hotel_id,priority'])
+                ->whereHas('priorities', function ($q) {
+                    $q->orderBy('priority', 'ASC');
+                });
 
             if (isset($params['featured'])) {
                 $items->where('featured', true);
@@ -555,6 +664,7 @@ class HotelModel extends ApiModel
                 $items->whereHas('categories', function ($query) use ($params, $slug) {
                     $query->whereIn('slug', $slug);
                 });
+
                 $tempItems    = $items->get();
                 $groupedItems = $tempItems->flatMap(function ($item) {
                     return collect($item['categories'])->map(function ($category) use ($item) {
@@ -563,7 +673,10 @@ class HotelModel extends ApiModel
                         return $itemCopy;
                     });
                 })
-                    ->groupBy('category_slug');
+                    ->groupBy('category_slug')->map(function ($group) use ($limit) {
+                        return $group->unique('id')->take($limit)->each->makeHidden('categories');
+                    });
+
                 return [
                     'status'        => !$groupedItems->isEmpty(),
                     'status_code'   => 200,
@@ -593,9 +706,9 @@ class HotelModel extends ApiModel
                 ];
             }
         }
-        if ($options['task'] === 'search') {
+        if ($options['task'] === 'search1') {
             $limit   = $params['limit'] ?? 8;
-            $keyword = $params['keyword'] ?? '';
+            $keyword = trim($params['keyword'] ?? '');
 
             $results = [
                 'status'      => false,
@@ -603,71 +716,204 @@ class HotelModel extends ApiModel
                 'message'     => 'Không có khách sạn hoặc xảy ra lỗi.'
             ];
 
-            $client = ClientBuilder::create()
-                ->setHosts(['172.19.12.249:9200'])
-                ->build();
+            $query = self::select('id', 'name', 'slug')
+                ->with(['categories:id,name,slug', 'location'])
+                ->where(function ($q) use ($keyword) {
+                    $q->where('name', 'LIKE', '%' . $keyword . '%')
+                        ->orWhereHas('categories', function ($q) use ($keyword) {
+                            $q->where('name', 'LIKE', '%' . $keyword . '%');
+                        })
+                        ->orWhereHas('location', function ($q) use ($keyword) {
+                            $q->where('city_name', 'LIKE', '%' . $keyword . '%');
+                        });
+                })->get();
 
-            try {
-
-                $params = [
-                    'index' => 'hotels',
-                    'body' => [
-                        'query' => [
-                            'bool' => [
-                                'must' => [
-                                    ['match' => ['name' => ['query' => $keyword]]],
-                                    // ['match' => ['categories.name' => $keyword]],
-                                    // ['match' => ['location.city_name' => $keyword]],
-                                ],
-                            ],
-                            // "prefix"=>[
-                            //     'name'=> $keyword,
-                            //     // 'categories.name'=> $keyword,
-                            // ]
-                        ],
-                    ],
+            if ($query) {
+                $results = [
+                    'status'      => true,
+                    'status_code' => 200,
+                    'message'     => 'Lấy danh sách khách sạn thành công.',
+                    'data'        => $query,
                 ];
-
-                $response = $client->search($params);
-                dd($response['hits']['hits'], $keyword);
-
-
-
-                $hits = $response['hits']['hits'];
-                dd($hits);
-                if (!empty($hits)) {
-                    $hotels = array_map(function ($hit) {
-                        return [
-                            'id'         => $hit['_source']['id'] ?? null,
-                            'name'       => $hit['_source']['name'] ?? '',
-                            'location'   => $hit['_source']['location'] ?? null,
-                            'categories' => $hit['_source']['categories'] ?? [],
-                            'customers'  => $hit['_source']['customers'] ?? [],
-                        ];
-                    }, $hits);
-
-                    $results = [
-                        'status'      => true,
-                        'status_code' => 200,
-                        'message'     => 'Lấy danh sách khách sạn thành công.',
-                        'data'        => [
-                            'current_page' => 1,
-                            'total_page'   => 1,
-                            'total_item'   => count($hotels),
-                            'hotel'        => $hotels,
-                            // không cần 'category' và 'location' riêng nữa
-                        ]
-                    ];
-                }
-            } catch (\Exception $e) {
-                $results['message'] = 'Lỗi Elasticsearch: ' . $e->getMessage();
             }
+        }
+
+        if ($options['task'] === 'search') {
+            // -Địa điểm : Danh mục
+            // -Khách sạn: Hotel
+            // -Khu vực: Location
+            // -Chỗi khách sạn: Chain
+            $limit                      = $params['limit'] ?? 10;
+
+            $search                     = $params['search'] ?? '';
+            $results['categories']      = HotelCategoryModel::select('id', 'name', 'slug', 'image', 'priority', 'country_id', 'city_id', 'ward_id', 'district_id', 'type_location', 'position')
+                ->where('name', 'LIKE', "%{$search}%")
+                ->where('status', 'active')
+                ->orderBy('priority', 'asc')
+                ->limit($limit)
+                ->get()
+                ->makeVisible(['id', 'name', 'slug', 'type_location', 'image']);
+
+            $results['hotels']          = HotelModel::select('id', 'name', 'slug')
+                ->with('location:id,hotel_id,country_name,city_name,district_name,ward_name,address')
+                ->where('name', 'LIKE', "%{$search}%")
+                ->where('status', 'active')
+                ->orderBy('name', 'asc')
+                ->limit($limit)->get();
+
+
+            $tblCountry                 = TABLE_GENERAL_COUNTRY;
+            $tblCity                    = TABLE_GENERAL_CITY;
+            $tblDistrict                = TABLE_GENERAL_DISTRICT;
+            // 1: District
+            $districtQuery              = DB::table($tblDistrict)
+                ->leftJoin($tblCity, "{$tblDistrict}.city_id", '=', "{$tblCity}.id")
+                ->leftJoin($tblCountry, "{$tblCity}.country_id", '=', "$tblCountry.id")
+                ->where("{$tblDistrict}.name", 'LIKE', "%$search%")
+                ->selectRaw("
+                                            {$tblDistrict}.id AS id,
+                                            {$tblCountry}.name AS country_name,
+                                            {$tblCountry}.slug AS country_slug,
+                                            {$tblCity}.name AS city_name,
+                                            {$tblCity}.slug AS city_slug,
+                                            {$tblDistrict}.name AS district_name,
+                                            {$tblDistrict}.slug AS district_slug,
+                                            'district' AS type,
+                                            CONCAT({$tblDistrict}.name, ', ', {$tblCity}.name, ', ', {$tblCountry}.name) AS label
+                                        ");
+            // 2: City
+            $cityQuery                  = DB::table($tblCity)
+                ->leftJoin($tblCountry, "{$tblCity}.country_id", '=', "{$tblCountry}.id")
+                ->where("{$tblCity}.name", 'LIKE', "%$search%")
+                ->selectRaw("
+                                            {$tblCity}.id AS id,
+                                            {$tblCountry}.name AS country_name,
+                                            {$tblCountry}.slug AS country_slug,
+                                            {$tblCity}.name AS city_name,
+                                            {$tblCity}.slug AS city_slug,
+                                            NULL AS district_name,
+                                            NULL AS district_slug,
+                                            'city' AS type,
+                                            CONCAT({$tblCity}.name, ', ', {$tblCountry}.name) AS label
+                                        ")
+                ->unionAll($districtQuery);
+
+            // 3: Country
+            $finalQuery                 = DB::table($tblCountry)
+                ->where("{$tblCountry}.name", 'LIKE', "%$search%")
+                ->selectRaw("
+                                            {$tblCountry}.id AS id,
+                                            {$tblCountry}.name AS country_name,
+                                            {$tblCountry}.slug AS country_slug,
+                                            NULL AS city_name,
+                                            NULL AS city_slug,
+                                            NULL AS district_name,
+                                            NULL AS district_slug,
+                                            'country' AS type,
+                                            {$tblCountry}.name AS label
+                                        ")
+                ->unionAll($cityQuery);
+            // query lấy địa chỉ
+            $results['locations']       = $finalQuery->limit($limit)->get();
+
+            // Lấy theo chuỗi khách sạn
+            $results['chains']          = ChainModel::select('id', 'name', 'slug')
+                ->where('name', 'LIKE', "%{$search}%")
+                ->orderBy('name', 'asc')
+                ->limit($limit)->get();
 
             return $results;
         }
+        if ($options['task'] == 'list') {
+            $limit                  = $params['limit'] ?? 8;
 
+            // 1: Lays categories | 'trending', 'best_price'
+            $categories             = HotelCategoryModel::whereJsonContains('position', 'trending')
+                ->orWhereJsonContains('position', 'best_price')
+                ->get();
+
+            // 2: Group categories by type_location & ID
+            $categoryMap            = [];
+            $categoryObjects        = [];
+
+            foreach ($categories as $category) {
+                foreach ($category->position as $positionType) {
+                    if (!in_array($positionType, ['trending', 'best_price'])) continue;
+
+                    $type           = $category->type_location;
+                    $id             = $category->{$type . '_id'};
+
+                    if (!$id) continue;
+
+                    $categoryMap[$positionType][$type][$id]             = $category->id;
+
+                    if (!isset($categoryObjects[$positionType][$category->id])) {
+                        $categoryObjects[$positionType][$category->id]  = [
+                            'id'            => $category->id,
+                            'name'          => $category->name,
+                            'slug'          => $category->slug,
+                            // 'position'      => $category->position,
+                            'type_location' => $type,
+                            'hotels'        => [],
+                        ];
+                    }
+                }
+            }
+
+            // 3: Lấy hotels cho từng category theo type_location và gán trực tiếp 2 x 2 x 6
+            foreach (['trending', 'best_price'] as $positionType) {
+                foreach ($categoryMap[$positionType] ?? [] as $type => $ids) {
+                    foreach ($ids as $locationId => $catId) {
+                        // Truy vấn hotel thuộc vị trí đó
+                        $hotels     = self::select([
+                            "{$this->table}.id",
+                            "{$this->table}.name",
+                            "{$this->table}.slug",
+                            "{$this->table}.stars",
+                            "{$this->table}.avg_price",
+                            "{$this->table}.image",
+                            "{$this->table}.accommodation_id",
+                            "{$this->table}.position"
+                        ])
+                            ->join(TABLE_HOTEL_LOCATION, TABLE_HOTEL_LOCATION . '.hotel_id', '=', $this->table . '.id')
+                            ->with([
+                                'hotelImage' => function ($q) {
+                                    $q->select('id', 'hotel_id', 'point_id', 'type', 'image')->orderBy('priority', 'asc')->limit(5);
+                                },
+                                'facilities' => function ($q) {
+                                    $q->select(TABLE_HOTEL_SERVICE . '.id', TABLE_HOTEL_SERVICE . '.name')->limit(5);
+                                },
+                                'accommodation:id,name',
+                                'location'
+                            ])
+                            ->where($this->table . '.status', 'active')
+                            ->whereNotNull($this->table . '.position')
+                            ->where(TABLE_HOTEL_LOCATION . ".{$type}_id", $locationId)
+                            ->orderBy(TABLE_HOTEL_LOCATION . ".{$type}_index")
+                            ->take($limit)
+                            ->get();
+
+                        // Nếu không có hotel, bỏ qua
+                        if ($hotels->isEmpty()) continue;
+                        // Gán vào object category
+                        $categoryObjects[$positionType][$catId]['hotels'] = $hotels->toArray();
+                    }
+                }
+            }
+
+            return  [
+                'trending'   => array_values($categoryObjects['trending'] ?? []),
+                'best_price' => array_values($categoryObjects['best_price'] ?? []),
+            ];
+        }
 
         if ($options['task'] == 'filter') {
+            if (($params['type'] ?? false) && $params['type'] == 'chain') {
+                $category                   = ChainModel::select('id', 'name')->where(['slug' => $params['slug'], 'status' => 'active'])->first();
+            } else {
+                $category                   = HotelCategoryModel::where(['slug' => $params['slug'], 'type_location' => $params['type'], 'status' => 'active'])->first();
+            }
+
 
             $query                      = self::select([
                 "{$this->table}.id",
@@ -678,22 +924,66 @@ class HotelModel extends ApiModel
                 "{$this->table}.created_at",
                 "{$this->table}.status",
                 "{$this->table}.image",
-                "{$this->table}.accommodation_id",
-                TABLE_HOTEL_PRIORITY . ".priority"
+                "{$this->table}.accommodation_id"
             ])
                 ->with([
-                    'hotelImage:id,hotel_id,point_id,type,image',
+                    'hotelImage' => function ($q) {
+                        $q->select('id', 'hotel_id', 'point_id', 'type', 'image')->orderBy('priority', 'asc')->limit(5);
+                    },
+                    'facilities' => function ($q) {
+                        $q->select(TABLE_HOTEL_SERVICE . '.id', TABLE_HOTEL_SERVICE . '.name')->limit(5);
+                    },
                     'accommodation:id,name',
-                    'location:id,country_name,city_name,district_name,ward_name,address,hotel_id',
-                    'facilities:id,name'
+                    'location'
                 ])
                 ->where("{$this->table}.status", 'active');
+            if ($category) {
+                $category               = $category->toArray();
+                // lấy theo danh mục tương ứng
+                switch ($params['type']) {
+                    case 'location':
+                        $query->whereHas('location', function ($q) use ($category) {
+                            $q->where($category['type_location'] . '_id', $category[$category['type_location'] . '_id']);
+                        });
+                        break;
+                    case 'accommodation':
+                        $query->whereHas('location', function ($q) use ($category) {
+                            $q->where($category['type_location'] . '_id', $category[$category['type_location'] . '_id']);
+                        })->where('accommodation_id', $category['accommodation_id']);
+                        break;
+                    case 'location_radius':
+                    case 'landmark':
+                        $query->whereHas('location', function ($q) use ($category) {
+                            $radius = ($category['location_radius'] ?? 5) * 1000;
+                            $q->whereRaw("ST_Distance_Sphere(POINT(longitude, latitude),POINT(?, ?)) <= ?", [$category['lon'], $category['lat'], $radius]);
+                        });
+                        break;
+                    case 'facility':
+                        $query->whereHas('location', function ($q) use ($category) {
+                            $q->where($category['type_location'] . '_id', $category[$category['type_location'] . '_id']);
+                        })->whereHas('facilities', function ($q) use ($category) {
+                            $q->where(TABLE_HOTEL_SERVICE . '.id', $category['facility_id']);
+                        });
+                        break;
+                    case 'chain':
+                        $query->where('chain_id', $category['id']);
+                        break;
+                }
+            } else {
+                $data_point     = [
+                    'country'  => CountryModel::class,
+                    'city'     => CityModel::class,
+                    'district' => DistrictModel::class,
+                    'ward'     => WardModel::class,
+                ];
 
-            // join check priority
-            $query                      = self::joinHotelPriority($query, $params);
+                $point          = $data_point[$params['type']]::where(['slug' => $params['slug'], 'status' => 'active'])->first()->toArray();
 
-            // Lọc: nếu có bản ghi ưu tiên thì giữ lại, còn không thì áp dụng lọc theo category/location
-            $query = $this->applyLocationOrCategoryFilter($query, $params);
+                $query->whereHas('location', function ($q) use ($point, $params) {
+                    $q->where($params['type'] . '_id', $point['id']);
+                });
+            }
+
 
             // filter theo ngày đặt
             if (isset($params['date_start']) && isset($params['date_end'])) {
@@ -737,6 +1027,7 @@ class HotelModel extends ApiModel
                     $q->whereIn(TABLE_HOTEL_SERVICE . '.id', $params['amenities']);
                 });
             }
+
             // by sort
             if ($params['sort'] ?? false) {
                 $direction      = $params['direction'] ?? 'desc';
@@ -761,15 +1052,23 @@ class HotelModel extends ApiModel
                         break;
                 }
             } else {
-                // sort by priority if not by created_at
-                $query  = $query->orderByRaw("
-                            CASE
-                                WHEN " . TABLE_HOTEL_PRIORITY . ".priority IS NOT NULL THEN 0
-                                ELSE 1
-                            END,
-                            " . TABLE_HOTEL_PRIORITY . ".priority ASC,
-                            {$this->table}.created_at DESC
-                        ");
+                // Mặc định sort theo index
+                $query->leftJoin(TABLE_HOTEL_LOCATION, TABLE_HOTEL_LOCATION . '.hotel_id', '=', $this->table . '.id');
+                if ($category) {
+                    if ($params['type'] == 'chain') {
+                        // độ ưu tiên theo chuỗi khách sạn
+
+                    } else {
+                        // độ ưu tiên theo location
+                        if ($category['type'] == 'landmark' || $category['type'] == 'location_radius') {
+                            $query->orderBy(TABLE_HOTEL_LOCATION . '.location_index', 'asc');
+                        } else {
+                            $query->orderBy(TABLE_HOTEL_LOCATION . '.' . $params['type'] . '_index', 'asc');
+                        }
+                    }
+                } else {
+                    $query->orderBy(TABLE_HOTEL_LOCATION . '.' . $params['type'] . '_index', 'asc');
+                }
             }
             $results    =  $query->paginate($params['limit'] ?? 9);
         }
@@ -777,19 +1076,21 @@ class HotelModel extends ApiModel
             $limit      = $params['limit'] ?? 4;
 
             // lấy hotel liên quan theo category hoặc location
-            $items      = self::select('id', 'name', 'avg_price', 'stars', 'image')
+            $items      = self::select('id', 'name', 'slug', 'avg_price', 'stars', 'image', 'accommodation_id')
+                ->with([
+                    'hotelImage' => function ($q) {
+                        $q->select('id', 'hotel_id', 'point_id', 'type', 'image')->orderBy('priority', 'asc')->limit(5);
+                    },
+                    'facilities' => function ($q) {
+                        $q->select(TABLE_HOTEL_SERVICE . '.id', TABLE_HOTEL_SERVICE . '.name')->limit(5);
+                    },
+                    'location',
+                    'accommodation:id,name',
+                ])
                 ->where('status', 'active')
                 ->where('id', '!=', $params['hotel_id'])
                 ->where(function ($query) use ($params) {
-                    // Nếu có category
-                    if (!empty($params['category_ids'])) {
-                        $query->orWhereHas('categories', function ($q) use ($params) {
-                            $q->whereIn(TABLE_HOTEL_HOTEL_CATEGORY . '.id', $params['category_ids']);
-                        });
-                    }
-
-                    // Nếu có location (district/city)
-                    if (!empty($params['district_id']) || !empty($params['city_id'])) {
+                    if (!empty($params['district_id']) || !empty($params['city_id']) || !empty($params['ward_id'])) {
                         $query->orWhereHas('location', function ($q) use ($params) {
                             $q->where(function ($subQ) use ($params) {
                                 if (!empty($params['district_id'])) {
@@ -798,11 +1099,13 @@ class HotelModel extends ApiModel
                                 if (!empty($params['city_id'])) {
                                     $subQ->orWhere('city_id', $params['city_id']);
                                 }
+                                if (!empty($params['ward_id'])) {
+                                    $subQ->orWhere('ward_id', $params['ward_id']);
+                                }
                             });
                         });
                     }
                 })
-                ->with(['hotelImage:id,hotel_id,point_id,type,image', 'location:id,address', 'accommodation:id,name', 'facilities:id,name'])
                 ->orderBy('avg_price', 'asc')
                 ->limit($limit)
                 ->get();
@@ -813,25 +1116,6 @@ class HotelModel extends ApiModel
     }
 
     // ================ filter start ======================
-    private function joinHotelPriority($query, $params)
-    {
-        return $query->leftJoin(TABLE_HOTEL_PRIORITY, function ($join) use ($params) {
-            $join->on(TABLE_HOTEL_PRIORITY . '.hotel_id', '=', $this->table . '.id')
-                ->where([TABLE_HOTEL_PRIORITY . '.status' => 'active']);
-
-            switch ($params['type']) {
-                case 'category':
-                    $join->where([TABLE_HOTEL_PRIORITY . '.' . $params['type'] . '_id' => $params['id']]);
-                    break;
-                default:
-                    $join->where([
-                        TABLE_HOTEL_PRIORITY . '.' . $params['type'] . '_id' => $params['id'],
-                        TABLE_HOTEL_PRIORITY . '.' . 'is_' . $params['type'] => true,
-                    ]);
-                    break;
-            }
-        });
-    }
     private function applyLocationOrCategoryFilter($query, $params)
     {
         return $query->where(function ($q) use ($params) {
@@ -855,9 +1139,9 @@ class HotelModel extends ApiModel
     // 0. Lấy khách sạn sao cho có ít nhất 1 phòng thỏa mãn điều kiện => nếu có thì lấy giá thấp nhất cửa khách sạn đó đạt điều kiện
     private function queryRoomHotel($query, $params)
     {
-        $query->whereHas('rooms', function ($q) use ($params) {
-            $q->availableRoom($params);
-        });
+        // $query->whereHas('rooms', function($q)use($params){
+        //     $q->availableRoom($params);
+        // });
         $query->leftJoinSub(self::queryMinPrice($params), 'price_summary', function ($join) {
             $join->on($this->table . '.id', '=', 'price_summary.hotel_id');
         });
@@ -962,7 +1246,7 @@ class HotelModel extends ApiModel
                                         END AS effective_value
                                     ")
             );
-        // tính tổng ưu đãi
+        // tính tổng ưu đãi 
         $valueProQueryped   = DB::table(DB::raw("({$promotionsQuery->toSql()}) as valid_promotions"))
             ->mergeBindings($promotionsQuery)
             ->select(
@@ -970,8 +1254,8 @@ class HotelModel extends ApiModel
                 'room_id',
                 'price_type_id',
                 DB::raw("
-                                        CASE
-                                            WHEN SUM(CASE WHEN is_stackable = 0 THEN 1 ELSE 0 END) > 0
+                                        CASE 
+                                            WHEN SUM(CASE WHEN is_stackable = 0 THEN 1 ELSE 0 END) > 0 
                                                 THEN MAX(CASE WHEN is_stackable = 0 THEN effective_value ELSE 0 END)
                                             ELSE SUM(CASE WHEN is_stackable = 1 THEN effective_value ELSE 0 END)
                                         END AS total_discount
@@ -989,7 +1273,7 @@ class HotelModel extends ApiModel
         $capacity       = intval($params['capacity']);
         $roomTable      = TABLE_HOTEL_ROOM;
         $priceField     = "
-                            CASE
+                            CASE 
                                 WHEN applied_price_type.price IS NOT NULL THEN
                                     CASE
                                         WHEN {$capacity} > {$roomTable}.standard_guests THEN applied_price_type.price + COALESCE(applied_price_type.price_setting, 0)
@@ -1105,14 +1389,14 @@ class HotelModel extends ApiModel
     {
         return $this->attributes['image_url'] ?? null;
     }
-    // public function getImageAttribute()
-    // {
-    //     return $this->attributes['image'] ? URL_DATA_IMAGE.'hotel/hotel/images/'. $this->id . "/" . $this->attributes['image'] : null;
-    // }
-    public function categories()
+    public function getImageAttribute()
     {
-        return $this->belongsToMany(HotelCategoryModel::class, TABLE_HOTEL_HOTEL_CATEGORY_ID, 'hotel_id', 'category_id');
+        return $this->attributes['image'] ? URL_DATA_IMAGE . 'hotel/hotel/images/' . $this->id . "/" . $this->attributes['image'] : null;
     }
+    // public function categories()
+    // {
+    //     return $this->belongsToMany(HotelCategoryModel::class, TABLE_HOTEL_HOTEL_CATEGORY_ID, 'hotel_id', 'category_id');
+    // }
 
     public function location()
     {
@@ -1176,4 +1460,64 @@ class HotelModel extends ApiModel
     }
 
     // ================= relations end =========================
+    // scrope
+    public function scopeFilterByCategory($query, array $category, array $params = [])
+    {
+        $query->where('status', 'active');
+
+        // nếu là chain
+        if ($category['origin'] === 'chain') {
+            $query->where('chain_id', $category['id']);
+            return $query;
+        } else {
+
+            if ($category['origin'] === 'location') {
+                $query->whereHas(
+                    'location',
+                    fn($q) =>
+                    $q->where($params['type'] . '_id', $category['id'])
+                );
+                return $query;
+            }
+
+            switch ($category['type']) {
+                case 'location':
+                    $query->whereHas('location', function ($q) use ($category) {
+                        $field = $category['type_location'] . '_id';
+                        $q->where($field, $category[$field]);
+                    });
+                    break;
+
+                case 'accommodation':
+                    $query->whereHas('location', function ($q) use ($category) {
+                        $field = $category['type_location'] . '_id';
+                        $q->where($field, $category[$field]);
+                    })->where('accommodation_id', $category['accommodation_id']);
+                    break;
+
+                case 'location_radius':
+                case 'landmark':
+                    $query->whereHas('location', function ($q) use ($category) {
+                        $radius = ($category['location_radius'] ?? 5) * 1000;
+                        $q->whereRaw("
+                            ST_Distance_Sphere(
+                                POINT(longitude, latitude),
+                                POINT(?, ?)
+                            ) <= ?
+                        ", [$category['lon'], $category['lat'], $radius]);
+                    });
+                    break;
+
+                case 'facility':
+                    $query->whereHas('location', function ($q) use ($category) {
+                        $field = $category['type_location'] . '_id';
+                        $q->where($field, $category[$field]);
+                    })->whereHas('facilities', function ($q) use ($category) {
+                        $q->where(TABLE_HOTEL_SERVICE . '.id', $category['facility_id']);
+                    });
+                    break;
+            }
+        }
+        return $query;
+    }
 }

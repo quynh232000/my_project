@@ -12,7 +12,7 @@ export interface IAlbumItem {
 	hotel_id: number;
 	point_id: number;
 	label_id: number;
-	image_url: string;
+	image: string;
 	priority: number | null;
 }
 

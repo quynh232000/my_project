@@ -28,6 +28,9 @@ return [
             'sub'           => [
                 ['title' => 'Hotels Listing', 'route' => $base . '.hotel.index'],
                 ['title' => 'Reviews Listing', 'route' => $base . '.review.index'],
+                ['title' => 'Hotel Categories', 'route' => $base . '.hotel-category.index'],
+                ['title' => 'Posts', 'route' => $base . '.post.index'],
+                ['title' => 'Posts Category', 'route' => $base . '.post-category.index'],
             ],
         ],
 

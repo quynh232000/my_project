@@ -100,6 +100,7 @@ export default function AddressInfo() {
 
 	useEffect(() => {
 		if (province) {
+			
 			fetchAddressData('listWard', Number(province));
 		}
 	}, [province, fetchAddressData]);
@@ -111,7 +112,7 @@ export default function AddressInfo() {
 			setValue('address.province_id', NaN);
 			setValue('address.address', '');
 		}
-	}, [listProvince, province, setValue]);
+	}, [listProvince, country, setValue]);
 
 	useEffect(() => {
 		if (listWard.upperId && listWard.upperId !== ward) {
@@ -191,7 +192,6 @@ export default function AddressInfo() {
 			</div>
 		);
 	}, [fullyAddress, fetchCoordinate]);
-
 	return (
 		<div className={'space-y-6'}>
 			<Typography

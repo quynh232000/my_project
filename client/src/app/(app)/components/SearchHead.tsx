@@ -1,7 +1,7 @@
 import Image from "next/image"
 import Link from "next/link"
 import { motion } from 'framer-motion';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Hotel, LocateIcon, Search } from "lucide-react";
 import {  Moon } from "lucide-react";
 
@@ -19,6 +19,7 @@ import { FiMinus } from "react-icons/fi";
 import { LuHotel } from "react-icons/lu";
 import { useRouter } from "next/navigation";
 import { formatDate } from "@/utils/common";
+import { IData, SGetHotelCategoryList } from "@/services/app/home/SGetHotelCategoryList";
 function SearchHead({navActiveKey,className}:{navActiveKey:string,className?:string}) {
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
@@ -70,6 +71,14 @@ function SearchHead({navActiveKey,className}:{navActiveKey:string,className?:str
                   );
     router.push('/'+navActiveKey+'/search?'+new URLSearchParams(params).toString())
   }
+
+  // category data
+  const [hotelCategories,setHotelCategories]  = useState<IData|null>(null)
+      useEffect(()=>{
+          SGetHotelCategoryList().then(res=>{
+              if(res) setHotelCategories(res)
+          })
+      },[])
   return (
     <div className={'  flex relative bg-white '+ (className && className)}>
         <div className='flex-1 flex items-center '>
@@ -134,25 +143,26 @@ function SearchHead({navActiveKey,className}:{navActiveKey:string,className?:str
                                   </div>
                               </Link>
                               )}
-                              
                           </div>
                       </div>
                       <div className="flex-1">
                           <div className="text-[14px] font-semibold">Địa điểm nổi bật</div>
                           <div className=" grid grid-cols-6 mt-2 gap-1">
                               {/* item */}
-                              {Array.from({ length: 18 }, (_, index) => <Link key={index} href={'/khach-san/search?id=23424'} className="rounded-lg p-2 hover:bg-primary-50 transition-all flex flex-col items-center">
+                              {hotelCategories?.destination.map(item=>{
+                                return <Link key={item.id} href={'/khach-san/'+item.type_location+'/'+item.slug} className="rounded-lg p-2 hover:bg-primary-50 transition-all flex flex-col items-center">
                                   <div className="w-[80px] h-[80px] rounded-full shadow-sm relative">
                                       <Image
                                           alt=""
                                           fill
                                           priority
                                           className=" rounded-full object-cover h-[80px]"
-                                          src={'/images/common/hochiminh.jpg'}
+                                          src={item.image??'/images/common/hochiminh.jpg'}
                                       />
                                   </div>
-                                  <div className="text-[14px] text-gray-600 mt-1">Hồ chí minh</div>
-                              </Link>)}
+                                  <div className="text-[14px] text-gray-600 mt-1">{item.name}</div>
+                              </Link>
+                              })}
                               
                               
 
@@ -297,7 +307,7 @@ function SearchHead({navActiveKey,className}:{navActiveKey:string,className?:str
             </div>
             <div className='px-5 ml-8'>
               <div onClick={handleSubmit} className='bg-primary-500 py-[10px] rounded-lg hover:bg-primary-600 cursor-pointer transition-all px-[36px] text-white'>
-                <Search size={26}/>
+                <Search size={26} />
               </div>
             </div>
           </div>

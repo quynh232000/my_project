@@ -248,7 +248,7 @@ return  [
         // price-setting_route
         [
             'type'          => 'resource',
-            'controller'    =>  \App\Http\Controllers\Api\V1\Hms\PolicyOtherController::class,
+            'controller'    =>  \App\Http\Controllers\Api\V1\Hms\PriceSettingController::class,
             'middleware'    => [HmsMiddleware::class],
             'uri'           => 'price-setting',
             'name_prefix'   => $base . '.price-setting',
@@ -308,7 +308,7 @@ return  [
         ],
         [
             'type'          => 'resource',
-            'controller'    =>  \App\Http\Controllers\Api\V1\Hms\PromotionController::class,
+            'controller'    =>  \App\Http\Controllers\Api\V1\Hms\RoomPriceController::class,
             'middleware'    => [HmsMiddleware::class],
             'uri'           => 'room-price',
             'name_prefix'   => $base . '.room-price',
