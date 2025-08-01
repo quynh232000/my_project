@@ -1,13 +1,12 @@
+import Container from "./components/Container";
 
-import Container from "./components/Container"
-interface PageProps {
-  params: {
-    blog_slug: string;
-  };
-}
-export default async function Page({ params }: PageProps) {
+export default async function Page({
+  params,
+}: {
+  params: { blog_slug: string };
+}) {
   return (
-    <div className='mt-[148px]'>
+    <div className="mt-[148px]">
       <Container blog_slug={params.blog_slug} />
     </div>
   );
