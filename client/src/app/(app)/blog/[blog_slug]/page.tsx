@@ -3,7 +3,7 @@ import Container from "./components/Container";
 export default async function Page({
   params,
 }: {
-  params: Promise<{ blog_slug: string };>
+  params: Promise<{ blog_slug: string }>
 }) {
   const {blog_slug} = await params
   return (
