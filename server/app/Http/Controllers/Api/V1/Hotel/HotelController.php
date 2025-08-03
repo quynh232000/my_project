@@ -8,6 +8,7 @@ use App\Http\Requests\Api\V1\Hotel\Hotel\ShowRequest;
 use App\Models\Api\V1\Hotel\HotelModel;
 use App\Traits\ApiResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class HotelController extends ApiController
 {
@@ -20,8 +21,8 @@ class HotelController extends ApiController
     }
     public function index(Request $request)
     {
-        $item = $this->model->listItem($this->_params, ['task' => 'list']);
-        return response()->json($item, $item['status_code']);
+        $data = $this->model->listItem($this->_params, ['task' => 'list']);
+        return $this->success('ok', $data);
     }
     public function search(Request $request)
     {
@@ -48,7 +49,7 @@ class HotelController extends ApiController
             return $this->internalServerError('Đã xảy ra lỗi:' . $e->getMessage());
         }
     }
-    public function show(ShowRequest $request, $hotel)
+    public function show(Request $request, $hotel)
     {
         try {
             $response           = $this->model->getItem([...$this->_params, 'slug' => $hotel], ['task' => 'item-info']);
@@ -63,5 +64,12 @@ class HotelController extends ApiController
         } catch (\Exception $e) {
             return $this->internalServerError('Đã xảy ra lỗi:' . $e->getMessage());
         }
+    }
+    public function clone(Request $req)
+    {
+        $response = Http::post('https://apiportal.ivivu.com/web_prot/ms01/api/SearchFilters/SearchHotelList', [
+            ...($req->all() ?? [])
+        ]);
+        return $response;
     }
 }

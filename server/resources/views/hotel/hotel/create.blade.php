@@ -191,11 +191,40 @@
                         <!-- /.card-body -->
                     </div>
                 </div>
-                <div class="col-12 col-md-6">
+                <div class="col-12 col-md-6 d-flex" style="flex-direction: column;gap:10px">
                     @include('hotel.hotel.album.create')
                     @include('hotel.hotel.address.create')
                     @include('hotel.hotel.customer.create')
                     @include('include.common.meta-box')
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Thông tin SEO</h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <div class="row m-0  pt-2">
+                                <div class="form-group col-6 p-2 mb-0">
+                                    <label class="col-form-label text-right" for="meta_title">Meta title</label>
+                                    <input type="text" class="form-control" id="meta_title" name="meta_title"
+                                        placeholder="Nhập meta title" value="">
+                                    <div class="input-error"></div>
+                                </div>
+                                <div class="form-group col-6 p-2 mb-0">
+                                    <label class="col-form-label text-right" for="meta_keyword">Meta keyword</label>
+                                    <input type="text" class="form-control" id="meta_keyword" name="meta_keyword"
+                                        placeholder="Nhập meta keyword"></input>
+                                    <div class="input-error"></div>
+                                </div>
+                                <div class="form-group col-12 p-2 mb-0">
+                                    <label class="col-form-label text-right" for="meta_description">Meta
+                                        description</label>
+                                    <textarea class="form-control" name="meta_description" id="meta_description" placeholder="Nhập meta description"></textarea>
+                                    <div class="input-error"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
                 </div>
 
             </div>
@@ -204,62 +233,6 @@
             @include('hotel.hotel.nearby-location.create')
             {{-- end nearby locaton --}}
 
-            <div class="d-none justify-between align-items-center" style="justify-content: space-between">
-                <h4 class="py-2">Tiện ích và dịch vụ</h4>
-            </div>
-            <div class="card d-none">
-                <div class="card-body row p-2">
-                    <div class="col-12 col-md-4 border-right service_parent custom_scroll" id="list_check">
-                        <h5 class="border-bottom pb-2">Chọn tiện ích</h5>
-                        <div class="form-check border-bottom py-2">
-                            <input class="form-check-input" data-type='check-list-all' type="checkbox" id="check_all">
-                            <label class="form-check-label fw-bold" for="check_all">
-                                Chọn tất cả tiện ích
-                                ({{ array_reduce($params['info']['services'],function ($s, $item) {return $s + count($item['children'] ?? []);},0) }})
-                            </label>
-                        </div>
-                        @foreach ($params['info']['services'] as $parent)
-                            <div class="px-3 py-2 border-bottom service_parent service_group"
-                                data-service-id="{{ $parent['id'] }}">
-                                <div class="form-check">
-                                    <input class="form-check-input input_service" data-type="check-list" type="checkbox"
-                                        id="service_parent_{{ $parent['id'] }}">
-                                    <label class="form-check-label fw-bold" for="service_parent_{{ $parent['id'] }}">
-                                        {{ $parent['name'] }} ({{ count($parent['children']) ?? 0 }})
-                                    </label>
-                                </div>
-                                <div class="p-2 px-4">
-                                    @foreach ($parent['children'] ?? [] as $child)
-                                        <div class="form-check">
-                                            <input name="facility[{{ $parent['id'] . '_' . $child['id'] }}]"
-                                                data-type="check-item" value="{{ $child['id'] }}"
-                                                class="form-check-input input_item"
-                                                id="service_child_{{ $child['id'] }}" type="checkbox">
-                                            <label class="form-check-label" for="service_child_{{ $child['id'] }}">
-                                                {{ $child['name'] }}
-                                            </label>
-                                        </div>
-                                    @endforeach
-                                </div>
-                            </div>
-                        @endforeach
-                    </div>
-
-                    {{-- selected --}}
-                    <div class="col-12 col-md-8 custom_scroll">
-                        <h5 class="border-bottom pb-2">Tiện ích đã chọn</h5>
-                        <div class="row px-2" id="list-service-select">
-                            <div class="col-12 text-center py-5">
-                                Chưa có tiện ích nào được chọn!
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-            {{-- start faqs --}}
-            {{-- @include('hotel.hotel.faqs.create') --}}
-            {{-- end faqs --}}
 
 
         </form>

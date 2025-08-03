@@ -7,126 +7,20 @@ import Link from "next/link";
 import {  FaHeart } from "react-icons/fa6";
 import { FormatPrice } from "@/utils/common";
 import {  LocateIcon, Star, Umbrella } from "lucide-react";
-
-// Data input
-const data = [
-        {
-            id:1,
-            image:'/images/common/hotel_1.jpg',
-            name:'Côn Đảo Resort1',
-            slug:'con-dao-resort',
-            sale:23,
-            start:4,
-            address:'Huyện Côn Đảo',
-            reviews:{
-                rating:8.4,
-                review_counts:12,
-                type:'Rất Tốt'
-            },
-            price:1500000,
-        },
-        {
-            id:13,
-            image:'/images/common/hotel_2.jpg',
-            name:'Côn Đảo Resort2',
-            slug:'con-dao-resort',
-            sale:23,
-            start:4,
-            address:'Huyện Côn Đảo',
-            reviews:{
-                rating:8.4,
-                review_counts:12,
-                type:'Rất Tốt'
-            },
-            price:1500000,
-        },
-        {
-            id:12,
-            image:'/images/common/hotel_3.jpg',
-            name:'Côn Đảo 3',
-            slug:'con-dao-resort',
-            sale:23,
-            start:4,
-            address:'Huyện Côn Đảo',
-            reviews:{
-                rating:8.4,
-                review_counts:12,
-                type:'Rất Tốt'
-            },
-            price:1500000,
-        },
-        {
-            id:4,
-            image:'/images/common/hotel_4.jpg',
-            name:'Côn Đảo Resort4',
-            slug:'con-dao-resort',
-            sale:23,
-            start:4,
-            address:'Huyện Côn Đảo',
-            reviews:{
-                rating:8.4,
-                review_counts:12,
-                type:'Rất Tốt'
-            },
-            price:1500000,
-        },
-        {
-            id:5,
-            image:'/images/common/hotel_5.png',
-            name:'Côn Đảo Resort5',
-            slug:'con-dao-resort',
-            sale:23,
-            start:4,
-            address:'Huyện Côn Đảo',
-            reviews:{
-                rating:8.4,
-                review_counts:12,
-                type:'Rất Tốt'
-            },
-            price:1500000,
-        },
-         {
-            id:0,
-            image:'/images/common/hotel_4.jpg',
-            name:'Côn Đảo Resort6',
-            slug:'con-dao-resort',
-            sale:23,
-            start:4,
-            address:'Huyện Côn Đảo',
-            reviews:{
-                rating:8.4,
-                review_counts:12,
-                type:'Rất Tốt'
-            },
-            price:1500000,
-        },
-    ]
-
-const dataFlight = [
-  {
-    id:1,
-    name:'Hồ Chí Minh',
-  },
-  {
-    id:2,
-    name:'Đà Nẵng',
-  },
-  {
-    id:12,
-    name:'Đà Lạt',
-  },
-  {
-    id:13,
-    name:'Phú Quốc',
-  },
-  {
-    id:14,
-    name:'Nha Trang',
-  },
-]
+import { BestPrice } from "@/services/app/home/SGetHotelList";
+import { useEffect, useState } from "react";
+import SkeProductSale from "@/components/shared/Skeleton/SkeProductSale";
 
 
-export default function BestPriceHotel() {
+
+
+export default function BestPriceHotel({data,loading}:{data?:BestPrice[],loading:boolean}) {
+  const [navActive,setNavActive] = useState( data ? data[0] : null)
+  useEffect(()=>{
+    if(data && data[0]){
+      setNavActive(data[0])
+    }
+  },[data])
   return (
     <div className=" px-4 bg-primary-50">
       <div className="flex flex-col my-10 w-content m-auto">
@@ -142,15 +36,23 @@ export default function BestPriceHotel() {
               <div className="text-[14px] text-gray-600">Tiết kiệm chi phí với các khách sạn hợp tác chiến lược cùng Quin Booking, cam kết giá tốt nhất và chất lượng dịch vụ tốt nhất dành cho bạn.</div>
               <div className="flex gap-3 items-center mt-4 flex-wrap">
 
-                {dataFlight.map((item)=>{
-                  return <div className="border rounded-full py-2 px-4 bg-white hover:bg-primary-100 border-primary-400 cursor-pointer text-[14px]" key={"best_price1_"+item.name}>{item.name}</div>
+                {data && data?.map((item)=>{
+                  return <div onClick={()=>setNavActive(item)} className={"border rounded-full py-2 px-4   border-primary-400 cursor-pointer text-[14px] "+
+                     (item.id == navActive?.id ? ' bg-primary-500 text-white':' bg-white hover:bg-primary-100')} key={"best_price1_"+item.name}>{item.name}</div>
                 })}
               </div>
            </div>
            
        </div>
 
-        <div className=" w-full flex">
+        <div className=" w-full">
+            {loading && <div className="grid grid-cols-4 gap-5">
+
+                    <SkeProductSale/>
+                    <SkeProductSale/>
+                    <SkeProductSale/>
+                    <SkeProductSale/>
+            </div> }
           <Swiper
                 modules={[A11y, Autoplay]}
                 spaceBetween={8}
@@ -165,12 +67,13 @@ export default function BestPriceHotel() {
                 //   1280: { slidesPerView: 5, spaceBetween: 10 }, // Large screens
                 // }}
               >
-                {data.map((item) => {
+             
+               {data && data?.find(i=>i.id == navActive?.id)?.hotels.map((item) => {
                   return (
-                    <SwiperSlide key={item.name+'1111'} >
+                    <SwiperSlide key={item.id+'1111'} >
                          <Link href={'/khach-san/'+item.slug}>
                             <div  className="bg-white rounded-lg shadow-lg relative">
-                                <span className=" absolute top-0 left-0 z-[1] bg-yellow-500 px-4 py-1 text-sm text-white rounded-tl-lg rounded-br-lg">-{item.sale}</span>
+                                <span className=" absolute top-0 left-0 z-[1] bg-yellow-500 px-4 py-1 text-sm text-white rounded-tl-lg rounded-br-lg">-{item.stars} %</span>
                                 <span className=" absolute top-1 right-1 z-[1] text-yellow-500"><FaHeart  className=" text-xl"/></span>
                                 <div className="overflow-hidden ">
                                     <div className="w-full h-[180px] rounded-t-lg relative overflow-hidden">
@@ -186,29 +89,27 @@ export default function BestPriceHotel() {
                                     <div className="flex flex-col gap-2">
                                         <h2 className="font-semibold line-clamp-2">{item.name}</h2>
                                         <div className="flex gap-1">
-                                            {Array.from({ length: 3 }, (_, index) => <span key={index}><Star size={14} className="text-yellow-500"/></span> )}
+                                            {Array.from({ length: item.stars ? +item.stars : 0 }, (_, index) => <span key={index}><Star size={14} className="text-yellow-500"/></span> )}
                                         </div>
-                                        <div className="flex gap-2 items-center text-[14px] text-gray-600">
+                                        <div className="flex gap-2 items-center text-[14px] text-gray-600 line-clamp-1">
                                             <LocateIcon size={16} className="text-gray-600"/>
-                                            <span>{item.address}</span>
+                                            <span className=" line-clamp-1">{`${item.location.ward_name}, ${item.location.province_name}, ${item.location.country_name} `}</span>
                                         </div>
                                         <div className="flex gap-2 text-gray-600 text-[14px] ">
                                             <div className="flex gap-2 items-center  bg-primary-100 rounded-sm px-1">
                                                 <Umbrella size={16} className="text-primary-500"/>
-                                                <span className="text-primary-500 font-semibold" >{item.reviews.rating}</span>
+                                                <span className="text-primary-500 font-semibold" >Tuyệt vời</span>
                                             </div>
                                             <div>
-                                                <span>{item.reviews.type}</span>
-                                                <span className="text-gray-400"> ( {item.reviews.review_counts} đánh giá)</span>
+                                                <span>50</span>
+                                                <span className="text-gray-400"> ( 30 đánh giá)</span>
                                             </div>
                                         </div>
                                     </div>
                                     <div className="text-right mt-5">
-                                        <div>
-                                            <del className="text-gray-500 text-[14px]">{FormatPrice (item.price)}</del>
-                                        </div>
+                                        
                                         <div className="text-primary-500 font-semibold text-xl">
-                                        {FormatPrice (item.price)}
+                                        {FormatPrice (item.avg_price)}
                                         </div>
                                     </div>
                                     
@@ -218,12 +119,12 @@ export default function BestPriceHotel() {
                         </Link>
                     </SwiperSlide>
                   );
-                })}
+                })  }
               </Swiper>
           
         </div>
          <div className="flex justify-center mt-8">
-                <div className="bg-yellow-500 text-white hover:bg-yellow-600 shadow-lg rounded-lg py-2 px-8 cursor-pointer">Xem thêm</div>
+                <Link href={'/khach-san/'+navActive?.type_location+'/'+navActive?.slug} className="bg-yellow-500 text-white hover:bg-yellow-600 shadow-lg rounded-lg py-2 px-8 cursor-pointer">Xem thêm</Link>
             </div>
       </div>
     </div>

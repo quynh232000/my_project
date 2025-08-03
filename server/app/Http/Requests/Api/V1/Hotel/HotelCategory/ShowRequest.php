@@ -21,8 +21,7 @@ class ShowRequest extends FormRequest
     {
         $dataTable  = [
             'country'       => TABLE_GENERAL_COUNTRY,
-            'city'          => TABLE_GENERAL_CITY,
-            'district'      => TABLE_GENERAL_DISTRICT,
+            'province'      => TABLE_GENERAL_PROVINCE,
             'ward'          => TABLE_GENERAL_WARD,
             'chain'         => TABLE_HOTEL_CHAIN
         ];

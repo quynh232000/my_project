@@ -16,9 +16,9 @@ function Voucher() {
                         </div>
                     </div>
                     <div className="w-[6px]  relative">
-                        <div className="w-[26px] h-[29px] border border-primary-500 bg-white rounded-full absolute top-[-14px] z-[1]"></div>
-                        <div className=" absolute top-[24px] z-[1] right-[-8px] bottom-[24px] w-1 border-r-2 border-primary-500 border-dashed "></div>
-                        <div className="w-[26px] h-[29px] border border-primary-500 bg-white rounded-full absolute bottom-[-14px] z-[1]"></div>
+                        <div className="w-[28px] h-[29px] border border-primary-500 bg-white rounded-full absolute top-[-14px] z-[1] left-[-5px]"></div>
+                        <div className=" absolute top-[24px] z-[1] right-[-4px] bottom-[24px] w-1 border-r-2 border-primary-500 border-dashed "></div>
+                        <div className="w-[26px] h-[29px] border border-primary-500 bg-white rounded-full absolute bottom-[-14px] z-[1] left-[-5px]"></div>
                     </div>
                     <div className="text-center border-primary-500 border p-5 rounded-t-lg rounded-r-lg rounded-b-lg rounded-l-none border-l-0">
                         <div>Nhập mã</div>

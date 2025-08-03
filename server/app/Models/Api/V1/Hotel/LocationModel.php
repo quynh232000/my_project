@@ -15,10 +15,12 @@ class LocationModel extends ApiModel
     public function listItem($params = null, $options = null)
     {
         if ($options['task'] == 'search') {
-            $results = self::select('id', 'hotel_id', 'city_name', 'ward_name')
+            $results = self::select('id', 'hotel_id', 'province_name', 'ward_name', 'country_name')
                 ->where(function ($q) use ($params) {
-                    $q->where('city_name', 'LIKE', '%' . $params['keyword'] . '%')
-                        ->orWhere('ward_name', 'LIKE', '%' . $params['keyword'] . '%');
+                    $q->where('province_name', 'LIKE', '%' . $params['keyword'] . '%')
+                        ->orWhere('ward_name', 'LIKE', '%' . $params['keyword'] . '%')
+                        ->orWhere('country_name', 'LIKE', '%' . $params['keyword'] . '%')
+                    ;
                 })
                 ->get();
         }

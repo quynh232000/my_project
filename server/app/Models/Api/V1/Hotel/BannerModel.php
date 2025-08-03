@@ -4,12 +4,11 @@ namespace App\Models\Api\V1\Hotel;
 
 use App\Models\ApiModel;
 
-class ChainModel extends ApiModel
+class BannerModel extends ApiModel
 {
-    private $bucket = 's3_hotel';
     public function __construct()
     {
-        $this->table            = TABLE_HOTEL_CHAIN;
+        $this->table            = TABLE_HOTEL_BANNER;
         $this->hidden           = [];
         $this->appends          = [];
         parent::__construct();
@@ -19,7 +18,7 @@ class ChainModel extends ApiModel
         $results        = null;
 
         if ($options['task'] == 'list') {
-            $results    = self::select('id', 'name', 'slug', 'logo', 'image', 'price')
+            $results    = self::select('id', 'title', 'slug',  'image', 'title')
                 ->where(['status' => 'active'])
                 // ->orderBy('type', 'asc')
                 ->orderBy('priority', $params['direction'] ?? 'asc')
@@ -27,9 +26,5 @@ class ChainModel extends ApiModel
                 ->get() ?? [];
         }
         return $results;
-    }
-    public function hotels()
-    {
-        return $this->hasMany(HotelModel::class, 'chain_id', 'id');
     }
 }

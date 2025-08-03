@@ -25,7 +25,12 @@ const APP_ENDPOINT = {
     POST_CATEGORY_LIST: 'post-category/list',
 
     HOTEL_CATEGORY_LIST: 'hotel-category',
+    HOTEL_HOTEL_LIST: 'hotel',
+    HOTEL_BANNER_LIST: 'banner',
     CHAIN_LIST: 'chain',
+    HOTEL_HOTEL_CATEGORY_DETAIL: 'hotel-category',
+    HOTEL_FILTER: 'hotel/filter',
+
 }
 
 export const AppEndpoint = {

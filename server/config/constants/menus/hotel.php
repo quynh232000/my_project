@@ -31,6 +31,7 @@ return [
                 ['title' => 'Hotel Categories', 'route' => $base . '.hotel-category.index'],
                 ['title' => 'Posts', 'route' => $base . '.post.index'],
                 ['title' => 'Posts Category', 'route' => $base . '.post-category.index'],
+                ['title' => 'Banners', 'route' => $base . '.banner.index'],
             ],
         ],
 

@@ -3,6 +3,7 @@
 namespace App\Models\Api\V1\Hotel;
 
 use App\Helpers\RedisHelper;
+use App\Models\Admin\ProvinceModel;
 use App\Models\Api\V1\General\CityModel;
 use App\Models\Api\V1\General\CountryModel;
 use App\Models\Api\V1\General\DistrictModel;
@@ -113,13 +114,11 @@ class HotelCategoryModel extends ApiModel
             if (!$result['info']) {
                 $data_point     = [
                     'country'  => CountryModel::class,
-                    'city'     => CityModel::class,
-                    'district' => DistrictModel::class,
+                    'province' => ProvinceModel::class,
                     'ward'     => WardModel::class,
                 ];
                 $result['info']                     = $data_point[$params['type']]::select('id', 'name', 'slug')->where(['slug' => $params['slug'], 'status' => 'active'])
                     ->first()
-                    ->makeHidden('image_url')
                     ->toArray();
 
                 $result['info']['type_location']    = 'location';
@@ -136,6 +135,13 @@ class HotelCategoryModel extends ApiModel
             $result['accommodation']    = AttributeModel::select('id', 'name', 'slug')
                 ->where('status', 'active')
                 ->whereHas('parents', fn($q) => $q->where('slug', 'accommodation_type'))
+                ->whereHas('hotels', function ($query) use ($result, $params) {
+                    $query->filterByCategory($result['info'], $params);
+                })
+                ->get()->toArray();
+
+            $result['chains']    = ChainModel::select('id', 'name')
+                ->where('status', 'active')
                 ->whereHas('hotels', function ($query) use ($result, $params) {
                     $query->filterByCategory($result['info'], $params);
                 })
@@ -163,18 +169,6 @@ class HotelCategoryModel extends ApiModel
                 ->unique('service_id')
                 ->values()
                 ->makeHidden(['room', 'point_id', 'type']);
-
-            // $result['info']             = [
-            //                                 'id'                => $result['info']['id'],
-            //                                 'name'              => $result['info']['name'],
-            //                                 'slug'              => $result['info']['slug'] ?? '',
-            //                                 'type_location'     => $result['info']['type_location'],
-            //                                 'origin'            => $result['info']['origin'],
-            //                                 'description'       => $result['info']['description'] ?? '',
-            //                                 'image'             => $result['info']['image'] ?? '',
-            //                                 'meta_title'        => $result['info']['meta_title'] ?? '',
-            //                                 'meta_keyword'      => $result['info']['meta_keyword'] ?? '',
-            //                                 'meta_description'  => $result['info']['meta_description'] ?? '',
             //                             ];
 
             return $result;
@@ -197,8 +191,7 @@ class HotelCategoryModel extends ApiModel
         $classMap   =   [
             'category' => HotelCategoryModel::class,
             'country'  => CountryModel::class,
-            'city'     => CityModel::class,
-            'district' => DistrictModel::class,
+            'province' => ProvinceModel::class,
             'ward'     => WardModel::class,
         ];
 

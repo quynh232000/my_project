@@ -374,7 +374,28 @@ return  [
             'methods'       => ['get'],
             'action'        => 'move',
         ],
-
+        // banner_route
+        [
+            'type'          => 'resource',
+            'uri'           => 'banner',
+            'controller'    =>  \App\Http\Controllers\Hotel\BannerController::class,
+            'name_prefix'   => $base . '.banner',
+            'only'          => ['index', 'edit', 'store', 'create', 'show', 'update', 'destroy'],
+        ],
+        [
+            'controller'    =>   \App\Http\Controllers\Hotel\BannerController::class,
+            'uri'           => $base . '/banner/status/{status}/{id}',
+            'name'          => $base . '.banner.status',
+            'methods'       => ['get'],
+            'action'        => 'status',
+        ],
+        [
+            'controller'    =>   \App\Http\Controllers\Hotel\BannerController::class,
+            'uri'           => $base . '/banner/confirm-delete',
+            'name'          => $base . '.banner.confirm-delete',
+            'methods'       => ['post'],
+            'action'        => 'confirmDelete',
+        ],
 
     ]
 

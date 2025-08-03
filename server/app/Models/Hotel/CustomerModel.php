@@ -320,10 +320,15 @@ class CustomerModel extends AdminModel
 
     public function columnHotels($params, $field, $val)
     {
-        $hotelNames = array_map(function ($hotel) {
-            return '<a href="' . route('hotel.hotel.edit', ['hotel' => $hotel['id']]) . '" title="' . $hotel['id'] . '">' . $hotel['name'] . '</a>';
-        }, $val['hotels']);
+        $params['hotels']    = $val['hotels'] ?? [];
+        $params['id']           = $val['id'] ?? '';
+        return view("{$params['prefix']}.{$params['controller']}.components.modal-hotel", ['params' => $params]);
 
-        return implode(',<br> ', $hotelNames);
+
+        // $hotelNames = array_map(function ($hotel) {
+        //     return '<a href="'.route('hotel.hotel.edit',['hotel'=>$hotel['id']]).'" title="'.$hotel['id'].'">'.$hotel['name'].'</a>';
+        // }, $val['hotels']);
+
+        // return implode(',<br> ', $hotelNames);
     }
 }

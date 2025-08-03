@@ -36,6 +36,20 @@ return  [
             'methods'       => ['post'],
             'action'        => 'store',
         ],
+        [
+            'controller'    =>   \App\Http\Controllers\Api\V1\Hotel\HotelController::class,
+            'uri'           =>  'hotel/filter',
+            'name'          =>  $base . '.hotel.filter',
+            'methods'       => ['post'],
+            'action'        => 'filter',
+        ],
+        [
+            'controller'    =>   \App\Http\Controllers\Api\V1\Hotel\HotelController::class,
+            'uri'           =>  'hotel/clone',
+            'name'          =>  $base . '.hotel.clone',
+            'methods'       => ['post'],
+            'action'        => 'clone',
+        ],
         // post-categorry_route
         [
             'controller'    =>   \App\Http\Controllers\Api\V1\Hotel\PostCategoryController::class,
@@ -86,6 +100,14 @@ return  [
             'uri'           => 'chain',
             'controller'    =>  \App\Http\Controllers\Api\V1\Hotel\ChainController::class,
             'name_prefix'   => $base . '.chain',
+            'only'          => ['index'],
+        ],
+        // banner_route
+        [
+            'type'          => 'resource',
+            'uri'           => 'banner',
+            'controller'    =>  \App\Http\Controllers\Api\V1\Hotel\BannerController::class,
+            'name_prefix'   => $base . '.banner',
             'only'          => ['index'],
         ],
 

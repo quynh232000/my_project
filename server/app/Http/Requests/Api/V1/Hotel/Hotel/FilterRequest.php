@@ -20,24 +20,21 @@ class FilterRequest extends FormRequest
         $dataTable = [
             'category'      => TABLE_HOTEL_HOTEL_CATEGORY,
             'country'       => TABLE_GENERAL_COUNTRY,
-            'city'          => TABLE_GENERAL_CITY,
-            'district'      => TABLE_GENERAL_DISTRICT,
+            'province'      => TABLE_GENERAL_PROVINCE,
             'ward'          => TABLE_GENERAL_WARD
         ];
 
 
         $validate = [
-            'type'          => ["required","in:" . implode(',', array_keys($dataTable))],
-            'adt'           => ['sometimes','required','numeric','min:1'],
-            'chd'           => ['sometimes','required','numeric','min:0'],
-            'quantity'      => ['sometimes','required','numeric','min:1'],
+            'type'          => ["required", "in:" . implode(',', array_keys($dataTable))],
+            'adt'           => ['sometimes', 'required', 'numeric', 'min:1'],
+            'chd'           => ['sometimes', 'required', 'numeric', 'min:0'],
+            'quantity'      => ['sometimes', 'required', 'numeric', 'min:1'],
             'date_start'    => ['sometimes', 'required', 'date', 'after_or_equal:today'],
             'date_end'      => ['sometimes', 'required', 'date', 'after:date_start'],
         ];
 
-        if(request()->type ?? false){
-            $validate['id'] = ['required','exists:'.$dataTable[request()->type].',id'];
-        }
+
 
 
         return $validate;
@@ -71,7 +68,7 @@ class FilterRequest extends FormRequest
     {
         return [];
     }
-    protected function failedValidation($validator) 
+    protected function failedValidation($validator)
     {
         throw new HttpResponseException($this->errorInvalidate('Dữ liệu không hợp lệ! ', $validator->errors()));
     }

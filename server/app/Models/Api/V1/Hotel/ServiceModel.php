@@ -14,8 +14,8 @@ class ServiceModel extends ApiModel
         $this->hidden       = [];
         $this->appends      = [];
     }
-    // public function getImageAttribute()
-    // {
-    //     return $this->attributes['image'] ? URL_DATA_IMAGE.'hotel/service/images/'. $this->id . "/" . $this->attributes['image'] : null;
-    // }
+    public function parents()
+    {
+        return $this->belongsTo(ServiceModel::class, 'parent_id', 'id');
+    }
 }

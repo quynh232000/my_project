@@ -74,9 +74,8 @@
                                 </div>
                                 <div class="form-group col-6 p-2 mb-0 star">
                                     <label class="col-form-label text-right" for="commission_rate">Hạng sao</label>
-                                    <input type="number" min="0" max="5" value=""
-                                        id="construction_year" class="form-control" name="stars"
-                                        value="{{ $params['item']->stars ?? '' }}" placeholder="Chọn năm">
+                                    <input type="number" id="" class="form-control" name="stars"
+                                        value="{{ $params['item']['stars'] ?? '' }}" placeholder="Chọn năm">
                                     <div class="input-error"></div>
 
                                 </div>
@@ -116,16 +115,9 @@
                                 </div>
 
                                 <div class="form-group col-6 p-2 mb-0">
-                                    <label class="col-form-label text-right" for="featured">Nổi bật</label>
-                                    <select class="form-control" id="featured" name="featured">
-                                        <option value="0"
-                                            {{ isset($params['item']['featured']) && $params['item']['featured'] == 0 ? 'selected' : '' }}>
-                                            Không
-                                        </option>
-                                        <option value="1"
-                                            {{ isset($params['item']['featured']) && $params['item']['featured'] == 1 ? 'selected' : '' }}>
-                                            Có</option>
-                                    </select>
+                                    <label class="col-form-label text-right" for="featured">Vị trí</label>
+
+                                    {!! \App\Models\Hotel\HotelModel::selectPosition($params['item']['position'] ?? null) !!}
                                     <div class="input-error"></div>
                                 </div>
                                 <div class="form-group col-6 p-2 mb-0">
@@ -150,6 +142,35 @@
                         @include('hotel.hotel.album.edit')
                         @include('hotel.hotel.address.edit')
                         @include('hotel.hotel.customer.edit')
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Thông tin SEO</h3>
+                            </div>
+                            <!-- /.card-header -->
+                            <div class="card-body">
+                                <div class="row m-0  pt-2">
+                                    <div class="form-group col-6 p-2 mb-0">
+                                        <label class="col-form-label text-right" for="meta_title">Meta title</label>
+                                        <input type="text" class="form-control" id="meta_title" name="meta_title"
+                                            placeholder="Nhập tiêu đề" value="{{ $params['item']['meta_title'] }}">
+                                        <div class="input-error"></div>
+                                    </div>
+                                    <div class="form-group col-6 p-2 mb-0">
+                                        <label class="col-form-label text-right" for="meta_keyword">Meta keyword</label>
+                                        <input type="text" class="form-control" name="meta_keyword"
+                                            value="{{ $params['item']['meta_keyword'] }}"
+                                            placeholder="Nhập meta keyword"></input>
+                                        <div class="input-error"></div>
+                                    </div>
+                                    <div class="form-group col-12 p-2 mb-0">
+                                        <label class="col-form-label text-right" for="meta_description">Meta
+                                            description</label>
+                                        <textarea class="form-control" name="meta_description" id="meta_description" placeholder="Nhập meta description">{{ $params['item']['meta_description'] }}</textarea>
+                                        <div class="input-error"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -174,11 +195,6 @@
     <script src="{{ asset('assets/js/custom/utilities/modals/users-search.js') }}"></script>
     <script src="{{ asset('assets/js/custom/apps/ecommerce/catalog/save-product.js') }}"></script>
     <script>
-        $('#admin-{{ $params['prefix'] }}-form').on('keydown', 'input', function(e) {
-            if (e.key === "Enter") {
-                e.preventDefault(); // Ngăn chặn submit khi nhấn Enter
-            }
-        });
         // form submit
         $('#admin-{{ $params['prefix'] }}-form').submit(function(e) {
             e.preventDefault();

@@ -61,6 +61,7 @@ if (!defined('TABLE_HOTEL_CHAIN'))     define('TABLE_HOTEL_CHAIN', 'hotel_chains
 if (!defined('TABLE_HOTEL_LOCATION'))     define('TABLE_HOTEL_LOCATION', 'hotel_locations');
 if (!defined('TABLE_HOTEL_PRIORITY'))     define('TABLE_HOTEL_PRIORITY', 'hotel_priorities');
 if (!defined('TABLE_HOTEL_HOTEL_CATEGORY_ID'))     define('TABLE_HOTEL_HOTEL_CATEGORY_ID', 'hotel_hotel_category_ids');
+if (!defined('TABLE_HOTEL_BANNER'))     define('TABLE_HOTEL_BANNER', 'hotel_banners');
 
 // booking
 if (!defined('TABLE_HOTEL_BOOKING_ORDER'))     define('TABLE_HOTEL_BOOKING_ORDER', 'hotel_booking_orders');

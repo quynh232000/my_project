@@ -6,36 +6,14 @@ import {  LocateIcon, Star, Umbrella } from "lucide-react";
 import { FormatPrice } from "@/utils/common";
 import Link from "next/link";
 import { FaHeart } from "react-icons/fa6";
-import { CallAPI } from "@/configs/axios/axios";
-import { useEffect, useState } from "react";
+import { Hotel, Trending } from "@/services/app/home/SGetHotelList";
+import SkeProductSale from './../../../components/shared/Skeleton/SkeProductSale';
 
-
-const GetHotel = async () => {
-    try {
-        const { data } = await CallAPI().post(`https://backend.190booking.com/api/v1/hotel/hotel/filter`,{
-          type:'country',
-          slug:'viet-nam'
-        });
-        if (!data) {
-            return null;
-        }
-        return Promise.resolve(data.data ?? []);
-    } catch (error) {
-        return Promise.reject(error);
-    }
-};
-function Flashsale() {
+function Flashsale({data,loading}:{data?:Trending[],loading:boolean}) {
     const  i_flash = "/images/common/bg_flashsale.png";
     const  i_flash_top = "/images/common/flash_top.png";
+  
     
-    const [hotels,setHotels] = useState<any[]>([])
-    useEffect(()=>{
-            GetHotel().then(res=>{
-                if(res){
-                    setHotels(res)
-                }
-            })
-    },[])
   return (
      <div className="relative">
           <div className=" w-full h-[620px] relative">
@@ -64,6 +42,14 @@ function Flashsale() {
             <TimeFlashSale />
           </div>
             <div>
+            <div>
+
+                {loading && <div className=" grid grid-cols-4 gap-5">
+                    <SkeProductSale/>
+                    <SkeProductSale/>
+                    <SkeProductSale/>
+                    <SkeProductSale/></div>}
+            </div>
               <Swiper
                 modules={[A11y, Autoplay]}
                 spaceBetween={8}
@@ -78,12 +64,14 @@ function Flashsale() {
                 //   1280: { slidesPerView: 5, spaceBetween: 10 }, // Large screens
                 // }}
               >
-                {hotels.map((item) => {
+                { (data && data.reduce<Hotel[]>((acc, obj) => {
+                    return acc.concat(obj.hotels);
+                    }, []).map((item) => {
                   return (
                     <SwiperSlide key={item?.id+"okok"}>
                         <Link href={'/khach-san/'+item.slug}>
-                            <div  className="bg-white rounded-lg shadow-lg relative">
-                                <span className=" absolute top-0 left-0 z-[1] bg-yellow-500 px-4 py-1 text-sm text-white rounded-tl-lg rounded-br-lg">-{item.sale}</span>
+                            <div  className="bg-white rounded-lg shadow-lg relative ">
+                                <span className=" absolute top-0 left-0 z-[1] bg-yellow-500 px-4 py-1 text-sm text-white rounded-tl-lg rounded-br-lg">-{item?.stars ??2}%</span>
                                 <span className=" absolute top-1 right-1 z-[1] text-yellow-500"><FaHeart  className=" text-xl"/></span>
                                 <div className="overflow-hidden ">
                                     <div className="w-full h-[180px] rounded-t-lg relative overflow-hidden">
@@ -101,9 +89,9 @@ function Flashsale() {
                                         <div className="flex gap-1 h-3">
                                             {Array.from({ length: item.stars ? item.stars : 1 }, (_, index) => <span key={index}><Star size={14} className="text-yellow-500"/></span> )}
                                         </div>
-                                        <div className="flex gap-2 items-center text-[14px] text-gray-600">
+                                        <div className="flex gap-2 items-center text-[14px] text-gray-600" title={`${item?.location?.ward_name}, ${item?.location?.province_name}, ${item?.location?.country_name}`}>
                                             <LocateIcon size={16} className="text-gray-600"/>
-                                            <span className=" line-clamp-1">{item?.location?.address ?? ''}</span>
+                                            <span className=" line-clamp-1">{`${item?.location?.ward_name}, ${item?.location?.province_name}, ${item?.location?.country_name}` }</span>
                                         </div>
                                         <div className="flex gap-2 text-gray-600 text-[14px] ">
                                             <div className="flex gap-2 items-center  bg-primary-100 rounded-sm px-1">
@@ -116,10 +104,8 @@ function Flashsale() {
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="text-right mt-5">
-                                        <div>
-                                            <del className="text-gray-500 text-[14px]">{FormatPrice (item.avg_price + 10000)}</del>
-                                        </div>
+                                    <div className="text-right mt-5 flex justify-end items-center gap-4 ">
+                                        <i className="text-gray-600 text-sm">Chỉ từ</i>
                                         <div className="text-primary-500 font-semibold text-xl">
                                         {FormatPrice (item.avg_price)}
                                         </div>
@@ -130,11 +116,12 @@ function Flashsale() {
                         
                     </SwiperSlide>
                   );
-                })}
+                }))}
+                
               </Swiper>
             </div>
             <div className="flex justify-center mt-2">
-                <div className="bg-yellow-500 text-white hover:bg-yellow-600 shadow-lg rounded-lg py-2 px-8 cursor-pointer">Xem thêm</div>
+                <Link href={'/khach-san/'+ (data &&(data[0].type_location +'/'+data[0].slug))} className="bg-yellow-500 text-white hover:bg-yellow-600 shadow-lg rounded-lg py-2 px-8 cursor-pointer">Xem thêm</Link>
             </div>
           </div>
     </div>

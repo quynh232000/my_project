@@ -7,6 +7,7 @@ use App\Models\Api\V1\General\DistrictModel;
 use App\Models\Api\V1\General\WardModel;
 use Elastic\Elasticsearch\ClientBuilder;
 use App\Helpers\RedisHelper;
+use App\Models\Admin\ProvinceModel;
 use App\Models\Api\V1\General\CountryModel;
 use App\Models\ApiModel;
 use Carbon\CarbonPeriod;
@@ -120,26 +121,17 @@ class HotelModel extends ApiModel
             $hotel->breadcrumb          = self::getBreadcrumb($hotel->location);
 
             // cache relative hotel ===================
-            $cacheKeyRelative           = "{$params['prefix']}.{$params['controller']}.{$params['action']}.relative_hotel.{$params['slug']}";
             $paramsReative              = [
                 'hotel_id'      => $hotel->id,
                 'city_id'       => $hotel->location->city_id ?? null,
                 'district_id'   => $hotel->location->district_id ?? null,
                 'ward_id'       => $hotel->location->ward_id ?? null,
             ];
-            $cachedRelativeHotel        = $this->rememberCacheJson($cacheKeyRelative, function () use ($paramsReative) {
-                return self::listItem($paramsReative, ['task' => 'relative-hotel']);
-            }, 3600);
 
-            // cache reviews ===================
-            $cacheKeyReviews            = "{$params['prefix']}.{$params['controller']}.{$params['action']}.reviews.{$params['slug']}";
-            $cachedReviewsHotel         = $this->rememberCacheJson($cacheKeyReviews, function () use ($hotel, $params) {
-                return self::getReviews($hotel->id);
-            }, 3600);
 
             if (isset($hotel->rooms)) unset($hotel->rooms);
-            $hotel->relative_hotels     = $cachedRelativeHotel ?? [];
-            $hotel->reviews             = $cachedReviewsHotel ?? null;
+            $hotel->relative_hotels     = self::listItem($paramsReative, ['task' => 'relative-hotel']) ?? [];
+            $hotel->reviews             = self::getReviews($hotel->id) ?? null;
 
             $result                     = $hotel->toArray();
             //xử lý policy other
@@ -233,13 +225,10 @@ class HotelModel extends ApiModel
                     $sub->where('type_location', 'country')
                         ->where('country_id', $location->country_id);
                 })
+
                     ->orWhere(function ($sub) use ($location) {
-                        $sub->where('type_location', 'city')
-                            ->where('city_id', $location->city_id);
-                    })
-                    ->orWhere(function ($sub) use ($location) {
-                        $sub->where('type_location', 'district')
-                            ->where('district_id', $location->district_id);
+                        $sub->where('type_location', 'province')
+                            ->where('province_id', $location->province_id);
                     })
                     ->orWhere(function ($sub) use ($location) {
                         $sub->where('type_location', 'ward')
@@ -248,7 +237,7 @@ class HotelModel extends ApiModel
             })
             ->get()->makeHidden('product_counts');
 
-        $requiredLevels     = ['country', 'city', 'district', 'ward'];
+        $requiredLevels     = ['country',  'province', 'ward'];
         $location           = $location->toArray();
         $categoriesMap      = collect($categories->toArray())->keyBy('type_location');
 
@@ -831,7 +820,7 @@ class HotelModel extends ApiModel
             $categories             = HotelCategoryModel::whereJsonContains('position', 'trending')
                 ->orWhereJsonContains('position', 'best_price')
                 ->get();
-
+            // return  $categories;
             // 2: Group categories by type_location & ID
             $categoryMap            = [];
             $categoryObjects        = [];
@@ -839,7 +828,6 @@ class HotelModel extends ApiModel
             foreach ($categories as $category) {
                 foreach ($category->position as $positionType) {
                     if (!in_array($positionType, ['trending', 'best_price'])) continue;
-
                     $type           = $category->type_location;
                     $id             = $category->{$type . '_id'};
 
@@ -940,7 +928,7 @@ class HotelModel extends ApiModel
             if ($category) {
                 $category               = $category->toArray();
                 // lấy theo danh mục tương ứng
-                switch ($params['type']) {
+                switch ($category['type'] ?? 'chain') {
                     case 'location':
                         $query->whereHas('location', function ($q) use ($category) {
                             $q->where($category['type_location'] . '_id', $category[$category['type_location'] . '_id']);
@@ -972,8 +960,7 @@ class HotelModel extends ApiModel
             } else {
                 $data_point     = [
                     'country'  => CountryModel::class,
-                    'city'     => CityModel::class,
-                    'district' => DistrictModel::class,
+                    'province' => ProvinceModel::class,
                     'ward'     => WardModel::class,
                 ];
 
@@ -986,25 +973,25 @@ class HotelModel extends ApiModel
 
 
             // filter theo ngày đặt
-            if (isset($params['date_start']) && isset($params['date_end'])) {
-                $params['adt']      = (int)($params['adt'] ?? 1);
-                $params['chd']      = (int)($params['chd'] ?? 0);
-                $params['quantity'] = (int)($params['quantity'] ?? 1);
+            // if (isset($params['date_start']) && isset($params['date_end'])) {
+            //     $params['adt']      = (int)($params['adt'] ?? 1);
+            //     $params['chd']      = (int)($params['chd'] ?? 0);
+            //     $params['quantity'] = (int)($params['quantity'] ?? 1);
 
-                $params['capacity'] = (int) ceil(($params['adt'] + $params['chd']) / $params['quantity']); //sức chứa trung bình mỗi phòng
-                $params['avg_adt']  = (int) ceil($params['adt'] / $params['quantity']); //số khách tiêu chuẩn trên mỗi phòng
-                $params['avg_chd']  = (int) ceil($params['chd'] / $params['quantity']); //số trẻ em tiêu chuẩn trên mỗi phòng
+            //     $params['capacity'] = (int) ceil(($params['adt'] + $params['chd']) / $params['quantity']); //sức chứa trung bình mỗi phòng
+            //     $params['avg_adt']  = (int) ceil($params['adt'] / $params['quantity']); //số khách tiêu chuẩn trên mỗi phòng
+            //     $params['avg_chd']  = (int) ceil($params['chd'] / $params['quantity']); //số trẻ em tiêu chuẩn trên mỗi phòng
 
-                $query                  = self::queryRoomHotel($query, $params);
-            }
+            //     $query                  = self::queryRoomHotel($query, $params);
+            // }
 
             // by range price
             if (isset($params['price_min']) && isset($params['price_max'])) {
-                if (isset($params['date_start']) && isset($params['date_end'])) {
-                    $query->whereBetween('price_after_discount', [$params['price_min'], $params['price_max']]);
-                } else {
-                    $query->whereBetween('avg_price', [$params['price_min'], $params['price_max']]);
-                }
+                // if (isset($params['date_start']) && isset($params['date_end'])) {
+                //     $query->whereBetween('price_after_discount', [$params['price_min'], $params['price_max']]);
+                // } else {
+                // }
+                $query->whereBetween('avg_price', [$params['price_min'], $params['price_max']]);
             }
             // by accommodation
             if ($params['accommodation_id'] ?? false) {
@@ -1246,7 +1233,7 @@ class HotelModel extends ApiModel
                                         END AS effective_value
                                     ")
             );
-        // tính tổng ưu đãi 
+        // tính tổng ưu đãi
         $valueProQueryped   = DB::table(DB::raw("({$promotionsQuery->toSql()}) as valid_promotions"))
             ->mergeBindings($promotionsQuery)
             ->select(
@@ -1254,8 +1241,8 @@ class HotelModel extends ApiModel
                 'room_id',
                 'price_type_id',
                 DB::raw("
-                                        CASE 
-                                            WHEN SUM(CASE WHEN is_stackable = 0 THEN 1 ELSE 0 END) > 0 
+                                        CASE
+                                            WHEN SUM(CASE WHEN is_stackable = 0 THEN 1 ELSE 0 END) > 0
                                                 THEN MAX(CASE WHEN is_stackable = 0 THEN effective_value ELSE 0 END)
                                             ELSE SUM(CASE WHEN is_stackable = 1 THEN effective_value ELSE 0 END)
                                         END AS total_discount
@@ -1273,7 +1260,7 @@ class HotelModel extends ApiModel
         $capacity       = intval($params['capacity']);
         $roomTable      = TABLE_HOTEL_ROOM;
         $priceField     = "
-                            CASE 
+                            CASE
                                 WHEN applied_price_type.price IS NOT NULL THEN
                                     CASE
                                         WHEN {$capacity} > {$roomTable}.standard_guests THEN applied_price_type.price + COALESCE(applied_price_type.price_setting, 0)
@@ -1385,14 +1372,8 @@ class HotelModel extends ApiModel
             $table . ".image",
         ], 'image_url');
     }
-    public function getImageUrlAttribute()
-    {
-        return $this->attributes['image_url'] ?? null;
-    }
-    public function getImageAttribute()
-    {
-        return $this->attributes['image'] ? URL_DATA_IMAGE . 'hotel/hotel/images/' . $this->id . "/" . $this->attributes['image'] : null;
-    }
+
+
     // public function categories()
     // {
     //     return $this->belongsToMany(HotelCategoryModel::class, TABLE_HOTEL_HOTEL_CATEGORY_ID, 'hotel_id', 'category_id');

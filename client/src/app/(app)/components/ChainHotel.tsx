@@ -6,6 +6,7 @@ import { A11y, Autoplay } from "swiper/modules";
 import { useEffect, useState } from "react";
 import { IChainItem, SGetChainList } from "@/services/app/home/SGetChainList";
 import { FormatPrice } from "@/utils/common";
+import Link from "next/link";
 
 // Data input
 
@@ -64,7 +65,7 @@ export default function ChainHotel() {
                     <SwiperSlide key={index} >
                         <div className="grid grid-cols-2 gap-3">
                            {item[0] && 
-                            <div className=" relative rounded-lg ">
+                            <Link href={'/hotel/chain/'+item[0].slug} className=" relative rounded-lg ">
                             
                                 <div className=" relative h-[390px] w-full rounded-lg overflow-hidden">
                                     <Image 
@@ -89,12 +90,12 @@ export default function ChainHotel() {
                                     <div> Chỉ từ {FormatPrice(item[0].price ?? 0)}/đêm</div>
                                     </div>
                                 </div>
-                            </div>
+                            </Link>
                             }
                             {item[1] && item[2] &&
                           <div className="flex flex-col gap-3">
                             {item[1] &&
-                            <div className=" relative rounded-lg flex-1">
+                            <Link href={'/hotel/chain/'+item[1].slug} className=" relative rounded-lg flex-1">
                               <div className=" relative h-full w-full rounded-lg overflow-hidden">
                                 <Image 
                                   fill
@@ -118,9 +119,9 @@ export default function ChainHotel() {
                                   <div> Chỉ từ {FormatPrice(item[1]?.price ?? 0)}/đêm</div>
                                 </div>
                               </div>
-                            </div>}
+                            </Link>}
                              {item[2] &&
-                            <div className=" relative rounded-lg flex-1">
+                            <Link href={'/hotel/chain/'+item[2].slug} className=" relative rounded-lg flex-1">
                                 <div className=" relative h-full w-full rounded-lg overflow-hidden">
                                     <Image 
                                     fill
@@ -144,7 +145,7 @@ export default function ChainHotel() {
                                     <div> Chỉ từ {FormatPrice(item[2]?.price ?? 0)}/đêm</div>
                                     </div>
                                 </div>
-                            </div>}
+                            </Link>}
                           </div>}
                         </div>
                     </SwiperSlide>

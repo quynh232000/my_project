@@ -16,11 +16,9 @@ use Illuminate\Support\Facades\Storage;
 
 class HotelModel extends AdminModel
 {
-    // use NodeTrait;
     protected $guarded = ['id'];
     protected $bucket  = 's3_hotel';
     protected $path;
-    // protected $elasticService;
     public $crudNotAccepted = [
         'abumn',
         'facility',
@@ -66,8 +64,6 @@ class HotelModel extends AdminModel
             'button'        =>  ['edit', 'delete',],
         ];
         parent::__construct();
-        // $this->bucket       = 's3_'.strtolower(basename(__NAMESPACE__));
-        // $this->elasticService       = new ElasticService;
     }
     public function adminQuery(&$query, $params)
     {
@@ -116,11 +112,6 @@ class HotelModel extends AdminModel
             $query->where('address', 'LIKE', '%' . $params['address'] . '%');
         }
 
-        if (isset($params['category_id']) && $params['category_id'] !== "all") {
-            $query->whereHas('categories', function ($q) use ($params) {
-                $q->where(TABLE_HOTEL_HOTEL_CATEGORY . '.id', $params['category_id']);
-            });
-        }
 
 
         if (isset($params['customer']) && !empty($params['customer'])) {
@@ -145,7 +136,7 @@ class HotelModel extends AdminModel
                 ->leftJoin(TABLE_HOTEL_LOCATION . ' AS lo', 'lo.hotel_id', '=', $this->table . '.id')
                 ->leftJoin(TABLE_HOTEL_ATTRIBUTE . ' AS acc', 'acc.id', '=', $this->table . '.accommodation_id');
 
-            $query->with('customers:id,full_name,email,phone', 'categories:id,name', 'location');
+            $query->with('customers:id,full_name,email,phone', 'location');
 
             $this->_data    = [
                 ...$this->_data,
@@ -153,11 +144,10 @@ class HotelModel extends AdminModel
                     $this->table . '.id'          => 'id',
                     $this->table . '.name'        => 'Tên khách sạn',
                     'location'                    => 'Địa chỉ',
-                    'customers'                   => 'Nhân viên',
                     'acc.name AS accommodation_id' => 'Loại cư trú',
                     $this->table . '.position'    => 'Vị trí',
-
                     $this->table . '.status'      => 'Trạng thái',
+                    'customers'                   => 'Nhân viên',
                     'u.full_name AS created_by'   => 'Người tạo',
                     $this->table . '.created_at'  => 'Ngày tạo',
                     'u2.full_name AS updated_by'  => 'Người sửa',
@@ -275,15 +265,6 @@ class HotelModel extends AdminModel
                 $HotelCustomerModel->saveItem($params['customer_ids'], [...$options, 'task' => 'add-item']);
             }
 
-            $languages                  = [];
-            foreach (($params['language'] ?? []) as $key => $value) {
-                $item                   = explode('|', $value);
-                $languages[]            = [
-                    'id' => $item[0],
-                    'name' => $item[1]
-                ];
-            }
-            $params['language']         = json_encode($languages);
 
             // add location
             $LocationModel = new LocationModel();
@@ -538,21 +519,7 @@ class HotelModel extends AdminModel
     {
         return $this->belongsToMany(CustomerModel::class, TABLE_HOTEL_HOTEL_CUSTOMER, 'hotel_id', 'customer_id')->withPivot('role', 'status', 'id');
     }
-    public function columnCustomers($params, $field, $val)
-    {
-        $hotelNames = array_map(function ($customer) {
-            $title = "<div>
-                        <div>-Email : " . $customer['email'] . "</div>
-                        <div>-Phone : " . $customer['phone'] . "</div>
-                    </div>";
-            return '<a href="' . route('hotel.customer.edit', ['customer' => $customer['id']]) . '"
-                data-toggle="tooltip" data-html="true" data-placement="top" title="' . $title . '"
-            >
-            ' . $customer['full_name'] . '</a>';
-        }, $val['customers']);
 
-        return implode(',<br> ', $hotelNames);
-    }
 
     public static function selectPosition($selecteds = [], $is_muti = true)
     {
@@ -590,15 +557,10 @@ class HotelModel extends AdminModel
                     <div class='d-flex justify-content-beween'>
                         -
                         <span>Tỉnh/ Thành phố:</span>
-                        <span>" . ($val['location']['city_name'] ?? '') . "</span> ( Index :
-                        <div stype='padding:20px'>" . ($val['location']['city_index'] ?? '') . "</div>)
+                        <span>" . ($val['location']['province_name'] ?? '') . "</span> ( Index :
+                        <div stype='padding:20px'>" . ($val['location']['province_index'] ?? '') . "</div>)
                     </div>
-                    <div class='d-flex justify-content-beween'>
-                        -
-                        <span>Quận/ Huyện:</span>
-                        <span>" . ($val['location']['district_name'] ?? '') . "</span> ( Index :
-                        <div stype='padding:20px'>" . ($val['location']['district_index'] ?? '') . "</div>)
-                    </div>
+
                     <div class='d-flex justify-content-beween'>
                         -
                         <span>Phường/ Xã:</span>
@@ -613,8 +575,31 @@ class HotelModel extends AdminModel
                 </div>";
 
         return '<div class="address"><div  data-toggle="tooltip" data-html="true" data-placement="top" title="' . $title . '">
-                    ' . ($val['location']['address'] ?? '') . '
+                    ' . "{$val['location']['ward_name']}, {$val['location']['province_name']}, {$val['location']['country_name']}" . '
                 </div></div>';
+    }
+    public function columnCustomers($params, $field, $val)
+    {
+        $params['customers']    = $val['customers'] ?? [];
+        $params['id']           = $val['id'] ?? '';
+        $params['name']         = $val['name'] ?? '';
+        return view("{$params['prefix']}.{$params['controller']}.components.modal-customer", ['params' => $params]);
+    }
+    public function columnPosition($params, $field, $val)
+    {
+        $data               = [
+            'trending'      => 'Thịnh hành',
+            'best_price'    => 'Giá tốt',
+        ];
+
+        $values             = $val[$field] ?? [];
+        $values             = is_array($values) ? $values : (json_decode($values, true) ?? []);
+
+        $valueData          = [];
+        foreach ($values as $key => $value) {
+            $valueData[]    = '<div class="badge badge-info text-white">' . ($data[$value] ?? $value) . '</div>';
+        }
+        return implode(' ', $valueData);
     }
 
     public function columnCategories($params, $field, $val)

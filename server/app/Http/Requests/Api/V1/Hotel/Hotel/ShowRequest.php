@@ -8,7 +8,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Validation\Rule;
 
-class FilterRequest extends FormRequest
+class ShowRequest extends FormRequest
 {
     use ApiResponse;
     private $table            = TABLE_HOTEL_HOTEL;
@@ -21,8 +21,7 @@ class FilterRequest extends FormRequest
     {
         $dataTable  = [
             'country'       => TABLE_GENERAL_COUNTRY,
-            'city'          => TABLE_GENERAL_CITY,
-            'district'      => TABLE_GENERAL_DISTRICT,
+            'province'          => TABLE_GENERAL_PROVINCE,
             'ward'          => TABLE_GENERAL_WARD,
             'chain'         => TABLE_HOTEL_CHAIN
         ];
@@ -89,5 +88,11 @@ class FilterRequest extends FormRequest
     protected function failedValidation($validator)
     {
         throw new HttpResponseException($this->errorInvalidate('Dữ liệu không hợp lệ! ', $validator->errors()));
+    }
+    public function validationData(): array
+    {
+        return array_merge($this->all(), [
+            'slug' => $this->route('hotel'),
+        ]);
     }
 }

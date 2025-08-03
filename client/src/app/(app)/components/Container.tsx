@@ -1,5 +1,5 @@
 'use client'
-import React, {  useState } from 'react'
+import React, {  useEffect, useState } from 'react'
 import NavHead from './NavHead'
 import SearchHead from './SearchHead'
 import Banner from './Banner'
@@ -10,13 +10,25 @@ import BestFlight from './BestFlight'
 import BestPriceHotel from './BestPriceHotel'
 import ChainHotel from './ChainHotel'
 import BannerBottom from './BannerBottom'
+import { IHotelList, SGetHotelList } from '@/services/app/home/SGetHotelList'
 
 
 function Container() {
     const [navActiveKey,setNavActiveKey] = useState('khach-san')
 
-    
+    const [hotels,setHotels] = useState<IHotelList|null>(null)
+    const [loading,setLoading] = useState({
+        hotel:true
+    })
 
+    useEffect(()=>{
+        setLoading({...loading,hotel:true})
+        SGetHotelList().then(res=>{
+             setLoading({...loading,hotel:false})
+            if(res)setHotels(res)
+        })
+    },[])
+   
   return (
     <div className=' flex flex-col gap-8'>
         <div className='relative flex flex-col gap-8'>
@@ -36,9 +48,9 @@ function Container() {
             </div>
         </div>
         <Banner/>
-        <Flashsale/>
+        <Flashsale data={hotels?.trending} loading={loading.hotel}/>
         <BestFlight/>
-        <BestPriceHotel/>
+       {<BestPriceHotel  data={hotels?.best_price} loading={loading.hotel}/>}
         <ChainHotel/>
 		<PopularPlaces/>
         <BannerBottom/>
