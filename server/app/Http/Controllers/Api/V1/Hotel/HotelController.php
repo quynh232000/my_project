@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1\Hotel;
 use App\Http\Controllers\Api\ApiController;
 use App\Http\Requests\Api\V1\Hotel\Hotel\FilterRequest;
 use App\Http\Requests\Api\V1\Hotel\Hotel\ShowRequest;
+use App\Models\Api\V1\Hms\LocationModel;
 use App\Models\Api\V1\Hotel\HotelModel;
 use App\Traits\ApiResponse;
 use Illuminate\Http\Request;
@@ -67,9 +68,67 @@ class HotelController extends ApiController
     }
     public function clone(Request $req)
     {
-        $response = Http::post('https://apiportal.ivivu.com/web_prot/ms01/api/SearchFilters/SearchHotelList', [
-            ...($req->all() ?? [])
-        ]);
-        return $response;
+        $payload = $req->all(); // kiểm tra xem là map hay có args bên trong
+
+        $response = Http::withHeaders([
+            'Content-Type' => 'application/json',
+        ])->withBody(json_encode($payload), 'application/json')
+            ->post('https://apiportal.ivivu.com/web_prot/ms01/api/SearchFilters/SearchHotelList');
+        $list = $response->json()['data']['list'];
+
+        // $response = Http::withHeaders([
+        //     'User-Agent' => 'MyLaravelApp/1.0 (your-email@example.com)', // Bắt buộc!
+        // ])->get('https://nominatim.openstreetmap.org/reverse', [
+        //     'lat' => 11.9283941,
+        //     'lon' => 108.4433296,
+        //     'format' => 'json'
+        //     // ,'accept-language' => 'vi'
+        // ]);
+
+        // $data = $response->json(); // đây mới là dữ liệu địa chỉ
+
+        // $address = $data['address'] ?? [];
+        // return $address;
+        // // Lấy tỉnh, quận, phường
+        // $province = $address['state'] ?? null;
+        // $district = $address['county'] ?? $address['city'] ?? null;
+        // $ward     = $address['suburb'] ?? $address['village'] ?? null;
+        // return $province;
+        foreach ($list as $item) {
+            $hotel_id = HotelModel::insertGetId([
+                'reviewMessage' => $item['reviewMessage'],
+                'hotelId' => $item['hotelId'],
+                'name' => $item['hotelName'],
+                'slug' => $item['hotelCode'],
+                'reviewCount' => $item['reviewCount'],
+                'avg_price' => (int) preg_replace('/[^\d]/', '', $item['maxPrice'] ?? 0),
+                'stars' => 5,
+                'status' => 'active',
+                'accommodation_id' => 62,
+                'chain_id' => 3,
+                'created_by' =>  5,
+                'image' => isset($item['avatar']) && str_starts_with($item['avatar'], 'http')
+                    ? $item['avatar']
+                    : 'https:' . ($item['avatar'] ?? '')
+            ]);
+
+            LocationModel::insert([
+                'hotel_id' => $hotel_id,
+                'longitude' => $item['lon'],
+                'latitude' => $item['lat'],
+                'address' => $item['address'],
+                'country_id' => 245,
+                'country_slug' => 'viet-nam',
+                'country_name' => 'Việt Nam',
+                'province_id' => 28,
+                'province_slug' => 'thanh-pho-ho-chi-minh',
+                'province_name' => 'Thành phố Hồ Chí Minh',
+                'ward_id' => 2738,
+                'ward_slug' => 'phuong-an-lac',
+                'ward_name' => 'Phường An Lạc',
+            ]);
+        }
+
+        return $response->json(); // hoặc return $response->body();
     }
 }

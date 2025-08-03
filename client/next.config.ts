@@ -52,6 +52,10 @@ const nextConfig: NextConfig = {
                 protocol: 'https',
                 hostname: 'res.cloudinary.com'
             },
+            {
+                protocol: 'https',
+                hostname: 'cdn1.ivivu.com'
+            },
         ],
         contentSecurityPolicy:
             "default-src 'self'; script-src 'none'; sandbox;",
