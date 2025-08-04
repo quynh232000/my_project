@@ -5,7 +5,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { A11y, Autoplay } from "swiper/modules";
 import Link from "next/link";
 import {  FaHeart } from "react-icons/fa6";
-import { FormatPrice } from "@/utils/common";
+import { FormatPrice, getRandomInt } from "@/utils/common";
 import {  LocateIcon, Star, Umbrella } from "lucide-react";
 import { BestPrice } from "@/services/app/home/SGetHotelList";
 import { useEffect, useState } from "react";
@@ -87,7 +87,7 @@ export default function BestPriceHotel({data,loading}:{data?:BestPrice[],loading
                                 </div>
                                 <div className="p-3 flex flex-col justify-between">
                                     <div className="flex flex-col gap-2">
-                                        <h2 className="font-semibold line-clamp-2">{item.name}</h2>
+                                        <h2 className="font-semibold line-clamp-2 h-[46px]">{item.name}</h2>
                                         <div className="flex gap-1">
                                             {Array.from({ length: item.stars ? +item.stars : 0 }, (_, index) => <span key={index}><Star size={14} className="text-yellow-500"/></span> )}
                                         </div>
@@ -101,8 +101,8 @@ export default function BestPriceHotel({data,loading}:{data?:BestPrice[],loading
                                                 <span className="text-primary-500 font-semibold" >Tuyệt vời</span>
                                             </div>
                                             <div>
-                                                <span>50</span>
-                                                <span className="text-gray-400"> ( 30 đánh giá)</span>
+                                                <span>{getRandomInt(0,10)}</span>
+                                                <span className="text-gray-400"> ( {getRandomInt(10,1000)} đánh giá)</span>
                                             </div>
                                         </div>
                                     </div>

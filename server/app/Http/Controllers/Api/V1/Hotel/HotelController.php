@@ -109,7 +109,8 @@ class HotelController extends ApiController
                 'created_by' =>  5,
                 'image' => isset($item['avatar']) && str_starts_with($item['avatar'], 'http')
                     ? $item['avatar']
-                    : 'https:' . ($item['avatar'] ?? '')
+                    : 'https:' . ($item['avatar'] ?? ''),
+                "position" => '["trending","best_price"]'
             ]);
 
             LocationModel::insert([
@@ -120,12 +121,24 @@ class HotelController extends ApiController
                 'country_id' => 245,
                 'country_slug' => 'viet-nam',
                 'country_name' => 'Việt Nam',
-                'province_id' => 28,
-                'province_slug' => 'thanh-pho-ho-chi-minh',
-                'province_name' => 'Thành phố Hồ Chí Minh',
-                'ward_id' => 2738,
-                'ward_slug' => 'phuong-an-lac',
-                'ward_name' => 'Phường An Lạc',
+                // 'province_id' => 28,
+                // 'province_slug' => 'thanh-pho-ho-chi-minh',
+                // 'province_name' => 'Thành phố Hồ Chí Minh',
+                // 'ward_id' => 2738,
+                // 'ward_slug' => 'phuong-an-lac',
+                // 'ward_name' => 'Phường An Lạc',
+                // 'province_id' => 26,
+                // 'province_slug' => 'lam-dong',
+                // 'province_name' => 'Lâm Đồng',
+                // 'ward_id' => 2418,
+                // 'ward_slug' => 'Phường Xuân Hương - Đà Lạt',
+                // 'ward_name' => 'phuong-xuan-huong-da-lat',
+                'province_id' => 32,
+                'province_slug' => 'an-giang',
+                'province_name' => 'An Giang',
+                'ward_id' => 3152,
+                'ward_slug' => 'Đặc khu Phú Quốc',
+                'ward_name' => 'dac-khu-phu-quoc',
             ]);
         }
 

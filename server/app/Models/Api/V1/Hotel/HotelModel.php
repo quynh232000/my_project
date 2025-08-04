@@ -1020,15 +1020,25 @@ class HotelModel extends ApiModel
                 $direction      = $params['direction'] ?? 'desc';
                 switch ($params['sort']) {
                     case 'popular':
-                        $query->withSum('reviews as total_review_point', 'point')
-                            ->orderBy('total_review_point', $direction ?? 'desc');
+                        $query->leftJoin(TABLE_HOTEL_LOCATION, TABLE_HOTEL_LOCATION . '.hotel_id', '=', $this->table . '.id');
+                        if ($category) {
+                            if ($params['type'] == 'chain') {
+                                // độ ưu tiên theo chuỗi khách sạn
+
+                            } else {
+                                // độ ưu tiên theo location
+                                if ($category['type'] == 'landmark' || $category['type'] == 'location_radius') {
+                                    $query->orderBy(TABLE_HOTEL_LOCATION . '.location_index', 'asc');
+                                } else {
+                                    $query->orderBy(TABLE_HOTEL_LOCATION . '.' . $params['type'] . '_index', 'asc');
+                                }
+                            }
+                        } else {
+                            $query->orderBy(TABLE_HOTEL_LOCATION . '.' . $params['type'] . '_index', 'asc');
+                        }
                         break;
                     case 'price':
-                        if (isset($params['date_start']) && isset($params['date_end'])) {
-                            $query->orderBy('price_after_discount', $direction);
-                        } else {
-                            $query->orderBy($this->table . '.avg_price', $direction);
-                        }
+                        $query->orderBy($this->table . '.avg_price', $direction);
                         break;
                     case 'review':
                         $query->withSum('reviews as total_review_point', 'point')

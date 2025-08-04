@@ -3,7 +3,8 @@ import React from 'react'
 import { FaStar } from 'react-icons/fa6'
 import { IHotelCategoryDetail } from '@/services/app/hotel/SGetHotelCategoryDetail';
 import { propsFilter } from '@/services/app/hotel/SGetHotelFilter';
-function SideBar({CategoryData,filters,setFilters}:{CategoryData:IHotelCategoryDetail,filters:propsFilter,setFilters: React.Dispatch<React.SetStateAction<propsFilter>>}) {
+import SkeSideBar from '@/components/shared/Skeleton/SkeSideBar';
+function SideBar({CategoryData,filters,setFilters,loading}:{CategoryData?:IHotelCategoryDetail,loading:boolean,filters:propsFilter,setFilters: React.Dispatch<React.SetStateAction<propsFilter>>}) {
   function handleToggle(field: keyof propsFilter, value: number) {
   setFilters((prev: propsFilter) => {
     const currentArray = (prev[field] as number[]) || [];
@@ -20,6 +21,7 @@ function SideBar({CategoryData,filters,setFilters}:{CategoryData:IHotelCategoryD
 }
   return (
     <div className='w-full border-sm shadow-sm bg-white'>
+       
         <div className='p-4 border-b'>
             <div className='text-[14px] font-semibold mb-1'>Hạng khách sạn</div>
             <div>
@@ -76,6 +78,12 @@ function SideBar({CategoryData,filters,setFilters}:{CategoryData:IHotelCategoryD
                 </div>
             </div>
         </div>
+         {loading && <div>
+                <SkeSideBar/>
+                <SkeSideBar/>
+                <SkeSideBar/>
+
+            </div>}
         {CategoryData?.accommodation && 
          <div className='p-4 border-b'>
             <div className='text-[14px] font-semibold mb-1'>Loại khách sạn</div>

@@ -1,3 +1,4 @@
+import Pagination from '@/components/shared/Pagination/Pagination'
 import SkeHotelFilter from '@/components/shared/Skeleton/SkeHotelFilter'
 import { Daum } from '@/services/app/hotel/SGetHotelFilter'
 import { FormatPrice } from '@/utils/common'
@@ -6,7 +7,7 @@ import Link from 'next/link'
 import React from 'react'
 import { FaAngleRight, FaHeart, FaLocationDot, FaStar } from 'react-icons/fa6'
 
-function ListHotel({data,loading}:{data:Daum[],loading:boolean}) {
+function ListHotel({data,loading,total,limit}:{data:Daum[],loading:boolean,total:number,limit:number}) {
   return (
     <div>
         <div className='flex flex-col gap-5'>
@@ -63,6 +64,9 @@ function ListHotel({data,loading}:{data:Daum[],loading:boolean}) {
                 </div>
             )}
         </div>
+        <div>
+                            <Pagination total={total} limit={limit} />
+                    </div>
     </div>
   )
 }

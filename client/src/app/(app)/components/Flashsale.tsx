@@ -3,7 +3,7 @@ import { A11y, Autoplay } from "swiper/modules";
 import Image from "next/image";
 import TimeFlashSale from "@/components/shared/Time/TimeFlashSale";
 import {  LocateIcon, Star, Umbrella } from "lucide-react";
-import { FormatPrice } from "@/utils/common";
+import { FormatPrice, getRandomInt } from "@/utils/common";
 import Link from "next/link";
 import { FaHeart } from "react-icons/fa6";
 import { Hotel, Trending } from "@/services/app/home/SGetHotelList";
@@ -100,7 +100,7 @@ function Flashsale({data,loading}:{data?:Trending[],loading:boolean}) {
                                             </div>
                                             <div>
                                                 <span>Tuyệt vời</span>
-                                                <span className="text-gray-400"> ( 50 đánh giá)</span>
+                                                <span className="text-gray-400"> (  {getRandomInt(10,1000)} đánh giá)</span>
                                             </div>
                                         </div>
                                     </div>

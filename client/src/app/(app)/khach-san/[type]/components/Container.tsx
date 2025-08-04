@@ -1,8 +1,8 @@
 'use client'
 import SearchHead from '@/app/(app)/components/SearchHead'
-import { FormatPrice } from '@/utils/common';
+import { FormatPrice, getFeatureDate, getRandomInt } from '@/utils/common';
 import Link from 'next/link'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { CiCalendar, CiForkAndKnife, CiHeart } from "react-icons/ci";
 import { FaAngleRight, FaBuilding, FaCalendar, FaCar, FaCashRegister, FaCheck, FaCircleDot, FaClock, FaEye, FaFaceKissWinkHeart, FaJenkins, FaLocationDot, FaMoneyBill, FaPlane, FaRegShareFromSquare, FaRestroom, FaStar, FaUmbrella, FaWifi } from 'react-icons/fa6';
 import Images from './Images';
@@ -17,9 +17,26 @@ import { MdOutlinePeople } from 'react-icons/md';
 import { IoBed, IoCheckmarkOutline, IoFlashOutline } from "react-icons/io5";
 import { BsInfoCircle } from "react-icons/bs";
 import ReviewContent from './ReviewContent';
+import { useSearchParams } from 'next/navigation';
+import { IHotelDetail, SGetHotelDetail } from '@/services/app/hotel/SGetHotelDetail';
 
-
-function Container() {
+const ICONS = [FaCar, FaFaceKissWinkHeart, FaCashRegister, FaClock, FaWifi, FaUmbrella];
+function Container({type}:{type:string}) {
+    const searchParams = useSearchParams();
+    // const router = useRouter();
+    // const pathname = usePathname();
+    const date_start = searchParams.get('date_start')||getFeatureDate(1);
+    const date_end = searchParams.get('date_end') || getFeatureDate(2);
+    const adt = searchParams.get('adt') || 2;
+    const chd = searchParams.get('chd') || 0;
+    const quantity = searchParams.get('quantity') || 1;
+    const [data,setData] = useState<IHotelDetail|null>(null)
+    useEffect(()=>{
+      SGetHotelDetail({slug:type,date_start,date_end,adt,chd,quantity}).then(res=>{
+        if(res)setData(res)
+      })
+    },[date_start,date_end,type,adt,chd,quantity])
+  if(!data) return null;
   return (
     <div className='bg-white pb-12'>
       <div className='w-content m-auto  flex flex-col gap-8 py-10 '>
@@ -27,17 +44,21 @@ function Container() {
               <SearchHead navActiveKey='khach-san' className="border rounded-lg shadow-lg"/>
           </div>
           <div className='flex gap-1 text-[14px] text-gray-600'>
-              <Link href={'/khach-san'}>Khách sạn</Link>
+            <Link href={'/khach-san'}>Khách sạn</Link>
               <div>/</div>
-              <Link href={'/khach-san'}>Hồ Chí Minh</Link>
-              <div>/</div>
-              <Link href={'/khach-san'}>Quận 1</Link>
-              <div>/</div>
-              <Link href={'/khach-san'}>Khách sạn Mường Thanh Grand Sài Gòn Centre</Link>
+            {data.breadcrumb.map(item=>{
+              return <div key={item.id} className='flex gap-1  items-center'>
+                  <Link href={`/khach-san/${item.type_location}/${item.slug}`} className='hover:cursor-pointer hover:text-primary-500'>{item.name}</Link>
+                  <div>/</div>
+              </div>
+            })}
+              
+             
+              <div className='text-gray-500'>{data.name}</div>
           </div>
           <div className='flex flex-col gap-2'>
               <div className='flex justify-between'>
-                <h1 className='font-bold text-2xl'>Khách sạn Mường Thanh Grand Sài Gòn Centre</h1>
+                <h1 className='font-bold text-2xl'>{data.name??'Khách sạn Mường Thanh Grand Sài Gòn Centre'}</h1>
                 <div className='flex gap-5 items-center text-lg'>
                   <div className='flex gap-2 items-center'>
                     <span>Lưu</span>
@@ -50,11 +71,8 @@ function Container() {
                 </div>
               </div>
               <div className='flex gap-1 text-yellow-500 text-[14px] '>
-                <FaStar/>
-                <FaStar/>
-                <FaStar/>
-                <FaStar/>
-                <FaStar/>
+                {Array.from({ length: data.stars ? +data.stars : 0 }, (_, index) => <span key={index}><FaStar size={14} className="text-yellow-500"/></span> )}
+                
               </div>
               <div className='flex justify-between items-center gap-4'>
                 <div className='flex flex-col gap-2'>
@@ -63,38 +81,63 @@ function Container() {
                       <FaUmbrella/>
                       <span>8.6</span>
                     </div>
-                    <div className='text-gray-600'> Rất tốt <span className='text-gray-600 text-[14px]'>(678 đánh giá)</span></div>
+                    <div className='text-gray-600'> Rất tốt <span className='text-gray-600 text-[14px]'>({getRandomInt(10,1000)} đánh giá)</span></div>
                     <div className='text-secondary-500 text-[14px]'>Xem đánh giá</div>
                   </div>
                   <div className='flex gap-2 items-center text-gray-600'>
                     <div className='flex items-center gap-1'>
                       <FaLocationDot/>
-                      <span>Số 1a, Mạc Đĩnh Chi, Quận 1, Hồ Chí Minh, Việt Nam</span>
+                      <span>{data.location.address ?? 'Số 1a, Mạc Đĩnh Chi, Quận 1, Hồ Chí Minh, Việt Nam'}</span>
                     </div>
                   
-                    <div className='text-secondary-500 text-[14px]'>Xem bản đồ</div>
+                    <Link href={`https://www.google.com/maps?q=${data.location.latitude},${data.location.longitude}`} target='__blank' className='text-secondary-500 text-[14px]'>Xem bản đồ</Link>
                   </div>
                 </div>
                 <div className='flex items-center gap-5'>
                   <div className='flex flex-col justify-between'>
-                    <div className='flex gap-2 text-right'>
+                    {/* <div className='flex gap-2 text-right'>
                       <del className='text-gray-600'>{FormatPrice(3125000)}</del>
                       <div className='text-white bg-primary-500 rounded-sm  px-1 py-0 text-[14px] font-semibold'>-27%</div>
-                    </div>
-                    <div className='text-right font-semibold text-2xl'>{FormatPrice(2890000)}</div>
+                    </div> */}
+                    <div>Chỉ từ</div>
+                    <div className='text-right font-semibold text-2xl'>{FormatPrice(data.avg_price ?? 0)}</div>
                   </div>
                   <div><button className='bg-primary-500 text-white py-3 px-8 rounded-lg hover:bg-primary-600 cursor-pointer'>Chọn phòng</button></div>
                 </div>
               </div>
               <div>
-                <Images/>
+                <Images images={[
+                  {id:1,image:data.image},
+                  {id:2,image:'https://res.cloudinary.com/dkj9bf0d3/image/upload/v1753371477/Mr_quynh/4fefc75f-4254-41bb-9b2a-1c2f155acc9e.png'},
+                  {id:132,image:'https://res.cloudinary.com/dkj9bf0d3/image/upload/v1753371400/Mr_quynh/9428c5bf-0f40-4dac-a6e1-954777eb7979.png'},
+                  {id:143,image:'https://res.cloudinary.com/dkj9bf0d3/image/upload/v1753370899/Mr_quynh/5e65e3b9-60b1-420b-a34a-969294354beb.png'},
+                  {id:154,image:'https://res.cloudinary.com/dkj9bf0d3/image/upload/v1753370840/Mr_quynh/0ec84a3c-16b7-4c8d-9216-566873d4627f.png'},
+                  {id:165,image:'https://res.cloudinary.com/dkj9bf0d3/image/upload/v1753370703/Mr_quynh/44089726-4098-4ae4-b025-bca04c3aa419.png'},
+                  {id:176,image:'https://res.cloudinary.com/dkj9bf0d3/image/upload/v1753370606/Mr_quynh/js_1_vad42f.png'},
+                  {id:187,image:'https://res.cloudinary.com/dkj9bf0d3/image/upload/v1753364779/Mr_quynh/tour-nara-osaka-kyoto-nagoya-phu-si-tokyo-6-ngay-5-dem_weizha.webp'},
+                  {id:198,image:'https://res.cloudinary.com/dkj9bf0d3/image/upload/v1750692854/Mr_quynh/fb5_eicrvq.png'},
+                  {id:1022,image:'https://res.cloudinary.com/dkj9bf0d3/image/upload/v1750692850/Mr_quynh/fb4_dxahuo.png'},
+                  {id:1133,image:'https://res.cloudinary.com/dkj9bf0d3/image/upload/v1750692738/Mr_quynh/fb1_ymuv0t.png'},
+                  {id:144,image:data.image},
+                  {id:255,image:'https://res.cloudinary.com/dkj9bf0d3/image/upload/v1753371477/Mr_quynh/4fefc75f-4254-41bb-9b2a-1c2f155acc9e.png'},
+                  {id:1366,image:'https://res.cloudinary.com/dkj9bf0d3/image/upload/v1753371400/Mr_quynh/9428c5bf-0f40-4dac-a6e1-954777eb7979.png'},
+                  {id:1477,image:'https://res.cloudinary.com/dkj9bf0d3/image/upload/v1753370899/Mr_quynh/5e65e3b9-60b1-420b-a34a-969294354beb.png'},
+                  {id:1588,image:'https://res.cloudinary.com/dkj9bf0d3/image/upload/v1753370840/Mr_quynh/0ec84a3c-16b7-4c8d-9216-566873d4627f.png'},
+                  {id:1699,image:'https://res.cloudinary.com/dkj9bf0d3/image/upload/v1753370703/Mr_quynh/44089726-4098-4ae4-b025-bca04c3aa419.png'},
+                  {id:17443,image:'https://res.cloudinary.com/dkj9bf0d3/image/upload/v1753370606/Mr_quynh/js_1_vad42f.png'},
+                  {id:1834,image:'https://res.cloudinary.com/dkj9bf0d3/image/upload/v1753364779/Mr_quynh/tour-nara-osaka-kyoto-nagoya-phu-si-tokyo-6-ngay-5-dem_weizha.webp'},
+                  {id:1956,image:'https://res.cloudinary.com/dkj9bf0d3/image/upload/v1750692854/Mr_quynh/fb5_eicrvq.png'},
+                  {id:1067,image:'https://res.cloudinary.com/dkj9bf0d3/image/upload/v1750692850/Mr_quynh/fb4_dxahuo.png'},
+                  {id:1178,image:'https://res.cloudinary.com/dkj9bf0d3/image/upload/v1750692738/Mr_quynh/fb1_ymuv0t.png'},
+                
+                  ]}/>
               </div>
               <div className=' grid grid-cols-3 gap-3'>
                 {/* review */}
                   <div className='border p-3 bg-white shadow-sm rounded-lg hover:border-primary-300  border-gray-300 transition-all'>
                     <div className='flex justify-between items-center'>
                       <div className='flex gap-2 items-center'>
-                        <span className=' text-primary-500 font-semibold bg-primary-100 rounded-md px-2 py-[2px]'>9.6</span>
+                        <span className=' text-primary-500 font-semibold bg-primary-100 rounded-md px-2 py-[2px]'>{data.stars??0}</span>
                         <span className=' font-semibold'>Tuyệt vời</span>
                       </div>
                       <ModelReview/>
@@ -132,13 +175,22 @@ function Container() {
                       
                     </div>
                     <div className=' mt-2 flex flex-wrap gap-2'>
-                        <div className='text-[14px] flex items-center gap-1 text-gray-600'><FaCar/> <span className=''>Bãi đỗ xe</span></div>
-                        <div className='text-[14px] flex items-center gap-1 text-gray-600'><FaFaceKissWinkHeart/> <span className=''>Phòng Gym</span></div>
-                        <div className='text-[14px] flex items-center gap-1 text-gray-600'><FaCashRegister/> <span className=''>Thu đổi ngoại tệ</span></div>
-                        <div className='text-[14px] flex items-center gap-1 text-gray-600'><FaClock/> <span className=''>Báo thức</span></div>
-                        <div className='text-[14px] flex items-center gap-1 text-gray-600'><FaWifi/> <span className=''>Internet miễn phí</span></div>
-                        <div className='text-[14px] flex items-center gap-1 text-gray-600'><FaCar/> <span className=''>Bãi đỗ xe</span></div>
-                        <div className='text-[14px] flex items-center gap-1 text-gray-600'><FaUmbrella/> <span className=''>Báo thức</span></div>
+                      {/* {data.facilities} */}
+                      {data.facilities.slice(0, 4).map((item, index) => {
+                        const Icon = ICONS[index % ICONS.length];
+                        return (
+                          <div key={item.id} className='text-[14px] flex items-center gap-1 text-gray-600'>
+                            <Icon />
+                            <span>{item.name}</span>
+                          </div>
+                        );
+                      })}
+                        {data.facilities.length > 4 && (
+                          <div className='text-[14px] flex items-center gap-1 text-gray-600'>
+                            <span>...</span>
+                          </div>
+                        )}
+                       
 
                       
                     </div>

@@ -30,6 +30,7 @@ const APP_ENDPOINT = {
     CHAIN_LIST: 'chain',
     HOTEL_HOTEL_CATEGORY_DETAIL: 'hotel-category',
     HOTEL_FILTER: 'hotel/filter',
+    HOTEL_DETAIL: 'hotel',
 
 }
 

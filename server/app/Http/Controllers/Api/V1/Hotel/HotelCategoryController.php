@@ -26,7 +26,7 @@ class HotelCategoryController extends ApiController
             return $this->internalServerError('Đã xảy ra lỗi:' . $e->getMessage());
         }
     }
-    public function show(ShowRequest $request, $hotel_category)
+    public function show(Request $request, $hotel_category)
     {
         try {
             $result     = $this->model->getItem([...$this->_params, 'slug' => $hotel_category], ['task' => 'item-info']);

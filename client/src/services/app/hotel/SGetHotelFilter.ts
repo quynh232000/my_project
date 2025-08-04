@@ -12,12 +12,14 @@ export interface propsFilter {
     price_min?: number,
     price_max?: number,
     limit?: number,
+    page?: number,
     stars?: number[],
     chain_ids?: number[],
     accommodation_id?: number[],
     facilities?: number[],
     amenities?: number[],
     sort?: string,
+    direction?: string
 }
 export interface IHotelFilter {
     status: boolean

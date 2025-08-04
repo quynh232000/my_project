@@ -1,12 +1,13 @@
 import Container from "./components/Container"
 
 
-function page() {
+async function Page({ params }: { params:Promise< { type: string; }> }) {
+  const { type } =await params;
   return (
     <div className="mt-[148px] bg-gray-50">
-        <Container/>
+        <Container type={type}/>
     </div>
   )
 }
 
-export default page
+export default Page
