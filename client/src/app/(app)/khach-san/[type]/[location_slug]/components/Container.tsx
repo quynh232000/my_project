@@ -25,11 +25,11 @@ function Container({type,slug}:{type:string,slug:string}) {
     })
     const searchParams = useSearchParams();    
     const page = Number(searchParams.get('page')) || 1
-    const limit = 6
+    const limit = Number(searchParams.get('limit')) || 20
 
     useEffect(()=>{
         SGetHotelCategoryDetail({type,slug}).then(res=>{
-            setLoading({...loading,sidebar:false})
+            setLoading({...loading,hotel:true,sidebar:false})
             if(res) setCategoryData(res)
         })
     },[type,slug])

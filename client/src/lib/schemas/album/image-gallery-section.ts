@@ -85,10 +85,10 @@ const checkErrorImage = async (file: string | File) => {
 		if (file.size > ALLOW_FILE_SIZE) {
 			errors.push(`dưới 2MB`);
 		}
-		const isValidDimensions = await checkImageDimensions(file);
-		if (!isValidDimensions) {
-			errors.push('tối thiểu 798x532px (tỉ lệ 3:2)');
-		}
+		// const isValidDimensions = await checkImageDimensions(file);
+		// if (!isValidDimensions) {
+		// 	errors.push('tối thiểu 798x532px (tỉ lệ 3:2)');
+		// }
 	}
 	return errors;
 };

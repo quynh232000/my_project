@@ -75,7 +75,7 @@ export interface IHotelDetail {
     reviews: Reviews
     location: Location2
     chain: Chain
-    hotel_image: any[]
+    hotel_image: hotelImage[]
     accommodation: Accommodation2
     facilities: Facility[]
     near_locations: any[]
@@ -116,13 +116,23 @@ export interface RecommendedRoom {
     max_extra_children: number
     max_capacity: number
     amenities: Amenity[]
-    images: Image[]
+    images: hotelImage[]
     room_extra_beds: any[]
     bed_type: BedType
     sub_bed_type: any
     direction: Direction
     room_inventory_list: RoomInventoryList[]
 }
+export interface hotelImage {
+    id: number
+    image: string
+    label: Label
+}
+
+export interface Label {
+    name: string
+}
+
 
 export interface Amenity {
     id: number

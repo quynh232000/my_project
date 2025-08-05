@@ -4,27 +4,25 @@ import Image from 'next/image';
 import { useState, useRef } from 'react';
 import { FaXmark, FaChevronLeft, FaChevronRight } from 'react-icons/fa6';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { A11y, EffectFade } from 'swiper/modules';
+import { A11y, Autoplay, EffectFade } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/effect-fade';
+import { hotelImage } from '@/services/app/hotel/SGetHotelDetail';
 
-interface ImageItem {
-  id: number;
-  image: string;
-}
 
 interface ImagesProps {
-  images: ImageItem[];
+  images: hotelImage[];
+  type?:string
 }
 
 const DEFAULT_IMAGE = '/images/common/hotel_11.jpg';
 
-export default function Images({ images }: ImagesProps) {
+export default function Images({ images ,type}: ImagesProps) {
   const [open, setOpen] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const swiperRef = useRef<any>(null);
 
-  const safeImages = images?.length ? images : [{ id: 0, image: DEFAULT_IMAGE }];
+  const safeImages = images?.length ? images : [{ id: 0, image: DEFAULT_IMAGE,label:{name:'',id:''} }];
   const showImages = safeImages.slice(0, 5);
   const remaining = safeImages.length - 5;
 
@@ -44,9 +42,9 @@ export default function Images({ images }: ImagesProps) {
   return (
     <>
       {/* Thumbnail grid */}
-      <div className="grid grid-cols-2 gap-1 rounded-2xl overflow-hidden my-4">
+      <div className={" gap-1 rounded-2xl overflow-hidden my-4 "+ (type && type == 'room' ? 'flex flex-col':'grid grid-cols-2')}>
         <div
-          className="relative w-full h-[340px] cursor-pointer group overflow-hidden border border-primary-100"
+          className={"relative w-full  cursor-pointer group overflow-hidden border border-primary-100 " + (type ? 'h-[150px]':'h-[340px]')}
           onClick={() => handleClick(0)}
         >
           <Image
@@ -62,7 +60,7 @@ export default function Images({ images }: ImagesProps) {
           {showImages.slice(1).map((item, idx) => (
             <div
               key={item.id}
-              className="relative w-full h-[168px] cursor-pointer group overflow-hidden border border-primary-100"
+              className={"relative w-full  cursor-pointer group overflow-hidden border border-primary-100 "+(type ? 'h-[50px]':' h-[168px]')}
               onClick={() => handleClick(idx + 1)}
             >
               <Image
@@ -90,7 +88,7 @@ export default function Images({ images }: ImagesProps) {
         size="xl"
         className="bg-black/80 backdrop-blur-md shadow-2xl rounded-2xl"
       >
-        <DialogBody  {...({} as any)} className="relative p-0 bg-black rounded-2xl ">
+        <DialogBody  {...({} as any)} className="relative p-0 bg-black/80 rounded-2xl ">
           {/* Close Button */}
           <IconButton  {...({} as any)}
             variant="text"
@@ -122,17 +120,18 @@ export default function Images({ images }: ImagesProps) {
           {/* Main Swiper */}
           <div className='p-5'>
             <Swiper
-            modules={[A11y, EffectFade]}
+            modules={[A11y, EffectFade,Autoplay]}
             effect="fade"
+            autoplay={{ delay: 3000, disableOnInteraction: false }}
             fadeEffect={{ crossFade: true }}
             initialSlide={selectedIndex}
             onSwiper={(swiper) => (swiperRef.current = swiper)}
             onSlideChange={(swiper) => setSelectedIndex(swiper.activeIndex)}
             slidesPerView={1}
-            className="bg-black h-[80vh] flex items-center justify-center"
+            className="bg-black/80 h-[80vh] flex items-center justify-center"
           >
             {safeImages.map((item, idx) => (
-              <SwiperSlide key={item.id || idx} className="flex justify-center items-center">
+              <SwiperSlide key={item.id || idx} className="flex justify-center items-center relative pb-10">
                 <div className="w-auto h-full max-w-[90vw] max-h-[80vh] flex items-center justify-center p-5 rounded-xl">
                   <Image
                     alt="Gallery image"
@@ -142,6 +141,12 @@ export default function Images({ images }: ImagesProps) {
                     height={800}
                     className="object-cover w-full h-full rounded-2xl shadow-xl overflow-hidden"
                   />
+                </div>
+                <div className=' absolute bottom-2 font-semibold text-white flex justify-between left-0 right-0 px-5 '>
+                  <div className=''>
+                    {item.label.name??'Unknown'}
+                  </div>
+                  <div>{idx+1} / {safeImages.length??0}</div>
                 </div>
               </SwiperSlide>
             ))}

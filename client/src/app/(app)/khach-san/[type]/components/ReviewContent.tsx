@@ -5,6 +5,7 @@ import {
   Progress,
 } from "@material-tailwind/react";
 import {  FaBagShopping, FaBed, FaNoteSticky, FaPen} from 'react-icons/fa6';
+import { getRandomInt } from '@/utils/common';
 
 const CircularProgress = ({ percent,text }: { percent: number,text:string }) => {
   const radius = 38;
@@ -79,7 +80,7 @@ function ReviewContent({type}:props) {
         <div className={' p-5 bg-gray-50 rounded-lg ' + (type ? 'w-full  flex items-center' :'w-[35%]')}>
             <div className={type ? 'px-5':''}>
                 <div className='flex justify-center'>
-                {CircularProgress({percent:60,text:'Tuyệt vời'})}
+                {CircularProgress({percent:getRandomInt(50,100),text:'Tuyệt vời'})}
                 </div>
                 <div className='text-center text-[14px] text-gray-500'>
                     100% đánh giá từ đối tác và khách hàng đặt phòng trên Quin Booking
@@ -89,88 +90,88 @@ function ReviewContent({type}:props) {
                 <div className='flex items-center'>
                     <div className='flex-1' >Tuyệt vời</div>
                     <div className='w-[55%]'>
-                        <Progress className='h-[5px] bg-primary-100' color='purple' {...({} as any)} value={50} />
+                        <Progress className='h-[5px] bg-primary-100' color='purple' {...({} as any)} value={getRandomInt(50,100)} />
                     </div>
-                    <div className='w-[15%] text-right font-semibold'>18</div>
+                    <div className='w-[15%] text-right font-semibold'>{getRandomInt(50,100)}</div>
                 </div>
                 <div className='flex items-center'>
                     <div className='flex-1' >Xuất sắc</div>
                     <div className='w-[55%]'>
-                        <Progress className='h-[5px] bg-primary-100' color='purple' {...({} as any)} value={80} />
+                        <Progress className='h-[5px] bg-primary-100' color='purple' {...({} as any)} value={getRandomInt(50,90)} />
                     </div>
-                    <div className='w-[15%] text-right font-semibold'>18</div>
+                    <div className='w-[15%] text-right font-semibold'>{getRandomInt(50,100)}</div>
                 </div>
                 <div className='flex items-center'>
                     <div className='flex-1' >Tốt</div>
                     <div className='w-[55%]'>
-                        <Progress className='h-[5px] bg-primary-100' color='purple' {...({} as any)} value={60} />
+                        <Progress className='h-[5px] bg-primary-100' color='purple' {...({} as any)} value={getRandomInt(50,80)} />
                     </div>
-                    <div className='w-[15%] text-right font-semibold'>18</div>
+                    <div className='w-[15%] text-right font-semibold'>{getRandomInt(50,100)}</div>
                 </div>
                 <div className='flex items-center'>
                     <div className='flex-1' >Trung bình</div>
                     <div className='w-[55%]'>
-                        <Progress className='h-[5px] bg-primary-100' color='purple' {...({} as any)} value={30} />
+                        <Progress className='h-[5px] bg-primary-100' color='purple' {...({} as any)} value={getRandomInt(50,100)} />
                     </div>
-                    <div className='w-[15%] text-right font-semibold'>18</div>
+                    <div className='w-[15%] text-right font-semibold'>{getRandomInt(50,100)}</div>
                 </div>
                 <div className='flex items-center'>
                     <div className='flex-1' >Kém</div>
                     <div className='w-[55%]'>
-                        <Progress className='h-[5px] bg-primary-100' color='purple' {...({} as any)} value={50} />
+                        <Progress className='h-[5px] bg-primary-100' color='purple' {...({} as any)} value={getRandomInt(10,50)} />
                     </div>
-                    <div className='w-[15%] text-right font-semibold'>18</div>
+                    <div className='w-[15%] text-right font-semibold'>{getRandomInt(10,50)}</div>
                 </div>
             </div>
             <div className={'flex gap-2 flex-col mt-4  border-gray-400  ' +(type ? 'w-[30%] px-5':'border-t pt-4')}>
                 <div className='flex items-center'>
                     <div className='flex-1' >Vị trí</div>
                     <div className='w-[55%]'>
-                        <Progress className='h-[5px] bg-primary-100' color='pink' {...({} as any)} value={50} />
+                        <Progress className='h-[5px] bg-primary-100' color='pink' {...({} as any)} value={getRandomInt(50,100)} />
                     </div>
-                    <div className='w-[15%] text-right font-semibold'>18</div>
+                    <div className='w-[15%] text-right font-semibold'>{getRandomInt(10,100)}</div>
                 </div>
                 <div className='flex items-center'>
                     <div className='flex-1' >Phục vụ</div>
                     <div className='w-[55%]'>
-                        <Progress className='h-[5px] bg-primary-100' color='pink' {...({} as any)} value={80} />
+                        <Progress className='h-[5px] bg-primary-100' color='pink' {...({} as any)} value={getRandomInt(50,100)} />
                     </div>
-                    <div className='w-[15%] text-right font-semibold'>18</div>
+                    <div className='w-[15%] text-right font-semibold'>{getRandomInt(10,100)}</div>
                 </div>
                 <div className='flex items-center'>
                     <div className='flex-1' >Giá cả</div>
                     <div className='w-[55%]'>
-                        <Progress className='h-[5px] bg-primary-100' color='pink' {...({} as any)} value={60} />
+                        <Progress className='h-[5px] bg-primary-100' color='pink' {...({} as any)} value={getRandomInt(50,100)} />
                     </div>
-                    <div className='w-[15%] text-right font-semibold'>18</div>
+                    <div className='w-[15%] text-right font-semibold'>{getRandomInt(10,100)}</div>
                 </div>
                 <div className='flex items-center'>
                     <div className='flex-1' >Vệ sinh</div>
                     <div className='w-[55%]'>
-                        <Progress className='h-[5px] bg-primary-100' color='pink' {...({} as any)} value={30} />
+                        <Progress className='h-[5px] bg-primary-100' color='pink' {...({} as any)} value={getRandomInt(50,100)} />
                     </div>
-                    <div className='w-[15%] text-right font-semibold'>18</div>
+                    <div className='w-[15%] text-right font-semibold'>{getRandomInt(10,100)}</div>
                 </div>
                 <div className='flex items-center'>
                     <div className='flex-1' >Tiện nghi</div>
                     <div className='w-[55%]'>
-                        <Progress className='h-[5px] bg-primary-100' color='pink' {...({} as any)} value={50} />
+                        <Progress className='h-[5px] bg-primary-100' color='pink' {...({} as any)} value={getRandomInt(50,100)} />
                     </div>
-                    <div className='w-[15%] text-right font-semibold'>18</div>
+                    <div className='w-[15%] text-right font-semibold'>{getRandomInt(10,100)}</div>
                 </div>
             </div>
         </div>
         {/* right */}
         <div className='flex-1 flex flex-col gap-3'>
             <div className='text-lg border-b w-full pb-2 '>
-                Có 21 đánh giá
+                Có {getRandomInt(50,10000)} đánh giá
             </div>
             <div className='flex flex-wrap gap-2'>
-                <div className='bg-primary-500 text-white font-semibold py-1 px-4 hover:shadow-lg cursor-pointer rounded-lg hover:bg-primary-600'>Tất cả (21)</div>
-                <div className='bg-gray-300  font-semibold py-1 px-4 hover:shadow-lg cursor-pointer rounded-lg hover:bg-gray-400 transition-all'>Cặp đôi (21)</div>
-                <div className='bg-gray-300  font-semibold py-1 px-4 hover:shadow-lg cursor-pointer rounded-lg hover:bg-gray-400 transition-all'>Bạn bè (11)</div>
-                <div className='bg-gray-300  font-semibold py-1 px-4 hover:shadow-lg cursor-pointer rounded-lg hover:bg-gray-400 transition-all'>Đi một mình (21)</div>
-                <div className='bg-gray-300  font-semibold py-1 px-4 hover:shadow-lg cursor-pointer rounded-lg hover:bg-gray-400 transition-all'>Cặp đôi (21)</div>
+                <div className='bg-primary-500 text-white font-semibold py-1 px-4 hover:shadow-lg cursor-pointer rounded-lg hover:bg-primary-600'>Tất cả ({getRandomInt(50,1000)})</div>
+                <div className='bg-gray-300  font-semibold py-1 px-4 hover:shadow-lg cursor-pointer rounded-lg hover:bg-gray-400 transition-all'>Cặp đôi ({getRandomInt(50,100)})</div>
+                <div className='bg-gray-300  font-semibold py-1 px-4 hover:shadow-lg cursor-pointer rounded-lg hover:bg-gray-400 transition-all'>Bạn bè ({getRandomInt(50,100)})</div>
+                <div className='bg-gray-300  font-semibold py-1 px-4 hover:shadow-lg cursor-pointer rounded-lg hover:bg-gray-400 transition-all'>Đi một mình ({getRandomInt(50,100)})</div>
+                <div className='bg-gray-300  font-semibold py-1 px-4 hover:shadow-lg cursor-pointer rounded-lg hover:bg-gray-400 transition-all'>Cặp đôi ({getRandomInt(50,500)})</div>
             </div>
             <div className='overflow-y-scroll scrollbar_custom scrollbar_custom_hidden flex-1 max-h-[600px]'>
                 {/* item */}

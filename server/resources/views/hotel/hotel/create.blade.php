@@ -263,6 +263,7 @@
             $('.input-error').html('');
             $('.form-group row p-0 m-0 mb-2 input').removeClass('is-invalid');
             var formData = new FormData(this);
+
             $.ajax({
                 type: 'POST',
                 url: "{{ route($params['prefix'] . '.' . $params['controller'] . '.store') }}",

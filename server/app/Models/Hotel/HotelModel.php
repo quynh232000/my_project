@@ -279,6 +279,7 @@ class HotelModel extends AdminModel
                 $NearbyLocationModel->saveItem($params['location_current'] ?? [], $options);
                 // add nearby location
                 if (count($params['location'] ?? []) > 0) {
+                    // dd($params['location']);
                     $NearbyLocationModel    = new NearbyLocationModel();
                     $NearbyLocationModel->saveItem($params['location'], [...$options, 'task' => 'add-item']);
                 }
