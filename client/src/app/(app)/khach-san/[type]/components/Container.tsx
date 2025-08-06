@@ -4,7 +4,7 @@ import { FormatPrice, getFeatureDate, getRandomInt } from '@/utils/common';
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import { CiCalendar, CiForkAndKnife, CiHeart } from "react-icons/ci";
-import { FaAngleRight, FaBuilding, FaCalendar, FaCar, FaCashRegister, FaCheck, FaCircleDot, FaClock, FaEye, FaFaceKissWinkHeart, FaJenkins, FaLocationDot, FaMoneyBill, FaPlane, FaRegShareFromSquare, FaRestroom, FaStar, FaUmbrella, FaWifi } from 'react-icons/fa6';
+import { FaAngleRight, FaBuilding, FaCalendar, FaCar, FaCashRegister, FaCheck, FaClock, FaEye, FaFaceKissWinkHeart, FaJenkins, FaLocationDot, FaMoneyBill, FaPlane, FaRegShareFromSquare, FaRestroom, FaStar, FaUmbrella, FaWifi } from 'react-icons/fa6';
 import Images from './Images';
 import { Swiper, SwiperSlide } from "swiper/react";
 import { A11y, Autoplay } from "swiper/modules";
@@ -15,11 +15,15 @@ import Image from 'next/image';
 import { GoInfo } from "react-icons/go";
 import { MdOutlinePeople } from 'react-icons/md';
 import { IoBed, IoCheckmarkOutline, IoFlashOutline } from "react-icons/io5";
-import { BsInfoCircle } from "react-icons/bs";
+import { BsEye, BsInfoCircle } from "react-icons/bs";
 import ReviewContent from './ReviewContent';
 import { useSearchParams } from 'next/navigation';
 import { IHotelDetail, SGetHotelDetail } from '@/services/app/hotel/SGetHotelDetail';
 import { LocateIcon, Star } from 'lucide-react';
+import ModelRoomDetail from './ModelRoomDetail';
+import ModelPolicyCancel from './ModelPolicyCancel';
+import { differenceInDays } from 'date-fns/esm';
+import { format } from 'date-fns'
 
 const ICONS = [FaCar, FaFaceKissWinkHeart, FaCashRegister, FaClock, FaWifi, FaUmbrella];
 function Container({type}:{type:string}) {
@@ -31,6 +35,7 @@ function Container({type}:{type:string}) {
     const adt = searchParams.get('adt') || 2;
     const chd = searchParams.get('chd') || 0;
     const quantity = searchParams.get('quantity') || 1;
+     const nights = differenceInDays(new Date(date_end), new Date(date_start));
     const [data,setData] = useState<IHotelDetail|null>(null)
     useEffect(()=>{
       SGetHotelDetail({slug:type,date_start,date_end,adt,chd,quantity}).then(res=>{
@@ -51,7 +56,7 @@ function Container({type}:{type:string}) {
             <Link href={'/khach-san'}>Khách sạn</Link>
               <div>/</div>
             {data.breadcrumb.map(item=>{
-              return <div key={item.id} className='flex gap-1  items-center'>
+              return <div key={'break'+item.id} className='flex gap-1  items-center'>
                   <Link href={`/khach-san/${item.type_location}/${item.slug}`} className='hover:cursor-pointer hover:text-primary-500'>{item.name}</Link>
                   <div>/</div>
               </div>
@@ -165,7 +170,7 @@ function Container({type}:{type:string}) {
                       {data.facilities.slice(0, 4).map((item, index) => {
                         const Icon = ICONS[index % ICONS.length];
                         return (
-                          <div key={item.id} className='text-[14px] flex items-center gap-1 text-gray-600'>
+                          <div key={'facili1'+item.id} className='text-[14px] flex items-center gap-1 text-gray-600'>
                             <Icon />
                             <span>{item.name}</span>
                           </div>
@@ -197,7 +202,7 @@ function Container({type}:{type:string}) {
                         <div>
                             {data.near_locations.slice(0, 3).map((item) => {
                                 return (
-                                    <div className='text-[14px] flex items-center gap-2' key={item.id}>
+                                    <div className='text-[14px] flex items-center gap-2' key={'near'+item.id}>
                                        <FaLocationDot className='text-gray-600'/> <Link className='hover:text-primary-500 line-clamp-1' href={`https://www.google.com/maps?q=${item?.latitude},${item?.longitude}`} target='__blank'> {item?.name??''}</Link>  <span className='text-gray-500'>({item.distance??0}m)</span>
                                     </div>
                                 );
@@ -245,33 +250,29 @@ function Container({type}:{type:string}) {
               </div>
             </div>
             <div className='flex flex-col gap-5'>
-                {data.recommended_rooms.length > 0 ? data.recommended_rooms.map(room=>{
-                    return  <div key={room.id} className=' border bg-white rounded-lg border-primary-500 '>
-                                <div className='flex items-center gap-2 rounded-t-lg bg-primary-500 text-white font-semibold py-2 px-3'>
+                {data.recommended_rooms.length > 0 ? data.recommended_rooms.map((room,index)=>{
+                    return  <div key={'room'+room.id} className={' border bg-white rounded-lg  ' + (index == 0 ? 'border-primary-500':'')}>
+                                {index == 0 && <div className='flex items-center gap-2 rounded-t-lg bg-primary-500 text-white font-semibold py-2 px-3'>
                                 <FaStar/> <span>Được đề xuất</span>
-                                </div>
+                                </div>}
                                 <div className='p-5 gap-5 flex'>
                                 <div className='w-[20%]'>
                                     <Images type="room" images={[
                                         ...(room.images ?? [])
                                         ]}/>
-                                   
-                                    <div className='flex items-center gap-2 text-[14px] text-secondary-500 py-2'>
-                                        Xem chi tiết phòng <FaAngleRight/>
-                                    </div>
+                                   <ModelRoomDetail room={room}/>
+                                    
                                     <div className='flex flex-wrap gap-1'>
                                          {room.amenities.slice(0, 4).map((item) => {
                                             return (
-                                            <div key={item.id} className='text-sm bg-primary-50 rounded-full px-2 py-1'>
+                                            <div key={'amen1'+item.id} className='text-sm bg-primary-50 rounded-full px-2 py-1'>
                                                 <span>{item.name}</span>
                                             </div>
                                             );
                                         })}
                                             {room.amenities.length > 4 && (
                                                <div className="w-full mt-2">
-                                                 <div className='flex items-center gap-2 text-sm text-secondary-500 bg-secondary-50 w-fit px-2 py-1 rounded-full'>
-                                                    <span>+{room.amenities.length-4} tiện ích</span>
-                                                </div>
+                                                  <ModelService type="room" facilities = {room.amenities ?? []}/>
                                                </div>
                                             )}
                                        
@@ -285,27 +286,26 @@ function Container({type}:{type:string}) {
                                         <div className='flex items-center gap-5 text-[14px] text-gray-600'>
                                         <div className='flex items-center gap-1'>
                                             <MdOutlinePeople className='text-lg' />
-                                            <span>2 người</span>
-                                            <span className='text-secondary-500'>(Xem chi tiết)</span>
+                                            <span>{room?.standard_guests ?? 0} người</span>
+                                            <span className='text-secondary-500 flex items-center'><ModelRoomDetail room={room}/></span>
                                         </div>
                                         <div className='flex items-center gap-1'>
                                             <CiCalendar className='text-lg'/>
-                                            <span>30 m²/322 ft²</span>
+                                            <span>{room.area ?? 0} m²</span>
                                         </div>
                                         <div className='flex items-center gap-1'>
-                                            <FaEye className='text-lg'/>
-                                            <span>Hướng Thành Phố</span>
+                                            <BsEye/> <span>{room.direction.name ?? 0} </span>
                                         </div>
                                         </div>
                                     </div>
                                     <div>
-                                        <span className='text-primary-500 text-md'>Vừa được đặt 2 giờ trước</span>
+                                        <span className='text-primary-500 text-md'>Vừa được đặt {getRandomInt(1,60)} phút trước</span>
                                     </div>
                                     </div>
                                     <div>
                                         {/* item */}
                                         {room.room_inventory_list.map((option,l)=>{
-                                            return  <div key={l} className='border-t flex'>
+                                            return  <div key={'inven1'+l} className='border-t flex'>
                                                 <div className='w-[50%] border-r pr-3 py-3 flex flex-col gap-3'>
                                                     <div className='font-semibold'>
                                                     Lựa chọn {l+1}
@@ -313,13 +313,23 @@ function Container({type}:{type:string}) {
                                                     <div className='text-[14px] flex flex-col gap-2'>
                                                     <div className='flex items-center gap-2 '>
                                                         <FaMoneyBill className='text-gray-600'/>
-                                                        <span>Hoàn hủy 1 phần</span>
-                                                        <GoInfo className='text-secondary-500' />
+                                                        {option.policy_cancellation ?<span className='flex items-center gap-2'>
+                                                              Hoàn hủy 1 phần 
+                                                            <ModelPolicyCancel policy = {option.policy_cancellation} date_start={date_start} price={option.final_price.price_base}/>
+                                                          </span> 
+                                                            : <span>Không hoàn hủy</span>
+                                                          }
+                                                       
+                                                        
                                                     </div>
-                                                    <div className='flex items-center gap-2 text-green-500'>
+                                                    {room.breakfast == 0 ?<div className='flex items-center gap-2 text-red-500'>
+                                                        <CiForkAndKnife />
+                                                        <span>Không bao gồm bữa sáng</span>
+                                                    </div> :<div className='flex items-center gap-2 text-green-500'>
                                                         <CiForkAndKnife />
                                                         <span>Giá đã bao gồm bữa sáng</span>
-                                                    </div>
+                                                    </div> }
+                                                    
                                                     <div className='flex items-center gap-2'>
                                                         <GoInfo />
                                                         <span>Xem phụ thu người lớn trẻ em</span>
@@ -328,12 +338,12 @@ function Container({type}:{type:string}) {
                                                         <IoFlashOutline />
                                                         <span>Xác nhận trong 30 phút</span>
                                                     </div>
-                                                    <div className='flex items-center gap-2  text-red-500'>
+                                                    <div className='flex items-center gap-2  text-green-500'>
                                                         <IoCheckmarkOutline />
-                                                        <span>An tâm đặt phòng, Mytour hỗ trợ xuất hoá đơn nhanh chóng, tiết kiệm thời gian cho bạn.</span>
+                                                        <span>An tâm đặt phòng, QuinBooking hỗ trợ xuất hoá đơn nhanh chóng, tiết kiệm thời gian cho bạn.</span>
                                                     </div>
                                                     </div>
-                                                    <div className='text-[14px] p-3 border-l-2 border-green-300 bg-green-50'>
+                                                    {/* <div className='text-[14px] p-3 border-l-2 border-green-300 bg-green-50'>
                                                     <div className='font-semibold'>Ưu đãi bao gồm</div>
                                                     <div>
                                                         <div className='flex items-center gap-2'>
@@ -356,77 +366,79 @@ function Container({type}:{type:string}) {
                                                     </div>
                                                     <div className='flex items-center gap-2 text-secondary-500 text-[14px]'>
                                                     Xem chi tiết <FaAngleRight />
-                                                    </div>
+                                                    </div> */}
                                                 </div>
                                                 <div className='w-[20%] border-r p-5'>
                                                     <div className='flex flex-col gap-2 justify-center text-center items-center'>
                                                     <IoBed className='text-3xl text-gray-500' />
-                                                    <div className='text-[14px]'>1 giường đơn</div>
+                                                    <div className='text-[14px]'>{room.bed_quantity??0} { room?.bed_type?.name??'giường đơn'}</div>
                                                     </div>
                                                 </div>
                                                 <div className='w-[30%] flex flex-col items-end py-3 text-right'>
                                                     <div className='flex flex-col items-end'>
-                                                        <div className='bg-primary-500 text-[14px] text-white font-semibold w-fit  py-[1px] rounded-tl-xl rounded-bl-xl px-2'>-23%</div>
+                                                      {option.final_price.price_base != option.final_price.price_after_discount && <>
+                                                        <div className='bg-primary-500 text-[14px] text-white font-semibold w-fit  py-[1px] rounded-tl-xl rounded-bl-xl px-2'>-{
+                                                          ((option.final_price.price_base - option.final_price.price_after_discount) / option.final_price.price_base) * 100
+                                                          }%</div>
                                                         <div>
-                                                        <del className='text-gray-600'>{FormatPrice(2270000)}</del>
+                                                        <del className='text-gray-600'>{FormatPrice(option.final_price.price_base/nights)}</del>
                                                         </div>
-                                                        <div className='font-semibold text-xl'>{FormatPrice(1970000)}</div>
+                                                      
+                                                      </>}
+                                                        <div className='font-semibold text-xl'>{FormatPrice(option.final_price.price_after_discount/nights)}</div>
                                                         <div className='text-gray-600'>/ đêm</div>
                                                     </div>
                                                     <Link href={'/khach-san/dat-phong?id=4068468469984'} className='py-4'>
                                                         <Button {...({} as any)}  className=' normal-case text-md bg-primary-500 font-semibold px-8'>Đặt phòng</Button>
                                                     </Link>
                                                     <div className=" cursor-pointer relative group">
-                                                        <div className='text-[14px] text-secondary-500 flex items-center gap-2'>Giá cuối cùng {FormatPrice(1240000)} <BsInfoCircle /></div>
-                                                        <div className='text-[14px]'>cho 2 đêm</div>
+                                                        <div className='text-[14px] text-secondary-500 flex items-center gap-2'>Giá cuối cùng {FormatPrice(option.final_price.price_after_discount * +quantity)} <BsInfoCircle /></div>
+                                                        <div className='text-[14px]'>cho {quantity} phòng {nights} đêm</div>
                                                         <div className=' hidden z-[999] group-hover:block transition-all border-gray-300 absolute top-[100%] right-0 text-[14px] w-[380px] bg-white border shadow-lg rounded-lg p-2'>
                                                             <div className='flex justify-end items-center gap-2'>
-                                                            <div className='bg-primary-500 text-white rounded-md py-[1px] px-1 text-[14px] font-semibold'>-23%</div>
-                                                            <del className='text-sm text-gray-600'>{FormatPrice(1240000)}</del>
+                                                              {option.final_price.price_base != option.final_price.price_after_discount && <>
+                                                                
+                                                                <div className='bg-primary-500 text-white rounded-md py-[1px] px-1 text-[14px] font-semibold'>-{
+                                                                  ((option.final_price.price_base - option.final_price.price_after_discount) / option.final_price.price_base) * 100
+                                                                  }%
+                                                                </div>
+                                                              <del className='text-sm text-gray-600'>{FormatPrice(option.final_price.price_base)}</del>
+                                                              </>}
                                                             </div>
                                                             <div className='flex justify-between'>
                                                             <div>
-                                                                Giá cho 2 đêm x 1 phòng
+                                                                Giá cho {nights} đêm x {quantity} phòng
                                                             </div>
                                                             <div>
-                                                                {FormatPrice(1240000)}
+                                                                {FormatPrice(option.final_price.price_after_discount)}
                                                             </div>
                                                             </div>
                                                             <div className='bg-primary-50 p-2 rounded-md my-2 flex flex-col gap-1'>
-                                                            <div className='flex justify-between'>
-                                                                <div>
-                                                                Đêm 1 (15/7) x 1 phòng
-                                                                </div>
-                                                                <div>
-                                                                {FormatPrice(1240000)} x 1
-                                                                </div>
-                                                            </div>
-                                                            <div className='flex justify-between'>
-                                                                <div>
-                                                                Đêm 2 (15/7) x 1 phòng
-                                                                </div>
-                                                                <div>
-                                                                {FormatPrice(1240000)} x 1
-                                                                </div>
-                                                            </div>
-                                                            <div className='flex justify-between'>
-                                                                <div>
-                                                                Đêm 3 (15/7) x 1 phòng
-                                                                </div>
-                                                                <div>
-                                                                {FormatPrice(1240000)} x 1
-                                                                </div>
-                                                            </div>
+                                                              {
+                                                                option.prices.map((price,index)=>{
+                                                                  return <div key={'pri1'+index} className='flex justify-between'>
+                                                                          <div>
+                                                                          Đêm {index+1} ({format(new Date(price.date), 'dd/MM')}) x {quantity} phòng
+                                                                          </div>
+                                                                          <div>
+                                                                          {FormatPrice(price.price)} x {quantity}
+                                                                          </div>
+                                                                      </div>
+                                                                })
+                                                              }
                                                             </div>
 
-                                                            <div className='flex justify-between items-center'>
-                                                            <div>
-                                                                Mã giảm giá <span className='border border-gray-400 px-1 py-[1px] rounded-md'>QUINBOOKING</span>
-                                                            </div>
-                                                            <div className='text-green-500'>
-                                                                -{FormatPrice(1240000)}
-                                                            </div>
-                                                            </div>
+                                                              {option.final_price.price_base-option.final_price.price_after_discount > 0 &&
+                                                                  <div className='flex justify-between items-center'>
+                                                                  <div>
+                                                                      Giảm giá 
+                                                                      {/* <span className='border border-gray-400 px-1 py-[1px] rounded-md'>QUINBOOKING</span> */}
+                                                                  </div>
+                                                                  <div className='text-green-500'>
+                                                                      -{FormatPrice((option.final_price.price_base - option.final_price.price_after_discount) * +quantity)}
+                                                                  </div>
+                                                                  </div>
+                                                            }
                                                             <div className='flex justify-between items-center font-semibold mt-2'>
                                                             <div>
                                                                 Giá sau giảm giá
@@ -440,7 +452,7 @@ function Container({type}:{type:string}) {
                                                             Thuế và phí dịch vụ khách sạn
                                                             </div>
                                                             <div className=''>
-                                                                {FormatPrice(1240000)}
+                                                                {FormatPrice(0)}
                                                             </div>
                                                             </div>
 
@@ -449,12 +461,12 @@ function Container({type}:{type:string}) {
                                                                 Tổng tiền
                                                             </div>
                                                             <div className=''>
-                                                                {FormatPrice(1240000)}
+                                                                {FormatPrice(option.final_price.price_after_discount* +quantity)}
                                                             </div>
                                                             </div>
                                                             <div className='text-sm mt-2'>
-                                                            (Giá đã bao gồm: Thuế và phí dịch vụ khách sạn 416.390 ₫)
-                                                            Giá cho 2 đêm, 2 người lớn
+                                                           <div> (Giá đã bao gồm: Thuế và phí dịch vụ khách sạn 0 ₫)</div>
+                                                           <div> Giá cho {nights} đêm, {adt} người lớn, {quantity} phòng</div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1250,7 +1262,7 @@ function Container({type}:{type:string}) {
                 <div className='flex items-center gap-2 text-md font-semibold'><FaRestroom className='text-primary-500 text-xl'/> Điểm du lịch</div>
                 <div className='mt-4 px-7 flex flex-col gap-5'>
                     {data.near_locations.map(item=>{
-                        return <div key={item.id} className='flex items-center justify-between text-[14px]'>
+                        return <div key={'near2'+item.id} className='flex items-center justify-between text-[14px]'>
                     <div>{item.name ??'Dynasty House Nguyễn Văn Trỗi'}</div>
                     <div>{getRandomInt(50,1000)}m</div>
                   </div>
@@ -1279,7 +1291,7 @@ function Container({type}:{type:string}) {
             <div className='text-[14px] font-semibold'>Chính sách chung</div>
             <div className='text-[14px] mt-2'>
                  {data?.policy_generals.map(item=>{
-                        return  <div key={item.id}>{item.is_allow ==1 ? 'Có': 'Không'} {item?.policy_name?.name??''}</div>
+                        return  <div key={'po'+item.id}>{item.is_allow ==1 ? 'Có': 'Không'} {item?.policy_name?.name??''}</div>
                     })}
              
           
@@ -1372,7 +1384,7 @@ function Container({type}:{type:string}) {
           <div className='font-semibold text-xl'>Câu hỏi thường gặp về {data.name ??'Vinpearl Resort Nha Trang'}</div>
           <div className='flex flex-col gap-5'>
             {data?.faqs.map((item,index)=>{
-                return <div key={index}>
+                return <div key={'fa'+index}>
               <div className=' font-semibold mb-1'>{item.question??'Tôi có thể tới Vinpearl Resort Nha Trang bằng cách nào?'}</div>
               <p className='text-[14px]'>{item.reply??'Khách sạn nằm trên Đảo hòn tre '}</p>
             </div>
@@ -1416,7 +1428,7 @@ function Container({type}:{type:string}) {
           <div className='grid grid-cols-4 gap-5 mt-5'>
               {/* item */}
               {data.relative_hotels.map(item=>{
-                return <Link key={item.id} href={'/khach-san/'+item.slug} className='border rounded-lg shadow-xl'>
+                return <Link key={'rela'+item.id} href={'/khach-san/'+item.slug} className='border rounded-lg shadow-xl'>
                 <div className=' relative rounded-t-lg w-full h-[160px] overflow-hidden'>
                   <Image
                     alt={item.name}

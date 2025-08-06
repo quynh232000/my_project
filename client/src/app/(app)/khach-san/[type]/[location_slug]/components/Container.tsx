@@ -19,25 +19,25 @@ function Container({type,slug}:{type:string,slug:string}) {
     const [CategoryData,setCategoryData] = useState<IHotelCategoryDetail|null>(null)
     const [hotelData,setHotelData] = useState<IHotelFilter|null>(null)
     const [filters, setFilters] = useState<propsFilter>({ type, slug,sort:'popular',direction:'asc'});
-    const [loading,setLoading] = useState({
-        hotel:true,
-        sidebar:true
-    })
+   
+    const [loadingHotel,setLoadHotel] = useState(true)
+    const [loadingCate,setLoadCate] = useState(true)
     const searchParams = useSearchParams();    
     const page = Number(searchParams.get('page')) || 1
     const limit = Number(searchParams.get('limit')) || 20
 
     useEffect(()=>{
+         setLoadCate(true)
         SGetHotelCategoryDetail({type,slug}).then(res=>{
-            setLoading({...loading,hotel:true,sidebar:false})
+            setLoadCate(false)
             if(res) setCategoryData(res)
         })
     },[type,slug])
 
     useEffect(()=>{
-        setLoading({...loading,hotel:true})
+        setLoadHotel(true)
         SGetHotelFilter({...filters,page,limit}).then(res=>{
-             setLoading({sidebar:false,hotel:false})
+             setLoadHotel(false)
             if(res) setHotelData(res)
         })
     },[type,slug,filters,page])
@@ -54,7 +54,7 @@ function Container({type,slug}:{type:string,slug:string}) {
         <h2 className='text-xl font-semibold'>{hotelData?.meta.total_item ?? 0} Khách sạn tại {CategoryData?.info?.name}</h2>
         <div className='flex gap-8'>
             <div className='w-[30%]'>
-                <SideBar CategoryData={CategoryData ? CategoryData:undefined} loading={loading.sidebar} filters={filters}
+                <SideBar CategoryData={CategoryData ? CategoryData:undefined} loading={loadingCate} filters={filters}
                     setFilters={setFilters}/>
             </div>
             <div className='flex-1 flex flex-col gap-5'>
@@ -77,7 +77,7 @@ function Container({type,slug}:{type:string,slug:string}) {
                         ))}
                     </div>
                 </div>
-               { <ListHotel data={hotelData?.data ?? []} loading={loading.hotel} total={hotelData?.meta.total_item??0} limit={limit}/>}
+               { <ListHotel data={hotelData?.data ?? []} loading={loadingHotel} total={hotelData?.meta.total_item??0} limit={limit}/>}
             </div>
         </div>
     </div>

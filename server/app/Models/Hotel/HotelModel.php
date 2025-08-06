@@ -316,7 +316,7 @@ class HotelModel extends AdminModel
                 // dd($params['item']);
                 $result['near_locations']   = $NearbyLocationModel->listItem($params, ['task' => 'list-by-hotel']);
                 // get location
-                $fields                 = ['country_id', 'city_id', 'district_id', 'ward_id', 'longitude', 'latitude', 'address'];
+                $fields                 = ['country_id', 'province_id', 'ward_id', 'longitude', 'latitude', 'address'];
                 foreach ($fields as $field) {
                     $result[$field]     = $result['location'][$field] ?? null;
                 }

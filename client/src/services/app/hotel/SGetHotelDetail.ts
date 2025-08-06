@@ -182,8 +182,24 @@ export interface Direction {
 export interface RoomInventoryList {
     surcharge: number
     prices: Price[]
-    policy_cancellation: any
+    policy_cancellation: Policy_cancellation
     final_price: FinalPrice
+}
+export interface Policy_cancellation {
+    id: number
+    hotel_id: number
+    code: string
+    name: string
+    is_global: number
+    policy_cancel_rules: PolicyCancelRule[]
+}
+
+export interface PolicyCancelRule {
+    id: number
+    policy_cancel_id: number
+    day: number
+    fee_type: string
+    fee: number
 }
 
 export interface Price {

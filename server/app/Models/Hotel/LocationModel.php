@@ -41,6 +41,7 @@ class LocationModel extends AdminModel
                 'created_by'   => Auth::user()->id,
                 'created_at'   => date('Y-m-d H:i:s'),
                 'hotel_id'     => $options['insert_id'],
+                ...$params['index']
             ];
 
             self::create($this->prepareParams($dataInsert));
@@ -54,6 +55,7 @@ class LocationModel extends AdminModel
                 'updated_by'   => Auth::user()->id,
                 'updated_at'   => date('Y-m-d H:i:s'),
                 'hotel_id'     => $options['insert_id'],
+                ...$params['index']
             ];
 
             self::updateOrInsert([

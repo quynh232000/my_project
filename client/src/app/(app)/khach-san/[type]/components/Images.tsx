@@ -71,7 +71,7 @@ export default function Images({ images ,type}: ImagesProps) {
                 src={item.image || DEFAULT_IMAGE}
               />
               {idx === 3 && remaining > 0 && (
-                <div className="absolute inset-0 bg-black/50 text-white text-lg font-semibold flex items-center justify-center z-10 rounded-2xl">
+                <div className="absolute inset-0 bg-black/50 text-white text-lg font-semibold flex items-center justify-center  rounded-2xl">
                   +{remaining}
                 </div>
               )}

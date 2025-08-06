@@ -9,7 +9,7 @@ import { IoMdClose } from "react-icons/io";
 import { Facility } from '@/services/app/hotel/SGetHotelDetail';
 
 
-function ModelService({facilities}:{facilities:Facility[]}) {
+function ModelService({facilities,type}:{facilities:Facility[],type?:string}) {
   const ICONS = [FaCar, FaFaceKissWinkHeart, FaCashRegister, FaClock, FaWifi, FaUmbrella];
    const [open,setOpen] = useState(false)
 
@@ -34,9 +34,12 @@ function ModelService({facilities}:{facilities:Facility[]}) {
     const result = Array.from(groupedMap.values());
   return (
     <div className=''>
-        <div onClick={()=>(setOpen(true))} className='flex items-center gap-1 text-secondary-500 text-[14px] cursor-pointer hover:text-secondary-600'>
+        
+        {type && type == 'room' ? <div onClick={()=>(setOpen(true))} className='flex items-center cursor-pointer hover:bg-primary-100 gap-2 text-sm text-secondary-500 bg-secondary-50 w-fit px-2 py-1 rounded-full'>
+            <span>+{facilities.length-4} tiện ích</span>
+        </div> : <div onClick={()=>(setOpen(true))} className='flex items-center gap-1 text-secondary-500 text-[14px] cursor-pointer hover:text-secondary-600'>
              Xem tất cả<FaAngleRight/>
-        </div>
+        </div> }
         
         <Dialog
         {...({} as any)}
@@ -49,12 +52,12 @@ function ModelService({facilities}:{facilities:Facility[]}) {
         <DialogBody {...({} as any)} className='h-[80vh] overflow-y-scroll scrollbar_custom scrollbar_custom_hidden'>
           <div className='text-[16px] font-normal'>
             <div className='flex justify-between items-center w-full text-2xl font-semibold '>
-                <div className='pl-4'>Tiện nghi khách sạn {result.length??0}</div>
+                <div className='pl-4'>Tiện nghi {type ? 'phòng':'khách sạn'} {result.length??0}</div>
                 <div onClick={()=>(setOpen(!open))} className='w-12 h-12 hover:bg-gray-100 rounded-full justify-center items-center flex text-gray-600 cursor-pointer'>
                     <IoMdClose/>
                 </div>
             </div>
-            <div className='px-4 mt-5 flex flex-col '>
+            <div className='px-4 flex flex-col '>
                 {result.map((item,index)=>{
                      
                     return <div className='flex flex-col gap-1 border-b py-5 border-gray-400 border-dashed' key={index}>
