@@ -4,7 +4,7 @@ import { FormatPrice, getFeatureDate, getRandomInt } from '@/utils/common';
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import { CiCalendar, CiForkAndKnife, CiHeart } from "react-icons/ci";
-import { FaAngleRight, FaBuilding, FaCalendar, FaCar, FaCashRegister, FaCheck, FaCircleDot, FaClock, FaEye, FaFaceKissWinkHeart, FaJenkins, FaLocationDot, FaMoneyBill, FaPlane, FaRegShareFromSquare, FaRestroom, FaStar, FaUmbrella, FaWifi } from 'react-icons/fa6';
+import { FaAngleRight, FaBuilding, FaCalendar, FaCar, FaCashRegister, FaCheck, FaClock, FaEye, FaFaceKissWinkHeart, FaJenkins, FaLocationDot, FaMoneyBill, FaPlane, FaRegShareFromSquare, FaRestroom, FaStar, FaUmbrella, FaWifi } from 'react-icons/fa6';
 import Images from './Images';
 import { Swiper, SwiperSlide } from "swiper/react";
 import { A11y, Autoplay } from "swiper/modules";
