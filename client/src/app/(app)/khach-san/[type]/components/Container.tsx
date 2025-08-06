@@ -55,7 +55,7 @@ function Container({type}:{type:string}) {
           <div className='flex gap-1 text-[14px] text-gray-600'>
             <Link href={'/khach-san'}>Khách sạn</Link>
               <div>/</div>
-            {data.breadcrumb.map(item=>{
+            {data.breadcrumb?.map(item=>{
               return <div key={'break'+item.id} className='flex gap-1  items-center'>
                   <Link href={`/khach-san/${item.type_location}/${item.slug}`} className='hover:cursor-pointer hover:text-primary-500'>{item.name}</Link>
                   <div>/</div>
@@ -167,7 +167,7 @@ function Container({type}:{type:string}) {
                       
                     </div>
                     <div className=' mt-2 flex flex-wrap gap-2'>
-                      {data.facilities.slice(0, 4).map((item, index) => {
+                      {data.facilities.slice(0, 4)?.map((item, index) => {
                         const Icon = ICONS[index % ICONS.length];
                         return (
                           <div key={'facili1'+item.id} className='text-[14px] flex items-center gap-1 text-gray-600'>
@@ -200,7 +200,7 @@ function Container({type}:{type:string}) {
                     <div className=' mt-2'>
                         <div className='text-[14px] font-semibold'>Vị trí quanh đây có gì:</div>
                         <div>
-                            {data.near_locations.slice(0, 3).map((item) => {
+                            {data.near_locations.slice(0, 3)?.map((item) => {
                                 return (
                                     <div className='text-[14px] flex items-center gap-2' key={'near'+item.id}>
                                        <FaLocationDot className='text-gray-600'/> <Link className='hover:text-primary-500 line-clamp-1' href={`https://www.google.com/maps?q=${item?.latitude},${item?.longitude}`} target='__blank'> {item?.name??''}</Link>  <span className='text-gray-500'>({item.distance??0}m)</span>
@@ -250,7 +250,7 @@ function Container({type}:{type:string}) {
               </div>
             </div>
             <div className='flex flex-col gap-5'>
-                {data.recommended_rooms.length > 0 ? data.recommended_rooms.map((room,index)=>{
+                {data.recommended_rooms.length > 0 ? data.recommended_rooms?.map((room,index)=>{
                     return  <div key={'room'+room.id} className={' border bg-white rounded-lg  ' + (index == 0 ? 'border-primary-500':'')}>
                                 {index == 0 && <div className='flex items-center gap-2 rounded-t-lg bg-primary-500 text-white font-semibold py-2 px-3'>
                                 <FaStar/> <span>Được đề xuất</span>
@@ -263,7 +263,7 @@ function Container({type}:{type:string}) {
                                    <ModelRoomDetail room={room}/>
                                     
                                     <div className='flex flex-wrap gap-1'>
-                                         {room.amenities.slice(0, 4).map((item) => {
+                                         {room.amenities.slice(0, 4)?.map((item) => {
                                             return (
                                             <div key={'amen1'+item.id} className='text-sm bg-primary-50 rounded-full px-2 py-1'>
                                                 <span>{item.name}</span>
@@ -304,7 +304,7 @@ function Container({type}:{type:string}) {
                                     </div>
                                     <div>
                                         {/* item */}
-                                        {room.room_inventory_list.map((option,l)=>{
+                                        {room.room_inventory_list?.map((option,l)=>{
                                             return  <div key={'inven1'+l} className='border-t flex'>
                                                 <div className='w-[50%] border-r pr-3 py-3 flex flex-col gap-3'>
                                                     <div className='font-semibold'>
@@ -415,7 +415,7 @@ function Container({type}:{type:string}) {
                                                             </div>
                                                             <div className='bg-primary-50 p-2 rounded-md my-2 flex flex-col gap-1'>
                                                               {
-                                                                option.prices.map((price,index)=>{
+                                                                option.prices?.map((price,index)=>{
                                                                   return <div key={'pri1'+index} className='flex justify-between'>
                                                                           <div>
                                                                           Đêm {index+1} ({format(new Date(price.date), 'dd/MM')}) x {quantity} phòng
@@ -1261,7 +1261,7 @@ function Container({type}:{type:string}) {
               <div>
                 <div className='flex items-center gap-2 text-md font-semibold'><FaRestroom className='text-primary-500 text-xl'/> Điểm du lịch</div>
                 <div className='mt-4 px-7 flex flex-col gap-5'>
-                    {data.near_locations.map(item=>{
+                    {data.near_locations?.map(item=>{
                         return <div key={'near2'+item.id} className='flex items-center justify-between text-[14px]'>
                     <div>{item.name ??'Dynasty House Nguyễn Văn Trỗi'}</div>
                     <div>{getRandomInt(50,1000)}m</div>
@@ -1290,7 +1290,7 @@ function Container({type}:{type:string}) {
           <div>
             <div className='text-[14px] font-semibold'>Chính sách chung</div>
             <div className='text-[14px] mt-2'>
-                 {data?.policy_generals.map(item=>{
+                 {data?.policy_generals?.map(item=>{
                         return  <div key={'po'+item.id}>{item.is_allow ==1 ? 'Có': 'Không'} {item?.policy_name?.name??''}</div>
                     })}
              
@@ -1383,7 +1383,7 @@ function Container({type}:{type:string}) {
         <div className='border-t-2 py-5 my-5 flex flex-col gap-3 '>
           <div className='font-semibold text-xl'>Câu hỏi thường gặp về {data.name ??'Vinpearl Resort Nha Trang'}</div>
           <div className='flex flex-col gap-5'>
-            {data?.faqs.map((item,index)=>{
+            {data?.faqs?.map((item,index)=>{
                 return <div key={'fa'+index}>
               <div className=' font-semibold mb-1'>{item.question??'Tôi có thể tới Vinpearl Resort Nha Trang bằng cách nào?'}</div>
               <p className='text-[14px]'>{item.reply??'Khách sạn nằm trên Đảo hòn tre '}</p>
@@ -1427,7 +1427,7 @@ function Container({type}:{type:string}) {
           <div className='font-semibold text-xl'>Khách sạn liên quan</div>
           <div className='grid grid-cols-4 gap-5 mt-5'>
               {/* item */}
-              {data.relative_hotels.map(item=>{
+              {data.relative_hotels?.map(item=>{
                 return <Link key={'rela'+item.id} href={'/khach-san/'+item.slug} className='border rounded-lg shadow-xl'>
                 <div className=' relative rounded-t-lg w-full h-[160px] overflow-hidden'>
                   <Image
