@@ -110,7 +110,7 @@ class HotelController extends ApiController
                 'image' => isset($item['avatar']) && str_starts_with($item['avatar'], 'http')
                     ? $item['avatar']
                     : 'https:' . ($item['avatar'] ?? ''),
-                "position" => '["trending","best_price"]'
+                "position" => '["best_price"]'
             ]);
 
             LocationModel::insert([
@@ -133,12 +133,12 @@ class HotelController extends ApiController
                 // 'ward_id' => 2418,
                 // 'ward_slug' => 'Phường Xuân Hương - Đà Lạt',
                 // 'ward_name' => 'phuong-xuan-huong-da-lat',
-                'province_id' => 32,
-                'province_slug' => 'an-giang',
-                'province_name' => 'An Giang',
-                'ward_id' => 3152,
-                'ward_slug' => 'Đặc khu Phú Quốc',
-                'ward_name' => 'dac-khu-phu-quoc',
+                "province_id" => $req['province_id'],
+                "province_slug" => $req['province_slug'],
+                "province_name" => $req['province_name'],
+                "ward_id" => $req['ward_id'],
+                "ward_slug" => $req['ward_slug'],
+                "ward_name" => $req['ward_name'],
             ]);
         }
 
