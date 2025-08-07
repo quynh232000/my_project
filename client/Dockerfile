@@ -135,7 +135,8 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 
 # Cài dependencies chính xác theo package-lock.json
-RUN npm ci
+#RUN npm ci
+RUN npm install --legacy-peer-deps
 
 # --------------------------------------------------------------------------------
 # Stage: Builder
