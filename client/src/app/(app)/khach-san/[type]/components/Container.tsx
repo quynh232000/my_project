@@ -118,7 +118,7 @@ function Container({type}:{type:string}) {
                 <Images images={[
                   {id:data.id,image:data.image,label:{id:111,name:'Ảnh bìa'}},
                  ...(data.hotel_image ?? []),
-                 ...(data?.recommended_rooms?.flatMap(i => i.images ?? []) ?? []??[])
+                 ...(data?.recommended_rooms?.flatMap(i => i.images) ?? [])
                   ]}/>
               </div>
               <div className=' grid grid-cols-3 gap-3'>
