@@ -47,7 +47,7 @@
 
 # EXPOSE 3000
 # CMD ["npm", "start"]
-FROM node:22-alpine AS base
+# FROM node:22-alpine AS base
 
 # Install dependencies only when needed
 # FROM base AS deps
@@ -118,6 +118,7 @@ FROM node:22-alpine AS base
 # # https://nextjs.org/docs/pages/api-reference/next-config-js/output
 # CMD ["node", "server.js"]
 # Base image with Node.js 22 on Alpine Linux
+# Base image
 FROM node:22-alpine AS base
 
 # --------------------------------------------------------------------------------
@@ -125,22 +126,16 @@ FROM node:22-alpine AS base
 # --------------------------------------------------------------------------------
 FROM base AS deps
 
-# Needed for some native dependencies (e.g., WebAssembly)
+# Cài thư viện native cần thiết cho Alpine
 RUN apk add --no-cache libc6-compat
 
 WORKDIR /app
 
-# Enable Yarn (via Corepack)
-RUN corepack enable && corepack prepare yarn@stable --activate
+# Copy file lock và manifest
+COPY package.json package-lock.json ./
 
-# Copy lock files and package manifest
-COPY package.json yarn.lock* ./
-
-# Use node_modules linker instead of PnP (optional but recommended for Next.js)
-RUN yarn config set nodeLinker node-modules
-
-# Install dependencies
-RUN yarn install --immutable
+# Cài dependencies chính xác theo package-lock.json
+RUN npm ci
 
 # --------------------------------------------------------------------------------
 # Stage: Builder
@@ -149,54 +144,51 @@ FROM base AS builder
 
 WORKDIR /app
 
-# Enable Yarn again in this stage
-RUN corepack enable && corepack prepare yarn@stable --activate
-
-# Copy dependencies and lock file from previous stage
+# Copy node_modules từ deps stage
 COPY --from=deps /app/node_modules ./node_modules
-COPY --from=deps /app/yarn.lock ./yarn.lock
+COPY --from=deps /app/package-lock.json ./package-lock.json
 
-# Copy full source code
+# Copy toàn bộ source code
 COPY . .
 
-# Optional: Disable Next.js telemetry (uncomment if needed)
+# Tùy chọn: Tắt telemetry nếu cần
 # ENV NEXT_TELEMETRY_DISABLED=1
 
-# Build the app using Next.js
-RUN yarn build
+# Build ứng dụng Next.js
+RUN npm run build
 
 # --------------------------------------------------------------------------------
-# Stage: Production Runner
+# Stage: Runner (Production)
 # --------------------------------------------------------------------------------
 FROM base AS runner
 
 WORKDIR /app
 
-# Set production environment
+# Cấu hình production
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 
-# Create non-root user
+# Tạo user không đặc quyền để chạy app an toàn hơn
 RUN addgroup --system --gid 1001 nodejs \
   && adduser --system --uid 1001 nextjs
 
-# Copy public assets
+# Copy thư mục public
 COPY --from=builder /app/public ./public
 
-# Create and set permissions for .next
+# Tạo thư mục .next và cấp quyền
 RUN mkdir .next && chown nextjs:nodejs .next
 
-# Copy standalone Next.js build output
+# Copy build output dạng standalone
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
-# Use non-root user for security
+# Dùng user non-root
 USER nextjs
 
-# Expose the default Next.js port
+# Mở cổng ứng dụng
 EXPOSE 3000
 
-# Start the server
+# Chạy ứng dụng Next.js
 CMD ["node", "server.js"]
