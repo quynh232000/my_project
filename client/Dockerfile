@@ -1,25 +1,25 @@
-# FROM node:20-alpine
+FROM node:20-alpine
 
-# WORKDIR /app
+WORKDIR /app
 
-# # Copy package files
-# COPY package.json package-lock.json ./
+# Copy package files
+COPY package.json package-lock.json ./
 
-# # Cài dependencies
-# RUN npm install --legacy-peer-deps
+# Cài dependencies
+RUN npm install --legacy-peer-deps
 
-# # Copy toàn bộ mã nguồn
-# COPY . .
+# Copy toàn bộ mã nguồn
+COPY . .
 
-# # Build app
-# RUN npm run build
+# Build app
+RUN npm run build
 
-# # Set env và cổng
-# ENV NODE_ENV=production
-# EXPOSE 3000
+# Set env và cổng
+ENV NODE_ENV=production
+EXPOSE 3000
 
-# # Khởi động app
-# CMD ["npm", "start"]
+# Khởi động app
+CMD ["npm", "start"]
 # # Stage 1: Build
 # FROM node:20-alpine AS builder
 
