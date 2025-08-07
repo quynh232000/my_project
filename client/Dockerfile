@@ -119,77 +119,77 @@ CMD ["npm", "start"]
 # CMD ["node", "server.js"]
 # Base image with Node.js 22 on Alpine Linux
 # Base image
-FROM node:22-alpine AS base
+# FROM node:22-alpine AS base
 
 # --------------------------------------------------------------------------------
 # Stage: Dependencies
 # --------------------------------------------------------------------------------
-FROM base AS deps
+# FROM base AS deps
 
-# Cài thư viện native cần thiết cho Alpine
-RUN apk add --no-cache libc6-compat
+# # Cài thư viện native cần thiết cho Alpine
+# RUN apk add --no-cache libc6-compat
 
-WORKDIR /app
+# WORKDIR /app
 
-# Copy file lock và manifest
-COPY package.json package-lock.json ./
+# # Copy file lock và manifest
+# COPY package.json package-lock.json ./
 
-# Cài dependencies chính xác theo package-lock.json
-#RUN npm ci
-RUN npm install --legacy-peer-deps
+# # Cài dependencies chính xác theo package-lock.json
+# #RUN npm ci
+# RUN npm install --legacy-peer-deps
 
-# --------------------------------------------------------------------------------
-# Stage: Builder
-# --------------------------------------------------------------------------------
-FROM base AS builder
+# # --------------------------------------------------------------------------------
+# # Stage: Builder
+# # --------------------------------------------------------------------------------
+# FROM base AS builder
 
-WORKDIR /app
+# WORKDIR /app
 
-# Copy node_modules từ deps stage
-COPY --from=deps /app/node_modules ./node_modules
-COPY --from=deps /app/package-lock.json ./package-lock.json
+# # Copy node_modules từ deps stage
+# COPY --from=deps /app/node_modules ./node_modules
+# COPY --from=deps /app/package-lock.json ./package-lock.json
 
-# Copy toàn bộ source code
-COPY . .
+# # Copy toàn bộ source code
+# COPY . .
 
-# Tùy chọn: Tắt telemetry nếu cần
+# # Tùy chọn: Tắt telemetry nếu cần
+# # ENV NEXT_TELEMETRY_DISABLED=1
+
+# # Build ứng dụng Next.js
+# RUN npm run build
+
+# # --------------------------------------------------------------------------------
+# # Stage: Runner (Production)
+# # --------------------------------------------------------------------------------
+# FROM base AS runner
+
+# WORKDIR /app
+
+# # Cấu hình production
+# ENV NODE_ENV=production
 # ENV NEXT_TELEMETRY_DISABLED=1
+# ENV PORT=3000
+# ENV HOSTNAME="0.0.0.0"
 
-# Build ứng dụng Next.js
-RUN npm run build
+# # Tạo user không đặc quyền để chạy app an toàn hơn
+# RUN addgroup --system --gid 1001 nodejs \
+#   && adduser --system --uid 1001 nextjs
 
-# --------------------------------------------------------------------------------
-# Stage: Runner (Production)
-# --------------------------------------------------------------------------------
-FROM base AS runner
+# # Copy thư mục public
+# COPY --from=builder /app/public ./public
 
-WORKDIR /app
+# # Tạo thư mục .next và cấp quyền
+# RUN mkdir .next && chown nextjs:nodejs .next
 
-# Cấu hình production
-ENV NODE_ENV=production
-ENV NEXT_TELEMETRY_DISABLED=1
-ENV PORT=3000
-ENV HOSTNAME="0.0.0.0"
+# # Copy build output dạng standalone
+# COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+# COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
-# Tạo user không đặc quyền để chạy app an toàn hơn
-RUN addgroup --system --gid 1001 nodejs \
-  && adduser --system --uid 1001 nextjs
+# # Dùng user non-root
+# USER nextjs
 
-# Copy thư mục public
-COPY --from=builder /app/public ./public
+# # Mở cổng ứng dụng
+# EXPOSE 3000
 
-# Tạo thư mục .next và cấp quyền
-RUN mkdir .next && chown nextjs:nodejs .next
-
-# Copy build output dạng standalone
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
-
-# Dùng user non-root
-USER nextjs
-
-# Mở cổng ứng dụng
-EXPOSE 3000
-
-# Chạy ứng dụng Next.js
-CMD ["node", "server.js"]
+# # Chạy ứng dụng Next.js
+# CMD ["node", "server.js"]
