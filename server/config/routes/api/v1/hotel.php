@@ -20,6 +20,13 @@ return  [
         ],
         // hotel-hotel_route
         [
+            'controller'    =>   \App\Http\Controllers\Api\V1\Hotel\HotelController::class,
+            'uri'           =>  'hotel/search',
+            'name'          =>  $base . '.hotel.search',
+            'methods'       => ['get'],
+            'action'        => 'search',
+        ],
+        [
             'type'          => 'resource',
             'uri'           => 'hotel',
             'controller'    =>  \App\Http\Controllers\Api\V1\Hotel\HotelController::class,
@@ -50,6 +57,7 @@ return  [
             'methods'       => ['post'],
             'action'        => 'clone',
         ],
+
         // post-categorry_route
         [
             'controller'    =>   \App\Http\Controllers\Api\V1\Hotel\PostCategoryController::class,

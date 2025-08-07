@@ -8,6 +8,7 @@ import { IHotelCategoryDetail, SGetHotelCategoryDetail } from '@/services/app/ho
 import { propsFilter, SGetHotelFilter } from '@/services/app/hotel/SGetHotelFilter';
 import { IHotelFilter } from './../../../../../../services/app/hotel/SGetHotelFilter';
 import { useSearchParams } from 'next/navigation';
+import { useHeadSearchStore } from '@/store/app/home/headsearch/store';
 
 const sortOptions = [
   { label: 'Phù hợp nhất', value: 'popular',direction:'asc' },
@@ -16,6 +17,8 @@ const sortOptions = [
 ];
 
 function Container({type,slug}:{type:string,slug:string}) {
+
+    const { setSearchSelected } = useHeadSearchStore();
     const [CategoryData,setCategoryData] = useState<IHotelCategoryDetail|null>(null)
     const [hotelData,setHotelData] = useState<IHotelFilter|null>(null)
     const [filters, setFilters] = useState<propsFilter>({ type, slug,sort:'popular',direction:'asc'});
@@ -30,7 +33,15 @@ function Container({type,slug}:{type:string,slug:string}) {
          setLoadCate(true)
         SGetHotelCategoryDetail({type,slug}).then(res=>{
             setLoadCate(false)
-            if(res) setCategoryData(res)
+            if(res) {
+                setCategoryData(res)
+                setSearchSelected({
+                    name:res.info.name,
+                    slug:res.info.slug,
+                    page:'filter',
+                    type:type
+                })
+            }
         })
     },[type,slug])
 

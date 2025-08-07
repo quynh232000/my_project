@@ -24,9 +24,12 @@ import ModelRoomDetail from './ModelRoomDetail';
 import ModelPolicyCancel from './ModelPolicyCancel';
 import { differenceInDays } from 'date-fns/esm';
 import { format } from 'date-fns'
+import { useHeadSearchStore } from '@/store/app/home/headsearch/store';
 
 const ICONS = [FaCar, FaFaceKissWinkHeart, FaCashRegister, FaClock, FaWifi, FaUmbrella];
 function Container({type}:{type:string}) {
+
+  const { setSearchSelected } = useHeadSearchStore();
     const searchParams = useSearchParams();
     // const router = useRouter();
     // const pathname = usePathname();
@@ -39,13 +42,19 @@ function Container({type}:{type:string}) {
     const [data,setData] = useState<IHotelDetail|null>(null)
     useEffect(()=>{
       SGetHotelDetail({slug:type,date_start,date_end,adt,chd,quantity}).then(res=>{
-        if(res)setData(res)
+        if(res){
+          setData(res)
+        
+          setSearchSelected({
+            name:res.name ??'',
+            slug:res.slug??'',
+            type:'detail',
+            page:'detail',
+          })
+        }
       })
     },[date_start,date_end,type,adt,chd,quantity])
   if(!data) return null;
-  console.log('====================================');
-  console.log(data);
-  console.log('====================================');
   return (
     <div className='bg-white pb-12'>
       <div className='w-content m-auto  flex flex-col gap-8 py-10 '>

@@ -632,100 +632,7 @@ class HotelModel extends ApiModel
     public function listItem($params = null, $options = null)
     {
         $results = null;
-        if ($options['task'] == 'list1') {
-            // dd($params);
 
-            $limit      = $params['limit'] ?? '8';
-            $image_url  = $this->getImageUrl($params, $this->table);
-
-            $items = self::select('id', 'name', 'avg_price', 'stars', $image_url)
-                ->with(['hotelImage:id,hotel_id,point_id,type,image', 'priorities:id,hotel_id,priority'])
-                ->whereHas('priorities', function ($q) {
-                    $q->orderBy('priority', 'ASC');
-                });
-
-            if (isset($params['featured'])) {
-                $items->where('featured', true);
-            }
-
-            if (isset($params['slug-category'])) {
-                $slug = explode(',', $params['slug-category']);
-                $items->whereHas('categories', function ($query) use ($params, $slug) {
-                    $query->whereIn('slug', $slug);
-                });
-
-                $tempItems    = $items->get();
-                $groupedItems = $tempItems->flatMap(function ($item) {
-                    return collect($item['categories'])->map(function ($category) use ($item) {
-                        $itemCopy = clone $item;
-                        $itemCopy->category_slug = $category['slug'];
-                        return $itemCopy;
-                    });
-                })
-                    ->groupBy('category_slug')->map(function ($group) use ($limit) {
-                        return $group->unique('id')->take($limit)->each->makeHidden('categories');
-                    });
-
-                return [
-                    'status'        => !$groupedItems->isEmpty(),
-                    'status_code'   => 200,
-                    'message'       => 'Lấy sản phẩm thành công.',
-                    'data'          => $groupedItems->toArray(),
-                ];
-            }
-            $items = $items->paginate($limit);
-            $results = [
-                'status'       => false,
-                'status_code'  => 200,
-                'message'      => 'Không có khách sạn hoặc xảy ra lỗi.'
-            ];
-
-            if ($items) {
-                $items   = $items->toArray();
-                $results = [
-                    'status'        => true,
-                    'status_code'   => 200,
-                    'message'       => 'Lấy danh sách khách sạn thành công.',
-                    'data'          => [
-                        'current_page'  => $items['current_page'],
-                        'total_page'    => $items['last_page'],
-                        'total_item'    => $items['total'],
-                        'list'          => $items['data'],
-                    ],
-                ];
-            }
-        }
-        if ($options['task'] === 'search1') {
-            $limit   = $params['limit'] ?? 8;
-            $keyword = trim($params['keyword'] ?? '');
-
-            $results = [
-                'status'      => false,
-                'status_code' => 200,
-                'message'     => 'Không có khách sạn hoặc xảy ra lỗi.'
-            ];
-
-            $query = self::select('id', 'name', 'slug')
-                ->with(['categories:id,name,slug', 'location'])
-                ->where(function ($q) use ($keyword) {
-                    $q->where('name', 'LIKE', '%' . $keyword . '%')
-                        ->orWhereHas('categories', function ($q) use ($keyword) {
-                            $q->where('name', 'LIKE', '%' . $keyword . '%');
-                        })
-                        ->orWhereHas('location', function ($q) use ($keyword) {
-                            $q->where('city_name', 'LIKE', '%' . $keyword . '%');
-                        });
-                })->get();
-
-            if ($query) {
-                $results = [
-                    'status'      => true,
-                    'status_code' => 200,
-                    'message'     => 'Lấy danh sách khách sạn thành công.',
-                    'data'        => $query,
-                ];
-            }
-        }
 
         if ($options['task'] === 'search') {
             // -Địa điểm : Danh mục
@@ -735,7 +642,7 @@ class HotelModel extends ApiModel
             $limit                      = $params['limit'] ?? 10;
 
             $search                     = $params['search'] ?? '';
-            $results['categories']      = HotelCategoryModel::select('id', 'name', 'slug', 'image', 'priority', 'country_id', 'city_id', 'ward_id', 'district_id', 'type_location', 'position')
+            $results['categories']      = HotelCategoryModel::select('id', 'name', 'slug', 'image', 'priority', 'country_id',  'ward_id', 'province_id', 'type_location', 'position')
                 ->where('name', 'LIKE', "%{$search}%")
                 ->where('status', 'active')
                 ->orderBy('priority', 'asc')
@@ -743,8 +650,11 @@ class HotelModel extends ApiModel
                 ->get()
                 ->makeVisible(['id', 'name', 'slug', 'type_location', 'image']);
 
-            $results['hotels']          = HotelModel::select('id', 'name', 'slug')
-                ->with('location:id,hotel_id,country_name,city_name,district_name,ward_name,address')
+            $results['hotels']          = HotelModel::select('id', 'name', 'slug', 'image')
+                ->with([
+                    'location:id,hotel_id,country_name,province_name,ward_name,address',
+                    'accommodation:id,name'
+                ])
                 ->where('name', 'LIKE', "%{$search}%")
                 ->where('status', 'active')
                 ->orderBy('name', 'asc')
@@ -752,38 +662,38 @@ class HotelModel extends ApiModel
 
 
             $tblCountry                 = TABLE_GENERAL_COUNTRY;
-            $tblCity                    = TABLE_GENERAL_CITY;
-            $tblDistrict                = TABLE_GENERAL_DISTRICT;
+            $tblProvince                    = TABLE_GENERAL_PROVINCE;
+            $tblWard                = TABLE_GENERAL_WARD;
             // 1: District
-            $districtQuery              = DB::table($tblDistrict)
-                ->leftJoin($tblCity, "{$tblDistrict}.city_id", '=', "{$tblCity}.id")
-                ->leftJoin($tblCountry, "{$tblCity}.country_id", '=', "$tblCountry.id")
-                ->where("{$tblDistrict}.name", 'LIKE', "%$search%")
+            $districtQuery              = DB::table($tblWard)
+                ->leftJoin($tblProvince, "{$tblWard}.province_id", '=', "{$tblProvince}.id")
+                ->leftJoin($tblCountry, "{$tblProvince}.country_id", '=', "$tblCountry.id")
+                ->where("{$tblWard}.name", 'LIKE', "%$search%")
                 ->selectRaw("
-                                            {$tblDistrict}.id AS id,
+                                            {$tblWard}.id AS id,
                                             {$tblCountry}.name AS country_name,
                                             {$tblCountry}.slug AS country_slug,
-                                            {$tblCity}.name AS city_name,
-                                            {$tblCity}.slug AS city_slug,
-                                            {$tblDistrict}.name AS district_name,
-                                            {$tblDistrict}.slug AS district_slug,
-                                            'district' AS type,
-                                            CONCAT({$tblDistrict}.name, ', ', {$tblCity}.name, ', ', {$tblCountry}.name) AS label
+                                            {$tblProvince}.name AS province_name,
+                                            {$tblProvince}.slug AS province_slug,
+                                            {$tblWard}.name AS ward_name,
+                                            {$tblWard}.slug AS ward_slug,
+                                            'ward' AS type,
+                                            CONCAT({$tblWard}.name, ', ', {$tblProvince}.name, ', ', {$tblCountry}.name) AS label
                                         ");
             // 2: City
-            $cityQuery                  = DB::table($tblCity)
-                ->leftJoin($tblCountry, "{$tblCity}.country_id", '=', "{$tblCountry}.id")
-                ->where("{$tblCity}.name", 'LIKE', "%$search%")
+            $provinceQuery                  = DB::table($tblProvince)
+                ->leftJoin($tblCountry, "{$tblProvince}.country_id", '=', "{$tblCountry}.id")
+                ->where("{$tblProvince}.name", 'LIKE', "%$search%")
                 ->selectRaw("
-                                            {$tblCity}.id AS id,
+                                            {$tblProvince}.id AS id,
                                             {$tblCountry}.name AS country_name,
                                             {$tblCountry}.slug AS country_slug,
-                                            {$tblCity}.name AS city_name,
-                                            {$tblCity}.slug AS city_slug,
-                                            NULL AS district_name,
-                                            NULL AS district_slug,
-                                            'city' AS type,
-                                            CONCAT({$tblCity}.name, ', ', {$tblCountry}.name) AS label
+                                            {$tblProvince}.name AS province_name,
+                                            {$tblProvince}.slug AS province_slug,
+                                            NULL AS ward_name,
+                                            NULL AS ward_slug,
+                                            'province' AS type,
+                                            CONCAT({$tblProvince}.name, ', ', {$tblCountry}.name) AS label
                                         ")
                 ->unionAll($districtQuery);
 
@@ -794,19 +704,19 @@ class HotelModel extends ApiModel
                                             {$tblCountry}.id AS id,
                                             {$tblCountry}.name AS country_name,
                                             {$tblCountry}.slug AS country_slug,
-                                            NULL AS city_name,
-                                            NULL AS city_slug,
-                                            NULL AS district_name,
-                                            NULL AS district_slug,
+                                            NULL AS province_name,
+                                            NULL AS province_slug,
+                                            NULL AS ward_name,
+                                            NULL AS ward_slug,
                                             'country' AS type,
                                             {$tblCountry}.name AS label
                                         ")
-                ->unionAll($cityQuery);
+                ->unionAll($provinceQuery);
             // query lấy địa chỉ
             $results['locations']       = $finalQuery->limit($limit)->get();
 
             // Lấy theo chuỗi khách sạn
-            $results['chains']          = ChainModel::select('id', 'name', 'slug')
+            $results['chains']          = ChainModel::select('id', 'name', 'slug', 'logo')
                 ->where('name', 'LIKE', "%{$search}%")
                 ->orderBy('name', 'asc')
                 ->limit($limit)->get();
