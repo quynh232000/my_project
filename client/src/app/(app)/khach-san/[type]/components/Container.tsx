@@ -162,7 +162,7 @@ function Container({type}:{type:string}) {
                       </div>
                       <ModelService facilities = {[
                         ...(data?.facilities?? []),
-                        ...(data?.recommended_rooms?.flatMap(i => i.amenities ?? []) ?? []??[])
+                        ...(data?.recommended_rooms?.flatMap(i => i.amenities ?? []) ?? [])
                       ]}/>
                       
                     </div>
