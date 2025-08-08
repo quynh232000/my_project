@@ -48,5 +48,5 @@ RUN npm install --omit=dev --legacy-peer-deps
 
 EXPOSE 3000
 
-CMD ["npm", "run", "start", "--", "-H", "0.0.0.0"]
+CMD ["npx", "next", "start", "-H", "0.0.0.0"]
 
