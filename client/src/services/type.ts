@@ -1,8 +1,8 @@
 export const API_URL = process.env.NEXT_PUBLIC_URL_TEST_API ||
-    'https://admid.mr-quynh.site/api/v1/hms';
+    'https://admin.quynhnv.site/api/v1/hms';
 export const PROVINCE_API_URL =
     process.env.NEXT_PUBLIC_PROVINCE_API ||
-    'https://admid.mr-quynh.site/api/v1';
+    'https://admin.quynhnv.site/api/v1';
 export const OPEN_STREET_MAP_API_URL =
     process.env.NEXT_PUBLIC_OPEN_STREET_MAP_API ||
     'https://nominatim.openstreetmap.org';
@@ -11,7 +11,7 @@ export const GOOGLE_MAP_API_URL =
     'AIzaSyASrN441I7X4o4GuMuDngXlF_sAELakju4';
 export const API_APP_URL =
     process.env.NEXT_PUBLIC_URL_API_APP ||
-    'https://admid.mr-quynh.site/api/v1';
+    'https://admin.quynhnv.site/api/v1';
 
 export const JWT_SECRET =
     process.env.NEXT_PUBLIC_JWT_SECRET ||
