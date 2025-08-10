@@ -6,6 +6,7 @@ use App\Traits\ApiResponse;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Validation\Rule;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class OrderRequest extends FormRequest
 {
@@ -21,6 +22,7 @@ class OrderRequest extends FormRequest
         $data = $this->input('info', []);
 
         return [
+            'token'              => ['required', 'string'],
             'info.adt'           => ['required', 'numeric', 'min:1'],
             'info.chd'           => ['sometimes', 'required', 'numeric', 'min:0'],
             'info.quantity'      => ['required', 'numeric', 'min:1'],
@@ -53,8 +55,43 @@ class OrderRequest extends FormRequest
     {
         return [];
     }
-    protected function failedValidation($validator) 
+    protected function failedValidation($validator)
     {
         throw new HttpResponseException($this->errorInvalidate('Dữ liệu không hợp lệ! ', $validator->errors()));
+    }
+    protected function prepareForValidation()
+    {
+        $token = $this->input('token');
+
+        if (!$token) {
+            throw new HttpResponseException(
+                response()->json(['message' => 'Token không tìm thấy!'], 401)
+            );
+        }
+
+        try {
+            $payload = JWTAuth::setToken($token)->getPayload()->toArray();
+
+            // Check thời gian còn lại
+            $now = time();
+            $exp = $payload['exp'] ?? 0;
+            $timeLeft = $exp - $now;
+
+            if ($timeLeft <= 0) {
+                throw new HttpResponseException(
+                    response()->json(['message' => 'Token đã hết hạn!'], 401)
+                );
+            }
+
+            // Merge payload và thêm timeLeft để validate hoặc debug
+            $this->merge([
+                ...$payload,
+                'time_left' => $timeLeft
+            ]);
+        } catch (\Exception $e) {
+            throw new HttpResponseException(
+                response()->json(['message' => 'Token không hợp lệ!', 'error' => $e->getMessage()], 401)
+            );
+        }
     }
 }

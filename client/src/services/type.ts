@@ -1,5 +1,4 @@
-export const API_URL =
-    process.env.NEXT_PUBLIC_URL_TEST_API ||
+export const API_URL = process.env.NEXT_PUBLIC_URL_TEST_API ||
     'https://admid.mr-quynh.site/api/v1/hms';
 export const PROVINCE_API_URL =
     process.env.NEXT_PUBLIC_PROVINCE_API ||
@@ -13,6 +12,10 @@ export const GOOGLE_MAP_API_URL =
 export const API_APP_URL =
     process.env.NEXT_PUBLIC_URL_API_APP ||
     'https://admid.mr-quynh.site/api/v1';
+
+export const JWT_SECRET =
+    process.env.NEXT_PUBLIC_JWT_SECRET ||
+    'mr-quynh';
 
 // module
 export const API_HOTEL = API_APP_URL + '/hotel'
@@ -32,6 +35,8 @@ const APP_ENDPOINT = {
     HOTEL_FILTER: 'hotel/filter',
     HOTEL_DETAIL: 'hotel',
     HOTEL_SEARCH: 'hotel/search',
+
+    BOOKING_INFO: 'booking/info',
 
 }
 

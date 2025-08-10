@@ -170,3 +170,42 @@ export function objectToParams(params: Record<string, any>): string {
 
     return searchParams.toString(); // ví dụ: "a=1&b=2&c=3"
 }
+
+export function startCountdown(
+    seconds: number,
+    onTick: (formattedTime: string) => void,
+    onComplete?: () => void
+) {
+    let remaining = seconds;
+
+    const formatTime = (sec: number) => {
+        const m = Math.floor(sec / 60);
+        const s = sec % 60;
+        return `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+    };
+
+    onTick(formatTime(remaining)); // Gọi lần đầu
+
+    const timer = setInterval(() => {
+        remaining -= 1;
+        onTick(formatTime(remaining));
+
+        if (remaining <= 0) {
+            clearInterval(timer);
+            if (onComplete) onComplete();
+        }
+    }, 1000);
+
+    return () => clearInterval(timer);
+}
+export function formatVietnameseDate(dateString: string): string {
+    const days = ["CN", "T2", "T3", "T4", "T5", "T6", "T7"];
+    const date = new Date(dateString);
+
+    const dayName = days[date.getDay()];
+    const day = date.getDate();
+    const month = date.getMonth() + 1; // Tháng bắt đầu từ 0
+    const year = date.getFullYear();
+
+    return `${dayName}, ${day} tháng ${month}, ${year}`;
+}

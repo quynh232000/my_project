@@ -22,31 +22,52 @@
 # CMD ["npm", "start"]
 
 # Stage 1: Build app
-FROM node:20-alpine AS builder
+# FROM node:20-alpine AS builder
 
+# WORKDIR /app
+
+# COPY package.json package-lock.json ./
+# RUN npm ci --legacy-peer-deps
+
+# COPY . .
+# RUN npm run build
+
+# # Stage 2: Run production server
+# FROM node:20-alpine AS runner
+
+# WORKDIR /app
+
+# ENV NODE_ENV=production
+
+# COPY --from=builder /app/.next .next
+# COPY --from=builder /app/public ./public
+# COPY --from=builder /app/package.json ./
+
+# # Cài dependencies production (bằng npm)
+# RUN npm install --omit=dev --legacy-peer-deps
+
+# EXPOSE 3000
+
+# CMD ["npx", "next", "start", "-H", "0.0.0.0"]
+# Stage 1: Build
+FROM node:20-alpine AS builder
 WORKDIR /app
 
-COPY package.json package-lock.json ./
-RUN npm ci --legacy-peer-deps
+COPY package.json package-lock.json tsconfig.json ./
+RUN npm ci --legacy-peer-deps  # Cài full deps để build
 
 COPY . .
 RUN npm run build
 
-# Stage 2: Run production server
+# Stage 2: Production (standalone)
 FROM node:20-alpine AS runner
-
 WORKDIR /app
 
 ENV NODE_ENV=production
 
-COPY --from=builder /app/.next .next
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
 COPY --from=builder /app/public ./public
-COPY --from=builder /app/package.json ./
-
-# Cài dependencies production (bằng npm)
-RUN npm install --omit=dev --legacy-peer-deps
 
 EXPOSE 3000
-
-CMD ["npx", "next", "start", "-H", "0.0.0.0"]
-
+CMD ["node", "server.js"]

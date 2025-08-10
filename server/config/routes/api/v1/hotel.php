@@ -118,6 +118,14 @@ return  [
             'name_prefix'   => $base . '.banner',
             'only'          => ['index'],
         ],
+        // bookingroute
+        [
+            'controller'    =>   \App\Http\Controllers\Api\V1\Hotel\BookingController::class,
+            'uri'           =>  'booking/info',
+            'name'          =>  '.booking.info',
+            'methods'       => ['post'],
+            'action'        => 'info',
+        ],
 
     ]
 ];

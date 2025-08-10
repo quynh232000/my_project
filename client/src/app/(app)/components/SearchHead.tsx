@@ -1,6 +1,6 @@
 import Image from "next/image"
 import { motion } from 'framer-motion';
-import { useEffect, useState } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { Hotel, LocateIcon, Search } from "lucide-react";
 import {  Moon } from "lucide-react";
 
@@ -22,6 +22,7 @@ import { IData, SGetHotelCategoryList } from "@/services/app/home/SGetHotelCateg
 import { ISearch, SGetSearch } from "@/services/app/home/SGetSearch";
 import useDebounce from "@/hooks/use-debounce";
 import { useHeadSearchStore } from "@/store/app/home/headsearch/store";
+import { LoadingSpinner } from "@/assets/Icons/outline/LoadingSpinner";
 
 
 function highlightText(text: string, search: string) {
@@ -46,9 +47,9 @@ export type SearchSelect = {
 }
 
 function SearchHead({navActiveKey,className}:{navActiveKey:string,className?:string}) {
+  const [isPending, startTransition] = useTransition()
   const searchParams = useSearchParams();
-      // const router = useRouter();
-      // const pathname = usePathname();
+  
   const date_start = searchParams.get('date_start')||getFeatureDate(1);
   const date_end = searchParams.get('date_end') || getFeatureDate(2);
   const adt = searchParams.get('adt') || 2;
@@ -81,8 +82,8 @@ function SearchHead({navActiveKey,className}:{navActiveKey:string,className?:str
 
   // date
   const [selectDate,selectDateTime] = useState<DateRange|undefined>({
-        from:new Date(formData.from),
-        to: new Date(formData.to)
+        from:new Date(date_start),
+        to: new Date(date_end)
     })
   const [open, setOpen] = useState(false);
   const [openQuantity, setOpenQuantity] = useState(false);
@@ -92,12 +93,19 @@ function SearchHead({navActiveKey,className}:{navActiveKey:string,className?:str
     
     setOpenQuantity(false)
   }
+ 
   const handleSubmit =()=>{
     if(searchSelectedHead?.name){
       const params = new URLSearchParams(
                     Object.fromEntries(
-                      Object.entries(formData).map(([key, value]) => {
+                      Object.entries({...formData,...selectDate}).map(([key, value]) => {
                         if(key == 'from' || key =='to'){
+                          if(key == 'from'){
+                            key = 'date_start'
+                          }
+                          if(key == 'to'){
+                            key = 'date_end'
+                          }
                           return [key, String(formatDate(value))]
                         }else{
                           return [key, String(value)]
@@ -105,10 +113,15 @@ function SearchHead({navActiveKey,className}:{navActiveKey:string,className?:str
                       })
                     )
                   );
+                 
       if(searchSelectedHead.page == 'filter'){
-        router.push('/'+navActiveKey+`/${searchSelectedHead.type}/${searchSelectedHead.slug}?`+new URLSearchParams(params).toString())
+        startTransition(()=>{
+          router.push('/'+navActiveKey+`/${searchSelectedHead.type}/${searchSelectedHead.slug}?`+new URLSearchParams(params).toString())
+        })
       }else{
-         router.push('/'+navActiveKey+`/${searchSelectedHead.slug}?`+new URLSearchParams(params).toString())
+         startTransition(()=>{
+           router.push('/'+navActiveKey+`/${searchSelectedHead.slug}?`+new URLSearchParams(params).toString())
+         })
       }
     }else{
       setDropDown(true)
@@ -466,7 +479,8 @@ useEffect(()=>{
                               </div>
                             </div>
                             <div className="flex justify-end mt-4">
-                              <div onClick={handleSubmitSelectNumber} className="bg-primary-500 text-white py-2 px-5 rounded-lg hover:bg-primary-600 cursor-pointer">Xong</div>
+                             
+                              <button onClick={handleSubmitSelectNumber} className="bg-primary-500 text-white py-2 px-5 rounded-lg hover:bg-primary-600 cursor-pointer">Xong</button>
                             </div>
                           </div>
                       </PopoverContent>
@@ -476,9 +490,14 @@ useEffect(()=>{
 
             </div>
             <div className='px-5 ml-8'>
+               {isPending ? <div onClick={handleSubmit}  className='bg-primary-300 py-[10px] rounded-lg cursor-pointer transition-all hover:bg-primary-400 px-[36px] text-white'>
+                <LoadingSpinner size={26} />
+              </div>:
+                              
               <div onClick={handleSubmit} className='bg-primary-500 py-[10px] rounded-lg hover:bg-primary-600 cursor-pointer transition-all px-[36px] text-white'>
                 <Search size={26} />
               </div>
+                              }
             </div>
           </div>
         </div>

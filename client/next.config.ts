@@ -5,6 +5,7 @@ const nextConfig: NextConfig = {
     // output: process.env.DOMAIN === 'localhost' ? undefined : 'standalone',
     // output: 'export',
     // trailingSlash: true,
+    output: 'standalone',
     images: {
         // unoptimized: true,
         remotePatterns: [

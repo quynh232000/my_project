@@ -2,7 +2,7 @@
 import SearchHead from '@/app/(app)/components/SearchHead'
 import { FormatPrice, getFeatureDate, getRandomInt } from '@/utils/common';
 import Link from 'next/link'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useTransition } from 'react'
 import { CiCalendar, CiForkAndKnife, CiHeart } from "react-icons/ci";
 import { FaAngleRight, FaBuilding, FaCalendar, FaCar, FaCashRegister, FaCheck, FaClock, FaEye, FaFaceKissWinkHeart, FaJenkins, FaLocationDot, FaMoneyBill, FaPlane, FaRegShareFromSquare, FaRestroom, FaStar, FaUmbrella, FaWifi } from 'react-icons/fa6';
 import Images from './Images';
@@ -25,23 +25,39 @@ import ModelPolicyCancel from './ModelPolicyCancel';
 import { differenceInDays } from 'date-fns/esm';
 import { format } from 'date-fns'
 import { useHeadSearchStore } from '@/store/app/home/headsearch/store';
+import SkeDetailHotel from './../../../../../components/shared/Skeleton/SkeDetailHotel';
+import { toast } from 'sonner';
+import { useRouter } from "next/navigation";
+import { signJWTData } from '@/services/app/home/SSignJWTData';
 
 const ICONS = [FaCar, FaFaceKissWinkHeart, FaCashRegister, FaClock, FaWifi, FaUmbrella];
+
+
+
 function Container({type}:{type:string}) {
 
   const { setSearchSelected } = useHeadSearchStore();
     const searchParams = useSearchParams();
-    // const router = useRouter();
+    const router = useRouter();
     // const pathname = usePathname();
     const date_start = searchParams.get('date_start')||getFeatureDate(1);
     const date_end = searchParams.get('date_end') || getFeatureDate(2);
     const adt = searchParams.get('adt') || 2;
     const chd = searchParams.get('chd') || 0;
     const quantity = searchParams.get('quantity') || 1;
-     const nights = differenceInDays(new Date(date_end), new Date(date_start));
+    
+    const nights = differenceInDays(new Date(date_end), new Date(date_start));
+
+
+
     const [data,setData] = useState<IHotelDetail|null>(null)
+
+    const [loading,setLoading] = useState(true)
+
     useEffect(()=>{
+      setLoading(true)
       SGetHotelDetail({slug:type,date_start,date_end,adt,chd,quantity}).then(res=>{
+        setLoading(false)
         if(res){
           setData(res)
         
@@ -54,13 +70,37 @@ function Container({type}:{type:string}) {
         }
       })
     },[date_start,date_end,type,adt,chd,quantity])
-  if(!data) return null;
+  const [isPending, startTransition] = useTransition()
+  const [optionSelect,setOptionSelect] = useState<any>(null)
+
+  const handleBooking =({room_id,price_type_id}:{room_id:number,price_type_id:number})=>{
+    if(room_id && price_type_id && date_start&& date_end && adt && quantity){
+
+      setOptionSelect({room_id,price_type_id})
+      startTransition(()=>{
+          signJWTData({ room_id, price_type_id, date_start, date_end, adt, quantity })
+          .then(token => {
+            if(token){
+              router.push(`/khach-san/dat-phong?token=${token}`)
+              // router.push(`/khach-san/dat-phong?date_start=${date_start}&date_end=${date_end}&adt=${adt}&chd=${chd}&quantity=${quantity}&room_id=${room_id}&price_type_id=${price_type_id}`)
+            }
+          }
+          );
+        })
+    }else{
+      toast.error('Vui lòng chọn đầy đủ dữ liệu')
+    }
+   
+  }
   return (
     <div className='bg-white pb-12'>
       <div className='w-content m-auto  flex flex-col gap-8 py-10 '>
-          <div>
-              <SearchHead navActiveKey='khach-san' className="border rounded-lg shadow-lg"/>
-          </div>
+          <SearchHead navActiveKey='khach-san' className="border rounded-lg shadow-lg"/>
+       
+      </div>
+      {loading ? <SkeDetailHotel/>: data && 
+      <>
+      <div className='w-content m-auto  flex flex-col gap-8 pb-10 '>
           <div className='flex gap-1 text-[14px] text-gray-600'>
             <Link href={'/khach-san'}>Khách sạn</Link>
               <div>/</div>
@@ -397,9 +437,14 @@ function Container({type}:{type:string}) {
                                                         <div className='font-semibold text-xl'>{FormatPrice(option.final_price.price_after_discount/nights)}</div>
                                                         <div className='text-gray-600'>/ đêm</div>
                                                     </div>
-                                                    <Link href={'/khach-san/dat-phong?id=4068468469984'} className='py-4'>
-                                                        <Button {...({} as any)}  className=' normal-case text-md bg-primary-500 font-semibold px-8'>Đặt phòng</Button>
-                                                    </Link>
+                                                    <div  className='py-4'>
+                                                      {isPending && optionSelect && optionSelect.room_id == room.id && optionSelect.price_type_id == option.prices[0].price_type_id ? 
+                                                        <Button {...({} as any)} disabled  className=' normal-case text-md bg-primary-300 font-semibold px-8'>Đặt phòng</Button>
+                                                      
+                                                      :
+                                                        <Button {...({} as any)} onClick={()=>handleBooking({room_id:room.id,price_type_id:option.prices[0].price_type_id})}  className=' normal-case text-md bg-primary-500 font-semibold px-8'>Đặt phòng</Button>
+                                                      }
+                                                    </div>
                                                     <div className=" cursor-pointer relative group">
                                                         <div className='text-[14px] text-secondary-500 flex items-center gap-2'>Giá cuối cùng {FormatPrice(option.final_price.price_after_discount * +quantity)} <BsInfoCircle /></div>
                                                         <div className='text-[14px]'>cho {quantity} phòng {nights} đêm</div>
@@ -1462,6 +1507,8 @@ function Container({type}:{type:string}) {
           </div>
         </div>
       </div>
+      </>
+      }
     </div>
   )
 }

@@ -23,7 +23,7 @@ function PaymentMethod() {
                                  alt=""
                                  fill
                                   className=" object-cover w-full h-full rounded-sm"
-                                 src={"/images/common/hotel_1.jpg"}
+                                 src={"/images/payment/vnpay.jpg"}
                                 />
                             </div>
                             <div className="text-lg text-gray-600">Chuyển khoản (VietQR miễn phí)</div>
@@ -49,7 +49,7 @@ function PaymentMethod() {
                                  alt=""
                                  fill
                                   className=" object-cover w-full h-full rounded-sm"
-                                 src={"/images/common/hotel_1.jpg"}
+                                 src={"/images/payment/vnpay.jpg"}
                                 />
                             </div>
                             <div className="text-lg text-gray-600">Vnpay QR</div>
@@ -173,7 +173,7 @@ function PaymentMethod() {
                                  alt=""
                                  fill
                                   className=" object-cover w-full h-full rounded-sm"
-                                 src={"/images/common/hotel_1.jpg"}
+                                 src={"/images/payment/momo.webp"}
                                 />
                             </div>
                             <div className="text-lg text-gray-600">Ví MoMo</div>

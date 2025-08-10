@@ -18,39 +18,39 @@ class BookingController extends ApiController
         parent::__construct($request);
         $this->model             = new BookingModel();
     }
-    public function order(OrderRequest $request) 
+    public function order(OrderRequest $request)
     {
         try {
-             $response           = $this->model->saveItem($this->_params, ['task' => 'add-item']);
-            if($response['status']){
+            $response           = $this->model->saveItem($this->_params, ['task' => 'add-item']);
+            if ($response['status']) {
                 return $this->success($response['message'] ?? '', $response['data'] ?? null, 200);
-            }else{
+            } else {
                 return $this->error($response['message'] ?? '', $response['data'] ?? null, 200);
             }
         } catch (\Exception $e) {
-            return $this->internalServerError('Đã xảy ra lỗi:'. $e->getMessage());
+            return $this->internalServerError('Đã xảy ra lỗi:' . $e->getMessage());
         }
     }
-    public function order_verify(OrderVerifyRequest $request) 
+    public function order_verify(OrderVerifyRequest $request)
     {
         try {
             $response           = $this->model->getItem($this->_params, ['task' => 'item-by-code']);
             return $this->success('Lấy thông tin thành công!', $response, 200);
         } catch (\Exception $e) {
-            return $this->internalServerError('Đã xảy ra lỗi:'. $e->getMessage());
+            return $this->internalServerError('Đã xảy ra lỗi:' . $e->getMessage());
         }
     }
-    public function info(OrderRequest $request) 
+    public function info(OrderRequest $request)
     {
         try {
-            $response           = $this->model->getItem($this->_params, ['task' => 'item-info']);
-            if($response['status']){
-                return $this->success($response['message'], $response['data'], 200);
-            }else{
+            $response           = $this->model->getItem([...$this->_params, ...($request->all() ?? [])], ['task' => 'item-info']);
+            if ($response['status']) {
+                return $this->success($response['message'], [...$response['data'], ...($request->all() ?? [])], 200);
+            } else {
                 return $this->error($response['message'], $response['data'] ?? null, 200);
             }
         } catch (\Exception $e) {
-            return $this->internalServerError('Đã xảy ra lỗi:'. $e->getMessage());
+            return $this->internalServerError('Đã xảy ra lỗi:' . $e->getMessage());
         }
     }
 }

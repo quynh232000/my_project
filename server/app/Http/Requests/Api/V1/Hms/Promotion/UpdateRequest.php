@@ -19,28 +19,31 @@ class UpdateRequest extends FormRequest
     public function rules(): array
     {
         $validate = [
-            "id"                =>  ['required',
-                                    'numeric',
-                                    Rule::exists($this->table, 'id')->where(function ($query) {
-                                        $query->where(['hotel_id' => auth('hms')->user()->current_hotel_id]);
-                                    })
-                                ],
+            "id"                =>  [
+                'required',
+                'numeric',
+                Rule::exists($this->table, 'id')->where(function ($query) {
+                    $query->where(['hotel_id' => auth('hms')->user()->current_hotel_id]);
+                })
+            ],
             'name'              => 'required|string|max:255',
             'price_type_ids'    => 'required|array|min:1',
-            'price_type_ids.*'  => ['integer',
-                                    Rule::exists(TABLE_HOTEL_PRICE_TYPE, 'id')
-                                        ->where('hotel_id', auth('hms')->user()->current_hotel_id)
-                                    ], 
+            'price_type_ids.*'  => [
+                'integer',
+                Rule::exists(TABLE_HOTEL_PRICE_TYPE, 'id')
+                    ->where('hotel_id', auth('hms')->user()->current_hotel_id)
+            ],
             'room_ids'          => 'required|array|min:1',
-            'room_ids.*'        => ['integer',
-                                    Rule::exists(TABLE_HOTEL_ROOM, 'id')
-                                        ->where('hotel_id', auth('hms')->user()->current_hotel_id)
-                                    ], 
+            'room_ids.*'        => [
+                'integer',
+                Rule::exists(TABLE_HOTEL_ROOM, 'id')
+                    ->where('hotel_id', auth('hms')->user()->current_hotel_id)
+            ],
             'type'              => 'required|in:first_night,each_nights,day_of_weeks',
             'start_date'        => 'required|date',
             'end_date'          => 'nullable|date',
             'is_stackable'      => 'required|boolean',
-        
+
             // dynamic validation for `value`
             'value'             => 'required',
         ];
@@ -57,18 +60,15 @@ class UpdateRequest extends FormRequest
     {
         return [];
     }
-    public function withValidator($validator)
-    {
-    }
-    protected function failedValidation($validator) 
+    public function withValidator($validator) {}
+    protected function failedValidation($validator)
     {
         throw new HttpResponseException($this->errorInvalidate('Dữ liệu không hợp lệ!', $validator->errors()));
     }
-     public function validationData(): array
+    public function validationData(): array
     {
         return array_merge($this->all(), [
             'id' => $this->route('promotion'),
         ]);
     }
-
 }
