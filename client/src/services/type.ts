@@ -15,7 +15,7 @@ export const API_APP_URL =
 
 export const JWT_SECRET =
     process.env.NEXT_PUBLIC_JWT_SECRET ||
-    'mr-quynh';
+    'dwBMJ5YtyvUSsYexMVdQnYjbIZUWGVmtpp3gFavRr4yQ0Y7aS5CwJ21TfA0JiI3c';
 
 // module
 export const API_HOTEL = API_APP_URL + '/hotel'
