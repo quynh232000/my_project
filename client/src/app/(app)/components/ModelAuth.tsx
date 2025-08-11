@@ -54,7 +54,7 @@ function ModelAuth() {
                       </div>
                       <div className='text-center'>Đăng nhập bằng Google</div>
                   </div>
-                  {type =='login'  && <Login/>}
+                  {type =='login'  && <Login setOpen={setOpen}/>}
                   {type =='register'  && <Register/>}
                   {type =='reset'  && <Reset/>}
                   

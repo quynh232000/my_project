@@ -14,9 +14,51 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import DrawerSidebar from '@/components/shared/Drawer/DrawerSidebar';
-import {  Menu, MenuHandler, MenuList } from '@material-tailwind/react';
+import {  Menu, MenuHandler,  MenuList } from '@material-tailwind/react';
 import ModelAuth from '@/app/(app)/components/ModelAuth';
+import { useUserInformationStore } from '@/store/user-information/store';
+import { getUser } from '@/services/auth/getUser';
+import { useEffect } from 'react';
+import { toast } from 'sonner';
+import Cookies from 'js-cookie';
 function Header() {
+   const { userInformation, setUserInformationState } =
+      useUserInformationStore();
+
+  useEffect(() => {
+     if(userInformation.email =='' && Cookies.get('access_token') ){
+      getUser().then(res=>{
+        if(res){
+          setUserInformationState(res)
+        }
+      })
+     }
+    }, [userInformation]);
+
+const handleLogout = async () => {
+    try {
+      await fetch('/api/auth/logout', { method: 'POST' });
+      toast.success('Đăng xuất thành công!')
+      setUserInformationState({
+        id: 0,
+        register_id: 0,
+        username: '',
+        full_name: '',
+        email: '',
+        phone: '',
+        image: '',
+        ip: '',
+        status: '',
+        created_at: '',
+        created_by: 0,
+        updated_at: '',
+        updated_by: 0,
+      })
+    } catch (error) {
+      
+    }
+  };
+
 	return (
 		<div className="w-full shadow-sm fixed top-0 right-0 left-0 z-10">
 			<Link
@@ -68,6 +110,7 @@ function Header() {
 								</div>
 							</div>
 						</Link>
+            {userInformation.email &&
 						<Link
 							href={'#'}
 							className="flex items-center gap-2 rounded-full p-2 px-3 transition-all hover:bg-primary-50">
@@ -76,6 +119,7 @@ function Header() {
 								Tìm kiếm đơn hàng
 							</span>
 						</Link>
+            }
 						<Link
 							href={'#'}
 							className="flex items-center gap-2 rounded-full p-2 px-3 transition-all hover:bg-primary-50">
@@ -90,6 +134,7 @@ function Header() {
 						</Link>
 						
             {/* menu bell */}
+            {userInformation.email &&
             <Menu  placement="bottom-end" >
               <MenuHandler>
                 <button
@@ -259,9 +304,55 @@ function Header() {
                 </div>
               </MenuList>
             </Menu>
+            }
 
 
+            {/* auth */}
+            {userInformation.email ? 
+            <Menu  placement="bottom-end" >
+              <MenuHandler>
+                <button
+                  className="flex  items-center justify-center gap-2 rounded-full  transition-all">
+                  <div className='w-[42px] h-[42px] relative rounded-full bg-primary-50  border shadow-md'>
+                    <Image
+                      fill
+                      alt='avatar'
+                      src={userInformation.image??''}
+                      className='rounded-full object-cover'
+                    />
+                  </div>
+                  <div className='w-[120px] line-clamp-1'>{ userInformation.full_name ?? userInformation.email}</div>
+                </button>
+              </MenuHandler>
+              <MenuList  {...({} as any)} className='w-[260px] p-2 border   z-[10]  outline-none   flex flex-col hover:border-none hover:outline-none hover:ring-0 focus:outline-none focus:ring-0 focus:border-none'>
+                  <div className='w-full p-2  px-4  text-[16px] border-b-2 flex  line-clamp-1 gap-2 mb-1'>
+                    <span>Hi, </span> <span className=' line-clamp-1 flex-1'> {userInformation.email}</span>
+                  </div>
+                  <Link href={'/tai-khoan'} ><div className='w-full p-2 rounded-lg px-4  text-[16px] hover:bg-primary-50'>
+                    Tài khoản
+                    </div>
+                  </Link>
+                  <Link href={'/tai-khoan/khach-san-yeu-thich'} ><div className='w-full p-2 rounded-lg px-4  text-[16px] hover:bg-primary-50'>
+                    Yêu thích
+                    </div>
+                  </Link>
+                  <Link href={'/tai-khoan/don-phong'} ><div className='w-full p-2 rounded-lg px-4  text-[16px] hover:bg-primary-50'>
+                   Đơn hàng của tôi
+                    </div>
+                  </Link>
+                  <button onClick={handleLogout} ><div className='w-full p-2 rounded-lg px-4  text-[16px] hover:bg-primary-50'>
+                    Đăng xuất
+                    </div>
+                  </button>
+                
+              </MenuList>
+            </Menu>
+                  : 
 						<ModelAuth/>
+                  }
+            <div>
+
+            </div>
 						
 						<DrawerSidebar />
 					</div>
