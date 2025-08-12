@@ -20,6 +20,20 @@ return  [
         ],
         [
             'controller'    =>   \App\Http\Controllers\Api\V1\Hms\AuthController::class,
+            'uri'           =>  'auth/register',
+            'name'          =>  $base . '.auth.register',
+            'methods'       => ['post'],
+            'action'        => 'register',
+        ],
+        [
+            'controller'    =>   \App\Http\Controllers\Api\V1\Hms\AuthController::class,
+            'uri'           =>  'auth/withgoogle',
+            'name'          =>  $base . '.auth.withgoogle',
+            'methods'       => ['post'],
+            'action'        => 'withgoogle',
+        ],
+        [
+            'controller'    =>   \App\Http\Controllers\Api\V1\Hms\AuthController::class,
             'uri'           =>  'auth/refresh',
             'name'          =>  $base . '.auth.refresh',
             'methods'       => ['post'],

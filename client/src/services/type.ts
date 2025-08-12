@@ -42,6 +42,8 @@ const APP_ENDPOINT = {
 
 export const AppEndpoint = {
     AUTH_LOGIN: '/auth/login',
+    AUTH_REGISTER: '/auth/register',
+    AUTH_WITHGOOLE: '/auth/withgoogle',
     AUTH_LOGOUT: '/auth/logout',
     FORGOT_PASSWORD: '/auth/forgot-password',
     RESET_PASSWORD: '/auth/reset-password',

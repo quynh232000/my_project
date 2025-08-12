@@ -1,15 +1,13 @@
 'use client';
 import { Button } from '@material-tailwind/react'
 
-import {
-	DashboardRouter,
-} from '@/constants/routers';
+
 
 import { useUserInformationStore } from '@/store/user-information/store';
 
 
-import { useRouter } from 'next/navigation';
-import {  useEffect, useState } from 'react';
+// import { useRouter } from 'next/navigation';
+import {  FormEvent, useState } from 'react';
 import { toast } from 'sonner';
 import { IoEyeOutline } from 'react-icons/io5';
 import { FaRegEyeSlash } from 'react-icons/fa6';
@@ -23,7 +21,7 @@ function Login({setOpen}:{setOpen:((a:boolean)=>void)}) {
         const setUserInformationState = useUserInformationStore(
             (state) => state.setUserInformationState
         );
-        const router = useRouter();
+        // const router = useRouter();
 
         const [data,setData] = useState<LoginBodyType>({
             email:'',
@@ -35,13 +33,14 @@ function Login({setOpen}:{setOpen:((a:boolean)=>void)}) {
         })
 
     
-        useEffect(() => {
-            const token = localStorage.getItem('access_token');
-            if (token) {
-                router.push(DashboardRouter.profile);
-            }
-        }, [router]);
-        const handleSubmit = ()=>{
+        // useEffect(() => {
+        //     const token = localStorage.getItem('access_token');
+        //     if (token) {
+        //         router.push(DashboardRouter.profile);
+        //     }
+        // }, [router]);
+        const handleSubmit = (e:FormEvent<HTMLFormElement>)=>{
+            e.preventDefault()
             if(data.email && data.password){
                 setLoading(true)
                 SLogin(data).then(res=>{
@@ -80,7 +79,7 @@ function Login({setOpen}:{setOpen:((a:boolean)=>void)}) {
         <div className='text-[14px] text-center py-5'>
             Hoặc đăng nhập bằng số điện thoại, email
         </div>
-        <form  className='flex flex-col gap-5'>
+        <form onSubmit={handleSubmit}  className='flex flex-col gap-5'>
             <div>
                 <input value={data.email} id="email" onChange={(e)=>setData({...data,email: e.target.value})} type="text" placeholder='Nhập Email..' className='w-full bg-primary-50 p-2 rounded-lg px-4 outline-none border focus:shadow-md' />
                 
@@ -110,7 +109,7 @@ function Login({setOpen}:{setOpen:((a:boolean)=>void)}) {
                 {loading ?
                 <Button {...({} as any)} disabled className='w-full  bg-primary-400'>Đăng nhập</Button>
                 :
-                <Button onClick={handleSubmit} {...({} as any)} className='w-full  bg-primary-500'>Đăng nhập</Button>
+                <Button type="submit" {...({} as any)} className='w-full  bg-primary-500'>Đăng nhập</Button>
                 }
             </div>
             

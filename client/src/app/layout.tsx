@@ -2,7 +2,7 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
-
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 const geistSans = Inter({
 	variable: '--font-geist-sans',
@@ -26,7 +26,9 @@ export default function RootLayout({
 		<html lang="vi" className={'overflow-x-hidden !scroll-smooth'}>
 			<body className={`${geistSans.className} w-full antialiased`}>
 				<div>
-					{children}
+					 <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!}>
+						{children}
+					</GoogleOAuthProvider>
 				</div>
 			</body>
 		</html>

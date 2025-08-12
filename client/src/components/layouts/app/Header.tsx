@@ -5,6 +5,7 @@ import {
 	ChevronDown,
 	Ellipsis,
 	Gift,
+	LogOut,
 	MoveRight,
 	Newspaper,
 	NotepadText,
@@ -325,8 +326,8 @@ const handleLogout = async () => {
                 </button>
               </MenuHandler>
               <MenuList  {...({} as any)} className='w-[260px] p-2 border   z-[10]  outline-none   flex flex-col hover:border-none hover:outline-none hover:ring-0 focus:outline-none focus:ring-0 focus:border-none'>
-                  <div className='w-full p-2  px-4  text-[16px] border-b-2 flex  line-clamp-1 gap-2 mb-1'>
-                    <span>Hi, </span> <span className=' line-clamp-1 flex-1'> {userInformation.email}</span>
+                  <div className='w-full p-2  px-4  text-[16px] border-b-2 flex  line-clamp-1 gap-2 mb-1 font-semibold'>
+                    <span>Hi, </span> <span className=' line-clamp-1 flex-1'> {userInformation.full_name ?? userInformation.email}</span>
                   </div>
                   <Link href={'/tai-khoan'} ><div className='w-full p-2 rounded-lg px-4  text-[16px] hover:bg-primary-50'>
                     Tài khoản
@@ -336,12 +337,13 @@ const handleLogout = async () => {
                     Yêu thích
                     </div>
                   </Link>
-                  <Link href={'/tai-khoan/don-phong'} ><div className='w-full p-2 rounded-lg px-4  text-[16px] hover:bg-primary-50'>
+                  <Link href={'/tai-khoan/don-phong'} ><div className='w-full p-2 rounded-lg px-4  text-[16px] hover:bg-primary-50 '>
                    Đơn hàng của tôi
                     </div>
                   </Link>
-                  <button onClick={handleLogout} ><div className='w-full p-2 rounded-lg px-4  text-[16px] hover:bg-primary-50'>
-                    Đăng xuất
+                  <button onClick={handleLogout} className='border-t-2' >
+                    <div className='w-full p-2 rounded-lg px-4 flex items-center justify-center gap-2 text-[16px] hover:bg-primary-50'>
+                   <LogOut size={18} className='text-sm text-gray-800'/> Đăng xuất
                     </div>
                   </button>
                 

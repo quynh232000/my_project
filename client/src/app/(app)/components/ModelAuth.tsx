@@ -8,8 +8,8 @@ import { IoClose } from "react-icons/io5";
 import Login from "./modelauth/Login";
 import Register from "./modelauth/Register";
 import Link from "next/link";
-import Image from "next/image";
 import Reset from "./modelauth/Reset";
+import LoginGoogle from "@/components/shared/Button/LoginGoogle";
 
 function ModelAuth() {
   const [open,setOpen] = useState(false)
@@ -43,19 +43,13 @@ function ModelAuth() {
                   {type == 'register'  && 'Đăng ký tài khoản'}
                   {type == 'reset'  && 'Khôi phục mật khẩu'}
                 </div>
+               
                 <div className='px-8'>
-                  <div className='flex items-center gap-8 border rounded-lg py-2 px-5 justify-center border-primary-200 cursor-pointer hover:bg-primary-50'>
-                      <div className=" relative w-[22px] h-[22px]">
-                          <Image
-                          alt=''
-                            fill
-                          src={'/images/icon/google.png'}
-                          />
-                      </div>
-                      <div className='text-center'>Đăng nhập bằng Google</div>
+                  <div className='w-full flex justify-center'>
+                      <LoginGoogle setOpen={setOpen}/>
                   </div>
                   {type =='login'  && <Login setOpen={setOpen}/>}
-                  {type =='register'  && <Register/>}
+                  {type =='register'  && <Register setOpen={setOpen}/>}
                   {type =='reset'  && <Reset/>}
                   
 
