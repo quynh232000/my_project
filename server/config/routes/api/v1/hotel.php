@@ -126,6 +126,20 @@ return  [
             'methods'       => ['post'],
             'action'        => 'info',
         ],
+        [
+            'controller'    =>   \App\Http\Controllers\Api\V1\Hotel\BookingController::class,
+            'uri'           =>  'booking/order',
+            'name'          =>  '.booking.order',
+            'methods'       => ['post'],
+            'action'        => 'order',
+        ],
+        [
+            'controller'    =>   \App\Http\Controllers\Api\V1\Hotel\BookingController::class,
+            'uri'           =>  'booking/order-verify',
+            'name'          =>  '.booking.order-verify',
+            'methods'       => ['post'],
+            'action'        => 'order-verify',
+        ],
 
     ]
 ];

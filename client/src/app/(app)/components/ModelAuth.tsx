@@ -1,5 +1,5 @@
 import { Button } from "@material-tailwind/react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import {
   Dialog,
   DialogBody,
@@ -10,8 +10,11 @@ import Register from "./modelauth/Register";
 import Link from "next/link";
 import Reset from "./modelauth/Reset";
 import LoginGoogle from "@/components/shared/Button/LoginGoogle";
+import { useUserInformationStore } from "@/store/user-information/store";
 
 function ModelAuth() {
+  const { showLogin } =
+        useUserInformationStore();
   const [open,setOpen] = useState(false)
   const [type,setType] = useState<any>('login')
 
@@ -19,6 +22,12 @@ function ModelAuth() {
       setOpen(true)
       setType(type)
   }
+  useEffect(()=>{
+    if(showLogin) {
+        setOpen(true)
+        setType('login')
+    }
+  },[showLogin])
   return (
     <>
         <Button onClick={()=> handleOpen('login')} {...({} as any)} className="rounded-lg text-[14px] normal-case font-normal min-w-[106px] text-center bg-primary-500 px-3 py-2 text-white transition-all hover:bg-primary-600 hover:shadow-md">

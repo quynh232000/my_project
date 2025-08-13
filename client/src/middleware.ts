@@ -108,6 +108,11 @@ export async function middleware(request: NextRequest) {
 			);
 		}
 	}
+	if (pathname.startsWith("/khach-san/dat-phong")) {
+		if (!access_token) {
+			return NextResponse.redirect(new URL("/login", request.nextUrl));
+		}
+	}
 
 	// if (access_token) {
 	// 	if (

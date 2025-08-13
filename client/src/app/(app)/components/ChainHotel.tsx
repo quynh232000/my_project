@@ -65,7 +65,7 @@ export default function ChainHotel() {
                     <SwiperSlide key={index} >
                         <div className="grid grid-cols-2 gap-3">
                            {item[0] && 
-                            <Link href={'/hotel/chain/'+item[0].slug} className=" relative rounded-lg ">
+                            <Link href={'/khach-san/chain/'+item[0].slug} className=" relative rounded-lg ">
                             
                                 <div className=" relative h-[390px] w-full rounded-lg overflow-hidden">
                                     <Image 

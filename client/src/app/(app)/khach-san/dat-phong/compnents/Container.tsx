@@ -16,15 +16,48 @@ import { toast } from 'sonner';
 import { IBookingInfo, SGetBookingInfo } from '@/services/app/home/SGetBookingInfo';
 import SkeBooking from './../../../../../components/shared/Skeleton/SkeBooking';
 import { format } from 'date-fns/esm';
+import { useRouter } from 'next/navigation';
+import { IOrderBooking } from '@/services/app/home/SOrderBooking';
 
 
 function Container({token}:{token:string}) {
+    const router = useRouter();
   const [timeLeft, setTimeLeft] = useState({
     time:'',
     status:'pending'
   });
   const [data,setData] = useState<IBookingInfo|null>(null)
   const [loading,setLoading] = useState(true)
+  const [paymentMethod,setPaymentMethod] = useState('cod')
+  const [formData,setFormData] = useState<IOrderBooking>({
+        bill:{
+          address:"",
+          company:"",
+          tax_code:""
+      },
+      deputy:{
+          full_name:"",
+          email:""
+          ,
+          phone:"",
+          address:"",
+          is_self_booking:false,
+          other_full_name:"",
+          special_require:[""]
+      },
+      info:{
+          adt:2,
+          chd:0,
+          quantity:1,
+          date_start:"",
+          date_end:"",
+          room_id:0,
+          price_type_id:0
+      },
+      order_from:"HW"//HW,HA
+    })
+
+
   useEffect(()=>{
     setLoading(true)
     if(token){
@@ -42,13 +75,43 @@ function Container({token}:{token:string}) {
                time:'',
               status:'done'
              })
+             setTimeout(() => {
+               router.push(`/khach-san/${res.hotel.slug}?date_start=${res.depart_date}&date_end=${res.return_date}&quantity=${res.quantity}&adt=${res.adt}&chd=${res.chd}`)
+             }, 3000);
           });
+          // set date for formdata
+          setFormData({
+            ...formData,
+            info:{
+              adt:res.adt,
+              chd:res.chd,
+              quantity:res.quantity,
+              date_start:res.depart_date,
+              date_end:res.return_date,
+              room_id:res.room_id,
+              price_type_id:res.price_type_id
+            }
+
+          })
+          // set date for formdata
         }else{
           toast.error('Dữ liệu không hợp lệ. Vui lòng thử lại!')
+          router.push('/')
         }
       })
+    }else{
+      router.push('/')
+       toast.error('Dữ liệu không hợp lệ. Vui lòng thử lại!')
     }
   },[token])
+
+
+  // handle submit
+  const handleSubmit = ()=>{
+    console.log('====================================');
+    console.log(formData);
+    console.log('====================================');
+  }
   return (
     <>
     {loading ? <SkeBooking/>:
@@ -237,10 +300,10 @@ function Container({token}:{token:string}) {
                       Sau khi hoàn tất thanh toán, mã xác nhận phòng sẽ được gửi ngay qua SMS và Email của bạn.
                   </div>
                   <div>
-                    <PaymentMethod/>
+                    <PaymentMethod paymentMethod={paymentMethod} setPaymentMethod={setPaymentMethod}/>
                   </div>
                   <div className='flex justify-end mt-3'>
-                    <Button {...({} as any)} className='bg-primary-500 px-8 font-semibold normal-case text-md'>Thanh toán</Button>
+                    <Button onClick={handleSubmit} {...({} as any)} className='bg-primary-500 px-8 font-semibold normal-case text-md'>Thanh toán</Button>
                   </div>
                   <div className='text-right text-[14px] text-gray-600'>
                     <div>Bằng cách nhấn vào nút này, bạn công nhận mình đã đọc và đồng ý với</div>

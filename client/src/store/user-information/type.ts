@@ -16,8 +16,10 @@ export interface UserInformation {
 
 export interface UserInformationState {
 	userInformation: UserInformation;
+	showLogin: string
 }
 
 export interface UserInformationActions {
 	setUserInformationState: (info: UserInformation) => void;
+	setShowLoginState: (is_login: string) => void;
 }

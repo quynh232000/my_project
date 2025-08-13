@@ -37,6 +37,7 @@ const APP_ENDPOINT = {
     HOTEL_SEARCH: 'hotel/search',
 
     BOOKING_INFO: 'booking/info',
+    BOOKING_ORDER: 'booking/order',
 
 }
 

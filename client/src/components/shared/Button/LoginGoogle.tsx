@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import Cookies from 'js-cookie';
 import { DEFAULT_COOKIE_OPTIONS } from "@/utils/cookie";
 import { addDays } from "date-fns/esm";
+import { useRouter } from "next/navigation";
 export default function LoginGoogle({
   setOpen,
 }: {
@@ -15,7 +16,7 @@ export default function LoginGoogle({
   const setUserInformationState = useUserInformationStore(
     (state) => state.setUserInformationState
   );
-
+  const router = useRouter()
   return (
     <GoogleLogin
       onSuccess={(credentialResponse) => {
@@ -36,6 +37,7 @@ export default function LoginGoogle({
                   expires: addDays(new Date(), 7),
                 });
               }
+              router.push('/')
             } else {
               toast.error("Đã xảy ra lỗi");
             }

@@ -3,9 +3,9 @@ import React from "react";
 
 export default function SkeBooking() {
   return (
-    <div className="bg-gray-50 min-h-screen py-6">
+    <div className="bg-gray-50 min-h-screen ">
       {/* Thanh thông báo trên cùng */}
-      <div className="bg-yellow-400 text-center py-2 animate-pulse"></div>
+      <div className="bg-yellow-500 text-center py-5 animate-pulse"></div>
 
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
         {/* Cột trái */}

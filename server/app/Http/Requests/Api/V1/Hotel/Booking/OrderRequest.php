@@ -65,7 +65,7 @@ class OrderRequest extends FormRequest
 
         if (!$token) {
             throw new HttpResponseException(
-                response()->json(['message' => 'Token không tìm thấy!'], 401)
+                response()->json(['message' => 'Token không tìm thấy!'], 422)
             );
         }
 
@@ -79,7 +79,7 @@ class OrderRequest extends FormRequest
 
             if ($timeLeft <= 0) {
                 throw new HttpResponseException(
-                    response()->json(['message' => 'Token đã hết hạn!'], 401)
+                    response()->json(['message' => 'Token đã hết hạn!'], 422)
                 );
             }
 
@@ -90,7 +90,7 @@ class OrderRequest extends FormRequest
             ]);
         } catch (\Exception $e) {
             throw new HttpResponseException(
-                response()->json(['message' => 'Token không hợp lệ!', 'error' => $e->getMessage()], 401)
+                response()->json(['message' => 'Token không hợp lệ!', 'error' => $e->getMessage()], 422)
             );
         }
     }

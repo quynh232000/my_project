@@ -9,6 +9,7 @@ import { toast } from 'sonner'
 import Cookies from 'js-cookie';
 import { DEFAULT_COOKIE_OPTIONS } from '@/utils/cookie'
 import { addDays } from 'date-fns/esm'
+import { useRouter } from 'next/navigation'
 function Register({setOpen}:{setOpen:((a:boolean)=>void)}) {
     const [showPass,setShowPass] = useState(false)
     const [loading, setLoading] = useState<boolean>(false);
@@ -25,6 +26,7 @@ function Register({setOpen}:{setOpen:((a:boolean)=>void)}) {
         email:[],
         password:[]
     })
+    const router = useRouter()
     const handleSubmit = (e:FormEvent<HTMLFormElement>)=>{
         e.preventDefault();
         if(data.email && data.password){
@@ -46,6 +48,7 @@ function Register({setOpen}:{setOpen:((a:boolean)=>void)}) {
                         expires: addDays(new Date(), 7),
                     })
                     }
+                    router.push('/')
                 }else{
                     toast.error(res.message)
                     setError(res.error.details)

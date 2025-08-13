@@ -29,14 +29,16 @@ import SkeDetailHotel from './../../../../../components/shared/Skeleton/SkeDetai
 import { toast } from 'sonner';
 import { useRouter } from "next/navigation";
 import { signJWTData } from '@/services/app/home/SSignJWTData';
+import { useUserInformationStore } from '@/store/user-information/store';
 
 const ICONS = [FaCar, FaFaceKissWinkHeart, FaCashRegister, FaClock, FaWifi, FaUmbrella];
 
 
 
 function Container({type}:{type:string}) {
-
-  const { setSearchSelected } = useHeadSearchStore();
+    const { userInformation, setShowLoginState } =
+          useUserInformationStore();
+    const { setSearchSelected } = useHeadSearchStore();
     const searchParams = useSearchParams();
     const router = useRouter();
     // const pathname = usePathname();
@@ -74,7 +76,14 @@ function Container({type}:{type:string}) {
   const [optionSelect,setOptionSelect] = useState<any>(null)
 
   const handleBooking =({room_id,price_type_id}:{room_id:number,price_type_id:number})=>{
-    if(room_id && price_type_id && date_start&& date_end && adt && quantity){
+    if(!userInformation || userInformation.email == ''){
+        setShowLoginState(getRandomInt(1,111111)+'')
+        toast.error('Vui lòng đăng nhập để tiến hành đặt phòng')
+        return false
+    }
+
+
+    if(room_id  && date_start&& date_end && adt && quantity){
 
       setOptionSelect({room_id,price_type_id})
       startTransition(()=>{
@@ -88,6 +97,9 @@ function Container({type}:{type:string}) {
           );
         })
     }else{
+        console.log('====================================');
+        console.log({room_id , price_type_id , date_start, date_end , adt , quantity});
+        console.log('====================================');
       toast.error('Vui lòng chọn đầy đủ dữ liệu')
     }
    

@@ -15,13 +15,14 @@ import { LoginBodyType, SLogin } from '@/services/app/auth/SLogin';
 import Cookies from 'js-cookie';
 import { DEFAULT_COOKIE_OPTIONS } from '@/utils/cookie';
 import { addDays } from 'date-fns/esm';
+import { useRouter } from 'next/navigation';
 function Login({setOpen}:{setOpen:((a:boolean)=>void)}) {
     const [showPassword, setShowPassword] = useState(false);
         const [loading, setLoading] = useState<boolean>(false);
         const setUserInformationState = useUserInformationStore(
             (state) => state.setUserInformationState
         );
-        // const router = useRouter();
+        const router = useRouter();
 
         const [data,setData] = useState<LoginBodyType>({
             email:'',
@@ -31,6 +32,7 @@ function Login({setOpen}:{setOpen:((a:boolean)=>void)}) {
             email:[],
             password:[]
         })
+
 
     
         // useEffect(() => {
@@ -60,6 +62,7 @@ function Login({setOpen}:{setOpen:((a:boolean)=>void)}) {
                             expires: addDays(new Date(), 7),
                         })
                         }
+                        router.push('/')
                     }else{
                         toast.error(res.message)
                         setError(res.error.details)
