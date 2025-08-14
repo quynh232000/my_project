@@ -5,6 +5,7 @@ import {
   Radio,
 } from "@material-tailwind/react";
 import Image from "next/image";
+import { IOrderBooking } from "@/services/app/home/SOrderBooking";
 const paymentMethods = [
     {
         id:1,
@@ -37,14 +38,14 @@ const paymentMethods = [
         image:'/images/payment/zalopay.webp'
     },
 ]
-function PaymentMethod({setPaymentMethod,paymentMethod}:{setPaymentMethod:(i:string)=>void,paymentMethod:string}) {
+function PaymentMethod({setPaymentMethod,paymentMethod}:{setPaymentMethod:(i:IOrderBooking)=>void,paymentMethod:IOrderBooking}) {
   
  
 
     return (
         <div>
             {paymentMethods.map(item=>{
-                return <Accordion key={item.id} {...({} as any)} open={paymentMethod == item.key}>
+                return <Accordion key={item.id} {...({} as any)} open={paymentMethod.payment_method == item.key}>
                     <AccordionHeader  {...({} as any)} >
                         <label  htmlFor={"method"+item.id} className="text-[16px] flex justify-between items-center w-full cursor-pointer">
                             <div  className="flex gap-4 items-center">
@@ -58,7 +59,7 @@ function PaymentMethod({setPaymentMethod,paymentMethod}:{setPaymentMethod:(i:str
                                 </div>
                                 <div className="text-lg text-gray-600">{item.name}</div>
                             </div>
-                            <div><Radio checked={paymentMethod == item.key} onChange={()=>setPaymentMethod(item.key)} name="payment_method" id={"method"+item.id} {...({} as any)} className=" border-green-300" color="purple"/></div>
+                            <div><Radio checked={paymentMethod.payment_method == item.key} onChange={()=>setPaymentMethod({...paymentMethod,payment_method:item.key})} name="payment_method" id={"method"+item.id} {...({} as any)} className=" border-green-300" color="purple"/></div>
                         </label>
                     </AccordionHeader>
             </Accordion>

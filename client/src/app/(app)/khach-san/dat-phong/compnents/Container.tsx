@@ -18,6 +18,9 @@ import SkeBooking from './../../../../../components/shared/Skeleton/SkeBooking';
 import { format } from 'date-fns/esm';
 import { useRouter } from 'next/navigation';
 import { IOrderBooking } from '@/services/app/home/SOrderBooking';
+import { useUserInformationStore } from '@/store/user-information/store';
+import { signJWTData } from '@/services/app/home/SSignJWTData';
+import { SCreateOrder } from '@/services/app/home/SCreateOrder';
 
 
 function Container({token}:{token:string}) {
@@ -26,10 +29,13 @@ function Container({token}:{token:string}) {
     time:'',
     status:'pending'
   });
+  const { userInformation } =
+        useUserInformationStore();
   const [data,setData] = useState<IBookingInfo|null>(null)
   const [loading,setLoading] = useState(true)
-  const [paymentMethod,setPaymentMethod] = useState('cod')
+  // const [paymentMethod,setPaymentMethod] = useState('cod')
   const [formData,setFormData] = useState<IOrderBooking>({
+      payment_method:'cod',
         bill:{
           address:"",
           company:"",
@@ -37,13 +43,17 @@ function Container({token}:{token:string}) {
       },
       deputy:{
           full_name:"",
-          email:""
-          ,
+          email:"",
           phone:"",
           address:"",
-          is_self_booking:false,
+          is_self_booking:true,
           other_full_name:"",
-          special_require:[""]
+          special_require:{
+            no_smoking:false,
+            ceil:false,
+            other:false,
+            other_value:'',
+          }
       },
       info:{
           adt:2,
@@ -80,19 +90,7 @@ function Container({token}:{token:string}) {
              }, 3000);
           });
           // set date for formdata
-          setFormData({
-            ...formData,
-            info:{
-              adt:res.adt,
-              chd:res.chd,
-              quantity:res.quantity,
-              date_start:res.depart_date,
-              date_end:res.return_date,
-              room_id:res.room_id,
-              price_type_id:res.price_type_id
-            }
-
-          })
+         
           // set date for formdata
         }else{
           toast.error('Dữ liệu không hợp lệ. Vui lòng thử lại!')
@@ -105,12 +103,61 @@ function Container({token}:{token:string}) {
     }
   },[token])
 
+useEffect(()=>{
+  if(userInformation && userInformation.email){
+    setFormData({
+      ...formData,
+      deputy:{
+        ...formData.deputy,
+        email:userInformation.email,
+        phone:userInformation.phone,
+        full_name:userInformation.full_name
+      }
+    })
 
+  }
+},[userInformation])
+useEffect(()=>{
+  if(data ){
+     setFormData({
+            ...formData,
+            info:{
+              adt:data.adt,
+              chd:data.chd,
+              quantity:data.quantity,
+              date_start:data.depart_date,
+              date_end:data.return_date,
+              room_id:data.room_id,
+              price_type_id:data.price_type_id
+            }
+
+          })
+
+  }
+},[data])
   // handle submit
   const handleSubmit = ()=>{
-    console.log('====================================');
-    console.log(formData);
-    console.log('====================================');
+    if(formData.deputy.email && formData.deputy.phone && formData.deputy.full_name ){
+        signJWTData(formData,'order')
+                  .then(token => {
+                    if(token){
+                      SCreateOrder(token).then(res=>{
+                        if(res && res.status){
+                            toast.success(res.message)
+                            router.push('/khach-san/don-hang/'+(res?.data?.code ?? '') )
+                        }else{
+                          toast.error(res.message ?? 'Lỗi hệ thống')
+                        }
+                      })
+                    }else{
+                      toast.error('Đã có lỗi xảy ra')
+                      router.push('/')
+                    }
+                  }
+                  );
+    }else{
+      toast.error('Vui lòng nhập đẩy đủ thông tin')
+    }
   }
   return (
     <>
@@ -194,47 +241,44 @@ function Container({token}:{token:string}) {
                     <div>
                       <label htmlFor="" className='text-[14px]'>Họ và tên</label>
                       <div className='mt-1'>
-                        <input type="text" className='border w-full p-2 rounded-lg border-gray-400 shadow-sm focus:outline-none' placeholder='Aa..' />
+                        <input type="text" id='full_name' value={formData?.deputy?.full_name ?? ''} onChange={(e)=>setFormData({...formData,deputy:{...formData.deputy, full_name:e.target.value??''}})} className='border w-full p-2 rounded-lg border-gray-400 shadow-sm focus:outline-none' placeholder='Aa..' />
                       </div>
                     </div>
                     <div className=' grid grid-cols-2 gap-5'>
                         <div>
                           <label htmlFor="" className='text-[14px]'>Email</label>
                           <div className='mt-1'>
-                            <input type="text" className='border w-full p-2 rounded-lg border-gray-400 shadow-sm focus:outline-none' placeholder='Aa..' />
+                            <input type="text" id='email' readOnly disabled value={formData?.deputy?.email ?? ''} onChange={(e)=>setFormData({...formData,deputy:{...formData.deputy, email:e.target.value??''}})} className='border w-full p-2 rounded-lg border-gray-400 shadow-sm focus:outline-none' placeholder='Aa..' />
                           </div>
                         </div>
                         <div>
                           <label htmlFor="" className='text-[14px]'>Số điện thoại</label>
                           <div className='mt-1'>
-                            <input type="text" className='border w-full p-2 rounded-lg border-gray-400 shadow-sm focus:outline-none' placeholder='Aa..' />
+                            <input type="text" id='phone' value={formData?.deputy?.phone ?? ''} onChange={(e)=>setFormData({...formData,deputy:{...formData.deputy, phone:e.target.value??''}})} className='border w-full p-2 rounded-lg border-gray-400 shadow-sm focus:outline-none' placeholder='Aa..' />
                           </div>
                         </div>
                     </div>
                   </div>
                   <div>
                     <div className='flex items-center gap-1'>
-                      <Checkbox {...({} as any)} color='purple' className='border-green-400 bg-gray-50'/>
-                      <label htmlFor="">Tôi đặt phòng giúp cho người khác.</label>
+                      <Checkbox id='is_self_booking' checked={!formData.deputy.is_self_booking}  onChange={(e)=>setFormData({...formData,deputy:{...formData.deputy, is_self_booking:!e.target.checked}})} {...({} as any)} color='purple' className='border-green-400 bg-gray-50'/>
+                      <label htmlFor="is_self_booking">Tôi đặt phòng giúp cho người khác.</label>
                     </div>
+                    {!formData.deputy.is_self_booking &&
                     <div>
                       <div className='font-semibold my-2'>Thông tin khách nhận phòng</div>
 
-                      <div className=' grid grid-cols-2 gap-5'>
+                      <div className=' '>
                         <div>
                           <label htmlFor="" className='text-[14px]'>Họ tên</label>
                           <div className='mt-1'>
-                            <input type="text" className='border w-full p-2 rounded-lg border-gray-400 shadow-sm focus:outline-none' placeholder='Aa..' />
+                            <input type="text" id='other_full_name' value={formData?.deputy?.other_full_name ?? ''} onChange={(e)=>setFormData({...formData,deputy:{...formData.deputy, other_full_name:e.target.value??''}})} className='border w-full p-2 rounded-lg border-gray-400 shadow-sm focus:outline-none' placeholder='Aa..' />
                           </div>
                         </div>
-                        <div>
-                          <label htmlFor="" className='text-[14px]'>Số điện thoại</label>
-                          <div className='mt-1'>
-                            <input type="text" className='border w-full p-2 rounded-lg border-gray-400 shadow-sm focus:outline-none' placeholder='Aa..' />
-                          </div>
-                        </div>
+                        
                     </div>
                     </div>
+                    }
                   </div>
                 </div>
                 {/* yeu cau dac biet */}
@@ -245,21 +289,23 @@ function Container({token}:{token:string}) {
                   </div>
                   <div className=' grid grid-cols-2 gap-4'>
                     <div className='flex items-center gap-1'>
-                      <Checkbox {...({} as any)} color='purple' className='border-gray-400' />
-                      <label htmlFor="" className='text-[14px] font-semibold'>Phòng không hút thuốc</label>
+                      <Checkbox {...({} as any)} id='no_smoking' checked={formData.deputy.special_require.no_smoking} onChange={(e)=>setFormData({...formData,deputy:{...formData.deputy, special_require:{...formData.deputy.special_require,no_smoking:e.target.checked}}})} color='purple' value={'no_smoking'} className='border-gray-400' />
+                      <label htmlFor="no_smoking" className='text-[14px] font-semibold'>Phòng không hút thuốc</label>
                     </div>
                     <div className='flex items-center gap-1'>
-                      <Checkbox {...({} as any)} color='purple' className='border-gray-400' />
-                      <label htmlFor="" className='text-[14px] font-semibold'>Tầng lầu</label>
+                      <Checkbox {...({} as any)} id='ceil' checked={formData.deputy.special_require.ceil} onChange={(e)=>setFormData({...formData,deputy:{...formData.deputy, special_require:{...formData.deputy.special_require,ceil:e.target.checked}}})} color='purple' value={'ceil'} className='border-gray-400' />
+                      <label htmlFor="ceil" className='text-[14px] font-semibold'>Tầng lầu</label>
                     </div>
                     <div className='flex items-center gap-1'>
-                      <Checkbox {...({} as any)} color='purple' className='border-gray-400' />
-                      <label htmlFor="" className='text-[14px] font-semibold'>Khác</label>
+                      <Checkbox {...({} as any) } id='other' checked={formData.deputy.special_require.other} onChange={(e)=>setFormData({...formData,deputy:{...formData.deputy, special_require:{...formData.deputy.special_require,other:e.target.checked}}})} color='purple' value={'other'} className='border-gray-400' />
+                      <label htmlFor="other" className='text-[14px] font-semibold'>Khác</label>
                     </div>
                   </div>
+                  {formData.deputy.special_require.other &&
                   <div className='pl-8'>
-                    <textarea name="" className='border border-gray-400 w-full rounded-lg p-2 outline-none' rows={3} placeholder='Aa..' id=""></textarea>
+                    <textarea name="" value={formData.deputy.special_require.other_value} onChange={(e)=>setFormData({...formData,deputy:{...formData.deputy, special_require:{...formData.deputy.special_require,other_value:e.target.value}}})} className='border border-gray-400 w-full rounded-lg p-2 outline-none'  rows={3} placeholder='Aa..' id=""></textarea>
                   </div>
+                  }
                 </div>
                 {/* hoa don */}
                 <div className='bg-white border shadow-md rounded-lg p-5 flex flex-col gap-3'>
@@ -274,20 +320,20 @@ function Container({token}:{token:string}) {
                     <div>
                       <label htmlFor="" className='text-[14px]'>Tên công ty</label>
                       <div className='mt-1'>
-                        <input type="text" className='border w-full p-2 rounded-lg border-gray-400 shadow-sm focus:outline-none' placeholder='Aa..' />
+                        <input type="text" id='company' value={formData?.bill.company ?? ''} onChange={(e)=>setFormData({...formData,bill:{...formData.bill, company:e.target.value??''}})} className='border w-full p-2 rounded-lg border-gray-400 shadow-sm focus:outline-none' placeholder='Aa..' />
                       </div>
                     </div>
                     <div className=' grid grid-cols-2 gap-5'>
                         <div>
                           <label htmlFor="" className='text-[14px]'>Mã số thuế</label>
                           <div className='mt-1'>
-                            <input type="text" className='border w-full p-2 rounded-lg border-gray-400 shadow-sm focus:outline-none' placeholder='Aa..' />
+                            <input type="text" id='tax_code' value={formData?.bill.tax_code ?? ''} onChange={(e)=>setFormData({...formData,bill:{...formData.bill, tax_code:e.target.value??''}})} className='border w-full p-2 rounded-lg border-gray-400 shadow-sm focus:outline-none' placeholder='Aa..' />
                           </div>
                         </div>
                         <div>
                           <label htmlFor="" className='text-[14px]'>Địa chỉ</label>
                           <div className='mt-1'>
-                            <input type="text" className='border w-full p-2 rounded-lg border-gray-400 shadow-sm focus:outline-none' placeholder='Aa..' />
+                            <input type="text" id='company_address' value={formData?.bill.address ?? ''} onChange={(e)=>setFormData({...formData,bill:{...formData.bill, address:e.target.value??''}})} className='border w-full p-2 rounded-lg border-gray-400 shadow-sm focus:outline-none' placeholder='Aa..' />
                           </div>
                         </div>
                     </div>
@@ -300,7 +346,7 @@ function Container({token}:{token:string}) {
                       Sau khi hoàn tất thanh toán, mã xác nhận phòng sẽ được gửi ngay qua SMS và Email của bạn.
                   </div>
                   <div>
-                    <PaymentMethod paymentMethod={paymentMethod} setPaymentMethod={setPaymentMethod}/>
+                    <PaymentMethod paymentMethod={formData} setPaymentMethod={setFormData}/>
                   </div>
                   <div className='flex justify-end mt-3'>
                     <Button onClick={handleSubmit} {...({} as any)} className='bg-primary-500 px-8 font-semibold normal-case text-md'>Thanh toán</Button>

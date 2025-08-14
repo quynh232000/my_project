@@ -12,6 +12,19 @@ export class Bill {
         this.tax_code = tax_code;
     }
 }
+export class Other {
+    no_smoking: boolean;
+    ceil: boolean;
+    other: boolean;
+    other_value: string;
+
+    constructor(no_smoking: boolean, ceil: boolean, other: boolean, other_value: string) {
+        this.no_smoking = no_smoking;
+        this.ceil = ceil;
+        this.other = other;
+        this.other_value = other_value;
+    }
+}
 
 export class Deputy {
     full_name: string;
@@ -20,7 +33,7 @@ export class Deputy {
     address: string;
     is_self_booking: boolean;
     other_full_name: string;
-    special_require: string[];
+    special_require: Other;
 
     constructor(
         full_name: string,
@@ -29,7 +42,8 @@ export class Deputy {
         address: string,
         is_self_booking: boolean,
         other_full_name: string,
-        special_require: string[]
+        special_require: Other,
+        orther: Other
     ) {
         this.full_name = full_name;
         this.email = email;
@@ -37,7 +51,7 @@ export class Deputy {
         this.address = address;
         this.is_self_booking = is_self_booking;
         this.other_full_name = other_full_name;
-        this.special_require = special_require;
+        this.special_require = orther;
     }
 }
 
@@ -74,12 +88,14 @@ export class IOrderBooking {
     deputy: Deputy;
     info: Info;
     order_from: string;
+    payment_method: string
 
-    constructor(bill: Bill, deputy: Deputy, info: Info, order_from: string) {
+    constructor(bill: Bill, deputy: Deputy, info: Info, order_from: string, payment_method: string) {
         this.bill = bill;
         this.deputy = deputy;
         this.info = info;
         this.order_from = order_from;
+        this.payment_method = payment_method;
     }
 }
 
