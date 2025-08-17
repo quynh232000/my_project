@@ -33,9 +33,9 @@ function Container({token}:{token:string}) {
         useUserInformationStore();
   const [data,setData] = useState<IBookingInfo|null>(null)
   const [loading,setLoading] = useState(true)
-  // const [paymentMethod,setPaymentMethod] = useState('cod')
   const [formData,setFormData] = useState<IOrderBooking>({
       payment_method:'cod',
+      return_url:window.location.href,
         bill:{
           address:"",
           company:"",
@@ -136,15 +136,34 @@ useEffect(()=>{
   }
 },[data])
   // handle submit
+  const [loadingSub,setLoadingSub] = useState(false)
   const handleSubmit = ()=>{
     if(formData.deputy.email && formData.deputy.phone && formData.deputy.full_name ){
         signJWTData(formData,'order')
                   .then(token => {
                     if(token){
+                      setLoadingSub(true)
                       SCreateOrder(token).then(res=>{
+                        setLoadingSub(false)
+                        console.log('====================================');
+                        console.log(res);
+                        console.log('====================================');
                         if(res && res.status){
-                            toast.success(res.message)
-                            router.push('/khach-san/don-hang/'+(res?.data?.code ?? '') )
+                          switch (formData.payment_method) {
+                            case 'vnpay':
+                              if(res.data.pay_url){
+                                window.location.href = res.data.pay_url
+                              }else{
+                                toast.error(res.message)
+                              }
+                              break;
+                          
+                            default:
+                              toast.success(res.message)
+                              router.push('/khach-san/don-hang/'+(res?.data?.code ?? '') )
+
+                              break;
+                          }
                         }else{
                           toast.error(res.message ?? 'Lỗi hệ thống')
                         }
@@ -349,7 +368,17 @@ useEffect(()=>{
                     <PaymentMethod paymentMethod={formData} setPaymentMethod={setFormData}/>
                   </div>
                   <div className='flex justify-end mt-3'>
-                    <Button onClick={handleSubmit} {...({} as any)} className='bg-primary-500 px-8 font-semibold normal-case text-md'>Thanh toán</Button>
+                    {loadingSub ? 
+                    <Button {...({} as any)}
+                         variant="outlined" loading={true}
+                          disabled={true}
+                          className={`bg-primary-500 px-8 font-semibold normal-case text-md text-white hover:bg-primary-600 transition-all border-none duration-300 opacity-80 cursor-not-allowed`}
+                          >
+                          <span>Đang xử lý...</span>
+                        </Button>
+                        :
+                    <Button onClick={handleSubmit} {...({} as any)} className='bg-primary-500 px-8 font-semibold normal-case text-md'>Thanh toán</Button> 
+                    }
                   </div>
                   <div className='text-right text-[14px] text-gray-600'>
                     <div>Bằng cách nhấn vào nút này, bạn công nhận mình đã đọc và đồng ý với</div>

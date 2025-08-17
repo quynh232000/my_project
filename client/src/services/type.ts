@@ -38,6 +38,7 @@ const APP_ENDPOINT = {
 
     BOOKING_INFO: 'booking/info',
     BOOKING_ORDER: 'booking/order',
+    BOOKING_ORDER_VERIFY: 'booking/order-verify',
 
 }
 

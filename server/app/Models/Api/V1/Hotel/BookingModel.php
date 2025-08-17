@@ -100,7 +100,9 @@ class BookingModel extends ApiModel
             $response = self::getDataValide($params);
             if ($response['status'] == true) {
                 // create order start ===============
-                return self::createOrder($response['data']);
+                return self::createOrder($response['data'], $params['payment_method'], [
+                    'return_url' => $params['return_url'] ?? ''
+                ]);
             }
             return $response;
         }
@@ -420,14 +422,14 @@ class BookingModel extends ApiModel
         $data_order['final_money']       += $daily_price['final_price'];
     }
 
-    private function createOrder($params)
+    private function createOrder($params, $payment_method, $options = null)
     {
         DB::beginTransaction();
 
         try {
             // dd($params['deputy']);
             // Tạo đơn hàng
-            $order                  = self::create($this->prepareParams($params['data_order']));
+            $order                  = self::create($this->prepareParams([...$params['data_order'], 'payment_method' => $payment_method, 'user_id' => auth('hms')->id()]));
 
             // Lưu deputy
             $data_deputy            = [
@@ -470,14 +472,28 @@ class BookingModel extends ApiModel
 
             // Thanh toán
             // Gửi mail
+            $dataRes = [
+                'code'  => $order->code ?? $params['data_order']['code']
+            ];
+            switch ($payment_method) {
+                case 'vnpay':
+                    $dataRes['pay_url'] = self::checkoutVnpay([
+                        'order_code'    => $order->code,
+                        'total'         => $order->final_money,
+                        'return_url'    => $options['return_url'] ?? ''
+                    ]);
+                    break;
+
+                default:
+                    # code...
+                    break;
+            }
 
             DB::commit();
             return  [
                 'status'    => true,
                 'message'   => 'Tạo đơn hàng thành công!',
-                'data'      => [
-                    'code'  => $order->code ?? $params['data_order']['code']
-                ]
+                'data'      => $dataRes
             ];
         } catch (\Throwable $e) {
             DB::rollBack();
@@ -501,5 +517,69 @@ class BookingModel extends ApiModel
     public function room()
     {
         return $this->belongsTo(RoomModel::class, 'room_id', 'id');
+    }
+    public function checkoutVnpay($params)
+    {
+        // return ($params);
+        $VNP_TMN_CODE       = config('services.vnpay.vnp_tmn_code');
+        $VNP_HASH_SECRET    = config('services.vnpay.vnp_hash_secret');
+        $VNP_URL            = config('services.vnpay.vnp_url');
+        $VNP_RETURN_URL     = $params['return_url'] ??  config('services.vnpay.vnp_return_url');
+
+        $startTime      = date("YmdHis");
+        $expire         = date('YmdHis', strtotime('+15 minutes', strtotime($startTime)));
+        $vnp_TmnCode    = $VNP_TMN_CODE;
+        $vnp_HashSecret = $VNP_HASH_SECRET;
+        $vnp_Url        = $VNP_URL;
+        $vnp_Returnurl  = $VNP_RETURN_URL . $params['return_url'];
+
+        $vnp_TxnRef     = $params['order_code'];
+        $vnp_OrderInfo  = "Payment for order #" . $vnp_TxnRef;
+        $vnp_Amount     = $params['total'] * 100;
+        $vnp_Locale     = 'vn';
+        $vnp_BankCode   = $params['bank_name'] ?? '';
+        $vnp_IpAddr     = $_SERVER['REMOTE_ADDR'];
+
+        $inputData = [
+            "vnp_Version" => "2.1.0",
+            "vnp_TmnCode" => $vnp_TmnCode,
+            "vnp_Amount" => $vnp_Amount,
+            "vnp_Command" => "pay",
+            "vnp_CreateDate" => $startTime,
+            "vnp_CurrCode" => "VND",
+            "vnp_IpAddr" => $vnp_IpAddr,
+            "vnp_Locale" => $vnp_Locale,
+            "vnp_OrderInfo" => "Thanh toan GD:" . $vnp_TxnRef . '-' . $vnp_OrderInfo,
+            "vnp_OrderType" => "other",
+            "vnp_ReturnUrl" => $vnp_Returnurl,
+            "vnp_TxnRef" => $vnp_TxnRef,
+            "vnp_ExpireDate" => $expire
+        ];
+
+        if (!empty($vnp_BankCode)) {
+            $inputData['vnp_BankCode'] = $vnp_BankCode;
+        }
+
+        // Sắp xếp và tạo chuỗi hash + query
+        ksort($inputData);
+
+        $query      = '';
+        $hashdata   = '';
+        $i          = 0;
+        foreach ($inputData as $key => $value) {
+            $value = urlencode($value);
+            if ($i == 1) {
+                $hashdata .= '&' . urlencode($key) . '=' . $value;
+            } else {
+                $hashdata .= urlencode($key) . '=' . $value;
+                $i = 1;
+            }
+            $query .= urlencode($key) . '=' . $value . '&';
+        }
+
+        // Tạo chữ ký bảo mật
+        $vnpSecureHash = hash_hmac('sha512', $hashdata, $vnp_HashSecret);
+        $paymentUrl = $vnp_Url . '?' . $query . 'vnp_SecureHash=' . $vnpSecureHash;
+        return $paymentUrl;
     }
 }

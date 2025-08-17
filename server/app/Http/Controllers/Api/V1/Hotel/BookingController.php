@@ -21,7 +21,8 @@ class BookingController extends ApiController
     public function order(OrderRequest $request)
     {
         try {
-            $response           = $this->model->saveItem($this->_params, ['task' => 'add-item']);
+
+            $response           = $this->model->saveItem([...$this->_params, ...($request->all() ?? [])], ['task' => 'add-item']);
             if ($response['status']) {
                 return $this->success($response['message'] ?? '', $response['data'] ?? null, 200);
             } else {

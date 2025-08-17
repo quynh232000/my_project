@@ -1,27 +1,18 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import confetti from "canvas-confetti";
 import { CheckCircle } from "lucide-react";
 import Link from "next/link";
+import { IOrderVerify, SOrderVerify } from './../../../../../../services/app/home/SOrderVerify';
+import { toast } from "sonner";
+import { formatDate, FormatPrice } from "@/utils/common";
 
-interface BookingInfo {
-  hotelName: string;
-  checkIn: string;
-  checkOut: string;
-  bookingCode: string;
-  totalPrice: number;
-}
 
-export default function BookingSuccessPage() {
-  const booking: BookingInfo = {
-    hotelName: "The Grand Riverside Hotel",
-    checkIn: "2025-08-20",
-    checkOut: "2025-08-23",
-    bookingCode: "ABCD1234",
-    totalPrice: 4200000,
-  };
+
+export default function Container({code}:{code:string}) {
+
 
   useEffect(() => {
     const fire = () => {
@@ -32,6 +23,22 @@ export default function BookingSuccessPage() {
     return () => clearTimeout(timer);
   }, []);
 
+  const [data,setData] = useState<IOrderVerify|null>(null)
+  const [loading,setLoading] = useState(true)
+  useEffect(()=>{
+    if(code){
+        setLoading(true)
+      SOrderVerify(code).then(res=>{
+        setLoading(false)
+        if(res){
+          setData(res)
+        }else{
+          toast.error('Đã xảy ra lỗi!')
+        }
+      })
+    }
+  },[code])
+
   return (
     <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden font-sans">
       {/* Nền gradient pastel theo primary */}
@@ -40,11 +47,12 @@ export default function BookingSuccessPage() {
       <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-primary-400/15 rounded-full blur-3xl animate-pulse" />
 
       {/* Thẻ glassmorphism */}
+      {loading ? <div>...</div> : (data &&
       <motion.div
         initial={{ opacity: 0, scale: 0.85 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.6 }}
-        className="relative z-10 backdrop-blur-xl bg-white/30 rounded-3xl shadow-2xl p-8 max-w-lg w-full text-center border border-primary-200/30"
+        className="relative  backdrop-blur-xl bg-white/30 rounded-3xl shadow-2xl p-8 max-w-lg w-full text-center border border-primary-200/30"
       >
         {/* Icon check */}
         <motion.div
@@ -53,31 +61,42 @@ export default function BookingSuccessPage() {
           transition={{ type: "spring", stiffness: 140 }}
           className="flex justify-center"
         >
-          <CheckCircle className="w-20 h-20 text-primary-500 drop-shadow-lg animate-pulse" />
+          <CheckCircle className="w-20 h-20 text-green-500 drop-shadow-lg animate-pulse" />
         </motion.div>
 
-        <h1 className="text-3xl font-extrabold mt-4 text-gray-800">
+        <h1 className="text-3xl font-extrabold mt-4 text-green-500">
           Đặt phòng thành công!
         </h1>
-        <p className="text-gray-600 mt-2 text-lg">
-          Cảm ơn bạn đã chọn{" "}
-          <span className="font-semibold text-primary-600">{booking.hotelName}</span>
-        </p>
+        <div className="text-gray-600 mt-2 text-lg">
+          <div>Cảm ơn bạn đã chọn</div>
+          <div className="font-semibold text-primary-600">{data.hotel.name}</div>
+        </div>
 
         {/* Thông tin đặt phòng */}
-        <div className="mt-6 space-y-2 text-left bg-white/50 p-5 rounded-xl border border-primary-200/40 shadow-inner">
-          <p className="text-gray-700">
-            <span className="font-medium">Ngày nhận phòng:</span> {booking.checkIn}
+        <div className="mt-6 space-y-2 text-left bg-white/50 p-5 rounded-xl border border-primary-200/40 shadow-inner ">
+          <p className="text-gray-700 flex justify-between">
+            <span className="font-medium">Ngày nhận phòng:</span> <strong>{formatDate(data.depart_date)}</strong>
           </p>
-          <p className="text-gray-700">
-            <span className="font-medium">Ngày trả phòng:</span> {booking.checkOut}
+          <p className="text-gray-700 justify-between flex">
+            <span className="font-medium">Ngày trả phòng:</span> <strong>{formatDate(data.return_date)}</strong>
           </p>
-          <p className="text-gray-700">
-            <span className="font-medium">Mã đặt phòng:</span> {booking.bookingCode}
+          <p className="text-gray-700 justify-between flex">
+            <span className="font-medium">Mã đặt phòng:</span> <strong>{data.code}</strong>
           </p>
-          <p className="text-gray-700">
+          <p className="text-gray-700 flex items-center gap-2 justify-between">
+            <span className="font-medium flex-1">Thanh toán:</span> 
+            <strong className="text-red-500">
+              {data.status == 0 && 'Chưa thanh toán'}
+            </strong>
+            <strong className="text-primary-500">
+              {data.status == 1 && 'Đã thanh toán'}
+              </strong>
+          </p>
+          <p className="text-gray-700 justify-between flex">
             <span className="font-medium">Tổng tiền:</span>{" "}
-            {booking.totalPrice.toLocaleString()}₫
+            <strong className="text-primary-500">
+              {FormatPrice(data.final_money)}
+            </strong>
           </p>
         </div>
 
@@ -102,6 +121,7 @@ export default function BookingSuccessPage() {
           </Link>
         </motion.div>
       </motion.div>
+      )}
 
       {/* CSS cho gradient động */}
       <style jsx>{`

@@ -89,13 +89,15 @@ export class IOrderBooking {
     info: Info;
     order_from: string;
     payment_method: string
+    return_url: string
 
-    constructor(bill: Bill, deputy: Deputy, info: Info, order_from: string, payment_method: string) {
+    constructor(bill: Bill, deputy: Deputy, info: Info, order_from: string, payment_method: string, return_url: string) {
         this.bill = bill;
         this.deputy = deputy;
         this.info = info;
         this.order_from = order_from;
         this.payment_method = payment_method;
+        this.return_url = return_url;
     }
 }
 

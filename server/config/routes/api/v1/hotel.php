@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\Api\V1\Hotel\HotelLoginMiddelware;
 use App\Http\Middleware\IsLoginMiddleware;
 
 $base = basename(__FILE__, '.php');
@@ -122,6 +123,7 @@ return  [
         [
             'controller'    =>   \App\Http\Controllers\Api\V1\Hotel\BookingController::class,
             'uri'           =>  'booking/info',
+            'middleware'    => [HotelLoginMiddelware::class],
             'name'          =>  '.booking.info',
             'methods'       => ['post'],
             'action'        => 'info',
@@ -129,16 +131,18 @@ return  [
         [
             'controller'    =>   \App\Http\Controllers\Api\V1\Hotel\BookingController::class,
             'uri'           =>  'booking/order',
+            'middleware'    => [HotelLoginMiddelware::class],
             'name'          =>  '.booking.order',
             'methods'       => ['post'],
             'action'        => 'order',
         ],
         [
             'controller'    =>   \App\Http\Controllers\Api\V1\Hotel\BookingController::class,
+            'middleware'    => [HotelLoginMiddelware::class],
             'uri'           =>  'booking/order-verify',
             'name'          =>  '.booking.order-verify',
             'methods'       => ['post'],
-            'action'        => 'order-verify',
+            'action'        => 'order_verify',
         ],
 
     ]

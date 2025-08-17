@@ -22,6 +22,10 @@ const handleResetToken = async (
 	store.delete('refresh_token');
 	return NextResponse.redirect(new URL(AuthRouters.signIn, request.nextUrl));
 };
+const routeRequireLogin = [
+	'/khach-san/dat-phong',
+	'/khach-san/don-hang'
+]
 
 export async function middleware(request: NextRequest) {
 	const requestHeaders = new Headers(request.headers);
@@ -108,9 +112,9 @@ export async function middleware(request: NextRequest) {
 			);
 		}
 	}
-	if (pathname.startsWith("/khach-san/dat-phong")) {
+	if (routeRequireLogin.some(prefix => pathname.startsWith(prefix))) {
 		if (!access_token) {
-			return NextResponse.redirect(new URL("/login", request.nextUrl));
+			return NextResponse.redirect(new URL("/login?redirect=" + pathname, request.nextUrl));
 		}
 	}
 
