@@ -1,0 +1,1379 @@
+{
+    "variable": [
+        {
+            "id": "baseUrl",
+            "key": "baseUrl",
+            "type": "string",
+            "name": "string",
+            "value": "http:\/\/localhost:8000"
+        }
+    ],
+    "info": {
+        "name": "Quin Admin API Documentation",
+        "_postman_id": "5b2aeb94-a158-4450-bbdb-296479a2f4d0",
+        "description": "",
+        "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
+    },
+    "item": [
+        {
+            "name": "Endpoints",
+            "description": "",
+            "item": [
+                {
+                    "name": "POST api\/v1\/cms\/auth\/login",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/cms\/auth\/login",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/cms\/auth\/login"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"email\":\"qkunze@example.com\",\"password\":\"Z5ij-e\\\/dl4m{o,\"}"
+                        },
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "POST api\/v1\/cms\/auth\/register",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/cms\/auth\/register",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/cms\/auth\/register"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"full_name\":\"consequatur\",\"email\":\"carolyne.luettgen@example.org\",\"password\":\"ij-e\\\/dl4m\"}"
+                        },
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "POST api\/v1\/cms\/auth\/refresh",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/cms\/auth\/refresh",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/cms\/auth\/refresh"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "POST api\/v1\/cms\/auth\/logout",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/cms\/auth\/logout",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/cms\/auth\/logout"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "GET api\/v1\/cms\/auth\/me",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/cms\/auth\/me",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/cms\/auth\/me"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                },
+                                {
+                                    "key": "access-control-allow-methods",
+                                    "value": "GET, POST, PUT, DELETE, OPTIONS"
+                                },
+                                {
+                                    "key": "access-control-allow-headers",
+                                    "value": "Origin, Content-Type, Authorization, X-Requested-With"
+                                }
+                            ],
+                            "code": 403,
+                            "body": "{\"status\":false,\"message\":\"Kh\\u00f4ng t\\u00ecm th\\u1ea5y token!\",\"error\":{\"code\":403}}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "GET api\/v1\/cms\/role",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/cms\/role",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/cms\/role"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                },
+                                {
+                                    "key": "access-control-allow-methods",
+                                    "value": "GET, POST, PUT, DELETE, OPTIONS"
+                                },
+                                {
+                                    "key": "access-control-allow-headers",
+                                    "value": "Origin, Content-Type, Authorization, X-Requested-With"
+                                }
+                            ],
+                            "code": 403,
+                            "body": "{\"status\":false,\"message\":\"Kh\\u00f4ng t\\u00ecm th\\u1ea5y token!\",\"error\":{\"code\":403}}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "POST api\/v1\/cms\/role",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/cms\/role",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/cms\/role"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"name\":\"vmqeopfuudtdsufvyvddq\",\"description\":\"Dolores dolorum amet iste laborum eius est dolor.\",\"status\":\"inactive\"}"
+                        },
+                        "description": ""
+                    },
+                    "response": []
+                },
+                {
+                    "name": "GET api\/v1\/cms\/role\/{id}",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/cms\/role\/:id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/cms\/role\/:id",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "consequatur",
+                                    "description": "The ID of the role."
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"id\":\"consequatur\"}"
+                        },
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                },
+                                {
+                                    "key": "access-control-allow-methods",
+                                    "value": "GET, POST, PUT, DELETE, OPTIONS"
+                                },
+                                {
+                                    "key": "access-control-allow-headers",
+                                    "value": "Origin, Content-Type, Authorization, X-Requested-With"
+                                }
+                            ],
+                            "code": 403,
+                            "body": "{\"status\":false,\"message\":\"Kh\\u00f4ng t\\u00ecm th\\u1ea5y token!\",\"error\":{\"code\":403}}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "PUT api\/v1\/cms\/role\/{id}",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/cms\/role\/:id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/cms\/role\/:id",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "consequatur",
+                                    "description": "The ID of the role."
+                                }
+                            ]
+                        },
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"name\":\"vmqeopfuudtdsufvyvddq\",\"description\":\"Dolores dolorum amet iste laborum eius est dolor.\",\"status\":\"active\"}"
+                        },
+                        "description": ""
+                    },
+                    "response": []
+                },
+                {
+                    "name": "POST api\/v1\/cms\/role\/toggle-status",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/cms\/role\/toggle-status",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/cms\/role\/toggle-status"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"id\":\"consequatur\"}"
+                        },
+                        "description": ""
+                    },
+                    "response": []
+                },
+                {
+                    "name": "GET api\/v1\/cms\/permission",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/cms\/permission",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/cms\/permission"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                },
+                                {
+                                    "key": "access-control-allow-methods",
+                                    "value": "GET, POST, PUT, DELETE, OPTIONS"
+                                },
+                                {
+                                    "key": "access-control-allow-headers",
+                                    "value": "Origin, Content-Type, Authorization, X-Requested-With"
+                                }
+                            ],
+                            "code": 403,
+                            "body": "{\"status\":false,\"message\":\"Kh\\u00f4ng t\\u00ecm th\\u1ea5y token!\",\"error\":{\"code\":403}}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "POST api\/v1\/cms\/permission",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/cms\/permission",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/cms\/permission"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"data\":[{\"name\":\"vmqeopfuudtdsufvyvddq\",\"route_name\":\"consequatur\",\"uri\":\"consequatur\",\"method\":\"consequatur\"}]}"
+                        },
+                        "description": ""
+                    },
+                    "response": []
+                },
+                {
+                    "name": "GET api\/v1\/cms\/permission\/new",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/cms\/permission\/new",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/cms\/permission\/new"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                },
+                                {
+                                    "key": "access-control-allow-methods",
+                                    "value": "GET, POST, PUT, DELETE, OPTIONS"
+                                },
+                                {
+                                    "key": "access-control-allow-headers",
+                                    "value": "Origin, Content-Type, Authorization, X-Requested-With"
+                                }
+                            ],
+                            "code": 403,
+                            "body": "{\"status\":false,\"message\":\"Kh\\u00f4ng t\\u00ecm th\\u1ea5y token!\",\"error\":{\"code\":403}}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "GET api\/v1\/cms\/user",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/cms\/user",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/cms\/user"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                },
+                                {
+                                    "key": "access-control-allow-methods",
+                                    "value": "GET, POST, PUT, DELETE, OPTIONS"
+                                },
+                                {
+                                    "key": "access-control-allow-headers",
+                                    "value": "Origin, Content-Type, Authorization, X-Requested-With"
+                                }
+                            ],
+                            "code": 403,
+                            "body": "{\"status\":false,\"message\":\"Kh\\u00f4ng t\\u00ecm th\\u1ea5y token!\",\"error\":{\"code\":403}}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "POST api\/v1\/cms\/user",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/cms\/user",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/cms\/user"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "multipart\/form-data"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "full_name",
+                                    "value": "vmqeopfuudtdsufvyvddq",
+                                    "type": "text",
+                                    "description": "value kh\u00f4ng \u0111\u01b0\u1ee3c d\u00e0i h\u01a1n 255 k\u00fd t\u1ef1."
+                                },
+                                {
+                                    "key": "phone",
+                                    "value": "consequatur",
+                                    "type": "text",
+                                    "description": ""
+                                },
+                                {
+                                    "key": "email",
+                                    "value": "carolyne.luettgen@example.org",
+                                    "type": "text",
+                                    "description": "value ph\u1ea3i l\u00e0 m\u1ed9t \u0111\u1ecba ch\u1ec9 email h\u1ee3p l\u1ec7."
+                                },
+                                {
+                                    "key": "password",
+                                    "value": "O[2UZ5ij-e\/dl4m{o,",
+                                    "type": "text",
+                                    "description": ""
+                                },
+                                {
+                                    "key": "role_ids[0]",
+                                    "value": "consequatur",
+                                    "type": "text",
+                                    "description": ""
+                                },
+                                {
+                                    "key": "permission_ids[0]",
+                                    "value": "consequatur",
+                                    "type": "text",
+                                    "description": ""
+                                },
+                                {
+                                    "key": "avatar",
+                                    "src": [],
+                                    "type": "file"
+                                }
+                            ]
+                        },
+                        "description": ""
+                    },
+                    "response": []
+                },
+                {
+                    "name": "GET api\/v1\/cms\/user\/{id}",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/cms\/user\/:id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/cms\/user\/:id",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "consequatur",
+                                    "description": "The ID of the user."
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"id\":\"consequatur\"}"
+                        },
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                },
+                                {
+                                    "key": "access-control-allow-methods",
+                                    "value": "GET, POST, PUT, DELETE, OPTIONS"
+                                },
+                                {
+                                    "key": "access-control-allow-headers",
+                                    "value": "Origin, Content-Type, Authorization, X-Requested-With"
+                                }
+                            ],
+                            "code": 403,
+                            "body": "{\"status\":false,\"message\":\"Kh\\u00f4ng t\\u00ecm th\\u1ea5y token!\",\"error\":{\"code\":403}}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "PUT api\/v1\/cms\/user\/{id}",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/cms\/user\/:id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/cms\/user\/:id",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "consequatur",
+                                    "description": "The ID of the user."
+                                }
+                            ]
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "multipart\/form-data"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "full_name",
+                                    "value": "vmqeopfuudtdsufvyvddq",
+                                    "type": "text",
+                                    "description": "value kh\u00f4ng \u0111\u01b0\u1ee3c d\u00e0i h\u01a1n 255 k\u00fd t\u1ef1."
+                                },
+                                {
+                                    "key": "phone",
+                                    "value": "consequatur",
+                                    "type": "text",
+                                    "description": ""
+                                },
+                                {
+                                    "key": "email",
+                                    "value": "carolyne.luettgen@example.org",
+                                    "type": "text",
+                                    "description": "value ph\u1ea3i l\u00e0 m\u1ed9t \u0111\u1ecba ch\u1ec9 email h\u1ee3p l\u1ec7."
+                                },
+                                {
+                                    "key": "password",
+                                    "value": "O[2UZ5ij-e\/dl4m{o,",
+                                    "type": "text",
+                                    "description": ""
+                                },
+                                {
+                                    "key": "role_ids[0]",
+                                    "value": "consequatur",
+                                    "type": "text",
+                                    "description": ""
+                                },
+                                {
+                                    "key": "permission_ids[0]",
+                                    "value": "consequatur",
+                                    "type": "text",
+                                    "description": ""
+                                },
+                                {
+                                    "key": "avatar",
+                                    "src": [],
+                                    "type": "file"
+                                },
+                                {
+                                    "key": "_method",
+                                    "value": "PUT",
+                                    "type": "text"
+                                }
+                            ]
+                        },
+                        "description": ""
+                    },
+                    "response": []
+                },
+                {
+                    "name": "GET api\/v1\/cms\/plan",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/cms\/plan",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/cms\/plan"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                },
+                                {
+                                    "key": "access-control-allow-methods",
+                                    "value": "GET, POST, PUT, DELETE, OPTIONS"
+                                },
+                                {
+                                    "key": "access-control-allow-headers",
+                                    "value": "Origin, Content-Type, Authorization, X-Requested-With"
+                                }
+                            ],
+                            "code": 403,
+                            "body": "{\"status\":false,\"message\":\"Kh\\u00f4ng t\\u00ecm th\\u1ea5y token!\",\"error\":{\"code\":403}}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "POST api\/v1\/cms\/plan",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/cms\/plan",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/cms\/plan"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"name\":\"vmqeopfuudtdsufvyvddq\",\"description\":\"Dolores dolorum amet iste laborum eius est dolor.\",\"price\":12,\"billing_cycle\":\"monthly\",\"features\":\"consequatur\"}"
+                        },
+                        "description": ""
+                    },
+                    "response": []
+                },
+                {
+                    "name": "GET api\/v1\/cms\/plan\/{id}",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/cms\/plan\/:id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/cms\/plan\/:id",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "consequatur",
+                                    "description": "The ID of the plan."
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"id\":\"consequatur\"}"
+                        },
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                },
+                                {
+                                    "key": "access-control-allow-methods",
+                                    "value": "GET, POST, PUT, DELETE, OPTIONS"
+                                },
+                                {
+                                    "key": "access-control-allow-headers",
+                                    "value": "Origin, Content-Type, Authorization, X-Requested-With"
+                                }
+                            ],
+                            "code": 403,
+                            "body": "{\"status\":false,\"message\":\"Kh\\u00f4ng t\\u00ecm th\\u1ea5y token!\",\"error\":{\"code\":403}}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "PUT api\/v1\/cms\/plan\/{id}",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/cms\/plan\/:id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/cms\/plan\/:id",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "consequatur",
+                                    "description": "The ID of the plan."
+                                }
+                            ]
+                        },
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"name\":\"vmqeopfuudtdsufvyvddq\",\"description\":\"Dolores dolorum amet iste laborum eius est dolor.\",\"price\":12,\"billing_cycle\":\"yearly\",\"features\":\"consequatur\"}"
+                        },
+                        "description": ""
+                    },
+                    "response": []
+                },
+                {
+                    "name": "POST api\/v1\/cms\/plan\/toggle-status",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/cms\/plan\/toggle-status",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/cms\/plan\/toggle-status"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"id\":\"consequatur\"}"
+                        },
+                        "description": ""
+                    },
+                    "response": []
+                },
+                {
+                    "name": "GET api\/v1\/cms\/restaurant",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/cms\/restaurant",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/cms\/restaurant"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                },
+                                {
+                                    "key": "access-control-allow-methods",
+                                    "value": "GET, POST, PUT, DELETE, OPTIONS"
+                                },
+                                {
+                                    "key": "access-control-allow-headers",
+                                    "value": "Origin, Content-Type, Authorization, X-Requested-With"
+                                }
+                            ],
+                            "code": 403,
+                            "body": "{\"status\":false,\"message\":\"Kh\\u00f4ng t\\u00ecm th\\u1ea5y token!\",\"error\":{\"code\":403}}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "POST api\/v1\/cms\/restaurant",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/cms\/restaurant",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/cms\/restaurant"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "multipart\/form-data"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "name",
+                                    "value": "vmqeopfuudtdsufvyvddq",
+                                    "type": "text",
+                                    "description": "value kh\u00f4ng \u0111\u01b0\u1ee3c d\u00e0i h\u01a1n 255 k\u00fd t\u1ef1."
+                                },
+                                {
+                                    "key": "phone",
+                                    "value": "amniihfqcoynlazgh",
+                                    "type": "text",
+                                    "description": "value kh\u00f4ng \u0111\u01b0\u1ee3c d\u00e0i h\u01a1n 20 k\u00fd t\u1ef1."
+                                },
+                                {
+                                    "key": "address",
+                                    "value": "dtqtqxbajwbpilpmufinl",
+                                    "type": "text",
+                                    "description": "value kh\u00f4ng \u0111\u01b0\u1ee3c d\u00e0i h\u01a1n 255 k\u00fd t\u1ef1."
+                                },
+                                {
+                                    "key": "time_open",
+                                    "value": "lwloauydlsmsjuryvojcy",
+                                    "type": "text",
+                                    "description": "value kh\u00f4ng \u0111\u01b0\u1ee3c d\u00e0i h\u01a1n 50 k\u00fd t\u1ef1."
+                                },
+                                {
+                                    "key": "time_close",
+                                    "value": "bzvrbyickznkygloigmkw",
+                                    "type": "text",
+                                    "description": "value kh\u00f4ng \u0111\u01b0\u1ee3c d\u00e0i h\u01a1n 50 k\u00fd t\u1ef1."
+                                },
+                                {
+                                    "key": "type",
+                                    "value": "buffet",
+                                    "type": "text",
+                                    "description": ""
+                                },
+                                {
+                                    "key": "capacity",
+                                    "value": "83",
+                                    "type": "text",
+                                    "description": "value ph\u1ea3i t\u1ed1i thi\u1ec3u l\u00e0 1."
+                                },
+                                {
+                                    "key": "branch",
+                                    "value": "phlvazjrcnfbaqywuxhgj",
+                                    "type": "text",
+                                    "description": "value kh\u00f4ng \u0111\u01b0\u1ee3c d\u00e0i h\u01a1n 255 k\u00fd t\u1ef1."
+                                },
+                                {
+                                    "key": "currency",
+                                    "value": "jmzuxjubq",
+                                    "type": "text",
+                                    "description": "value kh\u00f4ng \u0111\u01b0\u1ee3c d\u00e0i h\u01a1n 10 k\u00fd t\u1ef1."
+                                },
+                                {
+                                    "key": "plan_id",
+                                    "value": "17",
+                                    "type": "text",
+                                    "description": "The <code>id<\/code> of an existing record in the cms_plans table."
+                                },
+                                {
+                                    "key": "logo",
+                                    "src": [],
+                                    "type": "file"
+                                }
+                            ]
+                        },
+                        "description": ""
+                    },
+                    "response": []
+                },
+                {
+                    "name": "GET api\/v1\/cms\/restaurant\/{id}",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/cms\/restaurant\/:id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/cms\/restaurant\/:id",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "consequatur",
+                                    "description": "The ID of the restaurant."
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"id\":\"consequatur\"}"
+                        },
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                },
+                                {
+                                    "key": "access-control-allow-methods",
+                                    "value": "GET, POST, PUT, DELETE, OPTIONS"
+                                },
+                                {
+                                    "key": "access-control-allow-headers",
+                                    "value": "Origin, Content-Type, Authorization, X-Requested-With"
+                                }
+                            ],
+                            "code": 403,
+                            "body": "{\"status\":false,\"message\":\"Kh\\u00f4ng t\\u00ecm th\\u1ea5y token!\",\"error\":{\"code\":403}}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "PUT api\/v1\/cms\/restaurant\/{id}",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/cms\/restaurant\/:id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/cms\/restaurant\/:id",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "consequatur",
+                                    "description": "The ID of the restaurant."
+                                }
+                            ]
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "multipart\/form-data"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "name",
+                                    "value": "vmqeopfuudtdsufvyvddq",
+                                    "type": "text",
+                                    "description": "value kh\u00f4ng \u0111\u01b0\u1ee3c d\u00e0i h\u01a1n 255 k\u00fd t\u1ef1."
+                                },
+                                {
+                                    "key": "phone",
+                                    "value": "amniihfqcoynlazgh",
+                                    "type": "text",
+                                    "description": "value kh\u00f4ng \u0111\u01b0\u1ee3c d\u00e0i h\u01a1n 20 k\u00fd t\u1ef1."
+                                },
+                                {
+                                    "key": "address",
+                                    "value": "dtqtqxbajwbpilpmufinl",
+                                    "type": "text",
+                                    "description": "value kh\u00f4ng \u0111\u01b0\u1ee3c d\u00e0i h\u01a1n 255 k\u00fd t\u1ef1."
+                                },
+                                {
+                                    "key": "time_open",
+                                    "value": "lwloauydlsmsjuryvojcy",
+                                    "type": "text",
+                                    "description": "value kh\u00f4ng \u0111\u01b0\u1ee3c d\u00e0i h\u01a1n 50 k\u00fd t\u1ef1."
+                                },
+                                {
+                                    "key": "time_close",
+                                    "value": "bzvrbyickznkygloigmkw",
+                                    "type": "text",
+                                    "description": "value kh\u00f4ng \u0111\u01b0\u1ee3c d\u00e0i h\u01a1n 50 k\u00fd t\u1ef1."
+                                },
+                                {
+                                    "key": "type",
+                                    "value": "buffet",
+                                    "type": "text",
+                                    "description": ""
+                                },
+                                {
+                                    "key": "capacity",
+                                    "value": "83",
+                                    "type": "text",
+                                    "description": "value ph\u1ea3i t\u1ed1i thi\u1ec3u l\u00e0 1."
+                                },
+                                {
+                                    "key": "branch",
+                                    "value": "phlvazjrcnfbaqywuxhgj",
+                                    "type": "text",
+                                    "description": "value kh\u00f4ng \u0111\u01b0\u1ee3c d\u00e0i h\u01a1n 255 k\u00fd t\u1ef1."
+                                },
+                                {
+                                    "key": "currency",
+                                    "value": "jmzuxjubq",
+                                    "type": "text",
+                                    "description": "value kh\u00f4ng \u0111\u01b0\u1ee3c d\u00e0i h\u01a1n 10 k\u00fd t\u1ef1."
+                                },
+                                {
+                                    "key": "plan_id",
+                                    "value": "17",
+                                    "type": "text",
+                                    "description": "The <code>id<\/code> of an existing record in the cms_plans table."
+                                },
+                                {
+                                    "key": "logo",
+                                    "src": [],
+                                    "type": "file"
+                                },
+                                {
+                                    "key": "_method",
+                                    "value": "PUT",
+                                    "type": "text"
+                                }
+                            ]
+                        },
+                        "description": ""
+                    },
+                    "response": []
+                },
+                {
+                    "name": "POST api\/v1\/cms\/restaurant\/toggle-status",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/cms\/restaurant\/toggle-status",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/cms\/restaurant\/toggle-status"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"id\":\"consequatur\"}"
+                        },
+                        "description": ""
+                    },
+                    "response": []
+                }
+            ]
+        }
+    ],
+    "auth": {
+        "type": "apikey",
+        "apikey": [
+            {
+                "key": "in",
+                "value": "header",
+                "type": "string"
+            },
+            {
+                "key": "key",
+                "value": "Authorization",
+                "type": "string"
+            }
+        ]
+    }
+}
