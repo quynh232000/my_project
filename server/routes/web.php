@@ -74,7 +74,9 @@ foreach ($groups as $group) {
 // require_once(PATH_ROUTE . DS . 'hotel' . DS . 'partner-register.php');
 // require_once(PATH_ROUTE . DS . 'hotel' . DS . 'payment-info.php');
 
-
+// Route::get('/docs',function(){
+//     return view('scribe.index');
+// });
 
 Route::fallback(function () {
     return response()->view('errors.404', [], 404);
