@@ -145,23 +145,25 @@ useEffect(()=>{
                       setLoadingSub(true)
                       SCreateOrder(token).then(res=>{
                         setLoadingSub(false)
-                        console.log('====================================');
-                        console.log(res);
-                        console.log('====================================');
                         if(res && res.status){
                           switch (formData.payment_method) {
-                            case 'vnpay':
-                              if(res.data.pay_url){
-                                window.location.href = res.data.pay_url
-                              }else{
-                                toast.error(res.message)
+                            case "vnpay":
+                            case "momo":
+                              if (res.data.pay_url) {
+                                window.location.href = res.data.pay_url;
+                              } else {
+                                toast.error(res.message);
                               }
                               break;
-                          
-                            default:
-                              toast.success(res.message)
-                              router.push('/khach-san/don-hang/'+(res?.data?.code ?? '') )
 
+                            case "cod":
+                              toast.success(res.message);
+                              router.push("/khach-san/don-hang/" + (res?.data?.code ?? ""));
+                              break;
+
+                            default:
+                              toast.success(res.message);
+                              router.push("/khach-san/don-hang/" + (res?.data?.code ?? ""));
                               break;
                           }
                         }else{

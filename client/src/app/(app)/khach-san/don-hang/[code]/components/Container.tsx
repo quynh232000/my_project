@@ -40,7 +40,7 @@ export default function Container({code}:{code:string}) {
   },[code])
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden font-sans">
+    <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden font-sans pt-[160px]">
       {/* Nền gradient pastel theo primary */}
       <div className="absolute inset-0 bg-gradient-to-br from-primary-100 via-primary-50 to-white animate-gradient" />
       <div className="absolute -top-40 -left-40 w-96 h-96 bg-primary-300/15 rounded-full blur-3xl animate-pulse" />

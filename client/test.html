@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        fetch('http://172.21.192.1:8000/api/v1/ecommerce/auth/login')
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Network response was not ok ' + response.status);
+    }
+    return response.json(); // parse JSON từ response
+  })
+  .then(data => {
+    console.log(data); // xử lý dữ liệu
+  })
+  .catch(error => {
+    console.error('Có lỗi xảy ra:', error);
+  });
+    </script>
+</body>
+</html>
