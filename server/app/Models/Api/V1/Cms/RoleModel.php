@@ -23,7 +23,7 @@ class RoleModel extends HmsModel
     {
         $results        = null;
         if ($options['task'] == 'list') {
-            $results = self::with(['user_create:id,full_name', 'user_update:id,full_name'])
+            $results = self::with(['user_create:id,full_name', 'user_update:id,full_name','permissions:id,name'])
                 ->orderBy('created_at', 'desc')
                 ->paginate($params['limit'] ?? 20);
             return $results;
@@ -112,5 +112,9 @@ class RoleModel extends HmsModel
     public function user_update()
     {
         return $this->belongsTo(UserModel::class, 'updated_by', 'id');
+    }
+    public function permissions()
+    {
+        return $this->belongsToMany(PermissionModel::class, RolePermissionModel::class, 'role_id', 'permission_id');
     }
 }

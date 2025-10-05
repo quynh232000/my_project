@@ -15,7 +15,7 @@ class PlanModel extends HmsModel
 
     public $crudNotAccepted         = [];
     protected $guarded              = [];
-    protected $hidden = [];
+    protected $hidden = ['updated_at','updated_by','priority'];
    protected $casts = [
         'features' => 'array'
     ];

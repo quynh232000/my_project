@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Middleware\Api\V1\Cms\CmsMiddleware;
+use App\Http\Middleware\Api\V1\Cms\RestaurantMiddleware;
 
 
 $base = basename(__FILE__, '.php');
@@ -137,6 +138,14 @@ return  [
             'action'        => 'toggleStatus',
         ],
         // route_restaurant
+         [
+            'controller'    =>   \App\Http\Controllers\Api\V1\Cms\RestaurantController::class,
+            'middleware'    => [CmsMiddleware::class],
+            'uri'           =>  'restaurant/list',
+            'name'          =>  $base . '.restaurant.list',
+            'methods'       => ['get'],
+            'action'        => 'list',
+        ],
         [
             'type'          => 'resource',
             'uri'           => 'restaurant',
@@ -145,11 +154,48 @@ return  [
             'name_prefix'   => $base . '.restaurant',
             'only'          => ['index',  'store','update','show', 'destroy'],
         ],
-         [
+        [
             'controller'    =>   \App\Http\Controllers\Api\V1\Cms\RestaurantController::class,
-            'middleware'    => [CmsMiddleware::class],
+            'middleware'    => [CmsMiddleware::class,RestaurantMiddleware::class],
             'uri'           =>  'restaurant/toggle-status',
             'name'          =>  $base . '.restaurant.toggle-status',
+            'methods'       => ['post'],
+            'action'        => 'toggleStatus',
+        ],
+
+        // restaurant category
+        [
+            'type'          => 'resource',
+            'uri'           => 'menu-category',
+            'middleware'    => [CmsMiddleware::class,RestaurantMiddleware::class],
+            'controller'    =>  \App\Http\Controllers\Api\V1\Cms\MenuCategoryController::class,
+            'name_prefix'   => $base . '.menu-category',
+            'only'          => ['index',  'store','update','show', 'destroy'],
+        ],
+        [
+            'controller'    =>   \App\Http\Controllers\Api\V1\Cms\MenuCategoryController::class,
+            'middleware'    => [CmsMiddleware::class,RestaurantMiddleware::class],
+            'uri'           =>  'menu-category/toggle-status',
+            'name'          =>  $base . '.menu-category.toggle-status',
+            'methods'       => ['post'],
+            'action'        => 'toggleStatus',
+
+        ],
+        // restaurant menu item
+      
+        [
+            'type'          => 'resource',
+            'uri'           => 'menu-item',
+            'middleware'    => [CmsMiddleware::class,RestaurantMiddleware::class],
+            'controller'    =>  \App\Http\Controllers\Api\V1\Cms\MenuItemController::class,
+            'name_prefix'   => $base . '.menu-item',
+            'only'          => ['index',  'store','update','show', 'destroy'],
+        ],
+        [
+            'controller'    =>   \App\Http\Controllers\Api\V1\Cms\MenuItemController::class,
+            'middleware'    => [CmsMiddleware::class,RestaurantMiddleware::class],
+            'uri'           =>  'menu-item/toggle-status',
+            'name'          =>  $base . '.menu-item.toggle-status',
             'methods'       => ['post'],
             'action'        => 'toggleStatus',
         ],

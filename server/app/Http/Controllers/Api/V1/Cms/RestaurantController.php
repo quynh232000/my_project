@@ -29,8 +29,22 @@ class RestaurantController extends CmsController
     public function index(Request $request)
     {
         try {
-            $result = $this->model->listItem($this->_params, ['task' => 'list']);
+            $result = $this->model->listItem($this->_params, ['task' => 'index']);
             return $this->paginated('Lấy thông tin thành công!', $result->items(), 200, [
+                'per_page'      => $result->perPage(),
+                'current_page'  => $result->currentPage(),
+                'total_page'    => $result->lastPage(),
+                'total_item'    => $result->total(),
+            ]);
+        } catch (\Exception $e) {
+            return $this->internalServerError('Đã xảy ra lỗi:' . $e->getMessage());
+        }
+    }
+    public function list(Request $request)
+    {
+        try {
+            $result = $this->model->listItem($this->_params, ['task' => 'list']);
+            return $this->paginated('Ok!', $result->items(), 200, [
                 'per_page'      => $result->perPage(),
                 'current_page'  => $result->currentPage(),
                 'total_page'    => $result->lastPage(),

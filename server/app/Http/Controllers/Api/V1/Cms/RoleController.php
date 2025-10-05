@@ -80,4 +80,10 @@ class RoleController extends CmsController
             return $this->internalServerError('Đã xảy ra lỗi:' . $e->getMessage());
         }
     }
+    public function destroy(Request $request,$role)
+    {
+        $this->_params['id'] = $role;
+        $this->model->deleteItem($this->_params, ['task' => 'delete-item']);
+        return $this->success('Thực hiện yêu cầu thành công!',$this->_params['id']);
+    }
 }

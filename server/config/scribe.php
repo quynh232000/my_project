@@ -9,10 +9,10 @@ use function Knuckles\Scribe\Config\{removeStrategies, configureStrategy};
 
 return [
     // The HTML <title> for the generated documentation.
-    'title' => config('app.name') . ' API Documentation',
+    'title' => config('app.name') . ' CMS API Docs',
 
     // A short description of your API. Will be included in the docs webpage, Postman collection and OpenAPI spec.
-    'description' => '',
+    'description' => 'Tài liệu API cho hệ thống CMS Restaurant.',
 
     // Text to place in the "Introduction" section, right after the `description`. Markdown and HTML are supported.
     'intro_text' => <<<INTRO
@@ -56,6 +56,10 @@ return [
     // - "external_static" and "external_laravel" do the same as above, but pass the OpenAPI spec as a URL to an external UI template
     // 'type' => 'laravel',
     'type' => 'static',
+    'ui' => [
+        // 'theme' => 'default', // hoặc 'dark', 'material'
+        'external' => 'swagger', // hoặc 'swagger', 'elements'
+    ],
 
     // See https://scribe.knuckles.wtf/laravel/reference/config#theme for supported options
     'theme' => 'default',
@@ -137,6 +141,7 @@ return [
     'example_languages' => [
         'bash',
         'javascript',
+        'php'
     ],
 
     // Generate a Postman collection (v2.1.0) in addition to HTML docs.

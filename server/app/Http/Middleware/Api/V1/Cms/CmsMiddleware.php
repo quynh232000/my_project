@@ -31,8 +31,15 @@ class CmsMiddleware
             }
 
             try {
-                JWTAuth::parseToken()->authenticate();
+                $user = JWTAuth::parseToken()->authenticate();
+                if (!$user) {
+                    return $this->error('User không tồn tại!', null, 401);
+                }
 
+                // Gắn vào guard cms để middleware sau dùng được
+                auth()->shouldUse('cms'); // chọn guard
+                auth()->setUser($user);   // set user cho request hiện tại
+                // return $this->success('ok',$user);
                 // check permission
                 // $route_name     = $request->route()->getName();
                 // $method         = $request->getMethod();
@@ -40,6 +47,7 @@ class CmsMiddleware
                 // if (!auth()->user()->hasPermission($route_name, $method)) {
                 //     return $this->error('Bạn không có quyền truy cập yêu cầu này!',[],403);
                 // }
+                
 
             } catch (\Exception $e) {
 

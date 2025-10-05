@@ -73,7 +73,7 @@ class UserModel extends Authenticatable implements JWTSubject
         $result = null;
         if ($options['task'] == 'detail') {
             $result               = self::select('*')
-            ->with('roles','permissions')
+            ->with('roles:id,name','permissions:id,name')
                 ->where('id', $params['id'])->first();
         }
         if ($options['task'] == 'get-item-by-email') {
@@ -216,7 +216,7 @@ class UserModel extends Authenticatable implements JWTSubject
         }
 
         if($options['task'] == 'edit-item'){
-            $user = $this->table->find($params['id']);
+            $user = self::findOrFail((int)$params['id']);
             $avatar             = $user->avatar;
             if (request()->hasFile('avatar')) {
                 $avatar         = FileService::file_upload($params,$params['avatar'],'avatar') ?? '';
@@ -327,7 +327,7 @@ class UserModel extends Authenticatable implements JWTSubject
     {
         $results        = null;
         if ($options['task'] == 'list') {
-            $results = self::select('id','full_name','email','avatar','status','last_login_at','created_at')
+            $results = self::select('*')->with('roles:id,name','permissions:id,name')
                 ->orderBy('created_at', 'desc')
                 ->paginate($params['limit'] ?? 20);
             return $results;

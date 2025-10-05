@@ -50,10 +50,10 @@ class UserController extends CmsController
             return $this->internalServerError('Đã xảy ra lỗi:' . $e->getMessage());
         }
     }
-    public function update(UpdateRequest $request, $role)
+    public function update(UpdateRequest $request, $user)
     {
         try {
-            $result = $this->model->saveItem([...$this->_params, 'id' => $role], ['task' => 'edit-item']);
+            $result = $this->model->saveItem([...$this->_params, 'id' => $user], ['task' => 'edit-item']);
 
             return $this->success('Cập nhật thành công!', $result);
         } catch (\Exception $e) {

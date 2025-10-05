@@ -119,4 +119,10 @@ class PermissionController extends CmsController
             return $this->internalServerError('Đã xảy ra lỗi:' . $e->getMessage());
         }
     }
+    public function destroy(Request $request,$permission)
+    {
+        $this->_params['id'] = $permission;
+        $this->model->deleteItem($this->_params, ['task' => 'delete-item']);
+        return $this->success('Thực hiện yêu cầu thành công!',$this->_params['id']);
+    }
 }

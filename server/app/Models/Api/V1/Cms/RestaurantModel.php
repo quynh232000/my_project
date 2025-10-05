@@ -4,11 +4,13 @@ namespace App\Models\Api\V1\Cms;
 
 use App\Models\HmsModel;
 use App\Services\FileService;
+use App\Traits\ApiResponse;
 use Illuminate\Support\Str;
 
 
 class RestaurantModel extends HmsModel
 {
+    use ApiResponse;
     public function __construct()
     {
         $this->table        = TABLE_CMS_RESTAURANT;
@@ -17,7 +19,7 @@ class RestaurantModel extends HmsModel
 
     public $crudNotAccepted         = [];
     protected $guarded              = [];
-    protected $hidden = [];
+    protected $hidden = ['updated_at','updated_by'];
    protected $casts = [
         'features' => 'array'
     ];
@@ -25,8 +27,8 @@ class RestaurantModel extends HmsModel
     public function listItem($params = null, $options = null)
     {
         $results        = null;
-        if ($options['task'] == 'list') {
-            $query = self::with('owner:id,email,full_name');
+        if ($options['task'] == 'index') {
+            $query = self::query()->with('owner:id,email,full_name','user_create:id,full_name');
             // lọc theo tên nhà hàng
             if (!empty($params['name'])) {
                 $query->where('name', 'like', '%' . $params['name'] . '%');
@@ -35,11 +37,27 @@ class RestaurantModel extends HmsModel
             if (!empty($params['status'])) {
                 $query->where('status', $params['status']);
             }
-            $results    = self::orderBy('priority','asc')->orderBy('created_at', 'desc')
+            $results    = $query->orderBy('priority','asc')->orderBy('created_at', 'desc')
                         ->paginate($params['limit'] ?? 20);
             return $results;
         }
-        return $results;
+       if ($options['task'] == 'list') {
+            $query = self::with('users:id,email,full_name')
+            ->whereHas('users', function($q) {
+                $q->where(TABLE_CMS_USER.'.id', auth('cms')->id());
+            });
+            // lọc theo tên nhà hàng
+            if (!empty($params['name'])) {
+                $query->where('name', 'like', '%' . $params['name'] . '%');
+            }
+            // lọc theo trạng thái
+            if (!empty($params['status'])) {
+                $query->where('status', $params['status']);
+            }
+            $results    = $query->orderBy('priority','asc')->orderBy('created_at', 'desc')
+                        ->paginate($params['limit'] ?? 20);
+            return $results;
+        }
     }
     public function saveItem($params = null, $options = null)
     {
@@ -65,12 +83,36 @@ class RestaurantModel extends HmsModel
 
             $params['updated_by']   = auth('cms')->id();
             $params['updated_at']   = now();
+
+
+
             $item = self::find($params['id'] ?? 0);
             if(request()->hasFile(('logo'))){
                 $params['logo'] = FileService::file_upload($params,$params['logo'],'restaurant.logo');
             }
 
             if ($item) {
+                if($params['state'] == 'active'){
+                    $role = RoleModel::where('name','Owner')->first();
+                    if(!$role) {
+                        return $this->error('Chưa có vai trò Owner, vui lòng tạo vai trò Owner trước khi kích hoạt nhà hàng!');
+                    }
+
+                    UserRestaurantRoleModel::updateOrCreate(
+                        [
+                            'user_id'       => $item->owner_id,
+                            'restaurant_id'=> $item->id,
+                            'role_id'          => $role->id
+                        ],
+                        [
+                            'assigned_by'   => auth('cms')->id(),
+                            'assigned_at'   => now(),
+                            'status'        => 'active',
+                        ]
+                    );
+                }
+
+
                 $item->update($this->prepareParams($params));
             }
 
@@ -100,12 +142,13 @@ class RestaurantModel extends HmsModel
     {
         $results        = null;
         if ($options['task'] == 'detail') {
-            $item = self::find($params['id'] ?? 0);
+            $item = self::with('owner:id,email,full_name','user_create:id,full_name','plan')->find($params['id'] ?? 0);
             return $item;
         }
 
         return $results;
     }
+   
     public function user_create()
     {
         return $this->belongsTo(UserModel::class, 'created_by', 'id');
@@ -117,5 +160,12 @@ class RestaurantModel extends HmsModel
     public function owner()
     {
         return $this->belongsTo(UserModel::class, 'owner_id', 'id');
+    }
+    public function plan(){
+        return $this->belongsTo(PlanModel::class,'plan_id','id');
+    }
+    public function users(){
+        return $this->belongsToMany(UserModel::class, UserRestaurantRoleModel::class, 'restaurant_id', 'user_id')
+;
     }
 }

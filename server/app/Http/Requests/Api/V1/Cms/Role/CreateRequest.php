@@ -5,7 +5,6 @@ namespace App\Http\Requests\Api\V1\Cms\Role;
 use App\Traits\ApiResponse;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Validation\Rule;
 
 class CreateRequest extends FormRequest
 {
@@ -19,7 +18,7 @@ class CreateRequest extends FormRequest
     public function rules(): array
     {
         $validate = [
-            'name'              => 'required|string|max:255',
+            'name'              => 'required|string|max:255|unique:' . $this->table.',name',
             'description'       => 'required|string',
             'status'             => 'required|in:active,inactive',
             'permission_ids'   => 'sometimes|array',

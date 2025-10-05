@@ -12,4 +12,12 @@ if (!defined('TABLE_CMS_RESTAURANT'))     define('TABLE_CMS_RESTAURANT', 'cms_re
 if (!defined('TABLE_CMS_USER_RESTAURANT'))     define('TABLE_CMS_USER_RESTAURANT', 'cms_user_restaurants');
 if (!defined('TABLE_CMS_PLAN'))     define('TABLE_CMS_PLAN', 'cms_plans');
 if (!defined('TABLE_CMS_SUBSCRIPTION'))     define('TABLE_CMS_SUBSCRIPTION', 'cms_subscriptions');
+if (!defined('TABLE_CMS_USER_RESTAURANT_ROLE'))     define('TABLE_CMS_USER_RESTAURANT_ROLE', 'cms_user_restaurant_roles');
+
+
+if (!defined('TABLE_CMS_MENU_CATEGORY'))     define('TABLE_CMS_MENU_CATEGORY', 'cms_menu_categories');
+if (!defined('TABLE_CMS_MENU_ITEM'))     define('TABLE_CMS_MENU_ITEM', 'cms_menu_items');
+if (!defined('TABLE_CMS_MENU_OPTION'))     define('TABLE_CMS_MENU_OPTION', 'cms_menu_options');
+if (!defined('TABLE_CMS_MENU_OPTION_VALUE'))     define('TABLE_CMS_MENU_OPTION_VALUE', 'cms_menu_option_values');
+if (!defined('TABLE_CMS_MENU_PRICE'))     define('TABLE_CMS_MENU_PRICE', 'cms_menu_prices');
 

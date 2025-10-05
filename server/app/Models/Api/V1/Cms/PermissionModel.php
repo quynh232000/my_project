@@ -18,7 +18,7 @@ class PermissionModel extends HmsModel
 
     public $crudNotAccepted         = [];
     protected $guarded              = [];
-    protected $hidden = [];
+     protected $hidden = ['pivot'];
 
     public function listItem($params = null, $options = null)
     {

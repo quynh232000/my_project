@@ -1,6 +1,6 @@
 # Introduction
 
-
+Tài liệu API cho hệ thống CMS Restaurant.
 
 <aside>
     <strong>Base URL</strong>: <code>http://localhost:8000</code>
