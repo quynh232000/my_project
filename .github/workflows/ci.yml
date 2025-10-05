@@ -66,6 +66,10 @@ jobs:
         run: |
           echo "🧪 Running Laravel tests..."
           docker compose up -d server
+          echo "⏳ Waiting for container to be healthy..."
+          docker compose ps
+          docker inspect --format='{{json .State.Health}}' $(docker compose ps -q server)
+          sleep 10
           docker compose exec server php artisan test
 
       - name: Show local server

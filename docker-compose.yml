@@ -15,7 +15,11 @@ services:
             volumes:
             # Dùng đường dẫn tuyệt đối, để act hiểu chính xác vị trí project thật
                 - ./server:/var/www/html
-            command: bash -c "composer install && php artisan serve --host=0.0.0.0 --port=80"
+            healthcheck:
+                test: ["CMD", "curl", "-f", "http://localhost"]
+                interval: 5s
+                timeout: 2s
+                retries: 5
     # client:
     #     build:
     #         context: ./client
