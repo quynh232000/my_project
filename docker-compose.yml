@@ -1,32 +1,63 @@
+# version: '3.9'
+
+# services:
+#     server:
+#             build:
+#                 context: ./server
+#                 dockerfile: Dockerfile
+#             ports:
+#                 - 8000:8000
+#             networks:
+#                 - laravel
+#             command: php artisan serve --host 0.0.0.0 --port 8000
+#     # client:
+#     #     build:
+#     #         context: ./client
+#     #         dockerfile: Dockerfile
+#     #     ports:
+#     #         - "3000:3000"
+#     #     volumes:
+#     #         - ./client:/app
+#     #         - /app/node_modules
+#     #     environment:
+#     #         - CHOKIDAR_USEPOLLING=true
+#     #     command: yarn dev
+#     #     networks:
+#     #         - laravel
+# networks:
+#     laravel:
+#         driver: bridge
+# volumes:
+#     es_data:
+#         driver: local
+
 version: '3.9'
 
 services:
-    server:
-            build:
-                context: ./server
-                dockerfile: Dockerfile
-            ports:
-                - 8000:8000
-            networks:
-                - laravel
-            command: php artisan serve --host 0.0.0.0 --port 8000
-    # client:
-    #     build:
-    #         context: ./client
-    #         dockerfile: Dockerfile
-    #     ports:
-    #         - "3000:3000"
-    #     volumes:
-    #         - ./client:/app
-    #         - /app/node_modules
-    #     environment:
-    #         - CHOKIDAR_USEPOLLING=true
-    #     command: yarn dev
-    #     networks:
-    #         - laravel
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: laravel_server
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./server:/var/www/html
+    working_dir: /var/www/html
+    environment:
+      APP_ENV: local
+      APP_DEBUG: 1
+      APP_KEY: ${APP_KEY}
+      DB_CONNECTION: sqlite
+      DB_DATABASE: /var/www/html/database/database.sqlite
+    command: >
+      sh -c "composer install &&
+             php artisan migrate --force &&
+             php artisan serve --host=0.0.0.0 --port=8000"
+    networks:
+      - laravel
+
 networks:
-    laravel:
-        driver: bridge
-volumes:
-    es_data:
-        driver: local
+  laravel:
+    driver: bridge
+

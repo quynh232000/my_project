@@ -7,7 +7,7 @@ on:
     branches: [ main ]
 
 jobs:
-  build-and-test:
+  build-and-deploy-local:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -15,46 +15,67 @@ jobs:
 
     env:
       APP_ENV: local
-      APP_KEY: ${{ secrets.APP_KEY }}
       APP_DEBUG: true
+      APP_KEY: ${{ secrets.APP_KEY }}
+      COMPOSE_DOCKER_CLI_BUILD: 1
+      DOCKER_BUILDKIT: 1
 
     steps:
-      # 🧾 1. Lấy code từ repository
+      # 🧾 1. Checkout source code
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 🐳 2. Kiểm tra Docker & Docker Compose
+      # 🐳 2. Verify Docker installed
       - name: Verify Docker installation
         run: |
           docker --version
           docker compose version
 
-      # ⚙️ 3. Build container Laravel
-      - name: Build Laravel container
-        run: docker compose build server
-
-      # 🚀 4. Khởi động container Laravel
-      - name: Start Laravel container
+      # ⚙️ 3. Stop and clean old containers
+      - name: Clean old containers
         run: |
+          echo "🧹 Cleaning old containers..."
+          docker compose down -v || true
+
+      # 🧱 4. Build Docker containers
+      - name: Build Laravel server
+        run: |
+          echo "🏗️ Building Laravel Docker image..."
+          docker compose build server
+
+      # 🚀 5. Start server container (background)
+      - name: Start Laravel server
+        run: |
+          echo "🚀 Starting Laravel server..."
           docker compose up -d server
           docker compose ps
 
-      # 🕐 5. Đợi container Laravel sẵn sàng
-      - name: Wait for Laravel container
+      # 🕐 6. Wait for Laravel to boot
+      - name: Wait for Laravel server
         run: |
           echo "⏳ Waiting for Laravel to be ready..."
           sleep 10
           docker compose logs server
 
-      # 🧪 6. Cài đặt composer & chạy test trong container
+      # 🧪 7. Run Laravel tests inside container
       - name: Run Laravel tests
         run: |
+          echo "🧪 Running Laravel tests..."
           docker compose exec -T server composer install
           docker compose exec -T server cp .env.example .env
           docker compose exec -T server php artisan key:generate
+          docker compose exec -T server php artisan migrate --force
           docker compose exec -T server php artisan test
 
-      # 🧹 7. Dọn dẹp sau khi hoàn tất
-      - name: Stop and clean up
+      # 🌍 8. Show local server info
+      - name: Show local server
+        run: |
+          echo "🌍 Laravel running at: http://localhost:8000"
+          docker compose ps
+
+      # 🧹 9. (Optional) Cleanup after test
+      - name: Stop containers (optional)
         if: always()
-        run: docker compose down -v
+        run: |
+          echo "🧹 Stopping Docker containers..."
+          docker compose down -v
