@@ -48,6 +48,18 @@ return [
             'driver'    => 'jwt',
             'provider'  => 'ecommerce',
         ],
+        'hms' => [
+            'driver'    => 'jwt',
+            'provider'  => 'hms',
+        ],
+        'travel' => [
+            'driver'    => 'jwt',
+            'provider'  => 'travel',
+        ],
+        'cms' => [
+            'driver'    => 'jwt',
+            'provider'  => 'cms',
+        ],
     ],
 
     /*
@@ -72,9 +84,21 @@ return [
             'driver' => 'eloquent',
             'model' => env('AUTH_MODEL', App\Models\Admin\UserModel::class),
         ],
-         'ecommerce' => [
+        'ecommerce' => [
             'driver'    => 'eloquent',
             'model'     => env('AUTH_MODEL', App\Models\Api\V1\Ecommerce\UserModel::class),
+        ],
+        'hms' => [
+            'driver'    => 'eloquent',
+            'model'     => env('AUTH_MODEL', App\Models\Customer::class),
+        ],
+        'travel' => [
+            'driver'    => 'eloquent',
+            'model'     => env('AUTH_MODEL', App\Models\Api\V1\Travel\User::class),
+        ],
+        'cms' => [
+            'driver'    => 'eloquent',
+            'model'     => env('AUTH_CMS_MODEL', App\Models\Api\V1\Cms\UserModel::class),
         ],
 
         // 'users' => [

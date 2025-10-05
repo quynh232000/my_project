@@ -1,6 +1,6 @@
 import {
 	AuthRouters,
-	DashboardRouter,
+	// DashboardRouter,
 	PropertySelectRouters,
 	RefreshRouters,
 } from '@/constants/routers';
@@ -22,6 +22,10 @@ const handleResetToken = async (
 	store.delete('refresh_token');
 	return NextResponse.redirect(new URL(AuthRouters.signIn, request.nextUrl));
 };
+const routeRequireLogin = [
+	'/khach-san/dat-phong',
+	'/khach-san/don-hang'
+]
 
 export async function middleware(request: NextRequest) {
 	const requestHeaders = new Headers(request.headers);
@@ -31,7 +35,6 @@ export async function middleware(request: NextRequest) {
 	const store = await cookies();
 	const hotel_id = store.get('hotel_id');
 	const { pathname } = request.nextUrl;
-
 	if (pathname === RefreshRouters.index) {
 		const url = new URL(request.url);
 		const redirect = url.searchParams.get('redirect');
@@ -97,33 +100,38 @@ export async function middleware(request: NextRequest) {
 	// 		);
 	// }
 
-	// if (pathname.startsWith('/dashboard')) {
-	// 	if (!access_token) {
-	// 		return NextResponse.redirect(
-	// 			new URL(AuthRouters.signIn, request.nextUrl)
-	// 		);
-	// 	}
-	// 	if (!hotel_id) {
-	// 		return NextResponse.redirect(
-	// 			new URL(PropertySelectRouters.index, request.nextUrl)
-	// 		);
-	// 	}
-	// }
-
-	if (access_token) {
-		if (
-			Object.values(AuthRouters).some((path) => pathname.startsWith(path))
-		) {
+	if (pathname.startsWith('/dashboard')) {
+		if (!access_token) {
 			return NextResponse.redirect(
-				new URL(
-					hotel_id
-						? DashboardRouter.profile
-						: PropertySelectRouters.index,
-					request.nextUrl
-				)
+				new URL(AuthRouters.signIn, request.nextUrl)
+			);
+		}
+		if (!hotel_id) {
+			return NextResponse.redirect(
+				new URL(PropertySelectRouters.index, request.nextUrl)
 			);
 		}
 	}
+	if (routeRequireLogin.some(prefix => pathname.startsWith(prefix))) {
+		if (!access_token) {
+			return NextResponse.redirect(new URL("/login?redirect=" + pathname, request.nextUrl));
+		}
+	}
+
+	// if (access_token) {
+	// 	if (
+	// 		Object.values(AuthRouters).some((path) => pathname.startsWith(path))
+	// 	) {
+	// 		return NextResponse.redirect(
+	// 			new URL(
+	// 				hotel_id
+	// 					? DashboardRouter.profile
+	// 					: PropertySelectRouters.index,
+	// 				request.nextUrl
+	// 			)
+	// 		);
+	// 	}
+	// }
 
 	return NextResponse.next({
 		headers: requestHeaders,

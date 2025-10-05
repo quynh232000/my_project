@@ -27,7 +27,7 @@ class HmsModel extends Model
 {
 
     protected $table            = '';
-    protected $folderUpload     = '' ;
+    protected $folderUpload     = '';
     protected $connection       = 'mysql';
     // protected $crudNotAccepted  = [
     //                                 '_token',
@@ -35,13 +35,13 @@ class HmsModel extends Model
     //                                 'as',
     //                                 'prefix',
     //                                 'controller',
-    //                                 'action',        
+    //                                 'action',
     //                                 'totalItemsPerPage'
     //                                 ];
     protected $_data                  = [];
     public $timestamps      = false;
     public $checkall        = true;
-    
+
     public function __construct($connection = 'mysql')
     {
         $this->connection = $connection;
@@ -64,14 +64,14 @@ class HmsModel extends Model
             'totalItemsPerPage',
         ];
         $crudNotAccepted = array_merge($this->crudNotAccepted ?? [], $crudNotAccepted);
-        
+
         return array_diff_key($params, array_flip($crudNotAccepted));
     }
-   
 
-    public function getImageColumn($params,$options = null, $alias = 'image_url')
-    { 
-        $options = array_merge(["'" . URL_DATA_IMAGE . $params['prefix'] . '/' . $params['controller'] . "'"], $options);
-        return DB::raw("CONCAT(" . join(" , ", $options) . ") AS " . $alias);
-    }
+
+    // public function getImageColumn($params,$options = null, $alias = 'image_url')
+    // {
+    //     $options = array_merge(["'" . URL_DATA_IMAGE . $params['prefix'] . '/' . $params['controller'] . "'"], $options);
+    //     return DB::raw("CONCAT(" . join(" , ", $options) . ") AS " . $alias);
+    // }
 }

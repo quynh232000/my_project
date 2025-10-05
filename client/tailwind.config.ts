@@ -153,6 +153,10 @@ export default {
 					'0%': { 'opacity': '0', transform: 'translateX(-20px)' },
 					'100%': { 'opacity': '1', transform: 'translateX(0)' },
 				},
+				shimmer: {
+					'0%': { transform: 'translateX(-100%)' },
+					'100%': { transform: 'translateX(100%)' },
+				},
 			},
 			animation: {
 				'caret-blink': 'caret-blink 1.25s ease-out infinite',
@@ -163,6 +167,7 @@ export default {
 				'sidebar-slide-down': 'sidebar-slide-down 0.2s ease-out',
 				'sidebar-slide-up': 'sidebar-slide-up 0.2s ease-out',
 				fadeInLeft: 'fadeInLeft 1s ease-out',
+				shimmer: 'shimmer 1.5s infinite',
 			},
 			colors: {
 				primary: {

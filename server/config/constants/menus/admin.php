@@ -5,19 +5,20 @@ return [
     'icon'      => 'ki-outline ki-credit-cart',
     'name_route' => $base,
     'sub'       => [
-         [
+        [
             'title'         => 'Addresses',
             'icon'          => 'ki-outline ki-map text-success',
             'name_route'    => $base . '.address',
             'sub'           => [
-                                ['title' => 'Provinces', 'route' => $base.'.province.index'],
-                                ['title' => 'Wards', 'route' => $base.'.ward.index'],
-                            ],
+                ['title' => 'Countries', 'route' => $base . '.country.index'],
+                ['title' => 'Provinces', 'route' => $base . '.province.index'],
+                ['title' => 'Wards', 'route' => $base . '.ward.index'],
+            ],
         ],
 
         [
             'title' => 'Account',
-             'name_route' => basename(__FILE__, '.php').'.user',
+            'name_route' => basename(__FILE__, '.php') . '.user',
             'sub' => [
                 ['title' => 'Account Listing', 'route' => 'admin.user.index'],
                 ['title' => 'Add user', 'route' => 'admin.user.create'],
@@ -25,16 +26,16 @@ return [
         ],
         [
             'title' => 'Permission',
-             'name_route' => basename(__FILE__, '.php').'.permission',
+            'name_route' => basename(__FILE__, '.php') . '.permission',
             'sub' => [
-                ['title' => 'New Routes Listing', 'route' => 'admin.permission.new','icon' => 'fa-regular fa-square-plus text-warning'],
+                ['title' => 'New Routes Listing', 'route' => 'admin.permission.new', 'icon' => 'fa-regular fa-square-plus text-warning'],
                 ['title' => 'Permission Listing', 'route' => 'admin.permission.index'],
                 ['title' => 'Role Listing', 'route' => 'admin.role.index'],
             ],
         ],
         [
             'title' => 'File Manager',
-             'name_route' => basename(__FILE__, '.php').'.file-upload',
+            'name_route' => basename(__FILE__, '.php') . '.file-upload',
             'sub' => [
                 ['title' => 'Files Listing', 'route' => 'admin.file-upload.index'],
             ],

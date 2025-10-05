@@ -20,6 +20,7 @@ const initialState: UserInformationState = {
 		updated_at: '',
 		updated_by: 0,
 	},
+	showLogin: ''
 };
 
 export const useUserInformationStore = create<
@@ -29,5 +30,9 @@ export const useUserInformationStore = create<
 	setUserInformationState: (info) =>
 		set(() => ({
 			userInformation: info,
+		})),
+	setShowLoginState: (is_show) =>
+		set(() => ({
+			showLogin: is_show,
 		})),
 }));

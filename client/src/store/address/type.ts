@@ -6,10 +6,7 @@ export interface AddressState {
 		upperId: number;
 		list: IAddressItem[];
 	};
-	listDistrict: {
-		upperId: number;
-		list: IAddressItem[];
-	};
+
 	listWard: {
 		upperId: number;
 		list: IAddressItem[];

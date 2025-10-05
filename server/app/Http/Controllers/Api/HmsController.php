@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Traits\ApiResponse;
+use App\Traits\ApiRes;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\App;
 
 class HmsController extends Controller
 {
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests, ApiResponse;
+    use AuthorizesRequests, DispatchesJobs, ValidatesRequests, ApiRes;
     protected $_params = [];
     protected $_viewAction = '';
 

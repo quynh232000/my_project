@@ -188,31 +188,20 @@
 
                                 <!--end::Input-->
                             </div>
-                            <div class="mb-10">
+                            <div class="fv-row mb-10">
                                 <!--begin::Label-->
-                                <label class="form-label">Description</label>
+                                <label class="fs-5 fw-bold form-label mb-2">
+                                    <span class="">Description</span>
+                                </label>
+                                <div>
+                                </div>
                                 <!--end::Label-->
-                                <!--begin::Editor-->
-                                <div id="kt_ecommerce_add_product_meta_description" name="description"
-                                    class="min-h-200px mb-2">{!!$params['item']->description!!}</div>
-                                <!--end::Editor-->
-                                <input type="text" name="description" id="hidden_description"
-                                    value="{{ $params['item']->description }}" class="hidden" hidden>
-                                <script>
-                                    // const quill = new Quill('#kt_ecommerce_add_product_meta_description', {
-                                    //     theme: 'snow'
-                                    // });
+                                <!--begin::Input-->
+                                <textarea name="description" id="" class="form-control form-control-solid" cols="30" rows="4">{{ $params['item']->description }}</textarea>
 
-                                    $('#form_main').on('submit', function(e) {
-                                        const html = $('#kt_ecommerce_add_product_meta_description .ql-editor').html();
-
-                                        $('#hidden_description').val(html);
-                                    });
-                                </script>
-                                <!--begin::Description-->
-                                <div class="text-muted fs-7">Set a description to the project
-                                    ranking.</div>
+                                <!--end::Input-->
                             </div>
+
                             <div class="fv-row mb-10">
                                 <!--begin::Label-->
                                 <label class="fs-5 fw-bold form-label mb-2">
@@ -247,7 +236,7 @@
                                                     <i class="ki-outline ki-cross fs-1"></i>
                                                 </button>
                                                 <input type="text" class="form-control " name="feature[]"
-                                                    placeholder="Feature project" value="{{$item}}" />
+                                                    placeholder="Feature project" value="{{ $item }}" />
 
                                             </div>
                                         @endforeach
@@ -289,7 +278,8 @@
                                     <span class="">Link demo</span>
                                 </label>
                                 <input type="text" class="form-control form-control-solid" placeholder=""
-                                    placeholder="Aa.." name="demo" value="{{old('demo') ?? $params['item']->demo}}"/>
+                                    placeholder="Aa.." name="demo"
+                                    value="{{ old('demo') ?? $params['item']->demo }}" />
                             </div>
                             <div class="fv-row mb-10">
                                 <!--begin::Label-->
@@ -297,14 +287,16 @@
                                     <span class="">Link Source</span>
                                 </label>
                                 <input type="text" class="form-control form-control-solid" placeholder=""
-                                    placeholder="Aa.." name="source" value="{{old('source') ?? $params['item']->source}}" />
+                                    placeholder="Aa.." name="source"
+                                    value="{{ old('source') ?? $params['item']->source }}" />
                             </div>
                             <div class="fv-row mb-10">
                                 <!--begin::Label-->
                                 <label class="fs-5 fw-bold form-label mb-2">
                                     <span class="">Priority</span>
                                 </label>
-                                <input type="number" min="1" value="{{old('priority') ?? $params['item']->priority}}"
+                                <input type="number" min="1"
+                                    value="{{ old('priority') ?? $params['item']->priority }}"
                                     class="form-control form-control-solid" placeholder="" placeholder="Aa.."
                                     name="priority" />
                             </div>
@@ -317,11 +309,39 @@
                                 <!--begin::Input-->
                                 <select class="form-select mb-2" data-control="select2" name="status"
                                     data-placeholder="Select an option" data-allow-clear="true" id="">
-                                    <option value="active" {{$params['item']->status == 'active' ? 'selected':''}}>Active</option>
-                                    <option value="inactive" {{$params['item']->status == 'inactive' ? 'selected':''}}>Inactive</option>
+                                    <option value="active" {{ $params['item']->status == 'active' ? 'selected' : '' }}>
+                                        Active</option>
+                                    <option value="inactive"
+                                        {{ $params['item']->status == 'inactive' ? 'selected' : '' }}>
+                                        Inactive</option>
 
                                 </select>
                                 <!--end::Input-->
+                            </div>
+                            <div class="mb-10">
+                                <!--begin::Label-->
+                                <label class="form-label fw-bold form-label mb-2">Content</label>
+                                <!--end::Label-->
+                                <!--begin::Editor-->
+                                <div id="kt_ecommerce_add_product_meta_description" name="content" class=" mb-2"
+                                    style="min-height: 500px">{!! $params['item']->content !!}</div>
+                                <!--end::Editor-->
+                                <input type="text" name="content" value="{{ $params['item']->content }}"
+                                    id="hidden_description" class="hidden" hidden>
+                                <script>
+                                    // const quill = new Quill('#kt_ecommerce_add_product_meta_description', {
+                                    //     theme: 'snow'
+                                    // });
+
+                                    $('#form_main').on('submit', function(e) {
+                                        const html = $('#kt_ecommerce_add_product_meta_description .ql-editor').html();
+
+                                        $('#hidden_description').val(html);
+                                    });
+                                </script>
+                                <!--begin::Description-->
+                                <div class="text-muted fs-7">Set a description to the project
+                                    ranking.</div>
                             </div>
 
 

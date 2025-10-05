@@ -1,0 +1,1840 @@
+openapi: 3.0.3
+info:
+  title: 'Quin Admin CMS API Docs'
+  description: 'Tài liệu API cho hệ thống CMS Restaurant.'
+  version: 1.0.0
+servers:
+  -
+    url: 'http://localhost:8000'
+tags:
+  -
+    name: Endpoints
+    description: ''
+components:
+  securitySchemes:
+    default:
+      type: apiKey
+      name: Authorization
+      in: header
+      description: 'You can retrieve your token by visiting your dashboard and clicking <b>Generate API token</b>.'
+security:
+  -
+    default: []
+paths:
+  /api/v1/cms/auth/login:
+    post:
+      summary: ''
+      operationId: postApiV1CmsAuthLogin
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: 'value phải là một địa chỉ email hợp lệ. The <code>email</code> of an existing record in the cms_users table. value không được dài hơn 255 ký tự.'
+                  example: qkunze@example.com
+                  nullable: false
+                password:
+                  type: string
+                  description: 'value phải có ít nhất 6 ký tự. value không được dài hơn 255 ký tự.'
+                  example: 'Z5ij-e/dl4m{o,'
+                  nullable: false
+              required:
+                - email
+                - password
+      security: []
+  /api/v1/cms/auth/register:
+    post:
+      summary: ''
+      operationId: postApiV1CmsAuthRegister
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                full_name:
+                  type: string
+                  description: ''
+                  example: consequatur
+                  nullable: false
+                email:
+                  type: string
+                  description: 'value phải là một địa chỉ email hợp lệ. value không được dài hơn 255 ký tự.'
+                  example: carolyne.luettgen@example.org
+                  nullable: false
+                password:
+                  type: string
+                  description: 'value phải có ít nhất 6 ký tự. value không được dài hơn 255 ký tự.'
+                  example: ij-e/dl4m
+                  nullable: false
+              required:
+                - full_name
+                - email
+                - password
+      security: []
+  /api/v1/cms/auth/refresh:
+    post:
+      summary: ''
+      operationId: postApiV1CmsAuthRefresh
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/v1/cms/auth/logout:
+    post:
+      summary: ''
+      operationId: postApiV1CmsAuthLogout
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/v1/cms/auth/me:
+    get:
+      summary: ''
+      operationId: getApiV1CmsAuthMe
+      description: ''
+      parameters: []
+      responses:
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: false
+                  message: 'Không tìm thấy token!'
+                  error:
+                    code: 403
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: 'Không tìm thấy token!'
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: integer
+                        example: 403
+      tags:
+        - Endpoints
+  /api/v1/cms/role:
+    get:
+      summary: ''
+      operationId: getApiV1CmsRole
+      description: ''
+      parameters: []
+      responses:
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: false
+                  message: 'Không tìm thấy token!'
+                  error:
+                    code: 403
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: 'Không tìm thấy token!'
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: integer
+                        example: 403
+      tags:
+        - Endpoints
+    post:
+      summary: ''
+      operationId: postApiV1CmsRole
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'value không được dài hơn 255 ký tự.'
+                  example: vmqeopfuudtdsufvyvddq
+                  nullable: false
+                description:
+                  type: string
+                  description: ''
+                  example: 'Dolores dolorum amet iste laborum eius est dolor.'
+                  nullable: false
+                status:
+                  type: string
+                  description: ''
+                  example: active
+                  nullable: false
+                  enum:
+                    - active
+                    - inactive
+                permission_ids:
+                  type: object
+                  description: ''
+                  example: null
+                  nullable: false
+                  properties: {  }
+              required:
+                - name
+                - description
+                - status
+  '/api/v1/cms/role/{id}':
+    get:
+      summary: ''
+      operationId: getApiV1CmsRoleId
+      description: ''
+      parameters: []
+      responses:
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: false
+                  message: 'Không tìm thấy token!'
+                  error:
+                    code: 403
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: 'Không tìm thấy token!'
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: integer
+                        example: 403
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  description: 'The <code>id</code> of an existing record in the cms_roles table.'
+                  example: consequatur
+                  nullable: false
+              required:
+                - id
+    put:
+      summary: ''
+      operationId: putApiV1CmsRoleId
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'value không được dài hơn 255 ký tự.'
+                  example: vmqeopfuudtdsufvyvddq
+                  nullable: false
+                description:
+                  type: string
+                  description: ''
+                  example: 'Dolores dolorum amet iste laborum eius est dolor.'
+                  nullable: false
+                status:
+                  type: string
+                  description: ''
+                  example: inactive
+                  nullable: false
+                  enum:
+                    - active
+                    - inactive
+              required:
+                - name
+                - description
+                - status
+    delete:
+      summary: ''
+      operationId: deleteApiV1CmsRoleId
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the role.'
+        example: consequatur
+        required: true
+        schema:
+          type: string
+  /api/v1/cms/role/toggle-status:
+    post:
+      summary: ''
+      operationId: postApiV1CmsRoleToggleStatus
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  description: 'The <code>id</code> of an existing record in the cms_roles table.'
+                  example: consequatur
+                  nullable: false
+              required:
+                - id
+  /api/v1/cms/permission:
+    get:
+      summary: ''
+      operationId: getApiV1CmsPermission
+      description: ''
+      parameters: []
+      responses:
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: false
+                  message: 'Không tìm thấy token!'
+                  error:
+                    code: 403
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: 'Không tìm thấy token!'
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: integer
+                        example: 403
+      tags:
+        - Endpoints
+    post:
+      summary: ''
+      operationId: postApiV1CmsPermission
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: array
+                  description: ''
+                  example:
+                    - []
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        description: 'value không được dài hơn 255 ký tự.'
+                        example: vmqeopfuudtdsufvyvddq
+                        nullable: false
+                      route_name:
+                        type: string
+                        description: ''
+                        example: consequatur
+                        nullable: false
+                      uri:
+                        type: string
+                        description: ''
+                        example: consequatur
+                        nullable: false
+                      method:
+                        type: string
+                        description: ''
+                        example: consequatur
+                        nullable: false
+                    required:
+                      - name
+                      - route_name
+                      - uri
+                      - method
+              required:
+                - data
+  /api/v1/cms/permission/new:
+    get:
+      summary: ''
+      operationId: getApiV1CmsPermissionNew
+      description: ''
+      parameters: []
+      responses:
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: false
+                  message: 'Không tìm thấy token!'
+                  error:
+                    code: 403
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: 'Không tìm thấy token!'
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: integer
+                        example: 403
+      tags:
+        - Endpoints
+  /api/v1/cms/user:
+    get:
+      summary: ''
+      operationId: getApiV1CmsUser
+      description: ''
+      parameters: []
+      responses:
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: false
+                  message: 'Không tìm thấy token!'
+                  error:
+                    code: 403
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: 'Không tìm thấy token!'
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: integer
+                        example: 403
+      tags:
+        - Endpoints
+    post:
+      summary: ''
+      operationId: postApiV1CmsUser
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                full_name:
+                  type: string
+                  description: 'value không được dài hơn 255 ký tự.'
+                  example: vmqeopfuudtdsufvyvddq
+                  nullable: false
+                phone:
+                  type: string
+                  description: ''
+                  example: consequatur
+                  nullable: false
+                email:
+                  type: string
+                  description: 'value phải là một địa chỉ email hợp lệ.'
+                  example: carolyne.luettgen@example.org
+                  nullable: false
+                password:
+                  type: string
+                  description: ''
+                  example: 'O[2UZ5ij-e/dl4m{o,'
+                  nullable: false
+                avatar:
+                  type: string
+                  format: binary
+                  description: 'value phải là một hình ảnh. value không được lớn hơn 2048 kilobyte.'
+                  nullable: false
+                role_ids:
+                  type: array
+                  description: 'The <code>id</code> of an existing record in the cms_roles table.'
+                  example:
+                    - consequatur
+                  items:
+                    type: string
+                permission_ids:
+                  type: array
+                  description: 'The <code>id</code> of an existing record in the cms_permissions table.'
+                  example:
+                    - consequatur
+                  items:
+                    type: string
+              required:
+                - full_name
+                - phone
+                - email
+                - password
+  '/api/v1/cms/user/{id}':
+    get:
+      summary: ''
+      operationId: getApiV1CmsUserId
+      description: ''
+      parameters: []
+      responses:
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: false
+                  message: 'Không tìm thấy token!'
+                  error:
+                    code: 403
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: 'Không tìm thấy token!'
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: integer
+                        example: 403
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  description: 'The <code>id</code> of an existing record in the cms_users table.'
+                  example: consequatur
+                  nullable: false
+              required:
+                - id
+    put:
+      summary: ''
+      operationId: putApiV1CmsUserId
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                full_name:
+                  type: string
+                  description: 'value không được dài hơn 255 ký tự.'
+                  example: vmqeopfuudtdsufvyvddq
+                  nullable: false
+                phone:
+                  type: string
+                  description: ''
+                  example: consequatur
+                  nullable: false
+                email:
+                  type: string
+                  description: 'value phải là một địa chỉ email hợp lệ.'
+                  example: carolyne.luettgen@example.org
+                  nullable: false
+                password:
+                  type: string
+                  description: ''
+                  example: 'O[2UZ5ij-e/dl4m{o,'
+                  nullable: false
+                avatar:
+                  type: string
+                  format: binary
+                  description: 'value phải là một hình ảnh. value không được lớn hơn 2048 kilobyte.'
+                  nullable: false
+                role_ids:
+                  type: array
+                  description: 'The <code>id</code> of an existing record in the cms_roles table.'
+                  example:
+                    - consequatur
+                  items:
+                    type: string
+                permission_ids:
+                  type: array
+                  description: 'The <code>id</code> of an existing record in the cms_permissions table.'
+                  example:
+                    - consequatur
+                  items:
+                    type: string
+              required:
+                - full_name
+                - phone
+                - email
+                - password
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the user.'
+        example: consequatur
+        required: true
+        schema:
+          type: string
+  /api/v1/cms/plan:
+    get:
+      summary: ''
+      operationId: getApiV1CmsPlan
+      description: ''
+      parameters: []
+      responses:
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: false
+                  message: 'Không tìm thấy token!'
+                  error:
+                    code: 403
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: 'Không tìm thấy token!'
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: integer
+                        example: 403
+      tags:
+        - Endpoints
+    post:
+      summary: ''
+      operationId: postApiV1CmsPlan
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'value không được dài hơn 255 ký tự.'
+                  example: vmqeopfuudtdsufvyvddq
+                  nullable: false
+                description:
+                  type: string
+                  description: ''
+                  example: 'Dolores dolorum amet iste laborum eius est dolor.'
+                  nullable: true
+                price:
+                  type: integer
+                  description: 'value phải tối thiểu là 0.'
+                  example: 12
+                  nullable: false
+                billing_cycle:
+                  type: string
+                  description: ''
+                  example: monthly
+                  nullable: false
+                  enum:
+                    - monthly
+                    - yearly
+                features:
+                  type: string
+                  description: ''
+                  example: consequatur
+                  nullable: true
+              required:
+                - name
+                - price
+                - billing_cycle
+  '/api/v1/cms/plan/{id}':
+    get:
+      summary: ''
+      operationId: getApiV1CmsPlanId
+      description: ''
+      parameters: []
+      responses:
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: false
+                  message: 'Không tìm thấy token!'
+                  error:
+                    code: 403
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: 'Không tìm thấy token!'
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: integer
+                        example: 403
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  description: 'The <code>id</code> of an existing record in the cms_plans table.'
+                  example: consequatur
+                  nullable: false
+              required:
+                - id
+    put:
+      summary: ''
+      operationId: putApiV1CmsPlanId
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'value không được dài hơn 255 ký tự.'
+                  example: vmqeopfuudtdsufvyvddq
+                  nullable: false
+                description:
+                  type: string
+                  description: ''
+                  example: 'Dolores dolorum amet iste laborum eius est dolor.'
+                  nullable: true
+                price:
+                  type: integer
+                  description: 'value phải tối thiểu là 0.'
+                  example: 12
+                  nullable: false
+                billing_cycle:
+                  type: string
+                  description: ''
+                  example: yearly
+                  nullable: false
+                  enum:
+                    - monthly
+                    - yearly
+                features:
+                  type: string
+                  description: ''
+                  example: consequatur
+                  nullable: true
+              required:
+                - name
+                - price
+                - billing_cycle
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the plan.'
+        example: consequatur
+        required: true
+        schema:
+          type: string
+  /api/v1/cms/plan/toggle-status:
+    post:
+      summary: ''
+      operationId: postApiV1CmsPlanToggleStatus
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  description: 'The <code>id</code> of an existing record in the cms_plans table.'
+                  example: consequatur
+                  nullable: false
+              required:
+                - id
+  /api/v1/cms/restaurant/list:
+    get:
+      summary: ''
+      operationId: getApiV1CmsRestaurantList
+      description: ''
+      parameters: []
+      responses:
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: false
+                  message: 'Không tìm thấy token!'
+                  error:
+                    code: 403
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: 'Không tìm thấy token!'
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: integer
+                        example: 403
+      tags:
+        - Endpoints
+  /api/v1/cms/restaurant:
+    get:
+      summary: ''
+      operationId: getApiV1CmsRestaurant
+      description: ''
+      parameters: []
+      responses:
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: false
+                  message: 'Không tìm thấy token!'
+                  error:
+                    code: 403
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: 'Không tìm thấy token!'
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: integer
+                        example: 403
+      tags:
+        - Endpoints
+    post:
+      summary: ''
+      operationId: postApiV1CmsRestaurant
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'value không được dài hơn 255 ký tự.'
+                  example: vmqeopfuudtdsufvyvddq
+                  nullable: false
+                phone:
+                  type: string
+                  description: 'value không được dài hơn 20 ký tự.'
+                  example: amniihfqcoynlazgh
+                  nullable: true
+                address:
+                  type: string
+                  description: 'value không được dài hơn 255 ký tự.'
+                  example: dtqtqxbajwbpilpmufinl
+                  nullable: true
+                logo:
+                  type: string
+                  format: binary
+                  description: 'value phải là một hình ảnh. value không được lớn hơn 2048 kilobyte.'
+                  nullable: true
+                time_open:
+                  type: string
+                  description: 'value không được dài hơn 50 ký tự.'
+                  example: lwloauydlsmsjuryvojcy
+                  nullable: true
+                time_close:
+                  type: string
+                  description: 'value không được dài hơn 50 ký tự.'
+                  example: bzvrbyickznkygloigmkw
+                  nullable: true
+                type:
+                  type: string
+                  description: ''
+                  example: buffet
+                  nullable: false
+                  enum:
+                    - cafe
+                    - restaurant
+                    - buffet
+                capacity:
+                  type: integer
+                  description: 'value phải tối thiểu là 1.'
+                  example: 83
+                  nullable: true
+                branch:
+                  type: string
+                  description: 'value không được dài hơn 255 ký tự.'
+                  example: phlvazjrcnfbaqywuxhgj
+                  nullable: true
+                currency:
+                  type: string
+                  description: 'value không được dài hơn 10 ký tự.'
+                  example: jmzuxjubq
+                  nullable: false
+                plan_id:
+                  type: integer
+                  description: 'The <code>id</code> of an existing record in the cms_plans table.'
+                  example: 17
+                  nullable: false
+              required:
+                - name
+                - type
+                - currency
+                - plan_id
+  '/api/v1/cms/restaurant/{id}':
+    get:
+      summary: ''
+      operationId: getApiV1CmsRestaurantId
+      description: ''
+      parameters: []
+      responses:
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: false
+                  message: 'Không tìm thấy token!'
+                  error:
+                    code: 403
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: 'Không tìm thấy token!'
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: integer
+                        example: 403
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  description: 'The <code>id</code> of an existing record in the cms_restaurants table.'
+                  example: consequatur
+                  nullable: false
+              required:
+                - id
+    put:
+      summary: ''
+      operationId: putApiV1CmsRestaurantId
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'value không được dài hơn 255 ký tự.'
+                  example: vmqeopfuudtdsufvyvddq
+                  nullable: false
+                phone:
+                  type: string
+                  description: 'value không được dài hơn 20 ký tự.'
+                  example: amniihfqcoynlazgh
+                  nullable: true
+                address:
+                  type: string
+                  description: 'value không được dài hơn 255 ký tự.'
+                  example: dtqtqxbajwbpilpmufinl
+                  nullable: true
+                logo:
+                  type: string
+                  format: binary
+                  description: 'value phải là một hình ảnh. value không được lớn hơn 2048 kilobyte.'
+                  nullable: true
+                time_open:
+                  type: string
+                  description: 'value không được dài hơn 50 ký tự.'
+                  example: lwloauydlsmsjuryvojcy
+                  nullable: true
+                time_close:
+                  type: string
+                  description: 'value không được dài hơn 50 ký tự.'
+                  example: bzvrbyickznkygloigmkw
+                  nullable: true
+                type:
+                  type: string
+                  description: ''
+                  example: restaurant
+                  nullable: false
+                  enum:
+                    - cafe
+                    - restaurant
+                    - buffet
+                capacity:
+                  type: integer
+                  description: 'value phải tối thiểu là 1.'
+                  example: 83
+                  nullable: true
+                branch:
+                  type: string
+                  description: 'value không được dài hơn 255 ký tự.'
+                  example: phlvazjrcnfbaqywuxhgj
+                  nullable: true
+                currency:
+                  type: string
+                  description: 'value không được dài hơn 10 ký tự.'
+                  example: jmzuxjubq
+                  nullable: false
+                plan_id:
+                  type: integer
+                  description: 'The <code>id</code> of an existing record in the cms_plans table.'
+                  example: 17
+                  nullable: false
+              required:
+                - name
+                - type
+                - currency
+                - plan_id
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the restaurant.'
+        example: consequatur
+        required: true
+        schema:
+          type: string
+  /api/v1/cms/restaurant/toggle-status:
+    post:
+      summary: ''
+      operationId: postApiV1CmsRestaurantToggleStatus
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  description: 'The <code>id</code> of an existing record in the cms_restaurants table.'
+                  example: consequatur
+                  nullable: false
+              required:
+                - id
+  /api/v1/cms/menu-category:
+    get:
+      summary: ''
+      operationId: getApiV1CmsMenuCategory
+      description: ''
+      parameters: []
+      responses:
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: false
+                  message: 'Không tìm thấy token!'
+                  error:
+                    code: 403
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: 'Không tìm thấy token!'
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: integer
+                        example: 403
+      tags:
+        - Endpoints
+    post:
+      summary: ''
+      operationId: postApiV1CmsMenuCategory
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                restaurant_id:
+                  type: integer
+                  description: 'The <code>id</code> of an existing record in the cms_restaurants table.'
+                  example: 17
+                  nullable: false
+                name:
+                  type: string
+                  description: 'value không được dài hơn 255 ký tự.'
+                  example: mqeopfuudtdsufvyvddqa
+                  nullable: false
+                description:
+                  type: string
+                  description: ''
+                  example: 'Dolores dolorum amet iste laborum eius est dolor.'
+                  nullable: false
+                status:
+                  type: string
+                  description: ''
+                  example: active
+                  nullable: false
+                  enum:
+                    - active
+                    - inactive
+                priority:
+                  type: integer
+                  description: 'value phải tối thiểu là 1.'
+                  example: 13
+                  nullable: true
+                image:
+                  type: string
+                  format: binary
+                  description: 'value phải là một hình ảnh. value không được lớn hơn 2048 kilobyte.'
+                  nullable: true
+              required:
+                - name
+                - description
+                - status
+  '/api/v1/cms/menu-category/{id}':
+    get:
+      summary: ''
+      operationId: getApiV1CmsMenuCategoryId
+      description: ''
+      parameters: []
+      responses:
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: false
+                  message: 'Không tìm thấy token!'
+                  error:
+                    code: 403
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: 'Không tìm thấy token!'
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: integer
+                        example: 403
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                restaurant_id:
+                  type: integer
+                  description: 'The <code>id</code> of an existing record in the cms_restaurants table.'
+                  example: 17
+                  nullable: false
+                id:
+                  type: string
+                  description: 'The <code>id</code> of an existing record in the cms_menu_categories table.'
+                  example: consequatur
+                  nullable: false
+              required:
+                - id
+    put:
+      summary: ''
+      operationId: putApiV1CmsMenuCategoryId
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'value không được dài hơn 255 ký tự.'
+                  example: vmqeopfuudtdsufvyvddq
+                  nullable: false
+                description:
+                  type: string
+                  description: ''
+                  example: 'Dolores dolorum amet iste laborum eius est dolor.'
+                  nullable: false
+                status:
+                  type: string
+                  description: ''
+                  example: inactive
+                  nullable: false
+                  enum:
+                    - active
+                    - inactive
+                priority:
+                  type: integer
+                  description: 'value phải tối thiểu là 1.'
+                  example: 13
+                  nullable: true
+                image:
+                  type: string
+                  format: binary
+                  description: 'value phải là một hình ảnh. value không được lớn hơn 2048 kilobyte.'
+                  nullable: true
+                restaurant_id:
+                  type: integer
+                  description: 'The <code>id</code> of an existing record in the cms_restaurants table.'
+                  example: 17
+                  nullable: false
+              required:
+                - name
+                - description
+                - status
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the menu category.'
+        example: consequatur
+        required: true
+        schema:
+          type: string
+  /api/v1/cms/menu-category/toggle-status:
+    post:
+      summary: ''
+      operationId: postApiV1CmsMenuCategoryToggleStatus
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                restaurant_id:
+                  type: integer
+                  description: 'The <code>id</code> of an existing record in the cms_restaurants table.'
+                  example: 17
+                  nullable: false
+                id:
+                  type: string
+                  description: 'The <code>id</code> of an existing record in the cms_menu_categories table.'
+                  example: consequatur
+                  nullable: false
+              required:
+                - id
+  /api/v1/cms/menu-item:
+    get:
+      summary: ''
+      operationId: getApiV1CmsMenuItem
+      description: ''
+      parameters: []
+      responses:
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: false
+                  message: 'Không tìm thấy token!'
+                  error:
+                    code: 403
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: 'Không tìm thấy token!'
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: integer
+                        example: 403
+      tags:
+        - Endpoints
+    post:
+      summary: ''
+      operationId: postApiV1CmsMenuItem
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                restaurant_id:
+                  type: integer
+                  description: 'The <code>id</code> of an existing record in the cms_restaurants table.'
+                  example: 17
+                  nullable: false
+                name:
+                  type: string
+                  description: 'value không được dài hơn 255 ký tự.'
+                  example: mqeopfuudtdsufvyvddqa
+                  nullable: false
+                description:
+                  type: string
+                  description: ''
+                  example: 'Dolores dolorum amet iste laborum eius est dolor.'
+                  nullable: true
+                priority:
+                  type: integer
+                  description: 'value phải tối thiểu là 1.'
+                  example: 13
+                  nullable: true
+                status:
+                  type: string
+                  description: ''
+                  example: active
+                  nullable: true
+                  enum:
+                    - active
+                    - inactive
+                image:
+                  type: string
+                  description: ''
+                  example: consequatur
+                  nullable: true
+                category_id:
+                  type: integer
+                  description: 'The <code>id</code> of an existing record in the cms_menu_categories table.'
+                  example: 17
+                  nullable: false
+                base_price:
+                  type: number
+                  description: 'value phải tối thiểu là 0.'
+                  example: 45
+                  nullable: false
+                options:
+                  type: array
+                  description: ''
+                  example: null
+                  items:
+                    type: object
+                    nullable: true
+                    properties:
+                      name:
+                        type: string
+                        description: 'This field is required when <code>options</code> is present. value không được dài hơn 255 ký tự.'
+                        example: qeopfuudtdsufvyvddqam
+                        nullable: false
+                      type:
+                        type: string
+                        description: 'This field is required when <code>options</code> is present.'
+                        example: single_choice
+                        nullable: false
+                        enum:
+                          - single_choice
+                          - multi_choice
+                      required:
+                        type: boolean
+                        description: ''
+                        example: true
+                        nullable: true
+                      priority:
+                        type: integer
+                        description: 'value phải tối thiểu là 1.'
+                        example: 46
+                        nullable: true
+                      status:
+                        type: string
+                        description: ''
+                        example: inactive
+                        nullable: true
+                        enum:
+                          - active
+                          - inactive
+                      values:
+                        type: array
+                        description: ''
+                        example: null
+                        items:
+                          type: object
+                          nullable: true
+                          properties:
+                            name:
+                              type: string
+                              description: 'This field is required when <code>options.*.values</code> is present. value không được dài hơn 255 ký tự.'
+                              example: iihfqcoynlazghdtqtqxb
+                              nullable: false
+                            extra_price:
+                              type: number
+                              description: 'value phải tối thiểu là 0.'
+                              example: 0
+                              nullable: true
+                prices:
+                  type: array
+                  description: ''
+                  example: null
+                  items:
+                    type: object
+                    nullable: true
+                    properties:
+                      name:
+                        type: string
+                        description: 'This field is required when <code>prices</code> is present. value không được dài hơn 255 ký tự.'
+                        example: jwbpilpmufinllwloauyd
+                        nullable: false
+                      price:
+                        type: number
+                        description: 'This field is required when <code>prices</code> is present. value phải tối thiểu là 0.'
+                        example: 40
+                        nullable: false
+                      priority:
+                        type: integer
+                        description: 'value phải tối thiểu là 1.'
+                        example: 64
+                        nullable: true
+                      status:
+                        type: string
+                        description: ''
+                        example: active
+                        nullable: true
+                        enum:
+                          - active
+                          - inactive
+              required:
+                - name
+                - category_id
+                - base_price
+  '/api/v1/cms/menu-item/{id}':
+    get:
+      summary: ''
+      operationId: getApiV1CmsMenuItemId
+      description: ''
+      parameters: []
+      responses:
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: false
+                  message: 'Không tìm thấy token!'
+                  error:
+                    code: 403
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: 'Không tìm thấy token!'
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: integer
+                        example: 403
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                restaurant_id:
+                  type: integer
+                  description: 'The <code>id</code> of an existing record in the cms_restaurants table.'
+                  example: 17
+                  nullable: false
+                id:
+                  type: string
+                  description: 'The <code>id</code> of an existing record in the cms_menu_items table.'
+                  example: consequatur
+                  nullable: false
+              required:
+                - id
+    put:
+      summary: ''
+      operationId: putApiV1CmsMenuItemId
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                restaurant_id:
+                  type: integer
+                  description: 'The <code>id</code> of an existing record in the cms_restaurants table.'
+                  example: 17
+                  nullable: false
+                name:
+                  type: string
+                  description: 'value không được dài hơn 255 ký tự.'
+                  example: mqeopfuudtdsufvyvddqa
+                  nullable: false
+                description:
+                  type: string
+                  description: ''
+                  example: 'Dolores dolorum amet iste laborum eius est dolor.'
+                  nullable: true
+                priority:
+                  type: integer
+                  description: 'value phải tối thiểu là 1.'
+                  example: 13
+                  nullable: true
+                status:
+                  type: string
+                  description: ''
+                  example: active
+                  nullable: true
+                  enum:
+                    - active
+                    - inactive
+                image:
+                  type: string
+                  description: ''
+                  example: consequatur
+                  nullable: true
+                category_id:
+                  type: integer
+                  description: 'The <code>id</code> of an existing record in the cms_menu_categories table.'
+                  example: 17
+                  nullable: false
+                base_price:
+                  type: number
+                  description: 'value phải tối thiểu là 0.'
+                  example: 45
+                  nullable: false
+                options:
+                  type: array
+                  description: ''
+                  example: null
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        description: 'The <code>id</code> of an existing record in the cms_menu_options table.'
+                        example: 17
+                        nullable: false
+                      name:
+                        type: string
+                        description: 'value không được dài hơn 255 ký tự.'
+                        example: mqeopfuudtdsufvyvddqa
+                        nullable: false
+                      type:
+                        type: string
+                        description: ''
+                        example: multi_choice
+                        nullable: false
+                        enum:
+                          - single_choice
+                          - multi_choice
+                      required:
+                        type: boolean
+                        description: ''
+                        example: true
+                        nullable: false
+                      priority:
+                        type: integer
+                        description: 'value phải tối thiểu là 1.'
+                        example: 45
+                        nullable: true
+                      status:
+                        type: string
+                        description: ''
+                        example: active
+                        nullable: false
+                        enum:
+                          - active
+                          - inactive
+                      values:
+                        type: array
+                        description: ''
+                        example: null
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              description: 'The <code>id</code> of an existing record in the cms_menu_option_values table.'
+                              example: 17
+                              nullable: false
+                            name:
+                              type: string
+                              description: 'value không được dài hơn 255 ký tự.'
+                              example: mqeopfuudtdsufvyvddqa
+                              nullable: false
+                            extra_price:
+                              type: number
+                              description: 'value phải tối thiểu là 0.'
+                              example: 45
+                              nullable: true
+                          required:
+                            - name
+                    required:
+                      - name
+                      - type
+                prices:
+                  type: array
+                  description: ''
+                  example: null
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        description: 'The <code>id</code> of an existing record in the cms_menu_prices table.'
+                        example: 17
+                        nullable: false
+                      name:
+                        type: string
+                        description: 'value không được dài hơn 255 ký tự.'
+                        example: mqeopfuudtdsufvyvddqa
+                        nullable: false
+                      price:
+                        type: number
+                        description: 'value phải tối thiểu là 0.'
+                        example: 45
+                        nullable: false
+                      priority:
+                        type: integer
+                        description: 'value phải tối thiểu là 1.'
+                        example: 46
+                        nullable: true
+                      status:
+                        type: string
+                        description: ''
+                        example: active
+                        nullable: false
+                        enum:
+                          - active
+                          - inactive
+                    required:
+                      - name
+                      - price
+              required:
+                - name
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the menu item.'
+        example: consequatur
+        required: true
+        schema:
+          type: string
+  /api/v1/cms/menu-item/toggle-status:
+    post:
+      summary: ''
+      operationId: postApiV1CmsMenuItemToggleStatus
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                restaurant_id:
+                  type: integer
+                  description: 'The <code>id</code> of an existing record in the cms_restaurants table.'
+                  example: 17
+                  nullable: false
+                id:
+                  type: string
+                  description: 'The <code>id</code> of an existing record in the cms_menu_items table.'
+                  example: consequatur
+                  nullable: false
+              required:
+                - id

@@ -3,6 +3,7 @@
 namespace App\Models\Hotel;
 
 use App\Models\AdminModel;
+use App\Services\FileService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -71,7 +72,6 @@ class PostCategoryModel extends AdminModel
             $end    = date("Y-m-d 23:59:59", strtotime($end));
 
             $query->whereBetween($this->table . '.created_at', array($start, $end));
-
         }
         if (isset($params['updated_at']) && !empty($params['updated_at'])) {
             $date   = explode('-', $params['updated_at']);
@@ -81,7 +81,6 @@ class PostCategoryModel extends AdminModel
             $end    = date("Y-m-d 23:59:59", strtotime($end));
 
             $query->whereBetween($this->table . '.updated_at', array($start, $end));
-
         }
 
         if (isset($params['status']) && $params['status'] != "") {
@@ -121,15 +120,16 @@ class PostCategoryModel extends AdminModel
         if ($options['task'] == 'add-item') {
             $params['created_by']   = Auth::user()->id;
             $params['created_at']   = date('Y-m-d H:i:s');
+            if (request()->hasFile('image')) {
+                $params['image']  = FileService::file_upload($params, $params['image'], 'image');
+            }
+
             if ($params['parent_id'] > 0) {
                 $insertedId         = self::insertGetId($this->prepareParams($params), self::findOrFail($params['parent_id']));
             } else {
                 $insertedId         = self::insertGetId($this->prepareParams($params));
             }
-            if (request()->hasFile('image')) {
-                $params['inserted_id']  = $insertedId;
-                $this->saveImageS3($params, $options);
-            }
+
             PostCategoryModel::fixTree();
             return response()->json(array('success' => true, 'msg' => 'Tạo yêu cầu thành công!'));
         }
@@ -137,8 +137,7 @@ class PostCategoryModel extends AdminModel
         if ($options['task'] == 'edit-item') {
 
             if (request()->hasFile('image')) {
-                $params['inserted_id']  = $params[$this->primaryKey];
-                $params                 = $this->saveImageS3($params, $options);
+                $params['image']  = FileService::file_upload($params, $params['image'], 'image');
             }
             $params['updated_by']       = Auth::user()->id;
             $params['updated_at']       = date('Y-m-d H:i:s');
@@ -172,15 +171,10 @@ class PostCategoryModel extends AdminModel
             if ($result != null) {
                 $result             = $result->toArray();
                 $params['item']     = $result;
-                $result['imageName']= $result['image'];
-                $result['image']    = $this->getImageUrlS3($result['image'], $params);
                 $result['status']   = trim($result['status']);
             }
+        }
 
-        }
-        if($options['task'] == 'get-all'){
-            $result = self::select('id','name','parent_id')->withDepth()->defaultOrder()->get();
-        }
 
         return $result;
     }
@@ -188,7 +182,6 @@ class PostCategoryModel extends AdminModel
     {
         if ($options['task'] == 'delete-item') {
             if ($params['id'] === '0') {
-
             } elseif (is_array($params['id'])) {
                 self::whereIn($this->primaryKey, $params['id'])->whereNotIn('status', ['finish', 'pending-print', 'signed'])->delete();
             }
@@ -286,7 +279,7 @@ class PostCategoryModel extends AdminModel
             $folderPath             = $params['controller'] . '/images/' . $params['inserted_id'] . '/';
             $image                  = $params['image'];
             $imageName              = $params['slug'] . '.' . $image->extension();
-            Storage::disk( $params['bucket'])->put($folderPath . $imageName, file_get_contents($image));
+            Storage::disk($params['bucket'])->put($folderPath . $imageName, file_get_contents($image));
             $params['image']        = $imageName;
             $this->reSizeImageThumb($params, ['task' => 'add-item-id']);
             unset($params['bucket'], $params['inserted_id']);
@@ -295,10 +288,10 @@ class PostCategoryModel extends AdminModel
         }
         if ($options['task'] == 'edit-item') {
             $oldImage               = $params[$this->primaryKey];
-            $folderPath             = $params['controller'] .'/images/'. $oldImage . '/';
+            $folderPath             = $params['controller'] . '/images/' . $oldImage . '/';
             if ($oldImage) {
-                Storage::disk(  $params['bucket'])->delete($folderPath . $params['image_name']);
-                Storage::disk(  $params['bucket'])->delete($folderPath . '/thumb1/'   . $params['image_name']);
+                Storage::disk($params['bucket'])->delete($folderPath . $params['image_name']);
+                Storage::disk($params['bucket'])->delete($folderPath . '/thumb1/'   . $params['image_name']);
             }
             $image                  = $params['image'];
             $imageName              = $params['slug'] . '.' . $image->extension();
@@ -309,17 +302,42 @@ class PostCategoryModel extends AdminModel
             return $params;
         }
     }
-    public static function treeSelectCategory($categories, $selected_id = null)
+    // public static function treeSelectCategory($selected_id = null)
+    // {
+
+    //     $xhtml = '';
+    //     foreach ($categories as $category) {
+    //         if ($categories instanceof Collection) {
+    //             $selected = $selected_id && $selected_id->contains($category->id) == true ? 'selected' : '';
+    //         } else {
+    //             $selected = $selected_id && $selected_id == $category['id'] ? 'selected' : '';
+    //         }
+    //         $xhtml .= '<option ' . $selected . ' value="' . $category['id'] . '">' . str_repeat('--', $category['depth']) . $category['name'] . '</option>';
+    //     }
+    //     return $xhtml;
+    // }
+    public static function treeSelectCategory($selected_id = null, $current_id = null)
     {
-        $xhtml = '';
+        $categories = self::select('id', 'name', 'parent_id')->withDepth()->defaultOrder()->get();
+        $xhtml          = '';
+        $disable        = false;
+        $selectedDepth  = null;
+
         foreach ($categories as $category) {
-            if ($categories instanceof Collection ) {
-                $selected = $selected_id && $selected_id->contains($category->id) == true ? 'selected' : '';
+            $selected           = $selected_id && $selected_id == $category['id'] ? 'selected' : '';
+            if ($category['id'] == $current_id) {
+                $disable        = true;
+                $selectedDepth  = $category['depth'];
+            } else {
+                if ($category['depth'] <= $selectedDepth) {
+                    $disable        = false;
+                    $selectedDepth  = null;
+                }
             }
-            else{
-                $selected = $selected_id && $selected_id == $category['id'] ? 'selected' : '';
-            }
-            $xhtml .= '<option ' . $selected . ' value="' . $category['id'] . '">' . str_repeat('--', $category['depth']) . $category['name'] . '</option>';
+
+            $rawDepth   = $category['depth'] ?? 0;
+            $depth      = is_numeric($rawDepth) ? max(0, (int) $rawDepth) : 0;
+            $xhtml .= '<option style="' . (empty($category['depth']) ? ' font-weight:bold' : '') . ';" ' . ($disable ? 'disabled' : '') . ' ' . $selected . ' value="' . $category['id'] . '">' . str_repeat('--', $depth) . $category['name'] . '</option>';
         }
         return $xhtml;
     }

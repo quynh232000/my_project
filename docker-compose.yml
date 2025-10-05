@@ -1,35 +1,35 @@
 version: '3.9'
 
 services:
-  server:
-    build:
-      context: ./server
-      dockerfile: Dockerfile
-    ports:
-      - 8005:8005
-    networks:
-      - laravel
-    command: php artisan serve --host 0.0.0.0 --port 8005
-  client:
-    build:
-      context: ./client
-      dockerfile: Dockerfile
-    ports:
-      - "3000:3000"
-    volumes:
-      - ./client:/app
-      - /app/node_modules
-    environment:
-      - CHOKIDAR_USEPOLLING=true
-    command: yarn dev
-    networks:
-      - laravel
+    #     server:
+    #         build:
+    #             context: ./server
+    #             dockerfile: Dockerfile
+    #         ports:
+    #             - 8000:8000
+    #         networks:
+    #             - laravel
+    #         command: php artisan serve --host 0.0.0.0 --port 8000
+    client:
+        build:
+            context: ./client
+            dockerfile: Dockerfile
+        ports:
+            - "3000:3000"
+        volumes:
+            - ./client:/app
+            - /app/node_modules
+        environment:
+            - CHOKIDAR_USEPOLLING=true
+        command: yarn dev
+        networks:
+            - laravel
 networks:
-  laravel:
-    driver: bridge
+    laravel:
+        driver: bridge
 # volumes:
 #   dbdata:
 #     driver: local
 volumes:
-  es_data:
-    driver: local
+    es_data:
+        driver: local

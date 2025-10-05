@@ -61,6 +61,7 @@ if (!defined('TABLE_HOTEL_CHAIN'))     define('TABLE_HOTEL_CHAIN', 'hotel_chains
 if (!defined('TABLE_HOTEL_LOCATION'))     define('TABLE_HOTEL_LOCATION', 'hotel_locations');
 if (!defined('TABLE_HOTEL_PRIORITY'))     define('TABLE_HOTEL_PRIORITY', 'hotel_priorities');
 if (!defined('TABLE_HOTEL_HOTEL_CATEGORY_ID'))     define('TABLE_HOTEL_HOTEL_CATEGORY_ID', 'hotel_hotel_category_ids');
+if (!defined('TABLE_HOTEL_BANNER'))     define('TABLE_HOTEL_BANNER', 'hotel_banners');
 
 // booking
 if (!defined('TABLE_HOTEL_BOOKING_ORDER'))     define('TABLE_HOTEL_BOOKING_ORDER', 'hotel_booking_orders');
@@ -70,4 +71,5 @@ if (!defined('TABLE_HOTEL_BOOKING_DAILY_PRICE'))     define('TABLE_HOTEL_BOOKING
 
 if (!defined('TABLE_HMS_CUSTOMER'))     define('TABLE_HMS_CUSTOMER', 'hms_customers');
 if (!defined('TABLE_GENERAL_COUNTRY')) define('TABLE_GENERAL_COUNTRY', 'general_country');
-
+if (!defined('TABLE_GENERAL_PROVINCE')) define('TABLE_GENERAL_PROVINCE', 'general_provinces');
+if (!defined('TABLE_GENERAL_WARD')) define('TABLE_GENERAL_WARD', 'general_wards');

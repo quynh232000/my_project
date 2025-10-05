@@ -16,21 +16,19 @@ class PartnerRegisterController extends ApiController
         parent::__construct($request);
         $this->model             = new PartnerRegisterModel();
     }
-    public function store(PartnerRegisterRequest $request) 
+    public function store(Request $request)
     {
         try {
             $this->_params['ip'] = $request->ip();
 
             $items = $this->model->saveItem($this->_params, ['task' => 'add-item']);
             return response()->json($items, $items['status_code']);
-
         } catch (\Exception $e) {
 
             return response()->json([
                 'status'    => false,
                 'message'   => $e->getMessage()
-            ],500);
+            ], 500);
         }
-        
     }
 }

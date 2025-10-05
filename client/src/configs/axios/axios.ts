@@ -151,7 +151,7 @@ export const CallAPI = (
 					} else {
 						clearAllCookies();
 						if (window.location.pathname !== AuthRouters.signIn) {
-							window.location.href = AuthRouters.signIn;
+							window.location.href = '/';
 						}
 					}
 				} else {

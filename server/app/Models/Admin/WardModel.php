@@ -63,7 +63,7 @@ class WardModel  extends AdminModel
                 'field' =>  $this->table . '.name',
                 'value' => 'name'
             ],
-             [
+            [
                 'field' =>  $this->table . '.slug',
                 'value' => 'slug'
             ],
@@ -130,6 +130,13 @@ class WardModel  extends AdminModel
 
             unset($this->_data['headTable']);
         }
+        if ($options['task'] == 'list-items') {
+
+            $this->_data      = self::select('id', 'name')
+                ->where('province_id', $params['province_id'])
+                ->where('status', 'active')
+                ->orderBy('name', 'asc')->get()->toArray();
+        }
         return $this->_data;
     }
     public function saveItem($params = null, $options = null)
@@ -138,7 +145,7 @@ class WardModel  extends AdminModel
             $params['created_by']   = Auth::user()->id;
             $params['created_at']   = date('Y-m-d H:i:s');
             $params['slug']         = Str::slug($params['name']);
-            if ($params['icon']??false) {
+            if ($params['icon'] ?? false) {
                 $FileService = new FileService();
                 $params['icon_url'] = $FileService->uploadFile($params['icon'], 'ecommerce.category', auth()->id())['url'] ?? '';
                 unset($params['icon']);

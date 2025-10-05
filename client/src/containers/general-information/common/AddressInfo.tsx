@@ -20,25 +20,24 @@ import { getAddressCoordinate } from '@/services/address/getAddressCoordinate';
 import { useLoadingStore } from '@/store/loading/store';
 import { GOOGLE_MAP_API_URL } from '@/services/type';
 
-type AddressType = 'listCountry' | 'listProvince' | 'listDistrict' | 'listWard';
+type AddressType = 'listCountry' | 'listProvince' | 'listWard';
 
 export default function AddressInfo() {
-	const { listCountry, listProvince, listDistrict, listWard, getAddress } =
+	const { listCountry, listProvince, listWard, getAddress } =
 		useAddressStore();
 	const setLoading = useLoadingStore((state) => state.setLoading);
 	const { setValue, control } = useFormContext<AccommodationInfo>();
 	const [fullyAddress, setFullyAddress] = useState('');
 	const [showModal, setShowModal] = useState(false);
 
-	const [latitude, longitude, country, city, district, ward, fullAddress] =
+	const [latitude, longitude, country, province, ward, fullAddress] =
 		useWatch({
 			control,
 			name: [
 				'address.latitude',
 				'address.longitude',
 				'address.country_id',
-				'address.city_id',
-				'address.district_id',
+				'address.province_id',
 				'address.ward_id',
 				'address.address',
 			],
@@ -50,26 +49,21 @@ export default function AddressInfo() {
 				listCountry.find(
 					(countryItem) => `${countryItem.id}` === `${country}`
 				)?.name ?? '',
-			cityStr:
+			provinceStr:
 				listProvince.list.find(
-					(provinceItem) => `${provinceItem.id}` === `${city}`
+					(provinceItem) => `${provinceItem.id}` === `${province}`
 				)?.name ?? '',
-			districtStr:
-				listDistrict.list.find(
-					(districtItem) => `${districtItem.id}` === `${district}`
-				)?.name ?? '',
+			
 			wardStr:
 				listWard.list.find((wardItem) => `${wardItem.id}` === `${ward}`)
 					?.name ?? '',
 		}),
 		[
 			country,
-			city,
-			district,
+			province,
 			ward,
 			listCountry,
 			listProvince.list,
-			listDistrict.list,
 			listWard.list,
 		]
 	);
@@ -78,10 +72,9 @@ export default function AddressInfo() {
 		() => ({
 			countryData: mapToLabelValue(listCountry),
 			provinceData: mapToLabelValue(listProvince.list) ?? [],
-			districtData: mapToLabelValue(listDistrict.list) ?? [],
 			wardData: mapToLabelValue(listWard.list) ?? [],
 		}),
-		[listCountry, listProvince.list, listDistrict.list, listWard.list]
+		[listCountry, listProvince.list,  listWard.list]
 	);
 
 	const fetchAddressData = useCallback(
@@ -106,46 +99,36 @@ export default function AddressInfo() {
 	}, [country, fetchAddressData]);
 
 	useEffect(() => {
-		if (city) {
-			fetchAddressData('listDistrict', Number(city));
+		if (province) {
+			
+			fetchAddressData('listWard', Number(province));
 		}
-	}, [city, fetchAddressData]);
+	}, [province, fetchAddressData]);
+
+
 
 	useEffect(() => {
-		if (district) {
-			fetchAddressData('listWard', Number(district));
-		}
-	}, [district, fetchAddressData]);
-
-	useEffect(() => {
-		if (listProvince.upperId && listProvince.upperId !== country) {
-			setValue('address.city_id', NaN);
+		if (listProvince.upperId && listProvince.upperId !== province) {
+			setValue('address.province_id', NaN);
 			setValue('address.address', '');
 		}
 	}, [listProvince, country, setValue]);
 
 	useEffect(() => {
-		if (listDistrict.upperId && listDistrict.upperId !== city) {
-			setValue('address.district_id', NaN);
-			setValue('address.address', '');
-		}
-	}, [listDistrict, city, setValue]);
-
-	useEffect(() => {
-		if (listWard.upperId && listWard.upperId !== district) {
+		if (listWard.upperId && listWard.upperId !== ward) {
 			setValue('address.ward_id', NaN);
 			setValue('address.address', '');
 		}
-	}, [listWard, district, setValue]);
+	}, [listWard, province, setValue]);
 
 	const onAddressChange = useDebounce((address: string) => {
 		setFullyAddress(address);
 	}, 1000);
 
 	useEffect(() => {
-		if (!!country && !!city && !!district && !!ward && !!fullAddress) {
-			const { countryStr, cityStr, districtStr, wardStr } = addressData;
-			const fullyAddress = `${fullAddress?.trim()}, ${wardStr}, ${districtStr}, ${cityStr}, ${countryStr}`;
+		if (!!country && !!province && !!province && !!ward && !!fullAddress) {
+			const { countryStr, provinceStr, wardStr } = addressData;
+			const fullyAddress = `${fullAddress?.trim()}, ${wardStr}, ${provinceStr}, ${provinceStr}, ${countryStr}`;
 			onAddressChange(fullyAddress);
 			setValue('address.fullAddress', fullyAddress);
 		} else {
@@ -153,8 +136,7 @@ export default function AddressInfo() {
 		}
 	}, [
 		country,
-		city,
-		district,
+		province,
 		ward,
 		fullAddress,
 		addressData,
@@ -210,7 +192,6 @@ export default function AddressInfo() {
 			</div>
 		);
 	}, [fullyAddress, fetchCoordinate]);
-
 	return (
 		<div className={'space-y-6'}>
 			<Typography
@@ -250,7 +231,7 @@ export default function AddressInfo() {
 						</div>
 						<div className={'col-span-12 lg:col-span-1'}>
 							<FormField
-								name="address.city_id"
+								name="address.province_id"
 								control={control}
 								render={({
 									field: { value, onChange, ...props },
@@ -281,35 +262,7 @@ export default function AddressInfo() {
 						</div>
 					</div>
 					<div className={'grid grid-cols-2 gap-4'}>
-						<div className={'col-span-12 lg:col-span-1'}>
-							<FormField
-								name="address.district_id"
-								control={control}
-								render={({
-									field: { value, onChange, ...props },
-								}) => (
-									<FormItem className={'col-span-2'}>
-										<FormLabel required>
-											Quận/Huyện
-										</FormLabel>
-										<FormControl>
-											<SelectPopup
-												placeholder={'Chọn Quận/Huyện'}
-												className="h-[44px] rounded-lg bg-white py-2"
-												labelClassName="mb-2"
-												data={selectData.districtData}
-												controllerRenderProps={{
-													...props,
-												}}
-												selectedValue={value}
-												onChange={onChange}
-											/>
-										</FormControl>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-						</div>
+						
 						<div className={'col-span-12 lg:col-span-1'}>
 							<FormField
 								name="address.ward_id"

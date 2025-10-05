@@ -72,7 +72,7 @@ return  [
             'action'        => 'show',
         ],
         // contact_route
-         [
+        [
             'controller'    =>   \App\Http\Controllers\Api\V1\Ecommerce\ProductController::class,
             'uri'           => 'contact',
             'name'          => $base . 'contact.create',
@@ -185,7 +185,7 @@ return  [
         [
             'controller'    =>   \App\Http\Controllers\Api\V1\Ecommerce\AuthController::class,
             'middleware'    => [JwtMiddleware::class],
-            'uri'           => 'auth/me',
+            'uri'           => 'me',
             'name'          => $base . 'auth.me',
             'methods'       => ['get'],
             'action'        => 'me',
@@ -622,7 +622,7 @@ return  [
             'methods'       => ['get'],
             'action'        => 'list',
         ],
-         [
+        [
             'controller'    =>   \App\Http\Controllers\Api\V1\Ecommerce\ChatController::class,
             'middleware'    => [JwtMiddleware::class],
             'uri'           => 'chat/by_id/{cons_id}',
@@ -630,7 +630,7 @@ return  [
             'methods'       => ['get'],
             'action'        => 'by_id',
         ],
-         [
+        [
             'controller'    =>   \App\Http\Controllers\Api\V1\Ecommerce\ChatController::class,
             'middleware'    => [JwtMiddleware::class],
             'uri'           => 'chat/message/{id}',
@@ -638,7 +638,7 @@ return  [
             'methods'       => ['get'],
             'action'        => 'getMessage',
         ],
-         [
+        [
             'controller'    =>   \App\Http\Controllers\Api\V1\Ecommerce\ChatController::class,
             'middleware'    => [JwtMiddleware::class],
             'uri'           => 'chat/send_message',
@@ -646,7 +646,7 @@ return  [
             'methods'       => ['post'],
             'action'        => 'sendMessage',
         ],
-         [
+        [
             'controller'    =>   \App\Http\Controllers\Api\V1\Ecommerce\ChatController::class,
             'middleware'    => [JwtMiddleware::class],
             'uri'           => 'chat/get_conversations',
@@ -654,7 +654,7 @@ return  [
             'methods'       => ['get'],
             'action'        => 'getConversations',
         ],
-         [
+        [
             'controller'    =>   \App\Http\Controllers\Api\V1\Ecommerce\ChatController::class,
             'middleware'    => [JwtMiddleware::class],
             'uri'           => 'chat/message-not-read',
@@ -662,7 +662,7 @@ return  [
             'methods'       => ['get'],
             'action'        => 'countMessageNotRead',
         ],
-         [
+        [
             'controller'    =>   \App\Http\Controllers\Api\V1\Ecommerce\ChatController::class,
             'middleware'    => [JwtMiddleware::class],
             'uri'           => 'chat/{id}',

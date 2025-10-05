@@ -7,4 +7,5 @@ return [
     'TABLE_IMAGE'        => 'portfo_images',
     'TABLE_CONTACT'      => 'portfo_contacts',
     'TABLE_BLOG'         => 'portfo_blogs',
+    'TABLE_JOB'          => 'portfo_jobs',
 ];

@@ -50,6 +50,7 @@ function Footer() {
                 <Link href={"#"}>Phưng thức thanh toán</Link>
                 <Link href={"#"}>Chính sách bảo hành</Link>
                 <Link href={"/affiliate/welcome"}>Tiếp thị liên kết</Link>
+                <Link href={"/sign-in"}>Đăng nhập HMS</Link>
               </div>
             </div>
             <div>

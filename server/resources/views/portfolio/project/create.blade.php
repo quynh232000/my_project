@@ -157,6 +157,7 @@
                                 <!--end::Input-->
                             </div>
 
+
                             <div class="fv-row mb-10">
                                 <!--begin::Label-->
                                 <label class="fs-5 fw-bold form-label mb-2">
@@ -171,7 +172,7 @@
 
                                 <!--end::Input-->
                             </div>
-                             <div class="fv-row mb-10">
+                            <div class="fv-row mb-10">
                                 <!--begin::Label-->
                                 <label class="fs-5 fw-bold form-label mb-2">
                                     <span class="">Feature Main</span>
@@ -185,30 +186,16 @@
 
                                 <!--end::Input-->
                             </div>
-                            <div class="mb-10">
+                            <div class="fv-row mb-10">
                                 <!--begin::Label-->
-                                <label class="form-label">Description</label>
-                                <!--end::Label-->
-                                <!--begin::Editor-->
-                                <div id="kt_ecommerce_add_product_meta_description" name="description"
-                                    class="min-h-200px mb-2"></div>
-                                <!--end::Editor-->
-                                <input type="text" name="description" id="hidden_description" class="hidden" hidden>
-                                <script>
-                                    // const quill = new Quill('#kt_ecommerce_add_product_meta_description', {
-                                    //     theme: 'snow'
-                                    // });
+                                <label class="fs-5 fw-bold form-label mb-2">
+                                    <span class="">Description</span>
+                                </label>
+                                <textarea name="description" id="" class="form-control form-control-solid" cols="30" rows="4"></textarea>
 
-                                    $('#form_main').on('submit', function(e) {
-                                        const html = $('#kt_ecommerce_add_product_meta_description .ql-editor').html();
-
-                                        $('#hidden_description').val(html);
-                                    });
-                                </script>
-                                <!--begin::Description-->
-                                <div class="text-muted fs-7">Set a description to the project
-                                    ranking.</div>
+                                <!--end::Input-->
                             </div>
+
                             <div class="fv-row mb-10">
                                 <!--begin::Label-->
                                 <label class="fs-5 fw-bold form-label mb-2">
@@ -224,6 +211,8 @@
 
                                 </select>
                             </div>
+
+
 
 
                             <div class="fv-row mb-10">
@@ -315,6 +304,30 @@
 
                                 </select>
                                 <!--end::Input-->
+                            </div>
+                            <div class="mb-10">
+                                <!--begin::Label-->
+                                <label class="form-label fw-bold form-label mb-2">Content</label>
+                                <!--end::Label-->
+                                <!--begin::Editor-->
+                                <div id="kt_ecommerce_add_product_meta_description" name="content" class=" mb-2"
+                                    style="min-height: 500px"></div>
+                                <!--end::Editor-->
+                                <input type="text" name="content" id="hidden_description" class="hidden" hidden>
+                                <script>
+                                    // const quill = new Quill('#kt_ecommerce_add_product_meta_description', {
+                                    //     theme: 'snow'
+                                    // });
+
+                                    $('#form_main').on('submit', function(e) {
+                                        const html = $('#kt_ecommerce_add_product_meta_description .ql-editor').html();
+
+                                        $('#hidden_description').val(html);
+                                    });
+                                </script>
+                                <!--begin::Description-->
+                                <div class="text-muted fs-7">Set a description to the project
+                                    ranking.</div>
                             </div>
 
 

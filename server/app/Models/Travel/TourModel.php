@@ -2,6 +2,8 @@
 
 namespace App\Models\Travel;
 
+use App\Models\Admin\CountryModel;
+use App\Models\Admin\ProvinceModel;
 use App\Models\Admin\UserModel;
 use App\Models\AdminModel;
 use App\Services\FileService;
@@ -18,7 +20,7 @@ class TourModel  extends AdminModel
         $this->_data        = [
             'listField' => [
                 $this->table . '.id'                => 'id',
-                $this->table . '.thumbnail'          => 'thumbnail',
+                $this->table . '.thumnail'          => 'thumbnail',
                 $this->table . '.title'             => 'title',
                 $this->table . '.type'              => 'type',
                 $this->table . '.price'             => 'price',
@@ -34,7 +36,7 @@ class TourModel  extends AdminModel
             'fieldSearch' => [
                 $this->table . '.name' => 'Tên',
             ],
-            'button' => ['edit','delete'],
+            'button' => ['edit', 'delete'],
         ];
         parent::__construct();
     }
@@ -78,7 +80,7 @@ class TourModel  extends AdminModel
                 'field' =>  $this->table . '.price',
                 'value' => 'price'
             ],
-             [
+            [
                 'field' =>  $this->table . '.number_of_day',
                 'value' => 'number_of_day'
             ],
@@ -139,9 +141,9 @@ class TourModel  extends AdminModel
 
             $params['status'] = $params['status'] ?? 'inactive';
 
-            if($params['logo']??false){
+            if ($params['logo'] ?? false) {
                 $FileService = new FileService();
-                $params['logo'] = $FileService->uploadFile($params['logo'],$params['prefix'].'.'.$params['controller'].'.'.$params['action'],auth()->id())['url'] ?? '';
+                $params['logo'] = $FileService->uploadFile($params['logo'], $params['prefix'] . '.' . $params['controller'] . '.' . $params['action'], auth()->id())['url'] ?? '';
             }
 
             $this->where($this->primaryKey, $params[$this->primaryKey])
@@ -188,7 +190,7 @@ class TourModel  extends AdminModel
                     <option value="inactive" ' . ($default == "inactive" ? "selected" : "") . '>Ẩn</option>
                 </select>';
     }
-    public function columnThumbnail($params, $field, $val)
+    public function columnThumnail($params, $field, $val)
     {
         return '<div class="d-flex justify-content-center px-5">
                     <div class="icon-wrapper cursor-pointer symbol symbol-40px d-flex jusitfy-content-center">
@@ -201,8 +203,36 @@ class TourModel  extends AdminModel
         return \App\Helpers\Template::formatPrice($val[$field]);
     }
 
-    public function user(){
-        return $this->belongsTo(UserModel::class,'user_id','id');
+    public function user()
+    {
+        return $this->belongsTo(UserModel::class, 'user_id', 'id');
     }
-
+    public static function countries($selected = 245)
+    {
+        $data           = CountryModel::select('id', 'name')->orderBy('name', 'asc')->get();
+        $opts           = '';
+        foreach ($data as $key => $value) {
+            $slt        = $value['id'] == $selected ? 'selected' : '';
+            $opts       .= "<option value='{$value['id']}' {$slt}>{$value['name']}</option>";
+        }
+        return '<select class="form-select mb-2" id="country_id" data-control="select2" name="country_id"
+                        data-allow-clear="true">
+                        <option >--Chọn--</option>
+                        ' . $opts . '
+                </select>';
+    }
+    public static function location($name, $selected = null)
+    {
+        $data           = ProvinceModel::select('id', 'name')->orderBy('name', 'asc')->get();
+        $opts           = '';
+        foreach ($data as $key => $value) {
+            $slt        = $value['id'] == $selected ? 'selected' : '';
+            $opts       .= "<option value='{$value['id']}' {$slt}>{$value['name']}</option>";
+        }
+        return '<select class="form-select mb-2" id="' . $name . '" data-control="select2" name="' . $name . '"
+                        data-allow-clear="true">
+                        <option >--Chọn--</option>
+                        ' . $opts . '
+                </select>';
+    }
 }

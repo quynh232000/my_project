@@ -11,8 +11,7 @@ export interface IAccommodationProfileAPI {
 	category_id: number | null;
 	stars: string | null;
 	country_id: number | null;
-	city_id: number | null;
-	district_id: number | null;
+	province_id: number | null;
 	ward_id: number | null;
 	address: string | null;
 	latitude: number | null;
@@ -30,11 +29,11 @@ export interface IAccommodationProfileAPI {
 	floor_count: number | null;
 	language: string | null;
 	faqs:
-		| {
-				question: string;
-				reply: string;
-		  }[]
-		| null;
+	| {
+		question: string;
+		reply: string;
+	}[]
+	| null;
 	description: string | null;
 	created_at: string;
 	created_by: number;

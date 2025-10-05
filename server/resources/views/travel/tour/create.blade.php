@@ -1,6 +1,7 @@
 @extends('layout.app')
-@section('title', 'Add Category')
+@section('title', 'Add Tour')
 @section('main')
+    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet" />
     <div id="kt_app_content_container" class="app-container ">
 
         <div class="card card-flush">
@@ -20,140 +21,229 @@
 
                 <div class=" mx-lg-5 my-7">
                     <!--begin::Form-->
-                    <form id="" class="form"
-                        action="{{ route($params['prefix'] . '.' . $params['controller'] . '.store') }}" method="POST" enctype="multipart/form-data" >
+                    <form class="form-horizontal app-container" id="admin-{{ $params['prefix'] }}-form"
+                        name="admin-{{ $params['prefix'] }}-form" enctype="multipart/form-data" method="POST"
+                        action="{{ route($params['prefix'] . '.' . $params['controller'] . '.store') }}">
+                        <input type="hidden" name="_method" value="POST">
                         @csrf
                         <!--begin::Scroll-->
 
-                        <div class="d-flex flex-column scroll-y me-n7 pe-7">
-                            <div class="fv-row mb-10">
-                                <!--begin::Label-->
-                                <label class="fs-5 fw-bold form-label mb-2">
-                                    <span class="required">Parent Category</span>
-                                </label>
-
-                                <select class="form-select mb-2" data-control="select2" name="parent_id"
-                                    data-placeholder="Select an option" data-allow-clear="true"
-                                    data-placeholder="Select an option" id="kt_ecommerce_add_product_status_select">
-                                    <option value="">--Select--</option>
-                                    @foreach ($params['categories'] as $item)
-                                        <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                    @endforeach
-                                </select>
-                                @error('parent_id')
-                                    <small class="text-danger">{{ $message }}</small>
-                                @enderror
-                            </div>
-                            <!--begin::Input group-->
-                            <div class="fv-row mb-10">
-                                <label class="fs-5 fw-bold form-label mb-2">
-                                    <span class="required">Name</span>
-                                </label>
-                                <input class="form-control form-control-solid" placeholder="Enter Aa.." name="name" />
-                                @error('name')
-                                    <small class="text-danger">{{ $message }}</small>
-                                @enderror
-                            </div>
-                            <div class="fv-row mb-10">
-                                <label class="fs-5 fw-bold form-label mb-2">
-                                    <span class="required">Status</span>
-                                </label>
-                                 {!!\App\Models\Ecommerce\CategoryModel::slbStatus($params['status'] ?? '')!!}
-                                @error('status')
-                                    <small class="text-danger">{{ $message }}</small>
-                                @enderror
-                            </div>
-
-                            <div class="fv-row mb-10">
-                                <!--begin::Label-->
-                                <label class="fs-5 fw-bold form-label mb-2">
-                                    <span class="">Icon</span>
-                                </label>
-                                <!--end::Label-->
-                                <!--begin::Input-->
-                                {{-- <input type="file" class="form-control form-control-solid" placeholder="Enter Aa.."
-                                    name="icon" /> --}}
-                                <div class="card-body text-center pt-0">
-                                    <!--begin::Image input-->
-                                    <!--begin::Image input placeholder-->
-                                    <style>
-                                        .image-input-placeholder {
-                                            background-image: url('{{asset("assets/media/svg/files/blank-image.svg")}}');
-                                        }
-
-                                        [data-bs-theme="dark"] .image-input-placeholder {
-                                            background-image: url('{{asset("assets/media/svg/files/blank-image-dark.svg")}}');
-                                        }
-                                    </style>
-                                    <!--end::Image input placeholder-->
-                                    <div class="image-input image-input-empty image-input-outline image-input-placeholder mb-3"
-                                        data-kt-image-input="true">
-                                        <!--begin::Preview existing avatar-->
-                                        <div class="image-input-wrapper w-150px h-150px"></div>
-                                        <!--end::Preview existing avatar-->
-                                        <!--begin::Label-->
-                                        <label
-                                            class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
-                                            data-kt-image-input-action="change" data-bs-toggle="tooltip"
-                                            title="Change avatar">
-                                            <i class="ki-outline ki-pencil fs-7"></i>
-                                            <!--begin::Inputs-->
-                                            <input type="file" name="icon" accept=".png, .jpg, .jpeg" />
-                                            <input type="hidden" name="avatar_remove" />
-                                            <!--end::Inputs-->
-                                        </label>
-                                        <!--end::Label-->
-                                        <!--begin::Cancel-->
-                                        <span
-                                            class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
-                                            data-kt-image-input-action="cancel" data-bs-toggle="tooltip"
-                                            title="Cancel avatar">
-                                            <i class="ki-outline ki-cross fs-2"></i>
-                                        </span>
-                                        <!--end::Cancel-->
-                                        <!--begin::Remove-->
-                                        <span
-                                            class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
-                                            data-kt-image-input-action="remove" data-bs-toggle="tooltip"
-                                            title="Remove avatar">
-                                            <i class="ki-outline ki-cross fs-2"></i>
-                                        </span>
-                                        <!--end::Remove-->
+                        <div class="row">
+                            <div class="col-md-7 ">
+                                <div>
+                                    <div class="mb-2">
+                                        <label for="title" class="form-label">Tiêu đề</label>
+                                        <input type="text" value="{{ old('title') }}" class="form-control"
+                                            id="title" name="title">
                                     </div>
-                                    <!--end::Image input-->
-                                    <!--begin::Description-->
-                                    <div class="text-muted fs-7">Set the product thumbnail image. Only *.png, *.jpg and
-                                        *.jpeg image files are accepted</div>
-                                    <!--end::Description-->
+
+
+                                    <div class="form-group col-12 p-2 mb-0">
+                                        <label class="col-form-label col-12" for="image">Thumbnail</label>
+                                        <x-admin.input.upload :name="'image'"></x-admin.input.upload>
+                                    </div>
+
+                                    <div class="mb-2">
+                                        <label for="images" class="form-label">Images (max4)</label>
+                                        <input type="file" multiple class="form-control" id="images" name="images[]">
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="mb-2">
+                                                <label for="title" class="form-label">Type</label>
+                                                <select name="type" class="form-control" id="">
+                                                    <option value="">--Select--</option>
+                                                    <option value="inside" selected>Trong nước</option>
+                                                    <option value="ouside">Nước ngoài</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mb-2">
+                                                <label for="title" class="form-label">Category</label>
+                                                <select name="category" class="form-control" id="">
+                                                    <option value="">--Select--</option>
+                                                    <option value="tour" selected>Tour du lịch</option>
+                                                    <option value="hotel">Khách sạn</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="mb-2">
+                                                <label for="price" class="form-label">Giá</label>
+                                                <input type="number" value="{{ old('price') }}" class="form-control"
+                                                    id="price" name="price">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="mb-2">
+                                                <label for="price_child" class="form-label">Giá trẻ em</label>
+                                                <input type="number" value="{{ old('price_child') }}" class="form-control"
+                                                    id="price_child" name="price_child">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="mb-2">
+                                                <label for="price_baby" class="form-label">Giá baby</label>
+                                                <input type="number" value="{{ old('price_baby') }}" class="form-control"
+                                                    id="price_baby" name="price_baby">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="mb-2">
+                                                <label for="percent_sale" class="form-label">Giảm giá (%)</label>
+                                                <input type="number" class="form-control" value="0" id="percent_sale"
+                                                    name="percent_sale">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mb-2">
+                                                <label for="additional_fee" class="form-label">Phí phụ thu</label>
+                                                <input type="number" class="form-control" value="0"
+                                                    id="additional_fee" name="additional_fee">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="mb-2">
+                                                <label for="title" class="form-label">Nước</label>
+                                                {!! \App\Models\Travel\TourModel::countries() !!}
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="mb-2">
+                                                <label for="title" class="form-label">Tỉnh bắt đầu</label>
+                                                {!! \App\Models\Travel\TourModel::location('province_start_id') !!}
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="mb-2">
+                                                <label for="title" class="form-label">Tỉnh kết thúc</label>
+                                                {!! \App\Models\Travel\TourModel::location('province_end_id') !!}
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
                                 </div>
-                                <!--end::Input-->
                             </div>
-                            <div class="fv-row mb-10">
-                                <!--begin::Label-->
-                                <label class="fs-5 fw-bold form-label mb-2">
-                                    <span class="">Or Link Icon</span>
-                                </label>
-                                <!--end::Label-->
-                                <!--begin::Input-->
-                                <input type="text" class="form-control form-control-solid" placeholder="Enter https.."
-                                    name="icon_link" />
-                                <!--end::Input-->
+                            <div class="col-md-5">
+                                <div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="mb-2">
+                                                <label for="number_of_day" class="form-label">Số ngày đi</label>
+                                                <input type="number" class="form-control" id="number_of_day"
+                                                    name="number_of_day" value="1" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mb-2">
+                                                <label for="description" class="form-label">Dòng tour</label>
+                                                <select name="tour_pakage" class="form-control" id="">
+                                                    <option value="">--Select--</option>
+                                                    <option value="luxury">Cao cấp</option>
+                                                    <option value="standard" selected>Tiêu chuẩn</option>
+                                                    <option value="affordable">Giá tốt</option>
+                                                    <option value="saving">Tiết kiệm</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+
+                                            <div class="mb-2">
+                                                <label for="quantity" class="form-label">Số lượng vé</label>
+                                                <input type="number" class="form-control" id="quantity"
+                                                    name="quantity" value="10" />
+                                            </div>
+
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mb-2">
+                                                <label for="number_of_day" class="form-label">Transportation</label>
+                                                <select name="transportation" class="form-control" id="">
+                                                    <option value="">--Select--</option>
+                                                    <option value="airplane" selected>Máy bay</option>
+                                                    <option value="car">Ô tô</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+
+                                            <div class="mb-2">
+                                                <label for="date_start" class="form-label">Ngày khởi hành</label>
+                                                <input class="form-control" type="date" id="date_start"
+                                                    name="date_start" />
+                                            </div>
+
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="mb-2">
+                                                <label for="time_start" class="form-label">Giờ khởi hành</label>
+                                                <input class="form-control" type="text" id="time_start"
+                                                    value="08:30" name="time_start" />
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div
+                                        class="fw-bold py-2 mb-2 border-top mt-2 pt-2 text-white px-2 d-flex justify-content-between">
+                                        <div>Lịch trình Tour</div>
+                                        <div class="btn btn-sm btn-info" id="btn-add">Thêm</div>
+                                    </div>
+                                    <div id="process_detail">
+                                        {{-- <div class="border p-2 border-primary mb-2">
+                                <div class="mb-2">
+                                    <label class="fw-bold" for="">Ngày <span></span></label>
+                                    <input type="date" name="date[]" class="form-control">
+                                </div>
+                                <div class="mb-2">
+                                    <label class="fw-bold" for="">Tiêu đề <span></span></label>
+                                    <input type="date" name="title_process[]" class="form-control">
+                                </div>
+                                <div class="mb-2">
+                                    <label class="fw-bold" for="">Content <span></span></label>
+                                    <div id="editor"  style="min-height: 60px">
+
+                                    </div>
+                                </div>
+                                <input type="text" name="content[]" hidden>
+                            </div> --}}
+
+
+
+
+                                    </div>
+
+                                </div>
                             </div>
-
-                            <!--end::Input group-->
-                            <!--begin::Permissions-->
-
-                        </div>
-                        <!--end::Scroll-->
-                        <!--begin::Actions-->
-                        <div class="text-center pt-15">
-                            <button type="submit" class="btn btn-primary" data-kt-roles-modal-action="submit">
-                                <span class="indicator-label">Submit</span>
-                                <span class="indicator-progress">Please wait...
-                                    <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
-                            </button>
-                        </div>
-                        <!--end::Actions-->
+                            <!--end::Scroll-->
+                            <!--begin::Actions-->
+                            <div class="text-center pt-15">
+                                <button type="submit" class="btn btn-primary" data-kt-roles-modal-action="submit">
+                                    <span class="indicator-label">Submit</span>
+                                    <span class="indicator-progress">Please wait...
+                                        <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+                                </button>
+                            </div>
+                            <!--end::Actions-->
                     </form>
                     <!--end::Form-->
                 </div>
@@ -176,9 +266,121 @@
     <script src="{{ asset('assets/js/custom/apps/chat/chat.js') }}"></script>
     <script src="{{ asset('assets/js/custom/utilities/modals/users-search.js') }}"></script>
 
+    <script>
+        $(document).ready(function() {
+            $('#admin-{{ $params['prefix'] }}-form').submit(function(e) {
+                e.preventDefault();
+                $('.input-error').html('');
+                const formEl = $(this)
+                $(this).find('.indicator-label').hide()
+                $(this).find('.indicator-progress').show()
+                $(this).find(`button[type='submit']`).prop('disabled', true);
+                var formData = new FormData(this);
+                $.ajax({
+                    type: 'POST',
+                    url: "{{ route($params['prefix'] . '.' . $params['controller'] . '.store') }}",
+                    data: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: (res) => {
+                        $(formEl).find('.indicator-label').show()
+                        $(formEl).find('.indicator-progress').hide()
+                        $(formEl).find(`button[type='submit']`).prop('disabled', false);
+                        Swal.fire({
+                                text: res.message ??
+                                    "Form has been successfully submitted!",
+                                icon: "success",
+                                buttonsStyling: !1,
+                                confirmButtonText: "Ok, got it!",
+                                customClass: {
+                                    confirmButton: "btn btn-primary"
+                                }
+                            })
+                            .then((function(e) {
+                                window.location.reload()
+                            }))
+
+                    },
+                    error: function(data) {
+                        for (x in data.responseJSON.errors) {
+                            $('#' + x).parents('.form-group').find('.input-error').html(data
+                                .responseJSON.errors[x]);
+                            $('#' + x).parents('.form-group').find('.input-error').show();
+                            $('#' + x).addClass('is-invalid');
+                        }
+
+                        $(formEl).find('.indicator-label').show()
+                        $(formEl).find('.indicator-progress').hide()
+                        $(formEl).find(`button[type='submit']`).prop('disabled', false);
+                        let errorMs = '<ul class="text-right text-start text-danger mt-3">';
+                        for (x in data.responseJSON.errors) {
+                            errorMs += `<li><i class="">${data.responseJSON.errors[x]}</i></li>`
+                        }
+                        errorMs += '</ul>'
+                        if (data.status == 400) {
+                            errorMs =
+                                `<div class="text-danger mt-2"> ${ data.responseJSON.message ?? 'Error from server' }</div>`
+                        }
+                        Swal.fire({
+                            html: "Sorry, something errors please try again: " +
+                                errorMs,
+                            icon: "error",
+                            buttonsStyling: !1,
+                            confirmButtonText: "Ok, got it!",
+                            customClass: {
+                                confirmButton: "btn btn-primary"
+                            }
+                        })
+                    }
+                });
+            });
+
+        });
+    </script>
 
 
+    <script>
+        let quillIndex = 0;
+        $("#btn-add").click(function() {
 
+            $("#process_detail").append(`
+                 <div class="border p-2 border-primary mb-2">
+                     <input type="text" name="content[]" class="d-none" id="content${quillIndex}">
+                    <div class="mb-2">
+                        <label class="fw-bold" for="">Ngày <span>${+quillIndex+1}</span></label>
+                        <input type="date" name="date[]" class="form-control">
+                    </div>
+                    <div class="mb-2">
+                        <label class="fw-bold" for="">Tiêu đề <span></span></label>
+                        <input type="text" name="title_process[]" class="form-control">
+                    </div>
+                    <div class="mb-2">
+                        <label class="fw-bold" for="">Content <span></span></label>
+                        <div id="editor${quillIndex}"  style="min-height: 60px">
+
+                        </div>
+                    </div>
+                </div>
+
+            `)
+            new Quill('#editor' + quillIndex, {
+                theme: 'snow'
+            });
+            quillIndex++;
+        })
+        // submit form
+        $("#form-create").on('submit', function(e) {
+            // e.preventDefault();
+            // submit data to server
+            for (let index = 0; index < quillIndex; index++) {
+                $("#content" + index).val($('#editor' + index).html());
+            }
+        })
+    </script>
     <!--end::Custom Javascript-->
     <!--end::Javascript-->
 @endpush

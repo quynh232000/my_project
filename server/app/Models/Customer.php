@@ -40,7 +40,7 @@ class Customer extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [
-            'hotel_ids' => $this->hotels()->pluck(TABLE_HOTEL_HOTEL.'.id')
+            'hotel_ids' => $this->hotels()->pluck(TABLE_HOTEL_HOTEL . '.id')
         ];
     }
     protected $fillable = [
@@ -64,32 +64,31 @@ class Customer extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password',
+        'remember_token',
     ];
 
     public function getItem($params = null, $options = null)
     {
         $result = null;
         if ($options['task'] == 'get-item') {
-            $result               = self::select('id','username','full_name','email','phone','created_at','image')
-                                    ->where('id',$params['id'])->first();
+            $result               = self::select('id', 'username', 'full_name', 'email', 'phone', 'created_at', 'image')
+                ->where('id', $params['id'])->first();
         }
         if ($options['task'] == 'get-item-by-email') {
-            $result               = self::select('id','username','full_name','email','phone','created_at','image')
-                                    ->where('email',$params['email'])->first();
+            $result               = self::select('id', 'username', 'full_name', 'email', 'phone', 'created_at', 'image')
+                ->where('email', $params['email'])->first();
         }
         return $result;
     }
-    public function getImageAttribute()
+
+    public function saveItem($params = null, $options = null)
     {
-        return $this->attributes['image'] ? URL_DATA_IMAGE.config('filesystems.disks.s3_hotel.bucket')."/customer/". $this->attributes['image'] : null;
-    }
-    public function saveItem($params = null, $options = null){
-        if($options['task'] == 'forgot-password'){
+        if ($options['task'] == 'forgot-password') {
 
-            $item                  = self::where('email',$params['email'])->first();
+            $item                  = self::where('email', $params['email'])->first();
 
-            if(!$item){
+            if (!$item) {
                 return [
                     'status'        => false,
                     'message'       => 'Email không tồn tại.'
@@ -137,17 +136,15 @@ class Customer extends Authenticatable implements JWTSubject
                     'status'        => true,
                     'message'       => 'Đã gửi yêu cầu lấy lại mật khẩu! Vui lòng kiểm tra email để tiếp tục.'
                 ];
-
             } catch (\Throwable $th) {
                 return [
                     'status'        => false,
                     'message'       => $th->getMessage()
                 ];
             }
-
         }
 
-        if($options['task'] == 'reset-password'){
+        if ($options['task'] == 'reset-password') {
 
             if (!Cache::get('reset_verified:' . $params['email'])) {
                 return [
@@ -171,10 +168,10 @@ class Customer extends Authenticatable implements JWTSubject
                 'status'        => true,
                 'message'       => 'Đặt lại mật khẩu thành công.'
             ];
-
         }
     }
-    public function verifyResetCode($params) {
+    public function verifyResetCode($params)
+    {
         $email          = strtolower($params['email']);
         $attemptsKey    = 'otp_attempts:' . $email;
         $lockoutKey     = 'otp_locked:' . $email;
@@ -189,9 +186,9 @@ class Customer extends Authenticatable implements JWTSubject
 
 
         $cutomer = Customer::where('email', $params['email'])
-                ->where('reset_code', $params['code'])
-                ->where('reset_code_expires_at', '>=', now())
-                ->first();
+            ->where('reset_code', $params['code'])
+            ->where('reset_code_expires_at', '>=', now())
+            ->first();
 
         if (!$cutomer) {
 

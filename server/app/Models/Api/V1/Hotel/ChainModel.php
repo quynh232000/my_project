@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models\Api\V1\Hotel;
+
 use App\Models\ApiModel;
 
 class ChainModel extends ApiModel
@@ -18,21 +19,17 @@ class ChainModel extends ApiModel
         $results        = null;
 
         if ($options['task'] == 'list') {
-            $results    = self::select('id','name','slug','logo','image','price')
-                        ->where(['status' => 'active'])
-                        ->orderBy('created_at','desc')
-                        ->orderBy('priority', $params['direction'] ?? 'asc')
-                        ->limit($params['limit'] ?? 8)
-                        ->get() ?? [];
+            $results    = self::select('id', 'name', 'slug', 'logo', 'image', 'price')
+                ->where(['status' => 'active'])
+                // ->orderBy('type', 'asc')
+                ->orderBy('priority', $params['direction'] ?? 'asc')
+                ->limit($params['limit'] ?? 99)
+                ->get() ?? [];
         }
         return $results;
     }
-    public function getImageAttribute()
+    public function hotels()
     {
-        return $this->attributes['image'] ? URL_DATA_IMAGE."hotel/chain/images/".$this->id.'/'. $this->attributes['image'] : null;
-    }
-    public function getLogoAttribute()
-    {
-        return $this->attributes['logo'] ? URL_DATA_IMAGE."hotel/chain/images/".$this->id.'/'. $this->attributes['logo'] : null;
+        return $this->hasMany(HotelModel::class, 'chain_id', 'id');
     }
 }

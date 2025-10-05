@@ -103,7 +103,7 @@ const RoomImageSetting = ({ onNext }: RoomImageSettingProps) => {
 			reset({
 				images: album.map((item) => ({
 					id: uuidv4(),
-					url: item.image_url,
+					url: item.image,
 					tag: String(item.label_id),
 					file: '',
 					image_id: item.id,

@@ -9,10 +9,6 @@ export const useAddressStore = create<AddressState & AddressActions>(
 			upperId: NaN,
 			list: [],
 		},
-		listDistrict: {
-			upperId: NaN,
-			list: [],
-		},
 		listWard: {
 			upperId: NaN,
 			list: [],
@@ -41,30 +37,14 @@ export const useAddressStore = create<AddressState & AddressActions>(
 					});
 				}
 			}
-			if (type === 'listDistrict') {
-				if (
-					get().listDistrict.list.length <= 0 ||
-					get().listDistrict.upperId !== upperId
-				) {
-					const data = await getAddress({
-						type: 'city_id',
-						id: upperId,
-					});
-					set({
-						listDistrict: {
-							upperId: upperId ?? NaN,
-							list: data ?? [],
-						},
-					});
-				}
-			}
+
 			if (type === 'listWard') {
 				if (
 					get().listWard.list.length <= 0 ||
 					get().listWard.upperId !== upperId
 				) {
 					const data = await getAddress({
-						type: 'district_id',
+						type: 'province_id',
 						id: upperId,
 					});
 					set({

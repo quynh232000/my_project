@@ -30,11 +30,11 @@ class AuthController extends ApiController
     {
         try {
             $validator = Validator::make($request->all(), [
-                            'full_name'     => 'required|string|max:255',
-                            'email'         => 'required|string|email|max:255',
-                            'password'      => 'required|string|min:6',
-                            'code'          => 'required|string|min:6',
-                        ]);
+                'full_name'     => 'required|string|max:255',
+                'email'         => 'required|string|email|max:255',
+                'password'      => 'required|string|min:6',
+                // 'code'          => 'required|string|min:6',
+            ]);
 
             if ($validator->fails()) {
                 return $this->errorResponse('Vui lòng nhập đầy đủ thông tin!', $validator->errors(), 400);
@@ -44,30 +44,30 @@ class AuthController extends ApiController
                 return $this->errorResponse('Email đã tồn tại!', $validator->errors(), 400);
             }
             // check code is correct
-            $checkCode      = PasswordResetTokenModel::where(['token' => $request->code, 'email' => $request->email])->first();
-            if (!$checkCode) {
-                return $this->errorResponse('Mã Code không đúng!', null, 400);
-            }
+            // $checkCode      = PasswordResetTokenModel::where(['token' => $request->code, 'email' => $request->email])->first();
+            // if (!$checkCode) {
+            //     return $this->errorResponse('Mã Code không đúng!', null, 400);
+            // }
             $list_avatars   = [
-                                'https://img.freepik.com/free-psd/3d-illustration-person-with-sunglasses_23-2149436188.jpg',
-                                'https://img.freepik.com/free-psd/3d-illustration-bald-person-with-glasses_23-2149436184.jpg',
-                                'https://img.freepik.com/free-psd/3d-illustration-person-with-glasses_23-2149436191.jpg',
-                                'https://img.freepik.com/free-psd/3d-illustration-person-with-sunglasses_23-2149436178.jpg'
-                            ];
+                'https://img.freepik.com/free-psd/3d-illustration-person-with-sunglasses_23-2149436188.jpg',
+                'https://img.freepik.com/free-psd/3d-illustration-bald-person-with-glasses_23-2149436184.jpg',
+                'https://img.freepik.com/free-psd/3d-illustration-person-with-glasses_23-2149436191.jpg',
+                'https://img.freepik.com/free-psd/3d-illustration-person-with-sunglasses_23-2149436178.jpg'
+            ];
             $user           = UserModel::create([
-                                'uuid'              => Str::uuid(),
-                                'full_name'         => $request->full_name,
-                                'username'          => explode('@', $request->email)[0],
-                                'email'             => $request->email,
-                                'password'          => Hash::make($request->password),
-                                'email_verified_at' => now(),
-                                'avatar'        => $list_avatars[rand(0, count($list_avatars) - 1)]
-                            ]);
+                'uuid'              => Str::uuid(),
+                'full_name'         => $request->full_name,
+                'username'          => explode('@', $request->email)[0],
+                'email'             => $request->email,
+                'password'          => Hash::make($request->password),
+                'email_verified_at' => now(),
+                'avatar'        => $list_avatars[rand(0, count($list_avatars) - 1)]
+            ]);
             UserRoleModel::create([
-                                'user_id' => $user->id,
-                                'role_id' => 1
-                            ]);
-            $checkCode->delete();
+                'user_id' => $user->id,
+                'role_id' => 1
+            ]);
+            // $checkCode->delete();
 
             $token          = auth('ecommerce')->login($user);
             $user->roles    = ['User'];
@@ -103,19 +103,19 @@ class AuthController extends ApiController
     protected function respondWithToken($token)
     {
         return [
-                    'access_token'  => $token,
-                    'refresh_token' => $this->createRefreshToken(),
-                    'token_type'    => 'bearer',
-                    'expires_in'    => auth('ecommerce')->factory()->getTTL() * 3600
-                ];
+            'access_token'  => $token,
+            'refresh_token' => $this->createRefreshToken(),
+            'token_type'    => 'bearer',
+            'expires_in'    => auth('ecommerce')->factory()->getTTL() * 3600
+        ];
     }
     protected function createRefreshToken()
     {
         $data           = [
-                            'user_id'   => auth('ecommerce')->user()->id,
-                            'random'    => rand() . time(),
-                            'exp'       => time() + config('jwt.refresh_ttl')
-                        ];
+            'user_id'   => auth('ecommerce')->user()->id,
+            'random'    => rand() . time(),
+            'exp'       => time() + config('jwt.refresh_ttl')
+        ];
         $refreshToken   = JWTAuth::getJWTProvider()->encode($data);
         return $refreshToken;
     }
@@ -123,8 +123,8 @@ class AuthController extends ApiController
     {
         try {
             $validate   = Validator::make($request->all(), [
-                            'email' => 'required|email'
-                        ]);
+                'email' => 'required|email'
+            ]);
             if ($validate->fails()) {
                 return $this->errorResponse('Vui lòng nhập Email!');
             }
@@ -142,8 +142,8 @@ class AuthController extends ApiController
     {
         try {
             $validate       = Validator::make($request->all(), [
-                                'email' => 'required|email'
-                            ]);
+                'email' => 'required|email'
+            ]);
             if ($validate->fails()) {
                 return $this->errorResponse('Vui lòng nhập Email!', $validate->errors());
             }
@@ -177,9 +177,9 @@ class AuthController extends ApiController
     {
         try {
             $validator          = Validator::make($request->all(), [
-                                    'email'         => 'required|string|email|max:255',
-                                    'password'      => 'required|string|min:6',
-                                ]);
+                'email'         => 'required|string|email|max:255',
+                'password'      => 'required|string|min:6',
+            ]);
             if ($validator->fails()) {
                 return $this->errorResponse('Vui lòng nhập đầy đủ thông tin!', $validator->errors());
             }
@@ -209,8 +209,8 @@ class AuthController extends ApiController
             $user->failed_attempts          = 0;
             $user->blocked_until            = null;
             UserModel::where('id', auth('ecommerce')->id())->update([
-                            'last_login_at' =>  Carbon::now()
-                        ]);
+                'last_login_at' =>  Carbon::now()
+            ]);
             $user->save();
             $user->coin_login_daily($user->id);
             $user->total_coin   = $user->total_coin();
@@ -230,8 +230,8 @@ class AuthController extends ApiController
                 return $this->errorResponse("Unauthorized", null, 403);
             }
             $coin_last          = CoinTransactionModel::where(['user_id' => auth('ecommerce')->id()])
-                                ->orderBy('id', 'desc')
-                                ->value('balance_after');
+                ->orderBy('id', 'desc')
+                ->value('balance_after');
             $user->total_coin   = $coin_last ? $coin_last : 0;
             $user->roles        = $user->roles();
             $user->shop;
@@ -251,8 +251,8 @@ class AuthController extends ApiController
     {
         try {
             $validator      = Validator::make($request->all(), [
-                                'id_token' => 'required|string',
-                            ]);
+                'id_token' => 'required|string',
+            ]);
             if ($validator->fails()) {
                 return $this->errorResponse('Vui lòng nhập đầy đủ thông tin!', $validator->errors());
             }
@@ -287,19 +287,19 @@ class AuthController extends ApiController
                 // return $this->successResponse('Đăng nhập thành công!', ['user' => $user, 'meta' => $this->respondWithToken($token)]);
             } else {
                 $user               = UserModel::create([
-                                        'avatar'            => $data['picture'],
-                                        'thumbnail_url'     => $data['picture'],
-                                        'uuid'              => Str::uuid(),
-                                        'full_name'         => $data['name'],
-                                        'username'          => explode('@', $data['email'])[0],
-                                        'email'             => $data['email'],
-                                        'email_verified_at' => now(),
-                                    ]);
+                    'avatar'            => $data['picture'],
+                    'thumbnail_url'     => $data['picture'],
+                    'uuid'              => Str::uuid(),
+                    'full_name'         => $data['name'],
+                    'username'          => explode('@', $data['email'])[0],
+                    'email'             => $data['email'],
+                    'email_verified_at' => now(),
+                ]);
                 if ($user) {
                     UserRoleModel::create([
-                                        'user_id' => $user->id,
-                                        'role_id' => 1
-                                    ]);
+                        'user_id' => $user->id,
+                        'role_id' => 1
+                    ]);
                 }
                 $user->coin_register($user->id);
                 $token              = auth('ecommerce')->login($user);
@@ -310,8 +310,8 @@ class AuthController extends ApiController
             $user->total_coin       = $user->total_coin();
             $user->shop;
             UserModel::where('id', auth('ecommerce')->id())->update([
-                                        'last_login_at' =>  Carbon::now()
-                                    ]);
+                'last_login_at' =>  Carbon::now()
+            ]);
             return $this->successResponse($message, ['user' => $user, 'meta' => $this->respondWithToken($token)]);
         } catch (Exception $e) {
             return $this->errorResponse('Đã xảy ra lỗii! Vui lòng thử lại sau.', $e->getMessage(), 500);
@@ -321,8 +321,8 @@ class AuthController extends ApiController
     {
         try {
             $validator      = Validator::make($request->all(), [
-                                    'email' => 'required|string',
-                                ]);
+                'email' => 'required|string',
+            ]);
             if ($validator->fails()) {
 
                 return $this->errorResponse('Vui lòng nhập đầy đủ thông tin!', $validator->errors());
@@ -354,9 +354,9 @@ class AuthController extends ApiController
     {
         try {
             $validator          = Validator::make($request->all(), [
-                                    'password'  => 'required|string',
-                                    'token'     => 'required|string',
-                                ]);
+                'password'  => 'required|string',
+                'token'     => 'required|string',
+            ]);
             if ($validator->fails()) {
                 return $this->errorResponse(false, 'Vui lòng nhập đầy đủ thông tin!', $validator->errors());
             }
@@ -372,5 +372,4 @@ class AuthController extends ApiController
             return $this->errorResponse("Đã xảy ra lỗi! Vui lòng thử lại sau.", $e->getMessage(), 500);
         }
     }
-
 }
