@@ -1,4 +1,5 @@
 <?php
+$base = basename(__FILE__, '.php');
 return [
     'title'     => 'Portfolio',
     'icon'      => 'ki-outline ki-chart',
@@ -58,6 +59,13 @@ return [
             'name_route' => basename(__FILE__, '.php').'.contact',
             'sub' => [
                 ['title' => 'Contacts Listing', 'route' => 'portfolio.contact.index'],
+            ],
+        ],
+         [
+            'title' => 'My Jobs',
+            'name_route' => $base.'.job',
+            'sub' => [
+                ['title' => 'Jobs Listing', 'route' => 'portfolio.job.index'],
             ],
         ],
 

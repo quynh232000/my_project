@@ -1,7 +1,8 @@
-@props(['name', 'url'])
+@props(['name', 'url', 'accept'])
 @php
     $url        = $url ?? '';
     $name       = $name  ?? 'image';
+    $accept       = $accept  ?? ".png, .jpg, .jpeg";
     $imageClass = 'image-placeholder-' . preg_replace('/[^a-z0-9_\-]/i', '-', $name);
     $imageUrl   = $url && trim($url) !== '' ? url($url) : asset('assets/media/svg/files/blank-image.svg');
 @endphp
@@ -21,7 +22,7 @@
         <label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
             data-kt-image-input-action="change" data-bs-toggle="tooltip" title="Change avatar">
             <i class="ki-outline ki-pencil fs-7"></i>
-            <input type="file" name="{{ $name ?? 'image' }}" accept=".png, .jpg, .jpeg" />
+            <input type="file" name="{{ $name ?? 'image' }}" accept="{{$accept}}" />
             <!--end::Inputs-->
         </label>
         <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"

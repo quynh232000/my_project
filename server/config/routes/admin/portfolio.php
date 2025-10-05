@@ -126,6 +126,28 @@ return  [
             'methods'       => ['post'],
             'action'        => 'confirmDelete',
         ],
+        // job_route
+          [
+            'type'          => 'resource',
+            'uri'           => 'job',
+            'controller'    => \App\Http\Controllers\Admin\Portfolio\JobController::class,
+            'name_prefix'   => $base . '.job',
+            'only'          => ['index', 'create','edit','update','show', 'destroy','store'],
+        ],
+        [
+            'controller'    =>  \App\Http\Controllers\Admin\Portfolio\JobController::class,
+            'uri'           => $base . '/job/status/{status}/{id}',
+            'name'          => $base . '.job.status',
+            'methods'       => ['get'],
+            'action'        => 'status',
+        ],
+        [
+            'controller'    =>  \App\Http\Controllers\Admin\Portfolio\JobController::class,
+            'uri'           => $base . '/job/confirm-delete',
+            'name'          => $base . '.job.confirm-delete',
+            'methods'       => ['post'],
+            'action'        => 'confirmDelete',
+        ],
     ]
 
 ];
