@@ -1,7 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+Route::get('/', function () {
+    return response('OK', 200);
+});
 $groups = config('custom_routes.web');
 
 foreach ($groups as $group) {
