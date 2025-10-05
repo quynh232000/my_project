@@ -14,7 +14,8 @@ services:
             working_dir: /var/www/html
             volumes:
             # Dùng đường dẫn tuyệt đối, để act hiểu chính xác vị trí project thật
-            - ./server:/var/www/html
+                - ./server:/var/www/html
+            command: bash -c "composer install && php artisan serve --host=0.0.0.0 --port=80"
     # client:
     #     build:
     #         context: ./client
