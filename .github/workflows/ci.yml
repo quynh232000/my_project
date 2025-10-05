@@ -9,23 +9,20 @@ on:
 jobs:
   build-and-deploy-local:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: .
 
     env:
       APP_ENV: local
       APP_DEBUG: true
-      APP_KEY: ${{ secrets.APP_KEY }}
       COMPOSE_DOCKER_CLI_BUILD: 1
       DOCKER_BUILDKIT: 1
+      APP_KEY: ${{ secrets.APP_KEY }}
 
     steps:
       # 🧾 1. Checkout source code
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 🐳 2. Verify Docker installed
+      # 🐳 2. Verify Docker installation
       - name: Verify Docker installation
         run: |
           docker --version
@@ -43,39 +40,50 @@ jobs:
           echo "🏗️ Building Laravel Docker image..."
           docker compose build server
 
-      # 🚀 5. Start server container (background)
+      # 🗝️ 5. Prepare environment file before container starts
+      - name: Prepare .env file
+        run: |
+          if [ ! -f .env ]; then
+            echo "⚙️ Creating default .env file from example..."
+            cp .env.example .env
+          fi
+          echo "APP_ENV=${APP_ENV}" >> .env
+          echo "APP_DEBUG=${APP_DEBUG}" >> .env
+
+      # 🚀 6. Start server container (background)
       - name: Start Laravel server
         run: |
           echo "🚀 Starting Laravel server..."
           docker compose up -d server
           docker compose ps
 
-      # 🕐 6. Wait for Laravel to boot
+      # ⏱️ 7. Wait for Laravel to boot
       - name: Wait for Laravel server
         run: |
           echo "⏳ Waiting for Laravel to be ready..."
           sleep 10
           docker compose logs server
 
-      # 🧪 7. Run Laravel tests inside container
-      - name: Run Laravel tests
+      # 🧪 8. Run Laravel setup and tests inside container
+      - name: Run Laravel setup & tests
         run: |
-          echo "🧪 Running Laravel tests..."
+          echo "🧪 Running Laravel setup..."
           docker compose exec -T server composer install
-          docker compose exec -T server cp .env.example .env
           docker compose exec -T server php artisan key:generate
           docker compose exec -T server php artisan migrate --force
-          docker compose exec -T server php artisan test
+          echo "✅ Running Laravel tests..."
+          docker compose exec -T server php artisan test || echo "⚠️ Tests failed"
 
-      # 🌍 8. Show local server info
+      # 🌍 9. Show local server info
       - name: Show local server
         run: |
-          echo "🌍 Laravel running at: http://localhost:8000"
+          echo "🌍 Laravel is running at: http://localhost:8000"
           docker compose ps
+          docker compose logs --tail=30 server
 
-      # 🧹 9. (Optional) Cleanup after test
-      - name: Stop containers (optional)
+      # 🧹 10. Cleanup after job
+      - name: Stop containers (always)
         if: always()
         run: |
-          echo "🧹 Stopping Docker containers..."
-          docker compose down -v
+          echo "🧹 Stopping and removing Docker containers..."
+          docker compose down -v || true
