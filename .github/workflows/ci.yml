@@ -1,4 +1,4 @@
-name: CI - Laravel + Client with Docker
+name: CI - My_project
 
 on:
   push:
@@ -9,31 +9,52 @@ on:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: .
+
     env:
-      APP_ENV: production
+      APP_ENV: testing
       APP_KEY: ${{ secrets.APP_KEY }}
-      DB_HOST: ${{ secrets.DB_HOST }}
-      DB_DATABASE: ${{ secrets.DB_DATABASE }}
-      DB_USERNAME: ${{ secrets.DB_USERNAME }}
-      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      APP_DEBUG: true
+
     steps:
+      # 🧾 1. Lấy code từ repository
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: 8.2
-
-      - name: Install Laravel dependencies
+      # 🐳 2. Kiểm tra Docker & Docker Compose
+      - name: Verify Docker installation
         run: |
-          cd server
-          composer install
-          cp .env.example .env
-          php artisan key:generate
+          docker --version
+          docker compose version
 
-      - name: Install client dependencies
+      # ⚙️ 3. Build container Laravel
+      - name: Build Laravel container
+        run: docker compose build server
+
+      # 🚀 4. Khởi động container Laravel
+      - name: Start Laravel container
         run: |
-          cd client
-          yarn install
-          yarn build
+          docker compose up -d server
+          docker compose ps
+
+      # 🕐 5. Đợi container Laravel sẵn sàng
+      - name: Wait for Laravel container
+        run: |
+          echo "⏳ Waiting for Laravel to be ready..."
+          sleep 10
+          docker compose logs server
+
+      # 🧪 6. Cài đặt composer & chạy test trong container
+      - name: Run Laravel tests
+        run: |
+          docker compose exec -T server composer install
+          docker compose exec -T server cp .env.example .env
+          docker compose exec -T server php artisan key:generate
+          docker compose exec -T server php artisan test
+
+      # 🧹 7. Dọn dẹp sau khi hoàn tất
+      - name: Stop and clean up
+        if: always()
+        run: docker compose down -v
