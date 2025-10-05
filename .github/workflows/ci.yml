@@ -1,0 +1,32 @@
+name: CI - Laravel + Client with Docker
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.2
+
+      - name: Install Laravel dependencies
+        run: |
+          cd server
+          composer install
+          cp .env.example .env
+          php artisan key:generate
+
+      - name: Install client dependencies
+        run: |
+          cd client
+          yarn install
+          yarn build
