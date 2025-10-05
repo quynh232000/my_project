@@ -1,15 +1,15 @@
 version: '3.9'
 
 services:
-    #     server:
-    #         build:
-    #             context: ./server
-    #             dockerfile: Dockerfile
-    #         ports:
-    #             - 8000:8000
-    #         networks:
-    #             - laravel
-    #         command: php artisan serve --host 0.0.0.0 --port 8000
+    server:
+            build:
+                context: ./server
+                dockerfile: Dockerfile
+            ports:
+                - 8000:8000
+            networks:
+                - laravel
+            command: php artisan serve --host 0.0.0.0 --port 8000
     client:
         build:
             context: ./client
@@ -27,9 +27,6 @@ services:
 networks:
     laravel:
         driver: bridge
-# volumes:
-#   dbdata:
-#     driver: local
 volumes:
     es_data:
         driver: local
