@@ -63,9 +63,9 @@ jobs:
           docker compose logs server
 
       - name: Run Laravel tests
-        working-directory: ./my_project
         run: |
-          docker compose up -d
+          echo "🧪 Running Laravel tests..."
+          docker compose up -d server
           docker compose exec server php artisan test
 
       - name: Show local server
