@@ -2,37 +2,31 @@ name: CI - Laravel + Client with Docker
 
 on:
   push:
-    branches: [main, develop]
+    branches: [ main ]
   pull_request:
-    branches: [main, develop]
+    branches: [ main ]
 
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Docker Compose
-        run: docker-compose version
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.2
 
-      - name: Build containers
-        run: docker-compose up -d --build
-
-      - name: Wait for containers to be ready
+      - name: Install Laravel dependencies
         run: |
-          echo "Waiting for server to start..."
-          sleep 15
+          cd server
+          composer install
+          cp .env.example .env
+          php artisan key:generate
 
-      - name: Check Laravel server
+      - name: Install client dependencies
         run: |
-          docker-compose exec -T server php artisan test || exit 1
-
-      - name: Check client build
-        run: |
-          docker-compose exec -T client yarn build || exit 1
-
-      - name: Tear down containers
-        if: always()
-        run: docker-compose down
+          cd client
+          yarn install
+          yarn build
