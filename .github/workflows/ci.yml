@@ -14,7 +14,7 @@ jobs:
         working-directory: .
 
     env:
-      APP_ENV: testing
+      APP_ENV: local
       APP_KEY: ${{ secrets.APP_KEY }}
       APP_DEBUG: true
 
