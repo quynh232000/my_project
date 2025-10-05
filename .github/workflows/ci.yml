@@ -30,10 +30,14 @@ jobs:
           docker compose version
 
       - name: Clean old containers
-        run: docker compose down -v || true
+        run: |
+          echo "🧹 Cleaning old containers..."
+          docker compose down -v || true
 
       - name: Build Laravel server
-        run: docker compose build server
+        run: |
+          echo "🏗️ Building Laravel Docker image..."
+          docker compose build server
 
       - name: Prepare .env file
         run: |
@@ -46,25 +50,33 @@ jobs:
           APP_URL=http://localhost:8000
           EOF
 
-                - name: Start Laravel server
-                  run: docker compose up -d server
+      - name: Start Laravel server
+        run: |
+          echo "🚀 Starting Laravel server..."
+          docker compose up -d server
+          docker compose ps
 
-                - name: Wait for Laravel server
-                  run: |
-                    echo "⏳ Waiting for Laravel to be ready..."
-                    sleep 10
-                    docker compose logs server
+      - name: Wait for Laravel server
+        run: |
+          echo "⏳ Waiting for Laravel to be ready..."
+          sleep 10
+          docker compose logs server
 
-                - name: Run Laravel tests
-                  run: |
-                    docker compose exec -T server composer install
-                    docker compose exec -T server php artisan key:generate --force
-                    docker compose exec -T server php artisan migrate --force
-                    docker compose exec -T server php artisan test
+      - name: Run Laravel tests
+        run: |
+          echo "🧪 Running Laravel tests..."
+          docker compose exec -T server composer install
+          docker compose exec -T server php artisan key:generate --force
+          docker compose exec -T server php artisan migrate --force
+          docker compose exec -T server php artisan test
 
-                - name: Show local server
-                  run: docker compose ps
+      - name: Show local server
+        run: |
+          echo "🌍 Laravel running at: http://localhost:8000"
+          docker compose ps
 
-                - name: Stop containers (optional)
-                  if: always()
-                  run: docker compose down -v
+      - name: Stop containers (optional)
+        if: always()
+        run: |
+          echo "🧹 Stopping Docker containers..."
+          docker compose down -v
